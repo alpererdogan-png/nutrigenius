@@ -11,9 +11,8 @@ import {
   Star,
   CheckCircle2,
   BookOpen,
-  Clock,
-  Zap,
 } from "lucide-react";
+import { BlogCarousel } from "./components/BlogCarousel";
 
 export default function Home() {
   return (
@@ -326,100 +325,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Blog Preview Section ── */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-            <div>
-              <div className="inline-flex items-center gap-2 bg-[#F0FDFA] border border-[#CCFBF1] text-[#0D9488] text-xs font-medium px-3 py-1.5 rounded-full mb-4">
-                <BookOpen className="w-3.5 h-3.5" />
-                Health Intelligence
-              </div>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A2332]">
-                Latest Health Insights
-              </h2>
-              <p className="text-[#5A6578] mt-2 text-lg">
-                Evidence-reviewed articles to guide smarter supplement decisions.
-              </p>
+      {/* ── Blog Carousel Section ── */}
+      <section className="py-16 sm:py-24 bg-white overflow-hidden">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          {/* Header */}
+          <div className="mb-10">
+            <div className="inline-flex items-center gap-2 bg-[#F0FDFA] border border-[#CCFBF1] text-[#0D9488] text-xs font-medium px-3 py-1.5 rounded-full mb-4">
+              <BookOpen className="w-3.5 h-3.5" />
+              Clinical Knowledge Hub
             </div>
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 text-[#0D9488] font-medium hover:text-[#0F766E] transition-colors text-sm flex-shrink-0"
-            >
-              View All Articles
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A2332] mb-3">
+              The Science Behind Your Supplements
+            </h2>
+            <p className="text-[#5A6578] text-lg max-w-2xl">
+              Evidence-based articles written by clinical experts to help you make informed health decisions.
+            </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                category: "Evidence Review",
-                categoryColor: "bg-blue-50 text-blue-700 border-blue-200",
-                title: "The Complete Guide to Magnesium: Forms, Doses, and What the Science Actually Says",
-                excerpt: "Not all magnesium is created equal. We break down glycinate vs. citrate vs. oxide — and the research behind each form's specific benefits.",
-                readTime: "8 min read",
-                accent: "from-blue-500/10 to-blue-500/5",
-              },
-              {
-                category: "Myth Busting",
-                categoryColor: "bg-amber-50 text-amber-700 border-amber-200",
-                title: "5 Supplement Myths Your Doctor Didn't Learn in Medical School",
-                excerpt: "From 'more is always better' to 'vitamins are harmless' — five widespread supplement myths that may actually be harming your health.",
-                readTime: "6 min read",
-                accent: "from-amber-500/10 to-amber-500/5",
-              },
-              {
-                category: "Interaction Alert",
-                categoryColor: "bg-red-50 text-red-700 border-red-200",
-                title: "Supplements That Don't Mix: Critical Interactions You Need to Know",
-                excerpt: "Iron and calcium compete for absorption. St John's Wort can reduce contraceptive effectiveness. Learn the interactions that matter.",
-                readTime: "7 min read",
-                accent: "from-red-500/10 to-red-500/5",
-              },
-            ].map((article) => (
-              <article
-                key={article.title}
-                className="group bg-white border border-[#E8ECF1] rounded-2xl overflow-hidden hover:border-[#0D9488]/30 hover:shadow-lg hover:shadow-teal-500/5 transition-all duration-300 hover:-translate-y-1 flex flex-col"
-              >
-                <div className={`h-2 bg-gradient-to-r ${article.accent} w-full`} />
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="mb-4">
-                    <span className={`inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full border ${article.categoryColor}`}>
-                      <Zap className="w-3 h-3 mr-1" />
-                      {article.category}
-                    </span>
-                  </div>
-                  <h3 className="font-heading text-base font-bold text-[#1A2332] mb-3 leading-snug group-hover:text-[#0D9488] transition-colors duration-200 line-clamp-3">
-                    {article.title}
-                  </h3>
-                  <p className="text-sm text-[#5A6578] leading-relaxed mb-5 line-clamp-2 flex-1">
-                    {article.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between pt-4 border-t border-[#E8ECF1]">
-                    <div className="flex items-center gap-1.5 text-xs text-[#8896A8]">
-                      <Clock className="w-3.5 h-3.5" />
-                      {article.readTime}
-                    </div>
-                    <Link
-                      href="/blog"
-                      className="text-xs font-medium text-[#0D9488] hover:text-[#0F766E] flex items-center gap-1 transition-colors"
-                    >
-                      Read more
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            ))}
+          {/* Carousel — extends edge-to-edge on mobile */}
+          <div className="-mx-4 sm:-mx-6 px-4 sm:px-6">
+            <BlogCarousel />
           </div>
 
-          <div className="text-center mt-10">
+          {/* CTA */}
+          <div className="mt-8">
             <Link
               href="/blog"
-              className="inline-flex items-center justify-center gap-2 bg-[#F0FDFA] hover:bg-[#CCFBF1] border border-[#99F6E4] text-[#0D9488] font-medium px-6 py-3 rounded-xl text-sm transition-all duration-200 hover:shadow-sm"
+              className="inline-flex items-center gap-2 bg-[#F0FDFA] hover:bg-[#CCFBF1] border border-[#99F6E4] text-[#0D9488] font-semibold px-6 py-3 rounded-xl text-sm transition-all duration-200 hover:shadow-sm"
             >
-              View All Articles
+              Explore All Articles
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
