@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, Shield, CheckCircle2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, ArrowRight, Shield, CheckCircle2, Loader2 } from "lucide-react";
 import { StepDemographics } from "./components/StepDemographics";
 import { StepHealthConditions } from "./components/StepHealthConditions";
 import { StepLifestyle } from "./components/StepLifestyle";
@@ -97,8 +98,11 @@ const STEPS = [
 ];
 
 export default function QuizPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [quizData, setQuizData] = useState<QuizData>(INITIAL_DATA);
+  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const updateData = (fields: Partial<QuizData>) => {
     setQuizData((prev) => ({ ...prev, ...fields }));
@@ -114,10 +118,26 @@ export default function QuizPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSubmit = () => {
-    console.log("Quiz submitted:", quizData);
-    // We will connect this to the recommendation algorithm later
-    alert("Quiz complete! Recommendation engine coming in Week 5.");
+  const handleSubmit = async () => {
+    setLoading(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch("/api/recommend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(quizData),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error ?? "Something went wrong. Please try again.");
+      }
+      const recommendations = await res.json();
+      sessionStorage.setItem("nutrigenius_recommendations", JSON.stringify(recommendations));
+      router.push("/results");
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Something went wrong.");
+      setLoading(false);
+    }
   };
 
   const progress = (currentStep / 5) * 100;
@@ -253,13 +273,30 @@ export default function QuizPage() {
           ) : (
             <button
               onClick={handleSubmit}
-              className="flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-medium px-8 py-3 rounded-xl transition-colors"
+              disabled={loading}
+              className="flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] disabled:bg-[#0D9488]/60 text-white font-medium px-8 py-3 rounded-xl transition-colors"
             >
-              Get My Recommendations
-              <ArrowRight className="w-4 h-4" />
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Analysing your profile...
+                </>
+              ) : (
+                <>
+                  Get My Recommendations
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
             </button>
           )}
         </div>
+
+        {/* Submit error */}
+        {submitError && (
+          <p className="text-sm text-red-600 text-center mt-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+            {submitError}
+          </p>
+        )}
 
         {/* Disclaimer */}
         <p className="text-xs text-[#8896A8] text-center mt-8 leading-relaxed">
