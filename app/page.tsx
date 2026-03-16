@@ -46,13 +46,13 @@ export default function Home() {
             href="/quiz"
             className="bg-[#0D9488] hover:bg-[#0F766E] text-white text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
           >
-            Get Your Free Plan
+            Get Your Free Personalized Plan
           </Link>
         </div>
       </nav>
 
       {/* ── Hero Section ── */}
-      <section className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 px-4 sm:px-6 overflow-hidden">
+      <section className="relative pt-20 sm:pt-24 pb-8 sm:pb-10 px-4 sm:px-6 overflow-hidden">
         {/* Background decoration */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-[#F0FDFA] via-[#CCFBF1]/30 to-transparent rounded-full translate-x-1/3 -translate-y-1/4" />
@@ -68,12 +68,12 @@ export default function Home() {
 
         <div className="max-w-6xl mx-auto relative">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-[#F0FDFA] border border-[#CCFBF1] text-[#0D9488] text-xs font-medium px-3 py-1.5 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-[#F0FDFA] border border-[#CCFBF1] text-[#0D9488] text-xs font-medium px-3 py-1.5 rounded-full mb-4">
               <Shield className="w-3.5 h-3.5" />
               Evidence-Based · Clinician-Designed · Free
             </div>
 
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-[#1A2332] mb-6">
+            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight text-[#1A2332] mb-4">
               Your supplements,{" "}
               <span className="text-[#0D9488] relative">
                 backed by science
@@ -83,7 +83,7 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-[#5A6578] leading-relaxed mb-8 max-w-2xl">
+            <p className="text-base sm:text-lg text-[#5A6578] leading-relaxed mb-5 max-w-2xl">
               Complete a 5-minute health assessment and receive a personalized
               supplement plan — with doses, timing, interactions checked,
               and evidence ratings for every recommendation.
@@ -92,21 +92,21 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href="/quiz"
-                className="inline-flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-6 py-3.5 rounded-xl text-base transition-all duration-200 hover:shadow-lg hover:shadow-teal-500/25 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-6 py-3 rounded-xl text-base transition-all duration-200 hover:shadow-lg hover:shadow-teal-500/25 hover:-translate-y-0.5"
               >
-                Get Your Free Plan
+                Get Your Free Personalized Plan
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="#how-it-works"
-                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-[#F1F5F9] border border-[#E2E8F0] text-[#1A2332] font-medium px-6 py-3.5 rounded-xl text-base transition-all duration-200 hover:border-[#CBD5E1] hover:shadow-sm"
+                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-[#F1F5F9] border border-[#E2E8F0] text-[#1A2332] font-medium px-6 py-3 rounded-xl text-base transition-all duration-200 hover:border-[#CBD5E1] hover:shadow-sm"
               >
                 See How It Works
               </Link>
             </div>
 
             {/* Social proof */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-8 text-sm text-[#5A6578]">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-5 text-sm text-[#5A6578]">
               <div className="flex items-center gap-1.5">
                 <div className="flex -space-x-1">
                   {["bg-teal-400", "bg-blue-400", "bg-purple-400"].map((c, i) => (
@@ -124,6 +124,41 @@ export default function Home() {
                 5 minutes
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Blog Carousel Section ── (directly after hero) */}
+      <section className="pt-6 pb-12 sm:pb-16 bg-[#FAFBFC] overflow-hidden">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          {/* Header */}
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 bg-[#F0FDFA] border border-[#CCFBF1] text-[#0D9488] text-xs font-medium px-3 py-1.5 rounded-full mb-3">
+              <BookOpen className="w-3.5 h-3.5" />
+              Clinical Knowledge Hub
+            </div>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#1A2332] mb-2">
+              The Science Behind Your Supplements
+            </h2>
+            <p className="text-[#5A6578] text-base max-w-2xl">
+              Evidence-based articles written by clinical experts to help you make informed health decisions.
+            </p>
+          </div>
+
+          {/* Carousel */}
+          <div className="-mx-4 sm:-mx-6 px-4 sm:px-6">
+            <BlogCarousel />
+          </div>
+
+          {/* CTA */}
+          <div className="mt-6">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 bg-[#F0FDFA] hover:bg-[#CCFBF1] border border-[#99F6E4] text-[#0D9488] font-semibold px-6 py-3 rounded-xl text-sm transition-all duration-200 hover:shadow-sm"
+            >
+              Explore All Articles
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
@@ -325,41 +360,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Blog Carousel Section ── */}
-      <section className="py-16 sm:py-24 bg-white overflow-hidden">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          {/* Header */}
-          <div className="mb-10">
-            <div className="inline-flex items-center gap-2 bg-[#F0FDFA] border border-[#CCFBF1] text-[#0D9488] text-xs font-medium px-3 py-1.5 rounded-full mb-4">
-              <BookOpen className="w-3.5 h-3.5" />
-              Clinical Knowledge Hub
-            </div>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A2332] mb-3">
-              The Science Behind Your Supplements
-            </h2>
-            <p className="text-[#5A6578] text-lg max-w-2xl">
-              Evidence-based articles written by clinical experts to help you make informed health decisions.
-            </p>
-          </div>
-
-          {/* Carousel — extends edge-to-edge on mobile */}
-          <div className="-mx-4 sm:-mx-6 px-4 sm:px-6">
-            <BlogCarousel />
-          </div>
-
-          {/* CTA */}
-          <div className="mt-8">
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 bg-[#F0FDFA] hover:bg-[#CCFBF1] border border-[#99F6E4] text-[#0D9488] font-semibold px-6 py-3 rounded-xl text-sm transition-all duration-200 hover:shadow-sm"
-            >
-              Explore All Articles
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* ── CTA Section ── */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 bg-[#FAFBFC]">
         <div className="max-w-6xl mx-auto">
@@ -383,7 +383,7 @@ export default function Home() {
                 href="/quiz"
                 className="inline-flex items-center justify-center gap-2 bg-white hover:bg-teal-50 text-[#0D9488] font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5"
               >
-                Get Your Free Plan
+                Get Your Free Personalized Plan
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <p className="text-teal-200 text-sm mt-4">No account required · 100% free · Takes 5 minutes</p>
