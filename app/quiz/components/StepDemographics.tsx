@@ -34,21 +34,33 @@ const COUNTRIES = [
   "Ireland",
   "United Kingdom",
   "United States",
-  "Turkey",
-  "Germany",
-  "France",
-  "Netherlands",
   "Canada",
   "Australia",
+  "Germany",
+  "France",
+  "Spain",
+  "Italy",
+  "Netherlands",
+  "Belgium",
+  "Sweden",
+  "Denmark",
+  "Norway",
+  "Finland",
+  "Austria",
+  "Switzerland",
+  "Poland",
+  "Portugal",
+  "Greece",
+  "Czech Republic",
+  "Romania",
+  "Hungary",
+  "Croatia",
+  "Bulgaria",
+  "Turkey",
   "UAE",
   "Saudi Arabia",
   "India",
   "Other",
-];
-
-const LANGUAGES = [
-  { code: "en", label: "English" },
-  { code: "tr", label: "Türkçe" },
 ];
 
 export function StepDemographics({ data, updateData }: Props) {
@@ -157,47 +169,23 @@ export function StepDemographics({ data, updateData }: Props) {
         </div>
       </div>
 
-      {/* Country and Language */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
-            Country of Residence
-          </label>
-          <select
-            value={data.country}
-            onChange={(e) => updateData({ country: e.target.value })}
-            className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
-          >
-            <option value="">Select country...</option>
-            {COUNTRIES.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
-            Preferred Language
-          </label>
-          <div className="flex gap-3">
-            {LANGUAGES.map((lang) => (
-              <button
-                key={lang.code}
-                onClick={() =>
-                  updateData({ preferredLanguage: lang.code })
-                }
-                className={`flex-1 py-2.5 px-4 rounded-lg border text-sm font-medium transition-colors ${
-                  data.preferredLanguage === lang.code
-                    ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
-                    : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
-                }`}
-              >
-                {lang.label}
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* Country */}
+      <div>
+        <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
+          Country of Residence
+        </label>
+        <select
+          value={data.country}
+          onChange={(e) => updateData({ country: e.target.value })}
+          className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+        >
+          <option value="">Select country...</option>
+          {COUNTRIES.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Pregnancy / Breastfeeding — only show for females */}

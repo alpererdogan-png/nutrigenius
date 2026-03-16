@@ -2,7 +2,19 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Shield, CheckCircle2, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Shield,
+  CheckCircle2,
+  Loader2,
+  Mail,
+  Download,
+  Calendar,
+  FileText,
+  Sparkles,
+} from "lucide-react";
+import { createClient } from "@/lib/supabase-browser";
 import { StepDemographics } from "./components/StepDemographics";
 import { StepHealthConditions } from "./components/StepHealthConditions";
 import { StepLifestyle } from "./components/StepLifestyle";
@@ -104,12 +116,19 @@ export default function QuizPage() {
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // Email capture state
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [optPdf, setOptPdf] = useState(true);
+  const [optCalendar, setOptCalendar] = useState(true);
+  const [optNewsletter, setOptNewsletter] = useState(true);
+
   const updateData = (fields: Partial<QuizData>) => {
     setQuizData((prev) => ({ ...prev, ...fields }));
   };
 
   const nextStep = () => {
-    if (currentStep < 5) setCurrentStep(currentStep + 1);
+    if (currentStep <= 5) setCurrentStep(currentStep + 1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -118,10 +137,17 @@ export default function QuizPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSubmit = async () => {
+  const handleEmailSubmit = async () => {
+    if (!email || !email.includes("@")) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+    setEmailError(null);
     setLoading(true);
     setSubmitError(null);
+
     try {
+      // Call recommendation API
       const res = await fetch("/api/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -132,7 +158,24 @@ export default function QuizPage() {
         throw new Error(data.error ?? "Something went wrong. Please try again.");
       }
       const recommendations = await res.json();
+
+      // Save email + quiz data to Supabase (best-effort — don't block on failure)
+      try {
+        const supabase = createClient();
+        await supabase.from("newsletter_subscribers").upsert({
+          email,
+          newsletter_opt_in: optNewsletter,
+          pdf_opt_in: optPdf,
+          calendar_opt_in: optCalendar,
+          created_at: new Date().toISOString(),
+        });
+      } catch {
+        // Non-blocking — proceed even if Supabase save fails
+      }
+
+      // Store results and email for results page
       sessionStorage.setItem("nutrigenius_recommendations", JSON.stringify(recommendations));
+      sessionStorage.setItem("nutrigenius_email", email);
       router.push("/results");
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Something went wrong.");
@@ -140,8 +183,130 @@ export default function QuizPage() {
     }
   };
 
-  const progress = (currentStep / 5) * 100;
+  const progress = (Math.min(currentStep, 5) / 5) * 100;
 
+  // ── Email Capture Screen (step 6) ──
+  if (currentStep === 6) {
+    return (
+      <div className="min-h-screen bg-[#FAFBFC] flex flex-col">
+        {/* Header */}
+        <div className="bg-white border-b border-[#E8ECF1]">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+            <button
+              onClick={() => setCurrentStep(5)}
+              className="flex items-center gap-2 text-[#5A6578] hover:text-[#1A2332] text-sm font-medium transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </button>
+            <div className="flex items-center gap-2">
+              <Shield className="w-5 h-5 text-[#0D9488]" />
+              <span className="text-sm font-medium text-[#1A2332]">NutriGenius</span>
+            </div>
+            <div className="w-20" />
+          </div>
+        </div>
+
+        <div className="flex-1 flex items-center justify-center px-4 py-12">
+          <div className="w-full max-w-lg">
+            {/* Ready card */}
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#0D9488] to-[#0F766E] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-teal-500/20">
+                <Sparkles className="w-8 h-8 text-white" />
+              </div>
+              <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#1A2332] mb-2">
+                Your Plan is Ready!
+              </h1>
+              <p className="text-[#5A6578]">
+                Your personalized supplement protocol is ready! Enter your email to receive it:
+              </p>
+            </div>
+
+            <div className="bg-white border border-[#E8ECF1] rounded-2xl p-6 sm:p-8 shadow-sm">
+              {/* What you'll get */}
+              <div className="space-y-3 mb-6">
+                {[
+                  { icon: <FileText className="w-4 h-4" />, label: "Your complete supplement plan as a downloadable PDF", state: optPdf, setter: setOptPdf },
+                  { icon: <Calendar className="w-4 h-4" />, label: "3-month calendar reminders for your supplement schedule", state: optCalendar, setter: setOptCalendar },
+                  { icon: <Mail className="w-4 h-4" />, label: "Biweekly health insights and supplement updates", state: optNewsletter, setter: setOptNewsletter },
+                ].map((item) => (
+                  <label key={item.label} className="flex items-start gap-3 cursor-pointer group">
+                    <div className="flex-shrink-0 mt-0.5">
+                      <input
+                        type="checkbox"
+                        checked={item.state}
+                        onChange={(e) => item.setter(e.target.checked)}
+                        className="w-4 h-4 rounded border-[#E2E8F0] text-[#0D9488] focus:ring-[#0D9488]"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-[#3D4B5F] group-hover:text-[#1A2332] transition-colors">
+                      <span className="text-[#0D9488]">{item.icon}</span>
+                      {item.label}
+                    </div>
+                  </label>
+                ))}
+              </div>
+
+              {/* Email input */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
+                  Email address
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-3 w-4 h-4 text-[#8896A8]" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value); setEmailError(null); }}
+                    placeholder="you@example.com"
+                    className="w-full pl-10 pr-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+                    onKeyDown={(e) => { if (e.key === "Enter") handleEmailSubmit(); }}
+                  />
+                </div>
+                {emailError && (
+                  <p className="text-xs text-red-600 mt-1">{emailError}</p>
+                )}
+              </div>
+
+              <button
+                onClick={handleEmailSubmit}
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] disabled:bg-[#0D9488]/60 text-white font-semibold py-3.5 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Generating your plan...
+                  </>
+                ) : (
+                  <>
+                    Get My Free Plan
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+
+              {submitError && (
+                <p className="text-sm text-red-600 text-center mt-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+                  {submitError}
+                </p>
+              )}
+
+              <p className="text-xs text-[#8896A8] text-center mt-4 leading-relaxed">
+                By entering your email, you agree to receive your plan and occasional health updates.
+                Unsubscribe anytime.
+              </p>
+              <p className="text-xs text-[#8896A8] text-center mt-1">
+                Your health data is processed securely under GDPR Article 9.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Normal quiz steps 1–5 ──
   return (
     <div className="min-h-screen bg-[#FAFBFC]">
       {/* Header */}
@@ -214,7 +379,7 @@ export default function QuizPage() {
       {/* Form content */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#1A2332] mb-2">
+          <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#1A2332] mb-2">
             {STEPS[currentStep - 1].title}
           </h1>
           <p className="text-[#5A6578]">
@@ -262,41 +427,23 @@ export default function QuizPage() {
             <div />
           )}
 
-          {currentStep < 5 ? (
-            <button
-              onClick={nextStep}
-              className="flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-medium px-6 py-3 rounded-xl transition-colors"
-            >
-              Continue
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          ) : (
-            <button
-              onClick={handleSubmit}
-              disabled={loading}
-              className="flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] disabled:bg-[#0D9488]/60 text-white font-medium px-8 py-3 rounded-xl transition-colors"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Analysing your profile...
-                </>
-              ) : (
-                <>
-                  Get My Recommendations
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          )}
+          <button
+            onClick={nextStep}
+            className="flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
+          >
+            {currentStep === 5 ? (
+              <>
+                See My Results
+                <ArrowRight className="w-4 h-4" />
+              </>
+            ) : (
+              <>
+                Continue
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </button>
         </div>
-
-        {/* Submit error */}
-        {submitError && (
-          <p className="text-sm text-red-600 text-center mt-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-            {submitError}
-          </p>
-        )}
 
         {/* Disclaimer */}
         <p className="text-xs text-[#8896A8] text-center mt-8 leading-relaxed">

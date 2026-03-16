@@ -14,6 +14,10 @@ import {
   ArrowLeft,
   Loader2,
   Info,
+  Download,
+  Bell,
+  Mail,
+  RefreshCw,
 } from "lucide-react";
 import type { RecommendationResult, SupplementRecommendation } from "@/app/api/recommend/route";
 
@@ -134,7 +138,6 @@ function WeeklySchedule({ schedule, supplements }: { schedule: RecommendationRes
     Evening: "bg-indigo-400",
   };
 
-  // Mobile: show one day at a time
   const [activeDay, setActiveDay] = useState(0);
 
   return (
@@ -233,15 +236,18 @@ export default function ResultsPage() {
   const router = useRouter();
   const [result, setResult] = useState<RecommendationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("nutrigenius_recommendations");
+    const email = sessionStorage.getItem("nutrigenius_email");
     if (!raw) {
       router.replace("/quiz");
       return;
     }
     try {
       setResult(JSON.parse(raw));
+      setUserEmail(email);
     } catch {
       setError("Could not load your recommendations. Please retake the quiz.");
     }
@@ -288,13 +294,44 @@ export default function ResultsPage() {
           </button>
           <div className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-[#0D9488]" />
-            <span className="text-sm font-semibold text-[#1A2332]">NutriGenius</span>
+            <span className="font-heading text-sm font-semibold text-[#1A2332]">NutriGenius</span>
           </div>
-          <div className="w-24" /> {/* spacer */}
+          <div className="w-24" />
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+
+        {/* Email confirmation banner */}
+        {userEmail && (
+          <div className="flex items-center gap-3 bg-[#F0FDFA] border border-[#99F6E4] rounded-xl px-4 py-3">
+            <Mail className="w-5 h-5 text-[#0D9488] flex-shrink-0" />
+            <p className="text-sm text-[#0F766E]">
+              <span className="font-medium">Your plan has been sent to {userEmail}.</span>{" "}
+              Check your inbox!
+            </p>
+          </div>
+        )}
+
+        {/* Action buttons */}
+        <div className="flex flex-wrap gap-3">
+          <button
+            disabled
+            className="inline-flex items-center gap-2 bg-[#F8FAFC] border border-[#E8ECF1] text-[#8896A8] text-sm font-medium px-4 py-2.5 rounded-xl cursor-not-allowed"
+          >
+            <Download className="w-4 h-4" />
+            Download PDF
+            <span className="text-xs bg-[#E8ECF1] text-[#8896A8] px-2 py-0.5 rounded-full">Coming soon</span>
+          </button>
+          <button
+            disabled
+            className="inline-flex items-center gap-2 bg-[#F8FAFC] border border-[#E8ECF1] text-[#8896A8] text-sm font-medium px-4 py-2.5 rounded-xl cursor-not-allowed"
+          >
+            <Bell className="w-4 h-4" />
+            Set Calendar Reminders
+            <span className="text-xs bg-[#E8ECF1] text-[#8896A8] px-2 py-0.5 rounded-full">Coming soon</span>
+          </button>
+        </div>
 
         {/* Hero summary */}
         <div className="bg-gradient-to-br from-[#0D9488] to-[#0F766E] rounded-2xl p-6 sm:p-8 text-white">
@@ -303,7 +340,7 @@ export default function ResultsPage() {
               <CheckCircle2 className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold">Your Personalised Protocol</h1>
+              <h1 className="font-heading text-2xl sm:text-3xl font-bold">Your Personalised Protocol</h1>
               <p className="text-teal-100 mt-1 text-sm sm:text-base">
                 Evidence-based recommendations tailored to your health profile
               </p>
@@ -343,7 +380,7 @@ export default function ResultsPage() {
 
         {/* Supplements */}
         <section>
-          <h2 className="text-xl font-bold text-[#1A2332] mb-1">Your Supplement Protocol</h2>
+          <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">Your Supplement Protocol</h2>
           <p className="text-sm text-[#5A6578] mb-5">
             Ranked by priority — lab-confirmed deficiencies first, then evidence strength.
           </p>
@@ -372,7 +409,7 @@ export default function ResultsPage() {
         {/* Blocked supplements */}
         {blockedSupplements.length > 0 && (
           <section>
-            <h2 className="text-xl font-bold text-[#1A2332] mb-1">Safety Filtered</h2>
+            <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">Safety Filtered</h2>
             <p className="text-sm text-[#5A6578] mb-4">
               These supplements were excluded due to potential interactions or contraindications.
             </p>
@@ -393,7 +430,7 @@ export default function ResultsPage() {
         {/* Weekly schedule */}
         {supplements.length > 0 && (
           <section>
-            <h2 className="text-xl font-bold text-[#1A2332] mb-1">Weekly Schedule</h2>
+            <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">Weekly Schedule</h2>
             <p className="text-sm text-[#5A6578] mb-5">
               Optimal timing based on absorption science and supplement interactions.
             </p>
@@ -421,6 +458,26 @@ export default function ResultsPage() {
                 </div>
               );
             })}
+          </div>
+        </section>
+
+        {/* Retake section */}
+        <section className="bg-white border border-[#E8ECF1] rounded-2xl p-5 sm:p-6 flex items-start gap-4">
+          <div className="w-10 h-10 rounded-xl bg-[#F0FDFA] flex items-center justify-center flex-shrink-0">
+            <RefreshCw className="w-5 h-5 text-[#0D9488]" />
+          </div>
+          <div>
+            <h3 className="font-heading text-sm font-semibold text-[#1A2332] mb-1">Keep your plan up to date</h3>
+            <p className="text-sm text-[#5A6578] leading-relaxed">
+              Want to update your plan? Retake the assessment in 3 months for updated recommendations based on your progress and any changes in your health.
+            </p>
+            <button
+              onClick={() => router.push("/quiz")}
+              className="mt-3 text-sm font-medium text-[#0D9488] hover:text-[#0F766E] transition-colors flex items-center gap-1"
+            >
+              Retake the assessment
+              <RefreshCw className="w-3.5 h-3.5" />
+            </button>
           </div>
         </section>
 

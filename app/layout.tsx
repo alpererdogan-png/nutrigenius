@@ -17,7 +17,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "NutriGenius — Evidence-Based Supplement Recommendations",
   description:
-    "Get a personalized supplement protocol backed by science. Drug interaction checks, evidence ratings, and a visual weekly schedule — designed by a Medical Director.",
+    "Get a personalized supplement protocol backed by science. Drug interaction checks, evidence ratings, and a visual weekly schedule — clinician-designed and evidence-based.",
   keywords: [
     "supplements",
     "personalized nutrition",
