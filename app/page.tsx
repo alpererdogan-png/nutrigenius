@@ -52,13 +52,12 @@ export default function Home() {
       </nav>
 
       {/* ── Hero Section ── */}
-      <section className="relative pt-20 sm:pt-24 pb-8 sm:pb-10 px-4 sm:px-6 overflow-hidden">
+      <section className="relative pt-20 sm:pt-22 pb-5 px-4 sm:px-6 overflow-hidden">
         {/* Background decoration */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-[#F0FDFA] via-[#CCFBF1]/30 to-transparent rounded-full translate-x-1/3 -translate-y-1/4" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-[#F0FDFA]/50 to-transparent rounded-full -translate-x-1/4 translate-y-1/4" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-[#F0FDFA] via-[#CCFBF1]/20 to-transparent rounded-full translate-x-1/3 -translate-y-1/4" />
           <div
-            className="absolute inset-0 opacity-[0.025]"
+            className="absolute inset-0 opacity-[0.02]"
             style={{
               backgroundImage: `radial-gradient(circle, #0D9488 1px, transparent 1px)`,
               backgroundSize: "32px 32px",
@@ -67,61 +66,54 @@ export default function Home() {
         </div>
 
         <div className="max-w-6xl mx-auto relative">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-[#F0FDFA] border border-[#CCFBF1] text-[#0D9488] text-xs font-medium px-3 py-1.5 rounded-full mb-4">
-              <Shield className="w-3.5 h-3.5" />
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 bg-[#F0FDFA] border border-[#CCFBF1] text-[#0D9488] text-xs font-medium px-3 py-1 rounded-full mb-3">
+              <Shield className="w-3 h-3" />
               Evidence-Based · Clinician-Designed · Free
             </div>
 
-            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight text-[#1A2332] mb-4">
+            <h1 className="font-heading text-3xl sm:text-4xl font-bold leading-[1.1] tracking-tight text-[#1A2332] mb-3">
               Your supplements,{" "}
-              <span className="text-[#0D9488] relative">
-                backed by science
-                <svg className="absolute -bottom-1 left-0 w-full" height="6" viewBox="0 0 300 6" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path d="M0 4C75 1 150 5 225 2C262.5 0.5 281.25 3.5 300 2" stroke="#0D9488" strokeWidth="2" strokeLinecap="round" opacity="0.4"/>
-                </svg>
-              </span>
+              <span className="text-[#0D9488]">backed by science</span>
             </h1>
 
-            <p className="text-base sm:text-lg text-[#5A6578] leading-relaxed mb-5 max-w-2xl">
-              Complete a 5-minute health assessment and receive a personalized
-              supplement plan — with doses, timing, interactions checked,
-              and evidence ratings for every recommendation.
+            <p className="text-sm sm:text-base text-[#5A6578] leading-relaxed mb-4 max-w-xl">
+              5-minute health assessment → personalized supplement plan with doses, timing, drug interaction checks, and evidence ratings.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-2.5">
               <Link
                 href="/quiz"
-                className="inline-flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-6 py-3 rounded-xl text-base transition-all duration-200 hover:shadow-lg hover:shadow-teal-500/25 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-all duration-200 hover:shadow-lg hover:shadow-teal-500/25 hover:-translate-y-0.5"
               >
                 Get Your Free Personalized Plan
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="#how-it-works"
-                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-[#F1F5F9] border border-[#E2E8F0] text-[#1A2332] font-medium px-6 py-3 rounded-xl text-base transition-all duration-200 hover:border-[#CBD5E1] hover:shadow-sm"
+                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-[#F1F5F9] border border-[#E2E8F0] text-[#1A2332] font-medium px-5 py-2.5 rounded-xl text-sm transition-all duration-200 hover:border-[#CBD5E1]"
               >
                 See How It Works
               </Link>
             </div>
 
             {/* Social proof */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-5 text-sm text-[#5A6578]">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-4 text-xs text-[#5A6578]">
               <div className="flex items-center gap-1.5">
                 <div className="flex -space-x-1">
                   {["bg-teal-400", "bg-blue-400", "bg-purple-400"].map((c, i) => (
-                    <div key={i} className={`w-6 h-6 rounded-full ${c} border-2 border-white`} />
+                    <div key={i} className={`w-5 h-5 rounded-full ${c} border-2 border-white`} />
                   ))}
                 </div>
-                <span className="font-medium text-[#1A2332]">10,000+</span> users optimizing their health with science
+                <span className="font-medium text-[#1A2332]">10,000+</span> users
               </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
+              <div className="flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#0D9488]" />
                 No account required
               </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                5 minutes
+              <div className="flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#0D9488]" />
+                100% free · 5 min
               </div>
             </div>
           </div>
