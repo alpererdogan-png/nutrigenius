@@ -3,10 +3,11 @@
 import { useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight, Clock } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
 
 const ARTICLES = [
   {
-    category: "Evidence Review",
+    categoryKey: "blog.catEvidenceReview",
     tagClass: "bg-teal-50 text-teal-700 border-teal-200",
     accentClass: "bg-teal-500",
     title: "The Complete Guide to Magnesium: Forms, Doses, and What the Science Actually Says",
@@ -15,7 +16,7 @@ const ARTICLES = [
     readTime: "8 min read",
   },
   {
-    category: "Myth Busting",
+    categoryKey: "blog.catMythBusting",
     tagClass: "bg-orange-50 text-orange-700 border-orange-200",
     accentClass: "bg-orange-400",
     title: "5 Supplement Myths Your Doctor Didn't Learn in Medical School",
@@ -24,7 +25,7 @@ const ARTICLES = [
     readTime: "6 min read",
   },
   {
-    category: "Safety Alert",
+    categoryKey: "blog.catSafetyAlert",
     tagClass: "bg-red-50 text-red-700 border-red-200",
     accentClass: "bg-red-500",
     title: "Supplements That Don't Mix: Critical Interactions You Need to Know",
@@ -33,7 +34,7 @@ const ARTICLES = [
     readTime: "7 min read",
   },
   {
-    category: "Condition Guide",
+    categoryKey: "blog.catConditionGuide",
     tagClass: "bg-purple-50 text-purple-700 border-purple-200",
     accentClass: "bg-purple-500",
     title: "The PCOS Supplement Protocol: What the Evidence Supports",
@@ -42,7 +43,7 @@ const ARTICLES = [
     readTime: "9 min read",
   },
   {
-    category: "Research Update",
+    categoryKey: "blog.catResearchUpdate",
     tagClass: "bg-blue-50 text-blue-700 border-blue-200",
     accentClass: "bg-blue-500",
     title: "Vitamin D: Why 80% of People Are Deficient and What to Do About It",
@@ -51,7 +52,7 @@ const ARTICLES = [
     readTime: "5 min read",
   },
   {
-    category: "Deep Dive",
+    categoryKey: "blog.catDeepDive",
     tagClass: "bg-amber-50 text-amber-700 border-amber-200",
     accentClass: "bg-amber-500",
     title: "Your Gut-Brain Connection: How Probiotics Influence Mental Health",
@@ -64,6 +65,7 @@ const ARTICLES = [
 const CARD_GAP = 20; // gap-5 = 20px
 
 export function BlogCarousel() {
+  const { t } = useLanguage();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -152,7 +154,7 @@ export function BlogCarousel() {
             <div className="p-5 flex flex-col flex-1">
               {/* Category tag */}
               <span className={`self-start inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border mb-3 ${article.tagClass}`}>
-                {article.category}
+                {t(article.categoryKey)}
               </span>
 
               {/* Title */}

@@ -1,6 +1,7 @@
 "use client";
 
 import { QuizData } from "../page";
+import { useLanguage } from "@/lib/language-context";
 
 type Props = {
   data: QuizData;
@@ -8,45 +9,70 @@ type Props = {
 };
 
 const ACTIVITY_LEVELS = [
-  { value: "sedentary", label: "Sedentary", desc: "Little or no exercise" },
-  { value: "lightly_active", label: "Lightly Active", desc: "Light exercise 1-3 days/week" },
-  { value: "moderately_active", label: "Moderately Active", desc: "Moderate exercise 3-5 days/week" },
-  { value: "very_active", label: "Very Active", desc: "Hard exercise 6-7 days/week" },
-  { value: "athlete", label: "Athlete", desc: "Intense training, physical job" },
+  { value: "sedentary",         labelKey: "quiz.activitySedLabel",   descKey: "quiz.activitySedDesc" },
+  { value: "lightly_active",    labelKey: "quiz.activityLightLabel",  descKey: "quiz.activityLightDesc" },
+  { value: "moderately_active", labelKey: "quiz.activityModLabel",   descKey: "quiz.activityModDesc" },
+  { value: "very_active",       labelKey: "quiz.activityVeryLabel",  descKey: "quiz.activityVeryDesc" },
+  { value: "athlete",           labelKey: "quiz.activityAthLabel",   descKey: "quiz.activityAthDesc" },
 ];
 
-const SLEEP_QUALITY = ["Poor", "Fair", "Good", "Excellent"];
-const STRESS_LEVELS = ["Low", "Moderate", "High", "Very High"];
-const SUN_EXPOSURE = [
-  { value: "minimal", label: "Minimal", desc: "Mostly indoors" },
-  { value: "moderate", label: "Moderate", desc: "Some outdoor time" },
-  { value: "high", label: "High", desc: "Regularly outdoors" },
+const SLEEP_QUALITY = [
+  { value: "poor",      key: "quiz.sleepPoor" },
+  { value: "fair",      key: "quiz.sleepFair" },
+  { value: "good",      key: "quiz.sleepGood" },
+  { value: "excellent", key: "quiz.sleepExcellent" },
 ];
-const ALCOHOL = ["None", "Occasional", "Moderate", "Heavy"];
-const SMOKING = ["Never", "Former", "Current"];
+
+const STRESS_LEVELS = [
+  { value: "low",       key: "quiz.stressLow" },
+  { value: "moderate",  key: "quiz.stressModerate" },
+  { value: "high",      key: "quiz.stressHigh" },
+  { value: "very_high", key: "quiz.stressVeryHigh" },
+];
+
+const SUN_EXPOSURE = [
+  { value: "minimal",  labelKey: "quiz.sunMinLabel", descKey: "quiz.sunMinDesc" },
+  { value: "moderate", labelKey: "quiz.sunModLabel", descKey: "quiz.sunModDesc" },
+  { value: "high",     labelKey: "quiz.sunHighLabel", descKey: "quiz.sunHighDesc" },
+];
+
+const ALCOHOL = [
+  { value: "none",       key: "quiz.alcoholNone" },
+  { value: "occasional", key: "quiz.alcoholOccasional" },
+  { value: "moderate",   key: "quiz.alcoholModerate" },
+  { value: "heavy",      key: "quiz.alcoholHeavy" },
+];
+
+const SMOKING = [
+  { value: "never",   key: "quiz.smokingNever" },
+  { value: "former",  key: "quiz.smokingFormer" },
+  { value: "current", key: "quiz.smokingCurrent" },
+];
 
 const HEALTH_GOALS = [
-  { value: "energy", label: "Energy", emoji: "⚡" },
-  { value: "sleep", label: "Sleep", emoji: "🌙" },
-  { value: "immunity", label: "Immunity", emoji: "🛡️" },
-  { value: "cognitive", label: "Cognitive Performance", emoji: "🧠" },
-  { value: "joint-health", label: "Joint Health", emoji: "🦴" },
-  { value: "heart-health", label: "Heart Health", emoji: "❤️" },
-  { value: "gut-health", label: "Gut Health", emoji: "🌿" },
-  { value: "skin-hair-nails", label: "Skin, Hair & Nails", emoji: "✨" },
-  { value: "weight-management", label: "Weight Management", emoji: "⚖️" },
-  { value: "stress-anxiety", label: "Stress & Anxiety", emoji: "🧘" },
-  { value: "longevity", label: "Longevity & Anti-Aging", emoji: "🕰️" },
-  { value: "athletic-performance", label: "Athletic Performance", emoji: "🏋️" },
+  { value: "energy",              labelKey: "quiz.goalEnergy",    emoji: "⚡" },
+  { value: "sleep",               labelKey: "quiz.goalSleep",     emoji: "🌙" },
+  { value: "immunity",            labelKey: "quiz.goalImmunity",  emoji: "🛡️" },
+  { value: "cognitive",           labelKey: "quiz.goalCognitive", emoji: "🧠" },
+  { value: "joint-health",        labelKey: "quiz.goalJoint",     emoji: "🦴" },
+  { value: "heart-health",        labelKey: "quiz.goalHeart",     emoji: "❤️" },
+  { value: "gut-health",          labelKey: "quiz.goalGut",       emoji: "🌿" },
+  { value: "skin-hair-nails",     labelKey: "quiz.goalSkin",      emoji: "✨" },
+  { value: "weight-management",   labelKey: "quiz.goalWeight",    emoji: "⚖️" },
+  { value: "stress-anxiety",      labelKey: "quiz.goalStress",    emoji: "🧘" },
+  { value: "longevity",           labelKey: "quiz.goalLongevity", emoji: "🕰️" },
+  { value: "athletic-performance",labelKey: "quiz.goalAthletic",  emoji: "🏋️" },
 ];
 
 export function StepLifestyle({ data, updateData }: Props) {
+  const { t } = useLanguage();
+
   return (
     <div className="space-y-8">
       {/* Activity Level */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-2">
-          Physical Activity Level
+          {t("quiz.activityTitle")}
         </label>
         <div className="space-y-2">
           {ACTIVITY_LEVELS.map((level) => (
@@ -61,16 +87,12 @@ export function StepLifestyle({ data, updateData }: Props) {
             >
               <span
                 className={`text-sm font-medium ${
-                  data.activityLevel === level.value
-                    ? "text-[#0D9488]"
-                    : "text-[#1A2332]"
+                  data.activityLevel === level.value ? "text-[#0D9488]" : "text-[#1A2332]"
                 }`}
               >
-                {level.label}
+                {t(level.labelKey)}
               </span>
-              <span className="text-xs text-[#8896A8] ml-2">
-                {level.desc}
-              </span>
+              <span className="text-xs text-[#8896A8] ml-2">{t(level.descKey)}</span>
             </button>
           ))}
         </div>
@@ -80,35 +102,33 @@ export function StepLifestyle({ data, updateData }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-[#1A2332] mb-2">
-            Sleep Quality
+            {t("quiz.sleepQualTitle")}
           </label>
           <div className="flex gap-2">
             {SLEEP_QUALITY.map((q) => (
               <button
-                key={q}
-                onClick={() =>
-                  updateData({ sleepQuality: q.toLowerCase() })
-                }
+                key={q.value}
+                onClick={() => updateData({ sleepQuality: q.value })}
                 className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-colors ${
-                  data.sleepQuality === q.toLowerCase()
+                  data.sleepQuality === q.value
                     ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
                     : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                 }`}
               >
-                {q}
+                {t(q.key)}
               </button>
             ))}
           </div>
         </div>
         <div>
           <label className="block text-sm font-medium text-[#1A2332] mb-2">
-            Average Hours of Sleep
+            {t("quiz.sleepHoursTitle")}
           </label>
           <input
             type="number"
             value={data.sleepHours}
             onChange={(e) => updateData({ sleepHours: e.target.value })}
-            placeholder="e.g. 7"
+            placeholder={t("quiz.sleepHoursPlaceholder")}
             min="1"
             max="16"
             step="0.5"
@@ -120,24 +140,20 @@ export function StepLifestyle({ data, updateData }: Props) {
       {/* Stress Level */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-2">
-          Stress Level
+          {t("quiz.stressTitle")}
         </label>
         <div className="flex gap-2">
           {STRESS_LEVELS.map((level) => (
             <button
-              key={level}
-              onClick={() =>
-                updateData({
-                  stressLevel: level.toLowerCase().replace(" ", "_"),
-                })
-              }
+              key={level.value}
+              onClick={() => updateData({ stressLevel: level.value })}
               className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-colors ${
-                data.stressLevel === level.toLowerCase().replace(" ", "_")
+                data.stressLevel === level.value
                   ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
                   : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
               }`}
             >
-              {level}
+              {t(level.key)}
             </button>
           ))}
         </div>
@@ -146,11 +162,9 @@ export function StepLifestyle({ data, updateData }: Props) {
       {/* Sun Exposure */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
-          Sun Exposure
+          {t("quiz.sunTitle")}
         </label>
-        <p className="text-xs text-[#8896A8] mb-2">
-          Affects Vitamin D recommendations
-        </p>
+        <p className="text-xs text-[#8896A8] mb-2">{t("quiz.sunHint")}</p>
         <div className="flex gap-2">
           {SUN_EXPOSURE.map((level) => (
             <button
@@ -164,14 +178,12 @@ export function StepLifestyle({ data, updateData }: Props) {
             >
               <span
                 className={`text-sm font-medium block ${
-                  data.sunExposure === level.value
-                    ? "text-[#0D9488]"
-                    : "text-[#1A2332]"
+                  data.sunExposure === level.value ? "text-[#0D9488]" : "text-[#1A2332]"
                 }`}
               >
-                {level.label}
+                {t(level.labelKey)}
               </span>
-              <span className="text-xs text-[#8896A8]">{level.desc}</span>
+              <span className="text-xs text-[#8896A8]">{t(level.descKey)}</span>
             </button>
           ))}
         </div>
@@ -181,46 +193,40 @@ export function StepLifestyle({ data, updateData }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-[#1A2332] mb-2">
-            Alcohol Consumption
+            {t("quiz.alcoholTitle")}
           </label>
           <div className="flex flex-wrap gap-2">
             {ALCOHOL.map((level) => (
               <button
-                key={level}
-                onClick={() =>
-                  updateData({
-                    alcoholConsumption: level.toLowerCase(),
-                  })
-                }
+                key={level.value}
+                onClick={() => updateData({ alcoholConsumption: level.value })}
                 className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
-                  data.alcoholConsumption === level.toLowerCase()
+                  data.alcoholConsumption === level.value
                     ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
                     : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                 }`}
               >
-                {level}
+                {t(level.key)}
               </button>
             ))}
           </div>
         </div>
         <div>
           <label className="block text-sm font-medium text-[#1A2332] mb-2">
-            Smoking Status
+            {t("quiz.smokingTitle")}
           </label>
           <div className="flex gap-2">
             {SMOKING.map((status) => (
               <button
-                key={status}
-                onClick={() =>
-                  updateData({ smokingStatus: status.toLowerCase() })
-                }
+                key={status.value}
+                onClick={() => updateData({ smokingStatus: status.value })}
                 className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-colors ${
-                  data.smokingStatus === status.toLowerCase()
+                  data.smokingStatus === status.value
                     ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
                     : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                 }`}
               >
-                {status}
+                {t(status.key)}
               </button>
             ))}
           </div>
@@ -230,11 +236,9 @@ export function StepLifestyle({ data, updateData }: Props) {
       {/* Health Goals */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
-          Primary Health Goals <span className="text-red-500">*</span>
+          {t("quiz.goalsTitle")} <span className="text-red-500">*</span>
         </label>
-        <p className="text-xs text-[#8896A8] mb-3">
-          Select up to 5 goals that matter most to you
-        </p>
+        <p className="text-xs text-[#8896A8] mb-3">{t("quiz.goalsHint")}</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {HEALTH_GOALS.map((goal) => (
             <button
@@ -242,13 +246,9 @@ export function StepLifestyle({ data, updateData }: Props) {
               onClick={() => {
                 const current = data.healthGoals;
                 if (current.includes(goal.value)) {
-                  updateData({
-                    healthGoals: current.filter((g) => g !== goal.value),
-                  });
+                  updateData({ healthGoals: current.filter((g) => g !== goal.value) });
                 } else if (current.length < 5) {
-                  updateData({
-                    healthGoals: [...current, goal.value],
-                  });
+                  updateData({ healthGoals: [...current, goal.value] });
                 }
               }}
               className={`flex items-center gap-2 px-3 py-3 rounded-xl border text-sm font-medium transition-colors text-left ${
@@ -256,20 +256,19 @@ export function StepLifestyle({ data, updateData }: Props) {
                   ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
                   : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
               } ${
-                data.healthGoals.length >= 5 &&
-                !data.healthGoals.includes(goal.value)
+                data.healthGoals.length >= 5 && !data.healthGoals.includes(goal.value)
                   ? "opacity-40 cursor-not-allowed"
                   : ""
               }`}
             >
               <span className="text-base">{goal.emoji}</span>
-              {goal.label}
+              {t(goal.labelKey)}
             </button>
           ))}
         </div>
         {data.healthGoals.length > 0 && (
           <p className="text-xs text-[#0D9488] mt-2">
-            {data.healthGoals.length}/5 goals selected
+            {t("quiz.goalsSelected", { count: data.healthGoals.length.toString() })}
           </p>
         )}
       </div>

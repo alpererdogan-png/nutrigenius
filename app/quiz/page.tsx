@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
-  Shield,
   CheckCircle2,
   Loader2,
   Mail,
@@ -13,6 +13,7 @@ import {
   Calendar,
   FileText,
   Sparkles,
+  Leaf,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase-browser";
 import { StepDemographics } from "./components/StepDemographics";
@@ -20,6 +21,8 @@ import { StepHealthConditions } from "./components/StepHealthConditions";
 import { StepLifestyle } from "./components/StepLifestyle";
 import { StepLabResults } from "./components/StepLabResults";
 import { StepGenetics } from "./components/StepGenetics";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/lib/language-context";
 
 export type QuizData = {
   // Section 1 — Demographics
@@ -101,16 +104,9 @@ const INITIAL_DATA: QuizData = {
   geneticVariants: [],
 };
 
-const STEPS = [
-  { number: 1, title: "Demographics", subtitle: "Basic information" },
-  { number: 2, title: "Health", subtitle: "Conditions & medications" },
-  { number: 3, title: "Lifestyle", subtitle: "Habits & goals" },
-  { number: 4, title: "Lab Results", subtitle: "Optional but helpful" },
-  { number: 5, title: "Genetics", subtitle: "Optional" },
-];
-
 export default function QuizPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState(1);
   const [quizData, setQuizData] = useState<QuizData>(INITIAL_DATA);
   const [loading, setLoading] = useState(false);
@@ -122,6 +118,14 @@ export default function QuizPage() {
   const [optPdf, setOptPdf] = useState(true);
   const [optCalendar, setOptCalendar] = useState(true);
   const [optNewsletter, setOptNewsletter] = useState(true);
+
+  const STEPS = [
+    { number: 1, title: t("quiz.step1Title"), subtitle: t("quiz.step1Sub") },
+    { number: 2, title: t("quiz.step2Title"), subtitle: t("quiz.step2Sub") },
+    { number: 3, title: t("quiz.step3Title"), subtitle: t("quiz.step3Sub") },
+    { number: 4, title: t("quiz.step4Title"), subtitle: t("quiz.step4Sub") },
+    { number: 5, title: t("quiz.step5Title"), subtitle: t("quiz.step5Sub") },
+  ];
 
   const updateData = (fields: Partial<QuizData>) => {
     setQuizData((prev) => ({ ...prev, ...fields }));
@@ -139,7 +143,7 @@ export default function QuizPage() {
 
   const handleEmailSubmit = async () => {
     if (!email || !email.includes("@")) {
-      setEmailError("Please enter a valid email address.");
+      setEmailError(t("quiz.emailError"));
       return;
     }
     setEmailError(null);
@@ -147,7 +151,6 @@ export default function QuizPage() {
     setSubmitError(null);
 
     try {
-      // Call recommendation API
       const res = await fetch("/api/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -159,7 +162,6 @@ export default function QuizPage() {
       }
       const recommendations = await res.json();
 
-      // Save email + quiz data to Supabase (best-effort — don't block on failure)
       try {
         const supabase = createClient();
         await supabase.from("newsletter_subscribers").upsert({
@@ -170,10 +172,9 @@ export default function QuizPage() {
           created_at: new Date().toISOString(),
         });
       } catch {
-        // Non-blocking — proceed even if Supabase save fails
+        // Non-blocking
       }
 
-      // Store results and email for results page
       sessionStorage.setItem("nutrigenius_recommendations", JSON.stringify(recommendations));
       sessionStorage.setItem("nutrigenius_email", email);
       router.push("/results");
@@ -197,11 +198,18 @@ export default function QuizPage() {
               className="flex items-center gap-2 text-[#5A6578] hover:text-[#1A2332] text-sm font-medium transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back
+              {t("quiz.back")}
             </button>
-            <div className="flex items-center gap-2">
-              <Shield className="w-5 h-5 text-[#0D9488]" />
-              <span className="text-sm font-medium text-[#1A2332]">NutriGenius</span>
+            <div className="flex items-center gap-3">
+              <Link href="/" className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center shadow-sm">
+                  <Leaf className="w-3.5 h-3.5 text-white" />
+                </div>
+                <span className="text-base font-semibold tracking-tight text-[#1A2332] font-heading">
+                  Nutri<span className="text-[#0D9488]">Genius</span>
+                </span>
+              </Link>
+              <LanguageSwitcher />
             </div>
             <div className="w-20" />
           </div>
@@ -209,16 +217,15 @@ export default function QuizPage() {
 
         <div className="flex-1 flex items-center justify-center px-4 py-12">
           <div className="w-full max-w-lg">
-            {/* Ready card */}
             <div className="text-center mb-8">
               <div className="w-16 h-16 bg-gradient-to-br from-[#0D9488] to-[#0F766E] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-teal-500/20">
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
               <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#1A2332] mb-2">
-                Your Plan is Ready!
+                {t("quiz.emailTitle")}
               </h1>
               <p className="text-[#5A6578]">
-                Your personalized supplement protocol is ready! Enter your email to receive it:
+                {t("quiz.emailDesc")}
               </p>
             </div>
 
@@ -226,9 +233,9 @@ export default function QuizPage() {
               {/* What you'll get */}
               <div className="space-y-3 mb-6">
                 {[
-                  { icon: <FileText className="w-4 h-4" />, label: "Your complete supplement plan as a downloadable PDF", state: optPdf, setter: setOptPdf },
-                  { icon: <Calendar className="w-4 h-4" />, label: "3-month calendar reminders for your supplement schedule", state: optCalendar, setter: setOptCalendar },
-                  { icon: <Mail className="w-4 h-4" />, label: "Biweekly health insights and supplement updates", state: optNewsletter, setter: setOptNewsletter },
+                  { icon: <FileText className="w-4 h-4" />, label: t("quiz.emailPdfOpt"), state: optPdf, setter: setOptPdf },
+                  { icon: <Calendar className="w-4 h-4" />, label: t("quiz.emailCalOpt"), state: optCalendar, setter: setOptCalendar },
+                  { icon: <Mail className="w-4 h-4" />, label: t("quiz.emailNewsOpt"), state: optNewsletter, setter: setOptNewsletter },
                 ].map((item) => (
                   <label key={item.label} className="flex items-start gap-3 cursor-pointer group">
                     <div className="flex-shrink-0 mt-0.5">
@@ -250,7 +257,7 @@ export default function QuizPage() {
               {/* Email input */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
-                  Email address
+                  {t("quiz.emailLabel")}
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 w-4 h-4 text-[#8896A8]" />
@@ -258,7 +265,7 @@ export default function QuizPage() {
                     type="email"
                     value={email}
                     onChange={(e) => { setEmail(e.target.value); setEmailError(null); }}
-                    placeholder="you@example.com"
+                    placeholder={t("quiz.emailPlaceholder")}
                     className="w-full pl-10 pr-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
                     onKeyDown={(e) => { if (e.key === "Enter") handleEmailSubmit(); }}
                   />
@@ -276,11 +283,11 @@ export default function QuizPage() {
                 {loading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Generating your plan...
+                    {t("quiz.emailGenerating")}
                   </>
                 ) : (
                   <>
-                    Get My Free Plan
+                    {t("quiz.emailSubmit")}
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -293,11 +300,10 @@ export default function QuizPage() {
               )}
 
               <p className="text-xs text-[#8896A8] text-center mt-4 leading-relaxed">
-                By entering your email, you agree to receive your plan and occasional health updates.
-                Unsubscribe anytime.
+                {t("quiz.emailPrivacy1")}
               </p>
               <p className="text-xs text-[#8896A8] text-center mt-1">
-                Your health data is processed securely under GDPR Article 9.
+                {t("quiz.emailPrivacy2")}
               </p>
             </div>
           </div>
@@ -313,15 +319,20 @@ export default function QuizPage() {
       <div className="bg-white border-b border-[#E8ECF1] sticky top-0 z-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <Shield className="w-5 h-5 text-[#0D9488]" />
-              <span className="text-sm font-medium text-[#1A2332]">
-                NutriGenius Health Assessment
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center shadow-sm">
+                <Leaf className="w-3.5 h-3.5 text-white" />
+              </div>
+              <span className="text-base font-semibold tracking-tight text-[#1A2332] font-heading">
+                Nutri<span className="text-[#0D9488]">Genius</span>
               </span>
+            </Link>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-[#5A6578]">
+                {t("quiz.stepOf", { current: currentStep.toString() })}
+              </span>
+              <LanguageSwitcher />
             </div>
-            <span className="text-sm text-[#5A6578]">
-              Step {currentStep} of 5
-            </span>
           </div>
 
           {/* Progress bar */}
@@ -383,16 +394,7 @@ export default function QuizPage() {
             {STEPS[currentStep - 1].title}
           </h1>
           <p className="text-[#5A6578]">
-            {currentStep === 1 &&
-              "Let's start with some basic information to personalize your recommendations."}
-            {currentStep === 2 &&
-              "Tell us about your health conditions and any medications you're taking. This is critical for safety screening."}
-            {currentStep === 3 &&
-              "Your lifestyle habits help us fine-tune supplement choices and timing."}
-            {currentStep === 4 &&
-              "Lab results allow us to identify actual deficiencies and calibrate doses. Skip this if you don't have recent results."}
-            {currentStep === 5 &&
-              "Genetic data helps us select the optimal supplement forms for your biology."}
+            {t(`quiz.desc${currentStep}` as `quiz.desc${1 | 2 | 3 | 4 | 5}`)}
           </p>
         </div>
 
@@ -421,7 +423,7 @@ export default function QuizPage() {
               className="flex items-center gap-2 text-[#5A6578] hover:text-[#1A2332] font-medium transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              Previous
+              {t("quiz.previous")}
             </button>
           ) : (
             <div />
@@ -433,22 +435,20 @@ export default function QuizPage() {
           >
             {currentStep === 5 ? (
               <>
-                See My Results
+                {t("quiz.seeResults")}
                 <ArrowRight className="w-4 h-4" />
               </>
             ) : (
               <>
-                Continue
+                {t("quiz.continue")}
                 <ArrowRight className="w-4 h-4" />
               </>
             )}
           </button>
         </div>
 
-        {/* Disclaimer */}
         <p className="text-xs text-[#8896A8] text-center mt-8 leading-relaxed">
-          Your data is processed securely and never shared with third parties.
-          NutriGenius is not a substitute for professional medical advice.
+          {t("quiz.disclaimer")}
         </p>
       </div>
     </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Search, X, AlertTriangle } from "lucide-react";
 import { QuizData } from "../page";
+import { useLanguage } from "@/lib/language-context";
 
 type Props = {
   data: QuizData;
@@ -21,6 +22,20 @@ const CONDITION_CATEGORIES: Record<string, string[]> = {
   Hormonal: ["Hypothyroidism", "Hyperthyroidism", "PCOS", "Low Testosterone", "Menopause"],
   Skin: ["Acne", "Eczema", "Rosacea", "Hair Loss"],
   Other: ["Chronic Fatigue", "Insomnia", "Obesity"],
+};
+
+const CATEGORY_KEY_MAP: Record<string, string> = {
+  Cardiovascular: "quiz.catCardiovascular",
+  Metabolic: "quiz.catMetabolic",
+  Neurological: "quiz.catNeurological",
+  Musculoskeletal: "quiz.catMusculoskeletal",
+  Digestive: "quiz.catDigestive",
+  Respiratory: "quiz.catRespiratory",
+  Autoimmune: "quiz.catAutoimmune",
+  "Mental Health": "quiz.catMentalHealth",
+  Hormonal: "quiz.catHormonal",
+  Skin: "quiz.catSkin",
+  Other: "quiz.catOther",
 };
 
 const COMMON_MEDICATIONS = [
@@ -47,6 +62,7 @@ const FAMILY_HISTORY_OPTIONS = [
 ];
 
 export function StepHealthConditions({ data, updateData }: Props) {
+  const { t } = useLanguage();
   const [medSearch, setMedSearch] = useState("");
   const [suppSearch, setSuppSearch] = useState("");
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
@@ -98,12 +114,10 @@ export function StepHealthConditions({ data, updateData }: Props) {
         <AlertTriangle className="w-5 h-5 text-[#B45309] flex-shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-medium text-[#92400E]">
-            Why we ask about medications
+            {t("quiz.healthSafetyTitle")}
           </p>
           <p className="text-xs text-[#A16207] mt-1">
-            Certain supplements can interact with medications — sometimes
-            dangerously. We screen every recommendation against your medication
-            list to keep you safe.
+            {t("quiz.healthSafetyDesc")}
           </p>
         </div>
       </div>
@@ -111,13 +125,12 @@ export function StepHealthConditions({ data, updateData }: Props) {
       {/* Health Conditions */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
-          Current Health Conditions
+          {t("quiz.healthCondTitle")}
         </label>
         <p className="text-xs text-[#8896A8] mb-3">
-          Select all that apply. Click a category to expand.
+          {t("quiz.healthCondHint")}
         </p>
 
-        {/* Selected conditions */}
         {data.healthConditions.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
             {data.healthConditions.map((cond) => (
@@ -126,10 +139,7 @@ export function StepHealthConditions({ data, updateData }: Props) {
                 className="inline-flex items-center gap-1.5 bg-[#F0FDFA] border border-[#99F6E4] text-[#0D9488] text-sm px-3 py-1 rounded-full"
               >
                 {cond}
-                <button
-                  onClick={() => toggleCondition(cond)}
-                  className="hover:text-[#0F766E]"
-                >
+                <button onClick={() => toggleCondition(cond)} className="hover:text-[#0F766E]">
                   <X className="w-3.5 h-3.5" />
                 </button>
               </span>
@@ -138,73 +148,57 @@ export function StepHealthConditions({ data, updateData }: Props) {
         )}
 
         <div className="space-y-2">
-          {Object.entries(CONDITION_CATEGORIES).map(
-            ([category, conditions]) => (
-              <div
-                key={category}
-                className="border border-[#E2E8F0] rounded-xl overflow-hidden"
+          {Object.entries(CONDITION_CATEGORIES).map(([category, conditions]) => (
+            <div key={category} className="border border-[#E2E8F0] rounded-xl overflow-hidden">
+              <button
+                onClick={() =>
+                  setExpandedCategory(expandedCategory === category ? null : category)
+                }
+                className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-[#1A2332] hover:bg-[#F8FAFC] transition-colors"
               >
-                <button
-                  onClick={() =>
-                    setExpandedCategory(
-                      expandedCategory === category ? null : category
-                    )
-                  }
-                  className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-[#1A2332] hover:bg-[#F8FAFC] transition-colors"
-                >
-                  <span>
-                    {category}
-                    {data.healthConditions.some((c) =>
-                      conditions.includes(c)
-                    ) && (
-                      <span className="ml-2 text-xs text-[#0D9488] font-normal">
-                        (
-                        {
-                          data.healthConditions.filter((c) =>
-                            conditions.includes(c)
-                          ).length
-                        }{" "}
-                        selected)
-                      </span>
-                    )}
-                  </span>
-                  <span className="text-[#8896A8]">
-                    {expandedCategory === category ? "−" : "+"}
-                  </span>
-                </button>
-                {expandedCategory === category && (
-                  <div className="px-4 pb-3 flex flex-wrap gap-2">
-                    {conditions.map((cond) => (
-                      <button
-                        key={cond}
-                        onClick={() => toggleCondition(cond)}
-                        className={`px-3 py-1.5 rounded-lg border text-sm transition-colors ${
-                          data.healthConditions.includes(cond)
-                            ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
-                            : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
-                        }`}
-                      >
-                        {cond}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )
-          )}
+                <span>
+                  {t(CATEGORY_KEY_MAP[category] ?? `quiz.cat${category}`)}
+                  {data.healthConditions.some((c) => conditions.includes(c)) && (
+                    <span className="ml-2 text-xs text-[#0D9488] font-normal">
+                      (
+                      {data.healthConditions.filter((c) => conditions.includes(c)).length}{" "}
+                      {t("quiz.healthSelected")})
+                    </span>
+                  )}
+                </span>
+                <span className="text-[#8896A8]">
+                  {expandedCategory === category ? "−" : "+"}
+                </span>
+              </button>
+              {expandedCategory === category && (
+                <div className="px-4 pb-3 flex flex-wrap gap-2">
+                  {conditions.map((cond) => (
+                    <button
+                      key={cond}
+                      onClick={() => toggleCondition(cond)}
+                      className={`px-3 py-1.5 rounded-lg border text-sm transition-colors ${
+                        data.healthConditions.includes(cond)
+                          ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                          : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
+                      }`}
+                    >
+                      {cond}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Current Medications */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
-          Current Prescription Medications
+          {t("quiz.healthMedTitle")}
         </label>
-        <p className="text-xs text-[#8896A8] mb-2">
-          Start typing to search common medications
-        </p>
+        <p className="text-xs text-[#8896A8] mb-2">{t("quiz.healthMedHint")}</p>
 
-        {/* Selected meds */}
         {data.currentMedications.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
             {data.currentMedications.map((med) => (
@@ -213,10 +207,7 @@ export function StepHealthConditions({ data, updateData }: Props) {
                 className="inline-flex items-center gap-1.5 bg-[#FEF3C7] border border-[#FCD34D] text-[#92400E] text-sm px-3 py-1 rounded-full"
               >
                 {med}
-                <button
-                  onClick={() => removeMedication(med)}
-                  className="hover:text-[#B45309]"
-                >
+                <button onClick={() => removeMedication(med)} className="hover:text-[#B45309]">
                   <X className="w-3.5 h-3.5" />
                 </button>
               </span>
@@ -252,11 +243,9 @@ export function StepHealthConditions({ data, updateData }: Props) {
       {/* Current Supplements */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
-          Supplements You&apos;re Currently Taking
+          {t("quiz.healthSuppTitle")}
         </label>
-        <p className="text-xs text-[#8896A8] mb-2">
-          Type a supplement name and press Enter
-        </p>
+        <p className="text-xs text-[#8896A8] mb-2">{t("quiz.healthSuppHint")}</p>
 
         {data.currentSupplements.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
@@ -266,10 +255,7 @@ export function StepHealthConditions({ data, updateData }: Props) {
                 className="inline-flex items-center gap-1.5 bg-[#F0FDFA] border border-[#99F6E4] text-[#0D9488] text-sm px-3 py-1 rounded-full"
               >
                 {supp}
-                <button
-                  onClick={() => removeSupplement(supp)}
-                  className="hover:text-[#0F766E]"
-                >
+                <button onClick={() => removeSupplement(supp)} className="hover:text-[#0F766E]">
                   <X className="w-3.5 h-3.5" />
                 </button>
               </span>
@@ -282,9 +268,7 @@ export function StepHealthConditions({ data, updateData }: Props) {
           value={suppSearch}
           onChange={(e) => setSuppSearch(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              addSupplement(suppSearch);
-            }
+            if (e.key === "Enter") addSupplement(suppSearch);
           }}
           placeholder="e.g. Vitamin D, Fish Oil, Magnesium..."
           className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
@@ -294,12 +278,10 @@ export function StepHealthConditions({ data, updateData }: Props) {
       {/* Family History */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
-          Family Health History{" "}
-          <span className="text-[#8896A8] font-normal">(optional)</span>
+          {t("quiz.healthFamTitle")}{" "}
+          <span className="text-[#8896A8] font-normal">{t("quiz.healthFamOptional")}</span>
         </label>
-        <p className="text-xs text-[#8896A8] mb-2">
-          Conditions in immediate family (parents, siblings)
-        </p>
+        <p className="text-xs text-[#8896A8] mb-2">{t("quiz.healthFamHint")}</p>
         <div className="flex flex-wrap gap-2">
           {FAMILY_HISTORY_OPTIONS.map((condition) => (
             <button

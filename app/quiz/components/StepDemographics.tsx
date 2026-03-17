@@ -1,69 +1,58 @@
 "use client";
 
 import { QuizData } from "../page";
+import { useLanguage } from "@/lib/language-context";
 
 type Props = {
   data: QuizData;
   updateData: (fields: Partial<QuizData>) => void;
 };
 
-const DIETARY_PATTERNS = [
-  "Omnivore",
-  "Vegetarian",
-  "Vegan",
-  "Pescatarian",
-  "Keto",
-  "Mediterranean",
-  "Paleo",
-  "Other",
+const DIETARY_PATTERN_VALUES = [
+  "omnivore",
+  "vegetarian",
+  "vegan",
+  "pescatarian",
+  "keto",
+  "mediterranean",
+  "paleo",
+  "other",
 ];
 
-const ALLERGIES = [
-  "Gluten",
-  "Dairy",
-  "Soy",
-  "Shellfish",
-  "Tree Nuts",
-  "Peanuts",
-  "Eggs",
-  "Fish",
-  "Other",
+const ALLERGY_VALUES = [
+  { value: "gluten", key: "quiz.allergyGluten" },
+  { value: "dairy", key: "quiz.allergyDairy" },
+  { value: "soy", key: "quiz.allergySoy" },
+  { value: "shellfish", key: "quiz.allergyShellfish" },
+  { value: "tree nuts", key: "quiz.allergyTreeNuts" },
+  { value: "peanuts", key: "quiz.allergyPeanuts" },
+  { value: "eggs", key: "quiz.allergyEggs" },
+  { value: "fish", key: "quiz.allergyFish" },
+  { value: "other", key: "quiz.allergyOther" },
 ];
 
 const COUNTRIES = [
-  "Ireland",
-  "United Kingdom",
-  "United States",
-  "Canada",
-  "Australia",
-  "Germany",
-  "France",
-  "Spain",
-  "Italy",
-  "Netherlands",
-  "Belgium",
-  "Sweden",
-  "Denmark",
-  "Norway",
-  "Finland",
-  "Austria",
-  "Switzerland",
-  "Poland",
-  "Portugal",
-  "Greece",
-  "Czech Republic",
-  "Romania",
-  "Hungary",
-  "Croatia",
-  "Bulgaria",
-  "Turkey",
-  "UAE",
-  "Saudi Arabia",
-  "India",
-  "Other",
+  "Ireland", "United Kingdom", "United States", "Canada", "Australia",
+  "Germany", "France", "Spain", "Italy", "Netherlands", "Belgium",
+  "Sweden", "Denmark", "Norway", "Finland", "Austria", "Switzerland",
+  "Poland", "Portugal", "Greece", "Czech Republic", "Romania", "Hungary",
+  "Croatia", "Bulgaria", "Turkey", "UAE", "Saudi Arabia", "India", "Other",
 ];
 
+const DIET_KEY_MAP: Record<string, string> = {
+  omnivore: "quiz.dietOmnivore",
+  vegetarian: "quiz.dietVegetarian",
+  vegan: "quiz.dietVegan",
+  pescatarian: "quiz.dietPescatarian",
+  keto: "quiz.dietKeto",
+  mediterranean: "quiz.dietMediterranean",
+  paleo: "quiz.dietPaleo",
+  other: "quiz.dietOther",
+};
+
 export function StepDemographics({ data, updateData }: Props) {
+  const { t } = useLanguage();
+
   const bmi =
     data.heightCm && data.weightKg
       ? (
@@ -72,10 +61,10 @@ export function StepDemographics({ data, updateData }: Props) {
       : null;
 
   const getBmiCategory = (bmiValue: number) => {
-    if (bmiValue < 18.5) return { label: "Underweight", color: "text-blue-600" };
-    if (bmiValue < 25) return { label: "Normal", color: "text-green-600" };
-    if (bmiValue < 30) return { label: "Overweight", color: "text-amber-600" };
-    return { label: "Obese", color: "text-red-600" };
+    if (bmiValue < 18.5) return { label: t("quiz.demoBmiUnderweight"), color: "text-blue-600" };
+    if (bmiValue < 25) return { label: t("quiz.demoBmiNormal"), color: "text-green-600" };
+    if (bmiValue < 30) return { label: t("quiz.demoBmiOverweight"), color: "text-amber-600" };
+    return { label: t("quiz.demoBmiObese"), color: "text-red-600" };
   };
 
   return (
@@ -84,7 +73,7 @@ export function StepDemographics({ data, updateData }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
-            Age <span className="text-red-500">*</span>
+            {t("quiz.demoAge")} <span className="text-red-500">*</span>
           </label>
           <input
             type="number"
@@ -98,22 +87,23 @@ export function StepDemographics({ data, updateData }: Props) {
         </div>
         <div>
           <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
-            Biological Sex <span className="text-red-500">*</span>
+            {t("quiz.demoBioSex")} <span className="text-red-500">*</span>
           </label>
           <div className="flex gap-3">
-            {["Male", "Female"].map((sex) => (
+            {[
+              { value: "male", labelKey: "quiz.demoMale" },
+              { value: "female", labelKey: "quiz.demoFemale" },
+            ].map((sex) => (
               <button
-                key={sex}
-                onClick={() =>
-                  updateData({ biologicalSex: sex.toLowerCase() })
-                }
+                key={sex.value}
+                onClick={() => updateData({ biologicalSex: sex.value })}
                 className={`flex-1 py-2.5 px-4 rounded-lg border text-sm font-medium transition-colors ${
-                  data.biologicalSex === sex.toLowerCase()
+                  data.biologicalSex === sex.value
                     ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
                     : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                 }`}
               >
-                {sex}
+                {t(sex.labelKey)}
               </button>
             ))}
           </div>
@@ -124,7 +114,7 @@ export function StepDemographics({ data, updateData }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
-            Height (cm)
+            {t("quiz.demoHeight")}
           </label>
           <input
             type="number"
@@ -136,7 +126,7 @@ export function StepDemographics({ data, updateData }: Props) {
         </div>
         <div>
           <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
-            Weight (kg)
+            {t("quiz.demoWeight")}
           </label>
           <input
             type="number"
@@ -148,22 +138,18 @@ export function StepDemographics({ data, updateData }: Props) {
         </div>
         <div>
           <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
-            BMI
+            {t("quiz.demoBmi")}
           </label>
           <div className="px-3 py-2.5 border border-[#E2E8F0] rounded-lg bg-[#F8FAFC]">
             {bmi ? (
               <span className="text-sm">
                 <span className="font-semibold text-[#1A2332]">{bmi}</span>{" "}
-                <span
-                  className={`text-xs font-medium ${
-                    getBmiCategory(Number(bmi)).color
-                  }`}
-                >
+                <span className={`text-xs font-medium ${getBmiCategory(Number(bmi)).color}`}>
                   ({getBmiCategory(Number(bmi)).label})
                 </span>
               </span>
             ) : (
-              <span className="text-sm text-[#B0B8C4]">Auto-calculated</span>
+              <span className="text-sm text-[#B0B8C4]">{t("quiz.demoBmiAuto")}</span>
             )}
           </div>
         </div>
@@ -172,14 +158,14 @@ export function StepDemographics({ data, updateData }: Props) {
       {/* Country */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
-          Country of Residence
+          {t("quiz.demoCountry")}
         </label>
         <select
           value={data.country}
           onChange={(e) => updateData({ country: e.target.value })}
           className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
         >
-          <option value="">Select country...</option>
+          <option value="">{t("quiz.demoSelectCountry")}</option>
           {COUNTRIES.map((c) => (
             <option key={c} value={c}>
               {c}
@@ -188,11 +174,11 @@ export function StepDemographics({ data, updateData }: Props) {
         </select>
       </div>
 
-      {/* Pregnancy / Breastfeeding — only show for females */}
+      {/* Pregnancy / Breastfeeding */}
       {data.biologicalSex === "female" && (
         <div className="bg-[#FFF7ED] border border-[#FED7AA] rounded-xl p-4">
           <p className="text-sm font-medium text-[#9A3412] mb-3">
-            Pregnancy & Breastfeeding Status
+            {t("quiz.demoPregnancyTitle")}
           </p>
           <div className="flex gap-4">
             <label className="flex items-center gap-2 cursor-pointer">
@@ -202,22 +188,16 @@ export function StepDemographics({ data, updateData }: Props) {
                 onChange={(e) => updateData({ pregnant: e.target.checked })}
                 className="w-4 h-4 rounded border-[#E2E8F0] text-[#0D9488] focus:ring-[#0D9488]"
               />
-              <span className="text-sm text-[#1A2332]">
-                Currently pregnant
-              </span>
+              <span className="text-sm text-[#1A2332]">{t("quiz.demoPregnant")}</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={data.breastfeeding}
-                onChange={(e) =>
-                  updateData({ breastfeeding: e.target.checked })
-                }
+                onChange={(e) => updateData({ breastfeeding: e.target.checked })}
                 className="w-4 h-4 rounded border-[#E2E8F0] text-[#0D9488] focus:ring-[#0D9488]"
               />
-              <span className="text-sm text-[#1A2332]">
-                Currently breastfeeding
-              </span>
+              <span className="text-sm text-[#1A2332]">{t("quiz.demoBreastfeeding")}</span>
             </label>
           </div>
         </div>
@@ -226,22 +206,20 @@ export function StepDemographics({ data, updateData }: Props) {
       {/* Dietary Pattern */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-2">
-          Dietary Pattern
+          {t("quiz.demoDietary")}
         </label>
         <div className="flex flex-wrap gap-2">
-          {DIETARY_PATTERNS.map((diet) => (
+          {DIETARY_PATTERN_VALUES.map((value) => (
             <button
-              key={diet}
-              onClick={() =>
-                updateData({ dietaryPattern: diet.toLowerCase() })
-              }
+              key={value}
+              onClick={() => updateData({ dietaryPattern: value })}
               className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
-                data.dietaryPattern === diet.toLowerCase()
+                data.dietaryPattern === value
                   ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
                   : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
               }`}
             >
-              {diet}
+              {t(DIET_KEY_MAP[value])}
             </button>
           ))}
         </div>
@@ -250,30 +228,27 @@ export function StepDemographics({ data, updateData }: Props) {
       {/* Allergies */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-2">
-          Allergies & Intolerances
+          {t("quiz.demoAllergies")}
         </label>
-        <p className="text-xs text-[#8896A8] mb-2">
-          Select all that apply
-        </p>
+        <p className="text-xs text-[#8896A8] mb-2">{t("quiz.demoSelectAll")}</p>
         <div className="flex flex-wrap gap-2">
-          {ALLERGIES.map((allergy) => (
+          {ALLERGY_VALUES.map((allergy) => (
             <button
-              key={allergy}
+              key={allergy.value}
               onClick={() => {
                 const current = data.allergies;
-                const lower = allergy.toLowerCase();
-                const updated = current.includes(lower)
-                  ? current.filter((a) => a !== lower)
-                  : [...current, lower];
+                const updated = current.includes(allergy.value)
+                  ? current.filter((a) => a !== allergy.value)
+                  : [...current, allergy.value];
                 updateData({ allergies: updated });
               }}
               className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
-                data.allergies.includes(allergy.toLowerCase())
+                data.allergies.includes(allergy.value)
                   ? "bg-red-50 border-red-300 text-red-700"
                   : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
               }`}
             >
-              {allergy}
+              {t(allergy.key)}
             </button>
           ))}
         </div>
@@ -285,19 +260,12 @@ export function StepDemographics({ data, updateData }: Props) {
           <input
             type="checkbox"
             checked={data.halalPreference}
-            onChange={(e) =>
-              updateData({ halalPreference: e.target.checked })
-            }
+            onChange={(e) => updateData({ halalPreference: e.target.checked })}
             className="w-4 h-4 rounded border-[#E2E8F0] text-[#0D9488] focus:ring-[#0D9488]"
           />
           <div>
-            <span className="text-sm font-medium text-[#1A2332]">
-              Halal preference
-            </span>
-            <p className="text-xs text-[#8896A8]">
-              Only show Halal-certified or generally Halal supplement
-              recommendations
-            </p>
+            <span className="text-sm font-medium text-[#1A2332]">{t("quiz.demoHalalTitle")}</span>
+            <p className="text-xs text-[#8896A8]">{t("quiz.demoHalalDesc")}</p>
           </div>
         </label>
       </div>

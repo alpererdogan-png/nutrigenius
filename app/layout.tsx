@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/lib/language-context";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -45,7 +46,7 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} ${plusJakarta.variable} font-sans antialiased`}
       >
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );
