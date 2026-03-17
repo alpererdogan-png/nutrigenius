@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ArrowLeft, Clock, Calendar, Tag, ExternalLink,
+  ArrowLeft, Clock, Calendar, Tag,
   FlaskConical, ShieldAlert, AlertTriangle,
   HeartPulse, TrendingUp, Brain,
 } from "lucide-react";
@@ -95,13 +95,12 @@ const CATEGORY_CONFIG: Record<string, CategoryConfig> = {
 const DEFAULT_CONFIG = CATEGORY_CONFIG["deep-dive"];
 
 // ─── Hardcoded affiliate product cards ───────────────────────────────────────
-// paraIndex = 0-based </p> count — card appears AFTER that paragraph
-// "After paragraph 1" = paraIndex 0, "After paragraph 4" = paraIndex 3
+// afterParagraph is 1-indexed: 1 = after the 1st paragraph, 4 = after the 4th paragraph
 
-const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: HardcodedProduct }>> = {
+const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: HardcodedProduct }>> = {
   "the-complete-guide-to-magnesium": [
     {
-      paraIndex: 0,
+      afterParagraph: 1,
       product: {
         product_name: "NOW Foods Magnesium Glycinate",
         brand: "NOW Foods",
@@ -111,7 +110,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
       },
     },
     {
-      paraIndex: 3,
+      afterParagraph: 4,
       product: {
         product_name: "Life Extension Neuro-Mag Magnesium L-Threonate",
         brand: "Life Extension",
@@ -123,7 +122,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
   ],
   "supplements-that-dont-mix-critical-interactions": [
     {
-      paraIndex: 0,
+      afterParagraph: 1,
       product: {
         product_name: "Thorne Vitamin D/K2 Liquid",
         brand: "Thorne",
@@ -133,7 +132,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
       },
     },
     {
-      paraIndex: 3,
+      afterParagraph: 4,
       product: {
         product_name: "Nordic Naturals Ultimate Omega",
         brand: "Nordic Naturals",
@@ -145,7 +144,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
   ],
   "vitamin-d-why-80-percent-are-deficient": [
     {
-      paraIndex: 0,
+      afterParagraph: 1,
       product: {
         product_name: "NOW Foods Vitamin D3 5000 IU",
         brand: "NOW Foods",
@@ -155,7 +154,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
       },
     },
     {
-      paraIndex: 3,
+      afterParagraph: 4,
       product: {
         product_name: "Thorne Vitamin D 5000 IU",
         brand: "Thorne",
@@ -167,7 +166,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
   ],
   "the-pcos-supplement-protocol": [
     {
-      paraIndex: 0,
+      afterParagraph: 1,
       product: {
         product_name: "Wholesome Story Myo-Inositol",
         brand: "Wholesome Story",
@@ -177,7 +176,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
       },
     },
     {
-      paraIndex: 3,
+      afterParagraph: 4,
       product: {
         product_name: "Jarrow Formulas NAC Sustain",
         brand: "Jarrow Formulas",
@@ -189,7 +188,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
   ],
   "your-gut-brain-connection-probiotics-mental-health": [
     {
-      paraIndex: 0,
+      afterParagraph: 1,
       product: {
         product_name: "Garden of Life Dr. Formulated Probiotics",
         brand: "Garden of Life",
@@ -199,7 +198,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
       },
     },
     {
-      paraIndex: 3,
+      afterParagraph: 4,
       product: {
         product_name: "Jarrow Formulas Saccharomyces Boulardii",
         brand: "Jarrow Formulas",
@@ -211,7 +210,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
   ],
   "5-supplement-myths-your-doctor-didnt-learn": [
     {
-      paraIndex: 0,
+      afterParagraph: 1,
       product: {
         product_name: "Pure Encapsulations B-Complex Plus",
         brand: "Pure Encapsulations",
@@ -221,7 +220,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
       },
     },
     {
-      paraIndex: 3,
+      afterParagraph: 4,
       product: {
         product_name: "Life Extension Vitamin C",
         brand: "Life Extension",
@@ -233,10 +232,93 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: Hardc
   ],
 };
 
-// Rectangle ads show at these paragraph indices (skipped if affiliate card at same index)
-const RECT_AD_INDICES = [6, 11];
-// Leaderboard ad always goes after paragraph 2 (paraIndex 1)
-const LEADERBOARD_INDEX = 1;
+// Ad slots: rectangle ads after these paragraph numbers (1-indexed)
+const RECT_AD_AFTER_PARAGRAPHS = [2, 6];
+
+// ─── HTML content injection ───────────────────────────────────────────────────
+// All injections are done directly on the HTML string so they reliably appear
+// inline in the article — no dependency on paragraph splitting in React.
+
+function esc(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function affiliateCardHtml(product: HardcodedProduct): string {
+  return `<div class="my-6 flex items-stretch bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+  <div class="w-1.5 flex-shrink-0" style="background:#0D9488"></div>
+  <div class="p-4 flex-1 min-w-0">
+    <p class="text-[10px] font-semibold uppercase tracking-wider mb-1" style="color:#0D9488;margin:0">Recommended Product</p>
+    <p class="text-sm font-bold leading-snug" style="color:#1A2332;margin:0 0 2px">${esc(product.product_name)}</p>
+    <p class="text-xs" style="color:#5A6578;margin:0 0 6px">${esc(product.brand)}</p>
+    <p class="text-xs leading-relaxed" style="color:#8896A8;margin:0 0 10px">${esc(product.note)}</p>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
+      <span class="text-base font-bold" style="color:#1A2332">$${product.price_usd.toFixed(2)}</span>
+      <a href="${esc(product.affiliate_url)}" target="_blank" rel="noopener noreferrer nofollow"
+         style="display:inline-flex;align-items:center;gap:5px;background:#0D9488;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none;white-space:nowrap">
+        Shop on iHerb &rarr;
+      </a>
+    </div>
+    <p style="font-size:10px;color:#B0BAC9;margin:8px 0 0">Affiliate link &mdash; we may earn a commission at no extra cost to you.</p>
+  </div>
+</div>`;
+}
+
+const rectangleAdHtml = `<div class="my-6" style="display:flex;align-items:center;justify-content:center;border:1px dashed #CBD5E1;background:#F8FAFC;border-radius:12px;height:160px">
+  <div style="text-align:center">
+    <p style="font-size:11px;font-weight:500;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin:0">Advertisement</p>
+    <p style="font-size:10px;color:#CBD5E1;margin:3px 0 0">300&times;250</p>
+  </div>
+</div>`;
+
+/** Insert `insertion` after the nth occurrence of `</p>` in `html` (1-indexed). */
+function insertAfterNthParagraph(html: string, n: number, insertion: string): string {
+  let count = 0;
+  let pos = 0;
+  while (pos < html.length) {
+    const idx = html.indexOf("</p>", pos);
+    if (idx === -1) break;
+    count++;
+    if (count === n) {
+      return html.slice(0, idx + 4) + "\n" + insertion + html.slice(idx + 4);
+    }
+    pos = idx + 4;
+  }
+  return html; // paragraph n not found — return unchanged
+}
+
+/** Build the final article HTML with all affiliate cards and ads injected inline. */
+function buildArticleHtml(
+  baseHtml: string,
+  productSlots: Array<{ afterParagraph: number; product: HardcodedProduct }>,
+  adParagraphs: number[],
+): string {
+  // Collect all injections; sort descending so earlier insertions don't shift later positions
+  const injections: Array<{ afterParagraph: number; html: string }> = [];
+
+  const productParas = new Set(productSlots.map((s) => s.afterParagraph));
+
+  for (const slot of productSlots) {
+    injections.push({ afterParagraph: slot.afterParagraph, html: affiliateCardHtml(slot.product) });
+  }
+  for (const para of adParagraphs) {
+    // Skip if an affiliate card is already at this paragraph
+    if (!productParas.has(para)) {
+      injections.push({ afterParagraph: para, html: rectangleAdHtml });
+    }
+  }
+
+  injections.sort((a, b) => b.afterParagraph - a.afterParagraph);
+
+  let result = baseHtml;
+  for (const { afterParagraph, html } of injections) {
+    result = insertAfterNthParagraph(result, afterParagraph, html);
+  }
+  return result;
+}
 
 // ─── Data fetching ────────────────────────────────────────────────────────────
 
@@ -263,70 +345,17 @@ async function getRelatedPosts(post: BlogPost): Promise<RelatedPost[]> {
   return (data ?? []) as RelatedPost[];
 }
 
-// ─── Content splitting ────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function splitByParagraphs(html: string): string[] {
-  const segments: string[] = [];
-  let remaining = html;
-  while (remaining) {
-    const idx = remaining.indexOf("</p>");
-    if (idx === -1) {
-      if (remaining.trim()) segments.push(remaining);
-      break;
-    }
-    segments.push(remaining.slice(0, idx + 4));
-    remaining = remaining.slice(idx + 4);
-  }
-  return segments;
+function formatCategory(cat: string): string {
+  return cat.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
 }
 
-// ─── UI sub-components ────────────────────────────────────────────────────────
-
-function AffiliateCard({ product }: { product: HardcodedProduct }) {
-  return (
-    <div className="my-6 flex items-stretch bg-white rounded-xl border border-[#E8ECF1] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-      <div className="w-1.5 bg-[#0D9488] flex-shrink-0" />
-      <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 flex-1 min-w-0">
-        <div className="flex-1 min-w-0">
-          <p className="text-[10px] font-semibold text-[#0D9488] uppercase tracking-wider mb-1">
-            Recommended Product
-          </p>
-          <p className="text-sm font-bold text-[#1A2332] leading-snug">{product.product_name}</p>
-          <p className="text-xs text-[#5A6578] mt-0.5">{product.brand}</p>
-          <p className="text-xs text-[#8896A8] mt-1.5 leading-relaxed">{product.note}</p>
-          <p className="text-[10px] text-[#B0BAC9] mt-1.5">Affiliate link — we may earn a commission at no extra cost to you.</p>
-        </div>
-        <div className="flex sm:flex-col items-center sm:items-end gap-3 flex-shrink-0">
-          <span className="text-lg font-bold text-[#1A2332]">${product.price_usd.toFixed(2)}</span>
-          <a
-            href={product.affiliate_url}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-            className="inline-flex items-center gap-1.5 bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
-          >
-            Shop on iHerb <ExternalLink className="w-3 h-3" />
-          </a>
-        </div>
-      </div>
-    </div>
-  );
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
 
-function InlineAdSlot({ type = "rectangle" }: { type?: "leaderboard" | "rectangle" }) {
-  const isLeaderboard = type === "leaderboard";
-  return (
-    <div
-      className={`my-6 flex items-center justify-center border border-dashed border-[#CBD5E1] bg-[#F8FAFC] rounded-xl ${
-        isLeaderboard ? "h-[90px] w-full max-w-[728px] mx-auto" : "h-[200px]"
-      }`}
-    >
-      <div className="text-center">
-        <p className="text-xs font-medium text-[#94A3B8] uppercase tracking-wider">Advertisement</p>
-        <p className="text-[10px] text-[#CBD5E1] mt-0.5">{isLeaderboard ? "728×90" : "300×250"}</p>
-      </div>
-    </div>
-  );
-}
+// ─── Ad slot components ───────────────────────────────────────────────────────
 
 function SidebarAdSlot() {
   return (
@@ -337,14 +366,6 @@ function SidebarAdSlot() {
       </div>
     </div>
   );
-}
-
-function formatCategory(cat: string): string {
-  return cat.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
-}
-
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
 
 // ─── Metadata ─────────────────────────────────────────────────────────────────
@@ -376,52 +397,31 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const config = CATEGORY_CONFIG[post.category] ?? DEFAULT_CONFIG;
   const CategoryIcon = config.icon;
 
-  const [related, htmlContent] = await Promise.all([
+  const [related, baseHtml] = await Promise.all([
     getRelatedPosts(post),
     Promise.resolve(markdownToHtml(post.content)),
   ]);
 
   const toc = extractTOC(post.content);
   const articleSlots = ARTICLE_PRODUCTS[slug] ?? [];
-  const affiliateIndices = new Set(articleSlots.map((s) => s.paraIndex));
-
-  // Build injection map: paraIndex → what to render after that segment
-  type Injection =
-    | { kind: "affiliate"; product: HardcodedProduct }
-    | { kind: "ad-leaderboard" }
-    | { kind: "ad-rectangle" };
-
-  const injectionMap = new Map<number, Injection>();
-
-  // 1. Affiliate cards (highest priority)
-  for (const slot of articleSlots) {
-    injectionMap.set(slot.paraIndex, { kind: "affiliate", product: slot.product });
-  }
-
-  // 2. Leaderboard after paragraph 2 (paraIndex 1) — skip if affiliate card there
-  if (!affiliateIndices.has(LEADERBOARD_INDEX)) {
-    injectionMap.set(LEADERBOARD_INDEX, { kind: "ad-leaderboard" });
-  }
-
-  // 3. Rectangle ads at configured indices — skip if affiliate card already there
-  for (const idx of RECT_AD_INDICES) {
-    if (!affiliateIndices.has(idx) && idx !== LEADERBOARD_INDEX) {
-      injectionMap.set(idx, { kind: "ad-rectangle" });
-    }
-  }
-
-  const contentSegments = splitByParagraphs(htmlContent);
+  const finalHtml = buildArticleHtml(baseHtml, articleSlots, RECT_AD_AFTER_PARAGRAPHS);
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-16 lg:pb-0">
-      {/* Back nav */}
-      <div className="bg-white border-b border-[#E8ECF1]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3">
+      {/* ── Top nav ── */}
+      <div className="sticky top-0 z-20 bg-white border-b border-[#E8ECF1]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+          <Link
+            href="/"
+            className="font-heading font-bold text-lg text-[#0D9488] hover:text-[#0F766E] transition-colors"
+          >
+            NutriGenius
+          </Link>
           <Link
             href="/blog"
             className="inline-flex items-center gap-1.5 text-sm text-[#5A6578] hover:text-[#0D9488] transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to articles
+            <ArrowLeft className="w-4 h-4" /> All articles
           </Link>
         </div>
       </div>
@@ -457,32 +457,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <article>
             {/* Affiliate disclosure */}
             <p className="text-xs text-[#B0BAC9] mb-5">
-              This article contains affiliate links. If you purchase through our links, we may earn a small commission at no extra cost to you.{" "}
-              <Link href="/blog" className="underline hover:text-[#0D9488] transition-colors">
-                Disclosure policy.
-              </Link>
+              This article contains affiliate links. If you purchase through our links we may earn a small commission at no extra cost to you.
             </p>
 
-            {/* Article content with injected cards/ads */}
-            <div className="prose-custom">
-              {contentSegments.map((seg, i) => {
-                const injection = injectionMap.get(i);
-                return (
-                  <div key={i}>
-                    <div dangerouslySetInnerHTML={{ __html: seg }} />
-                    {injection?.kind === "affiliate" && (
-                      <AffiliateCard product={injection.product} />
-                    )}
-                    {injection?.kind === "ad-leaderboard" && (
-                      <InlineAdSlot type="leaderboard" />
-                    )}
-                    {injection?.kind === "ad-rectangle" && (
-                      <InlineAdSlot type="rectangle" />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+            {/* Article content — affiliate cards and ads are injected directly into the HTML */}
+            <div
+              className="prose-custom"
+              dangerouslySetInnerHTML={{ __html: finalHtml }}
+            />
 
             {/* Author / date — at bottom of article */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-[#5A6578] mt-10 pt-8 border-t border-[#E8ECF1]">
@@ -553,7 +535,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {/* ── Desktop sidebar ── */}
           <aside className="hidden lg:block">
-            <div className="sticky top-24 space-y-5">
+            <div className="sticky top-[61px] space-y-5">
               {/* TOC */}
               {toc.length > 0 && (
                 <div className="bg-white rounded-2xl border border-[#E8ECF1] p-5">

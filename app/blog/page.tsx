@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import {
-  ArrowRight, Clock, Search, BookOpen,
+  ArrowRight, Clock, Search, BookOpen, ArrowUpRight,
   FlaskConical, ShieldAlert, AlertTriangle,
   HeartPulse, TrendingUp, Brain,
 } from "lucide-react";
@@ -140,6 +140,24 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
+      {/* ── Top nav ── */}
+      <div className="bg-white border-b border-[#E8ECF1]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+          <Link
+            href="/"
+            className="font-heading font-bold text-lg text-[#0D9488] hover:text-[#0F766E] transition-colors"
+          >
+            NutriGenius
+          </Link>
+          <Link
+            href="/quiz"
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-[#0D9488] hover:text-[#0F766E] transition-colors"
+          >
+            Free Assessment <ArrowUpRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </div>
+
       {/* Page header */}
       <div className="bg-white border-b border-[#E8ECF1]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
@@ -158,32 +176,35 @@ export default function BlogPage() {
       {/* Sticky filters */}
       <div className="bg-white border-b border-[#E8ECF1] sticky top-0 z-10 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3">
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-shrink-0 w-full sm:w-56">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8896A8]" />
-              <input
-                type="text"
-                placeholder="Search articles..."
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-sm bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl focus:outline-none focus:border-[#0D9488] focus:ring-1 focus:ring-[#0D9488]/20 text-[#1A2332] placeholder:text-[#8896A8]"
-              />
-            </div>
-            <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar flex-1">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat.value}
-                  onClick={() => setCategory(cat.value)}
-                  className={`flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full border transition-all duration-150 ${
-                    category === cat.value
-                      ? "bg-[#0D9488] text-white border-[#0D9488]"
-                      : "bg-white text-[#5A6578] border-[#E8ECF1] hover:border-[#0D9488]/40 hover:text-[#0D9488]"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
+          {/* Search row */}
+          <div className="relative w-full sm:w-64 mb-2.5 sm:mb-0 sm:float-right">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8896A8]" />
+            <input
+              type="text"
+              placeholder="Search articles..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              className="w-full pl-9 pr-3 py-2 text-sm bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl focus:outline-none focus:border-[#0D9488] focus:ring-1 focus:ring-[#0D9488]/20 text-[#1A2332] placeholder:text-[#8896A8]"
+            />
+          </div>
+          {/* Category pills — always a single scrollable row */}
+          <div
+            className="flex gap-2 no-scrollbar"
+            style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}
+          >
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.value}
+                onClick={() => setCategory(cat.value)}
+                className={`flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full border transition-all duration-150 ${
+                  category === cat.value
+                    ? "bg-[#0D9488] text-white border-[#0D9488]"
+                    : "bg-white text-[#5A6578] border-[#E8ECF1] hover:border-[#0D9488]/40 hover:text-[#0D9488]"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
           </div>
         </div>
       </div>

@@ -146,11 +146,16 @@
 .prose-custom h3 {
   font-family: var(--font-heading);
 }
-.prose-custom a {
+/* Only style links inside actual text content — not injected card buttons */
+.prose-custom p a,
+.prose-custom li a,
+.prose-custom blockquote a {
   color: #0D9488;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.prose-custom a:hover {
+.prose-custom p a:hover,
+.prose-custom li a:hover,
+.prose-custom blockquote a:hover {
   color: #0F766E;
 }
