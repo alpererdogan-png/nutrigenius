@@ -177,6 +177,11 @@ export default function QuizPage() {
 
       sessionStorage.setItem("nutrigenius_recommendations", JSON.stringify(recommendations));
       sessionStorage.setItem("nutrigenius_email", email);
+      sessionStorage.setItem("nutrigenius_prefs", JSON.stringify({
+        country: quizData.country,
+        halalPreference: quizData.halalPreference,
+        labResults: quizData.labResults,
+      }));
       router.push("/results");
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Something went wrong.");

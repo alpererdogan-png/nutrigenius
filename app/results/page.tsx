@@ -18,10 +18,63 @@ import {
   Bell,
   Mail,
   RefreshCw,
+  ShoppingCart,
+  ExternalLink,
+  BadgeCheck,
+  Star,
+  TestTube,
 } from "lucide-react";
+import Link from "next/link";
 import type { RecommendationResult, SupplementRecommendation } from "@/app/api/recommend/route";
+import type { AffiliateProduct } from "@/app/api/affiliate-products/route";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/lib/language-context";
+
+// ─── Lab deficiency thresholds (mirrors recommend route) ─────────────────────
+
+const LAB_RETEST_MAP: Record<string, { threshold: number; label: string }> = {
+  "Vitamin D (25-OH)": { threshold: 30,  label: "Vitamin D" },
+  "Vitamin B12":       { threshold: 300, label: "Vitamin B12" },
+  "Ferritin":          { threshold: 30,  label: "Ferritin (Iron)" },
+  "Folate":            { threshold: 3,   label: "Folate" },
+  "Magnesium":         { threshold: 1.7, label: "Magnesium" },
+  "Zinc":              { threshold: 70,  label: "Zinc" },
+  "Omega-3 Index":     { threshold: 8,   label: "Omega-3 Index" },
+};
+
+type LabResult = { biomarker: string; value: string; unit: string; testDate: string };
+
+function getDeficientLabs(labResults: LabResult[]): LabResult[] {
+  return labResults.filter((r) => {
+    const rule = LAB_RETEST_MAP[r.biomarker];
+    if (!rule || !r.value) return false;
+    const val = parseFloat(r.value);
+    return !isNaN(val) && val < rule.threshold;
+  });
+}
+
+// ─── Name normaliser for affiliate lookup ─────────────────────────────────────
+
+const SUPPLEMENT_ALIAS: Record<string, string> = {
+  "coenzyme q10": "CoQ10",
+  "coq10":        "CoQ10",
+  "methylfolate": "Folate",
+  "vitamin d":    "Vitamin D3",
+  "fish oil":     "Omega-3",
+  "inositol":     "Myo-Inositol",
+  "lion's mane":  "Lion's Mane",
+  "lions mane":   "Lion's Mane",
+};
+
+function normalizeForAffiliate(name: string): string {
+  const lower = name.toLowerCase();
+  for (const [key, val] of Object.entries(SUPPLEMENT_ALIAS)) {
+    if (lower === key || lower.includes(key)) return val;
+  }
+  return name;
+}
+
+// ─── Evidence styles ─────────────────────────────────────────────────────────
 
 const EVIDENCE_STYLES: Record<string, { bg: string; text: string; border: string; dot: string }> = {
   Strong:      { bg: "bg-green-50",  text: "text-green-700",  border: "border-green-200", dot: "bg-green-500" },
@@ -30,7 +83,6 @@ const EVIDENCE_STYLES: Record<string, { bg: string; text: string; border: string
   Traditional: { bg: "bg-gray-50",   text: "text-gray-600",   border: "border-gray-200",  dot: "bg-gray-400" },
 };
 
-// Map English evidence rating keys to translation keys
 const EVIDENCE_TRANSLATION_KEYS: Record<string, { label: string; desc: string }> = {
   Strong:      { label: "results.evidenceStrong",      desc: "results.evidenceStrongDesc" },
   Moderate:    { label: "results.evidenceModerate",    desc: "results.evidenceModerateDesc" },
@@ -50,7 +102,83 @@ function EvidenceBadge({ rating }: { rating: string }) {
   );
 }
 
-function SupplementCard({ supp }: { supp: SupplementRecommendation }) {
+// ─── Where to Buy ─────────────────────────────────────────────────────────────
+
+function WhereToBuy({ products, halalFirst }: { products: AffiliateProduct[]; halalFirst: boolean }) {
+  if (products.length === 0) return null;
+
+  const sorted = halalFirst
+    ? [...products.filter((p) => p.halal_certified), ...products.filter((p) => !p.halal_certified)]
+    : products;
+
+  return (
+    <div className="mt-4 pt-4 border-t border-[#E8ECF1]">
+      <div className="flex items-center gap-2 mb-3">
+        <ShoppingCart className="w-4 h-4 text-[#0D9488]" />
+        <span className="text-sm font-medium text-[#1A2332]">Where to Buy</span>
+      </div>
+
+      <div className="space-y-2">
+        {sorted.slice(0, 3).map((product) => (
+          <div
+            key={product.id}
+            className="flex items-center justify-between gap-3 bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl px-3 py-2.5 hover:border-[#0D9488]/30 transition-colors"
+          >
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-xs font-semibold text-[#1A2332]">{product.brand}</span>
+                {product.quality_verified && (
+                  <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded-full">
+                    <BadgeCheck className="w-2.5 h-2.5" />
+                    Verified
+                  </span>
+                )}
+                {product.halal_certified && (
+                  <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-green-700 bg-green-50 border border-green-200 px-1.5 py-0.5 rounded-full">
+                    <Star className="w-2.5 h-2.5" />
+                    Halal
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] text-[#5A6578] truncate mt-0.5">{product.product_name}</p>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <span className="text-sm font-semibold text-[#1A2332]">
+                ${product.price_usd.toFixed(2)}
+              </span>
+              <a
+                href={product.affiliate_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+              >
+                Buy
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p className="text-[10px] text-[#B0B8C4] mt-2 leading-relaxed">
+        Affiliate disclosure: We may earn a small commission from purchases via these links.
+        This doesn&apos;t affect the price you pay or our recommendations.
+      </p>
+    </div>
+  );
+}
+
+// ─── Supplement Card ──────────────────────────────────────────────────────────
+
+function SupplementCard({
+  supp,
+  products,
+  halalFirst,
+}: {
+  supp: SupplementRecommendation;
+  products: AffiliateProduct[];
+  halalFirst: boolean;
+}) {
   const { t } = useLanguage();
   const [expanded, setExpanded] = useState(false);
 
@@ -128,10 +256,15 @@ function SupplementCard({ supp }: { supp: SupplementRecommendation }) {
             )}
           </div>
         )}
+
+        {/* Where to Buy */}
+        <WhereToBuy products={products} halalFirst={halalFirst} />
       </div>
     </div>
   );
 }
+
+// ─── Weekly Schedule ──────────────────────────────────────────────────────────
 
 function WeeklySchedule({
   schedule,
@@ -150,7 +283,6 @@ function WeeklySchedule({
     t("results.mon"), t("results.tue"), t("results.wed"),
     t("results.thu"), t("results.fri"), t("results.sat"), t("results.sun"),
   ];
-  // English keys for schedule lookup (the schedule data uses English day names)
   const DAYS_EN = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const SLOTS_EN = ["Morning", "Midday", "Evening"] as const;
   const SLOT_LABELS: Record<string, string> = {
@@ -266,27 +398,62 @@ function WeeklySchedule({
   );
 }
 
+// ─── Results Page ─────────────────────────────────────────────────────────────
+
+type UserPrefs = {
+  country: string;
+  halalPreference: boolean;
+  labResults: LabResult[];
+};
+
 export default function ResultsPage() {
   const router = useRouter();
   const { t } = useLanguage();
   const [result, setResult] = useState<RecommendationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [prefs, setPrefs] = useState<UserPrefs>({ country: "", halalPreference: false, labResults: [] });
+  const [affiliateProducts, setAffiliateProducts] = useState<Record<string, AffiliateProduct[]>>({});
 
   useEffect(() => {
     const raw = sessionStorage.getItem("nutrigenius_recommendations");
     const email = sessionStorage.getItem("nutrigenius_email");
+    const rawPrefs = sessionStorage.getItem("nutrigenius_prefs");
+
     if (!raw) {
       router.replace("/quiz");
       return;
     }
     try {
-      setResult(JSON.parse(raw));
+      const parsed = JSON.parse(raw) as RecommendationResult;
+      setResult(parsed);
       setUserEmail(email);
+
+      if (rawPrefs) {
+        const parsedPrefs = JSON.parse(rawPrefs) as UserPrefs;
+        setPrefs(parsedPrefs);
+      }
     } catch {
       setError(t("results.loadError"));
     }
   }, [router, t]);
+
+  // Fetch affiliate products once recommendations are loaded
+  useEffect(() => {
+    if (!result || result.supplements.length === 0) return;
+
+    const names = result.supplements.map((s) => normalizeForAffiliate(s.name));
+    const params = new URLSearchParams({
+      names: names.join(","),
+      country: prefs.country ?? "",
+      halal: prefs.halalPreference ? "true" : "false",
+    });
+
+    fetch(`/api/affiliate-products?${params.toString()}`)
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((data: Record<string, AffiliateProduct[]>) => setAffiliateProducts(data))
+      .catch(() => {/* non-critical */});
+  }, [result, prefs]);
 
   if (error) {
     return (
@@ -314,6 +481,7 @@ export default function ResultsPage() {
   }
 
   const { supplements, schedule, focusAreas, blockedSupplements } = result;
+  const deficientLabs = getDeficientLabs(prefs.labResults);
 
   return (
     <div className="min-h-screen bg-[#FAFBFC]">
@@ -328,10 +496,14 @@ export default function ResultsPage() {
             {t("results.retakeQuiz")}
           </button>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <Shield className="w-5 h-5 text-[#0D9488]" />
-              <span className="font-heading text-sm font-semibold text-[#1A2332]">NutriGenius</span>
-            </div>
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center shadow-sm">
+                <Leaf className="w-3.5 h-3.5 text-white" />
+              </div>
+              <span className="font-heading text-base font-semibold tracking-tight text-[#1A2332]">
+                Nutri<span className="text-[#0D9488]">Genius</span>
+              </span>
+            </Link>
             <LanguageSwitcher />
           </div>
           <div className="w-24" />
@@ -438,13 +610,58 @@ export default function ResultsPage() {
                     {i + 1}
                   </div>
                   <div className="flex-1">
-                    <SupplementCard supp={supp} />
+                    <SupplementCard
+                      supp={supp}
+                      products={affiliateProducts[normalizeForAffiliate(supp.name)] ?? []}
+                      halalFirst={prefs.halalPreference}
+                    />
                   </div>
                 </div>
               ))}
             </div>
           )}
         </section>
+
+        {/* Lab Retest Prompts */}
+        {deficientLabs.length > 0 && (
+          <section>
+            <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">Lab Retest Reminders</h2>
+            <p className="text-sm text-[#5A6578] mb-4">
+              Based on your entered lab values, we recommend retesting these biomarkers in 3 months to track progress.
+            </p>
+            <div className="space-y-3">
+              {deficientLabs.map((lab) => {
+                const rule = LAB_RETEST_MAP[lab.biomarker];
+                return (
+                  <div key={lab.biomarker} className="bg-white border border-[#E8ECF1] rounded-xl p-4 flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <TestTube className="w-4 h-4 text-amber-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-[#1A2332]">
+                          Your {rule?.label ?? lab.biomarker} is{" "}
+                          <span className="text-red-600 font-semibold">{lab.value} {lab.unit}</span>
+                          {" "}(below optimal range)
+                        </p>
+                        <p className="text-xs text-[#5A6578] mt-0.5">
+                          We recommend retesting in 3 months after starting supplementation.
+                        </p>
+                      </div>
+                    </div>
+                    <a
+                      href="#lab-testing"
+                      className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-medium text-[#0D9488] border border-[#0D9488]/30 bg-[#F0FDFA] hover:bg-[#CCFBF1] px-3 py-1.5 rounded-lg transition-colors"
+                    >
+                      Find a Lab
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* Blocked supplements */}
         {blockedSupplements.length > 0 && (
