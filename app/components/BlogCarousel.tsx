@@ -147,14 +147,14 @@ export function BlogCarousel() {
         }}
       >
         {ARTICLES.map((article) => (
-          <article
+          <Link
             key={article.title}
+            href={`/blog/${article.slug}`}
             data-card
             className="flex-shrink-0 flex flex-col bg-white border border-[#E8ECF1] rounded-2xl overflow-hidden hover:border-[#0D9488]/30 hover:shadow-lg hover:shadow-teal-500/5 transition-all duration-300 hover:-translate-y-0.5 group
               w-[80vw] sm:w-80 lg:w-[340px]"
             style={{ scrollSnapAlign: "start" }}
           >
-
             {/* Accent bar */}
             <div className={`h-1.5 w-full ${article.accentClass} flex-shrink-0`} />
 
@@ -180,16 +180,13 @@ export function BlogCarousel() {
                   <Clock className="w-3.5 h-3.5" />
                   {article.readTime}
                 </div>
-                <Link
-                  href={`/blog/${article.slug}`}
-                  className="text-xs font-semibold text-[#0D9488] hover:text-[#0F766E] flex items-center gap-1 transition-colors"
-                >
+                <span className="text-xs font-semibold text-[#0D9488] group-hover:text-[#0F766E] flex items-center gap-1 transition-colors">
                   Read more
                   <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                </span>
               </div>
             </div>
-          </article>
+          </Link>
         ))}
 
         {/* Trailing spacer so last card snaps nicely */}
