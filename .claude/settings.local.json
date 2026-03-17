@@ -5,7 +5,10 @@
       "Bash(git add:*)",
       "Bash(git push:*)",
       "Bash(npm run:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(taskkill:*)",
+      "Bash(curl:*)",
+      "Bash(python3 -c \"import json,sys; ids=list\\({r[''''supplement_id''''] for r in json.load\\(sys.stdin\\)}\\); print\\(''''\\\\n''''.join\\(ids\\)\\)\")"
     ]
   }
 }

@@ -55,15 +55,20 @@ function getDeficientLabs(labResults: LabResult[]): LabResult[] {
 
 // ─── Name normaliser for affiliate lookup ─────────────────────────────────────
 
+// These map engine supplement names (from DB) to the lookup key used with the affiliate API.
+// Keep in sync with the SUPPLEMENT_ALIAS in app/api/affiliate-products/route.ts.
 const SUPPLEMENT_ALIAS: Record<string, string> = {
-  "coenzyme q10": "CoQ10",
-  "coq10":        "CoQ10",
   "methylfolate": "Folate",
   "vitamin d":    "Vitamin D3",
-  "fish oil":     "Omega-3",
+  "fish oil":     "Omega-3 Fatty Acids",
+  "omega-3":      "Omega-3 Fatty Acids",
   "inositol":     "Myo-Inositol",
-  "lion's mane":  "Lion's Mane",
-  "lions mane":   "Lion's Mane",
+  "lion's mane":  "Lions Mane",
+  "lions mane":   "Lions Mane",
+  "coenzyme q10": "Coenzyme Q10",
+  "coq10":        "Coenzyme Q10",
+  "rhodiola":     "Rhodiola Rosea",
+  "collagen":     "Collagen Peptides",
 };
 
 function normalizeForAffiliate(name: string): string {
@@ -451,8 +456,10 @@ export default function ResultsPage() {
 
     fetch(`/api/affiliate-products?${params.toString()}`)
       .then((r) => (r.ok ? r.json() : {}))
-      .then((data: Record<string, AffiliateProduct[]>) => setAffiliateProducts(data))
-      .catch(() => {/* non-critical */});
+      .then((data: Record<string, AffiliateProduct[]>) => {
+        setAffiliateProducts(data);
+      })
+      .catch(() => {});
   }, [result, prefs]);
 
   if (error) {

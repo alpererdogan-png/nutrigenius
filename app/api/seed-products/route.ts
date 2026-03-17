@@ -134,10 +134,34 @@ export async function POST() {
       return NextResponse.json({ message: `Already seeded (${count} products)`, seeded: false });
     }
 
-    // Upsert all products (deduplicate by affiliate_url)
-    const { error, count: inserted } = await supabase
+    // Resolve supplement names → IDs
+    const uniqueNames = [...new Set(PRODUCTS.map((p) => p.supplement_name))];
+    const { data: suppRows, error: suppError } = await supabase
+      .from("supplements")
+      .select("id, name")
+      .in("name", uniqueNames);
+
+    if (suppError) {
+      return NextResponse.json({ error: suppError.message }, { status: 500 });
+    }
+
+    const suppIdByName = new Map((suppRows ?? []).map((s) => [s.name as string, s.id as string]));
+
+    // Build insert rows with supplement_id instead of supplement_name
+    const rows = PRODUCTS.flatMap((p) => {
+      const supplement_id = suppIdByName.get(p.supplement_name);
+      if (!supplement_id) return []; // skip if supplement not found in DB
+      const { supplement_name: _, ...rest } = p;
+      return [{ ...rest, supplement_id }];
+    });
+
+    if (rows.length === 0) {
+      return NextResponse.json({ error: "No matching supplements found in DB. Seed the supplements table first." }, { status: 400 });
+    }
+
+    const { error } = await supabase
       .from("affiliate_products")
-      .upsert(PRODUCTS, { onConflict: "affiliate_url" });
+      .insert(rows);
 
     if (error) {
       console.error("Seed error:", error);
@@ -145,9 +169,9 @@ export async function POST() {
     }
 
     return NextResponse.json({
-      message: `Seeded ${PRODUCTS.length} affiliate products`,
+      message: `Seeded ${rows.length} affiliate products`,
       seeded: true,
-      count: PRODUCTS.length,
+      count: rows.length,
     });
   } catch (err) {
     console.error("Seed route error:", err);
