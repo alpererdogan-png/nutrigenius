@@ -371,15 +371,30 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post) return { title: "Article Not Found" };
+  const BASE_URL = "https://nutrigenius-iota.vercel.app";
+  const url = `${BASE_URL}/blog/${post.slug}`;
   return {
-    title: `${post.title} | NutriGenius`,
+    title: post.title,
     description: post.excerpt,
+    authors: [{ name: post.author_name }],
+    alternates: { canonical: url },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: "article",
+      url,
+      siteName: "NutriGenius",
       publishedTime: post.published_at,
+      modifiedTime: post.updated_at,
       authors: [post.author_name],
+      section: post.category,
+      tags: post.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      site: "@nutrigenius",
     },
   };
 }
@@ -406,8 +421,36 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const endProduct = articleSlots[1]?.product ?? null;
   const finalHtml = buildArticleHtml(baseHtml, inlineSlots, RECT_AD_AFTER_PARAGRAPHS);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.published_at,
+    dateModified: post.updated_at ?? post.published_at,
+    author: {
+      "@type": "Person",
+      name: post.author_name ?? "NutriGenius Clinical Team",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "NutriGenius",
+      url: "https://nutrigenius-iota.vercel.app",
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://nutrigenius-iota.vercel.app/blog/${post.slug}`,
+    },
+    keywords: post.tags?.join(", "),
+    articleSection: post.category,
+  };
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-16 lg:pb-0">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* ── Top nav ── */}
       <div className="sticky top-0 z-20 bg-white border-b border-[#E8ECF1]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">

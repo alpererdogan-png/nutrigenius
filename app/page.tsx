@@ -25,8 +25,41 @@ export default function Home() {
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "NutriGenius",
+    url: "https://nutrigenius-iota.vercel.app",
+    description: "Evidence-based personalized supplement recommendations",
+    sameAs: [],
+  };
+
+  const webAppJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "NutriGenius",
+    url: "https://nutrigenius-iota.vercel.app",
+    applicationCategory: "HealthApplication",
+    operatingSystem: "Web",
+    description:
+      "Free personalized supplement plan backed by science. Drug interaction checks, evidence ratings, and a visual weekly schedule.",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "EUR",
+    },
+  };
+
   return (
     <div className="min-h-screen bg-[#FAFBFC] text-[#1A2332]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
+      />
       {/* ── Navigation ── */}
       <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-[#E8ECF1] z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">

@@ -138,8 +138,26 @@ export default function BlogPage() {
     return () => clearTimeout(timer);
   }, [searchInput]);
 
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "NutriGenius Blog — The Science of Healthy Living",
+    description:
+      "Evidence-based articles on supplements, nutrition, and health. Written by clinical pharmacology experts.",
+    url: "https://nutrigenius-iota.vercel.app/blog",
+    publisher: {
+      "@type": "Organization",
+      name: "NutriGenius",
+      url: "https://nutrigenius-iota.vercel.app",
+    },
+  };
+
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }}
+      />
       {/* ── Top nav ── */}
       <div className="bg-white border-b border-[#E8ECF1]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
