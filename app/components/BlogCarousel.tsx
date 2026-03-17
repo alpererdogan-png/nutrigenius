@@ -7,6 +7,7 @@ import { useLanguage } from "@/lib/language-context";
 
 const ARTICLES = [
   {
+    slug: "the-complete-guide-to-magnesium",
     categoryKey: "blog.catEvidenceReview",
     tagClass: "bg-teal-50 text-teal-700 border-teal-200",
     accentClass: "bg-teal-500",
@@ -16,6 +17,7 @@ const ARTICLES = [
     readTime: "8 min read",
   },
   {
+    slug: "5-supplement-myths-your-doctor-didnt-learn",
     categoryKey: "blog.catMythBusting",
     tagClass: "bg-orange-50 text-orange-700 border-orange-200",
     accentClass: "bg-orange-400",
@@ -25,6 +27,7 @@ const ARTICLES = [
     readTime: "6 min read",
   },
   {
+    slug: "supplements-that-dont-mix-critical-interactions",
     categoryKey: "blog.catSafetyAlert",
     tagClass: "bg-red-50 text-red-700 border-red-200",
     accentClass: "bg-red-500",
@@ -34,6 +37,7 @@ const ARTICLES = [
     readTime: "7 min read",
   },
   {
+    slug: "the-pcos-supplement-protocol",
     categoryKey: "blog.catConditionGuide",
     tagClass: "bg-purple-50 text-purple-700 border-purple-200",
     accentClass: "bg-purple-500",
@@ -43,6 +47,7 @@ const ARTICLES = [
     readTime: "9 min read",
   },
   {
+    slug: "vitamin-d-why-80-percent-are-deficient",
     categoryKey: "blog.catResearchUpdate",
     tagClass: "bg-blue-50 text-blue-700 border-blue-200",
     accentClass: "bg-blue-500",
@@ -52,6 +57,7 @@ const ARTICLES = [
     readTime: "5 min read",
   },
   {
+    slug: "your-gut-brain-connection-probiotics-mental-health",
     categoryKey: "blog.catDeepDive",
     tagClass: "bg-amber-50 text-amber-700 border-amber-200",
     accentClass: "bg-amber-500",
@@ -148,6 +154,7 @@ export function BlogCarousel() {
               w-[80vw] sm:w-80 lg:w-[340px]"
             style={{ scrollSnapAlign: "start" }}
           >
+
             {/* Accent bar */}
             <div className={`h-1.5 w-full ${article.accentClass} flex-shrink-0`} />
 
@@ -174,7 +181,7 @@ export function BlogCarousel() {
                   {article.readTime}
                 </div>
                 <Link
-                  href="/blog"
+                  href={`/blog/${article.slug}`}
                   className="text-xs font-semibold text-[#0D9488] hover:text-[#0F766E] flex items-center gap-1 transition-colors"
                 >
                   Read more

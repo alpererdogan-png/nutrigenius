@@ -138,3 +138,19 @@
     scrollbar-width: none;
   }
 }
+
+/* Blog article prose styles */
+.prose-custom h2 {
+  font-family: var(--font-heading);
+}
+.prose-custom h3 {
+  font-family: var(--font-heading);
+}
+.prose-custom a {
+  color: #0D9488;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-custom a:hover {
+  color: #0F766E;
+}
