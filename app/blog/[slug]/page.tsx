@@ -421,6 +421,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const endProduct = articleSlots[1]?.product ?? null;
   const finalHtml = buildArticleHtml(baseHtml, inlineSlots, RECT_AD_AFTER_PARAGRAPHS);
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://nutrigenius-iota.vercel.app" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://nutrigenius-iota.vercel.app/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: `https://nutrigenius-iota.vercel.app/blog/${post.slug}` },
+    ],
+  };
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -447,6 +457,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-16 lg:pb-0">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

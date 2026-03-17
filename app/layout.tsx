@@ -40,6 +40,9 @@ export const metadata: Metadata = {
   publisher: "NutriGenius",
   alternates: {
     canonical: BASE_URL,
+    languages: {
+      "x-default": BASE_URL,
+    },
   },
   openGraph: {
     title: "NutriGenius — Free Personalized Supplement Recommendations",
@@ -78,6 +81,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://eemzruagujvgrioxyuxm.supabase.co" />
+        <link rel="dns-prefetch" href="https://eemzruagujvgrioxyuxm.supabase.co" />
+      </head>
       <body
         className={`${dmSans.variable} ${plusJakarta.variable} font-sans antialiased`}
       >
