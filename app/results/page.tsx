@@ -419,6 +419,7 @@ export default function ResultsPage() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [prefs, setPrefs] = useState<UserPrefs>({ country: "", halalPreference: false, labResults: [] });
   const [affiliateProducts, setAffiliateProducts] = useState<Record<string, AffiliateProduct[]>>({});
+  const [pdfLoading, setPdfLoading] = useState(false);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("nutrigenius_recommendations");
@@ -487,6 +488,33 @@ export default function ResultsPage() {
     );
   }
 
+  async function handleDownloadPdf() {
+    if (!result) return;
+    setPdfLoading(true);
+    try {
+      const res = await fetch("/api/generate-pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ result, userEmail }),
+      });
+      if (!res.ok) throw new Error("PDF generation failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const date = new Date().toISOString().slice(0, 10);
+      a.href = url;
+      a.download = `NutriGenius-Plan-${date}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      alert("Could not generate PDF. Please try again.");
+    } finally {
+      setPdfLoading(false);
+    }
+  }
+
   const { supplements, schedule, focusAreas, blockedSupplements } = result;
   const deficientLabs = getDeficientLabs(prefs.labResults);
 
@@ -535,14 +563,14 @@ export default function ResultsPage() {
         {/* Action buttons */}
         <div className="flex flex-wrap gap-3">
           <button
-            disabled
-            className="inline-flex items-center gap-2 bg-[#F8FAFC] border border-[#E8ECF1] text-[#8896A8] text-sm font-medium px-4 py-2.5 rounded-xl cursor-not-allowed"
+            onClick={handleDownloadPdf}
+            disabled={pdfLoading}
+            className="inline-flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] disabled:bg-[#F8FAFC] disabled:border disabled:border-[#E8ECF1] disabled:text-[#8896A8] text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed"
           >
-            <Download className="w-4 h-4" />
-            {t("results.downloadPdf")}
-            <span className="text-xs bg-[#E8ECF1] text-[#8896A8] px-2 py-0.5 rounded-full">
-              {t("results.comingSoon")}
-            </span>
+            {pdfLoading
+              ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating PDF…</>
+              : <><Download className="w-4 h-4" /> {t("results.downloadPdf")}</>
+            }
           </button>
           <button
             disabled
