@@ -210,36 +210,34 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Trust Bar ── */}
-      <section className="border-y border-[#E8ECF1] bg-white py-2 sm:py-5 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-12 text-xs sm:text-sm text-[#5A6578]">
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <FlaskConical className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D9488] flex-shrink-0" />
-            {t("trust.research")}
-          </div>
-          <div className="hidden sm:block w-px h-4 bg-[#E8ECF1]" />
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D9488] flex-shrink-0" />
-            {t("trust.drugChecks")}
-          </div>
-          <div className="hidden sm:block w-px h-4 bg-[#E8ECF1]" />
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <HeartPulse className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D9488] flex-shrink-0" />
-            {t("trust.clinicianDesigned")}
-          </div>
-        </div>
-      </section>
-
       {/* ── How It Works ── */}
-      <section id="how-it-works" className="py-16 sm:py-24 px-4 sm:px-6">
+      <section id="how-it-works" className="py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12 sm:mb-16">
+          <div className="text-center mb-8 sm:mb-10">
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A2332] mb-4">
               {t("how.title")}
             </h2>
             <p className="text-[#5A6578] text-lg max-w-2xl mx-auto">
               {t("how.description")}
             </p>
+          </div>
+
+          {/* Trust Bar */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-10 text-xs sm:text-sm text-[#5A6578] border border-[#E8ECF1] rounded-2xl bg-white px-4 py-3 sm:py-4 mb-8 sm:mb-10">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <FlaskConical className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D9488] flex-shrink-0" />
+              {t("trust.research")}
+            </div>
+            <div className="hidden sm:block w-px h-4 bg-[#E8ECF1]" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D9488] flex-shrink-0" />
+              {t("trust.drugChecks")}
+            </div>
+            <div className="hidden sm:block w-px h-4 bg-[#E8ECF1]" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <HeartPulse className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D9488] flex-shrink-0" />
+              {t("trust.clinicianDesigned")}
+            </div>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
