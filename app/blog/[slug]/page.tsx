@@ -29,12 +29,12 @@ interface BlogPost {
 
 type RelatedPost = Pick<BlogPost, "id" | "slug" | "title" | "excerpt" | "category" | "read_time" | "author_name" | "published_at" | "tags">;
 
-interface AffiliateProduct {
-  id: string;
+interface HardcodedProduct {
   product_name: string;
   brand: string;
   price_usd: number;
   affiliate_url: string;
+  note: string;
 }
 
 // ─── Category visual config ──────────────────────────────────────────────────
@@ -94,45 +94,149 @@ const CATEGORY_CONFIG: Record<string, CategoryConfig> = {
 
 const DEFAULT_CONFIG = CATEGORY_CONFIG["deep-dive"];
 
-// ─── Per-article affiliate product slots ─────────────────────────────────────
-// paraIndex = 0-based count of </p> tags — injection happens AFTER that paragraph
+// ─── Hardcoded affiliate product cards ───────────────────────────────────────
+// paraIndex = 0-based </p> count — card appears AFTER that paragraph
+// "After paragraph 1" = paraIndex 0, "After paragraph 4" = paraIndex 3
 
-interface ProductSlot {
-  paraIndex: number;
-  supplementName: string;
-  note: string;
-}
-
-const ARTICLE_PRODUCT_SLOTS: Record<string, ProductSlot[]> = {
+const ARTICLE_PRODUCTS: Record<string, Array<{ paraIndex: number; product: HardcodedProduct }>> = {
   "the-complete-guide-to-magnesium": [
-    { paraIndex: 0, supplementName: "Magnesium Glycinate", note: "Highest bioavailability — ideal for sleep & anxiety" },
-    { paraIndex: 6, supplementName: "Magnesium L-Threonate", note: "Crosses the blood-brain barrier for cognitive support" },
-  ],
-  "5-supplement-myths-your-doctor-didnt-learn": [
-    { paraIndex: 1, supplementName: "Vitamin D3", note: "Third-party verified D3 + K2 formula" },
-    { paraIndex: 5, supplementName: "Omega-3 Fish Oil", note: "IFOS 5-star certified ultra-pure fish oil" },
+    {
+      paraIndex: 0,
+      product: {
+        product_name: "NOW Foods Magnesium Glycinate",
+        brand: "NOW Foods",
+        price_usd: 12.99,
+        affiliate_url: "https://www.iherb.com/pr/now-foods-magnesium-glycinate?rcode=NUTRIGENIUS",
+        note: "Highest bioavailability — ideal for sleep & anxiety",
+      },
+    },
+    {
+      paraIndex: 3,
+      product: {
+        product_name: "Life Extension Neuro-Mag Magnesium L-Threonate",
+        brand: "Life Extension",
+        price_usd: 29.99,
+        affiliate_url: "https://www.iherb.com/pr/life-extension-neuro-mag-magnesium-l-threonate?rcode=NUTRIGENIUS",
+        note: "Crosses the blood-brain barrier — top choice for cognition",
+      },
+    },
   ],
   "supplements-that-dont-mix-critical-interactions": [
-    { paraIndex: 1, supplementName: "Omega-3 Fish Oil", note: "Pharmaceutical-grade omega-3 — tested for purity" },
-    { paraIndex: 5, supplementName: "Magnesium Glycinate", note: "Safe with most medications — well-tolerated chelated form" },
-  ],
-  "the-pcos-supplement-protocol": [
-    { paraIndex: 0, supplementName: "Myo-Inositol", note: "Clinically studied 40:1 myo:D-chiro inositol ratio" },
-    { paraIndex: 5, supplementName: "Vitamin D3", note: "Essential for PCOS hormone balance & insulin sensitivity" },
-    { paraIndex: 9, supplementName: "Berberine", note: "Evidence-backed AMPK activator — comparable to metformin" },
+    {
+      paraIndex: 0,
+      product: {
+        product_name: "Thorne Vitamin D/K2 Liquid",
+        brand: "Thorne",
+        price_usd: 24.99,
+        affiliate_url: "https://www.iherb.com/pr/thorne-vitamin-d-k2-liquid?rcode=NUTRIGENIUS",
+        note: "D3 + K2 combined — optimal for safe use alongside anticoagulants",
+      },
+    },
+    {
+      paraIndex: 3,
+      product: {
+        product_name: "Nordic Naturals Ultimate Omega",
+        brand: "Nordic Naturals",
+        price_usd: 33.99,
+        affiliate_url: "https://www.iherb.com/pr/nordic-naturals-ultimate-omega?rcode=NUTRIGENIUS",
+        note: "IFOS 5-star certified — pharmaceutical-grade purity",
+      },
+    },
   ],
   "vitamin-d-why-80-percent-are-deficient": [
-    { paraIndex: 0, supplementName: "Vitamin D3", note: "D3 + K2 combination for optimal calcium direction" },
-    { paraIndex: 6, supplementName: "Vitamin K2", note: "MK-7 form — highest bioavailability, once-daily dosing" },
+    {
+      paraIndex: 0,
+      product: {
+        product_name: "NOW Foods Vitamin D3 5000 IU",
+        brand: "NOW Foods",
+        price_usd: 11.99,
+        affiliate_url: "https://www.iherb.com/pr/now-foods-vitamin-d3-5000-iu?rcode=NUTRIGENIUS",
+        note: "Third-party tested · excellent value for daily deficiency correction",
+      },
+    },
+    {
+      paraIndex: 3,
+      product: {
+        product_name: "Thorne Vitamin D 5000 IU",
+        brand: "Thorne",
+        price_usd: 19.99,
+        affiliate_url: "https://www.iherb.com/pr/thorne-vitamin-d-5000?rcode=NUTRIGENIUS",
+        note: "NSF Certified · premium pharmaceutical-grade formulation",
+      },
+    },
+  ],
+  "the-pcos-supplement-protocol": [
+    {
+      paraIndex: 0,
+      product: {
+        product_name: "Wholesome Story Myo-Inositol",
+        brand: "Wholesome Story",
+        price_usd: 23.99,
+        affiliate_url: "https://www.iherb.com/pr/wholesome-story-myo-inositol?rcode=NUTRIGENIUS",
+        note: "Clinically studied 40:1 myo:D-chiro inositol ratio",
+      },
+    },
+    {
+      paraIndex: 3,
+      product: {
+        product_name: "Jarrow Formulas NAC Sustain",
+        brand: "Jarrow Formulas",
+        price_usd: 15.99,
+        affiliate_url: "https://www.iherb.com/pr/jarrow-formulas-nac-sustain?rcode=NUTRIGENIUS",
+        note: "Sustained-release NAC — antioxidant & insulin-sensitising support",
+      },
+    },
   ],
   "your-gut-brain-connection-probiotics-mental-health": [
-    { paraIndex: 0, supplementName: "Probiotic Complex", note: "Multi-strain Lactobacillus + Bifidobacterium psychobiotic" },
-    { paraIndex: 6, supplementName: "Omega-3 Fish Oil", note: "Anti-inflammatory support for the gut-brain axis" },
+    {
+      paraIndex: 0,
+      product: {
+        product_name: "Garden of Life Dr. Formulated Probiotics",
+        brand: "Garden of Life",
+        price_usd: 34.99,
+        affiliate_url: "https://www.iherb.com/pr/garden-of-life-dr-formulated-probiotics?rcode=NUTRIGENIUS",
+        note: "Clinician-formulated psychobiotic blend — Lactobacillus + Bifidobacterium",
+      },
+    },
+    {
+      paraIndex: 3,
+      product: {
+        product_name: "Jarrow Formulas Saccharomyces Boulardii",
+        brand: "Jarrow Formulas",
+        price_usd: 14.99,
+        affiliate_url: "https://www.iherb.com/pr/jarrow-formulas-saccharomyces-boulardii?rcode=NUTRIGENIUS",
+        note: "Evidence-backed probiotic yeast for gut microbiome restoration",
+      },
+    },
+  ],
+  "5-supplement-myths-your-doctor-didnt-learn": [
+    {
+      paraIndex: 0,
+      product: {
+        product_name: "Pure Encapsulations B-Complex Plus",
+        brand: "Pure Encapsulations",
+        price_usd: 24.99,
+        affiliate_url: "https://www.iherb.com/pr/pure-encapsulations-b-complex-plus?rcode=NUTRIGENIUS",
+        note: "Hypoallergenic · all active B-vitamin forms for maximum absorption",
+      },
+    },
+    {
+      paraIndex: 3,
+      product: {
+        product_name: "Life Extension Vitamin C",
+        brand: "Life Extension",
+        price_usd: 10.99,
+        affiliate_url: "https://www.iherb.com/pr/life-extension-vitamin-c?rcode=NUTRIGENIUS",
+        note: "High-potency buffered vitamin C with bioflavonoids",
+      },
+    },
   ],
 };
 
-// In-article ad placement (paragraph indices — skipped if affiliate card present at same index)
-const AD_PARAGRAPH_INDICES = [2, 7, 12];
+// Rectangle ads show at these paragraph indices (skipped if affiliate card at same index)
+const RECT_AD_INDICES = [6, 11];
+// Leaderboard ad always goes after paragraph 2 (paraIndex 1)
+const LEADERBOARD_INDEX = 1;
 
 // ─── Data fetching ────────────────────────────────────────────────────────────
 
@@ -159,32 +263,7 @@ async function getRelatedPosts(post: BlogPost): Promise<RelatedPost[]> {
   return (data ?? []) as RelatedPost[];
 }
 
-async function getAffiliateProducts(slug: string): Promise<Map<string, AffiliateProduct>> {
-  const slots = ARTICLE_PRODUCT_SLOTS[slug] ?? [];
-  if (slots.length === 0) return new Map();
-
-  const supplementNames = [...new Set(slots.map((s) => s.supplementName))];
-  const supabase = await createClient();
-
-  const { data } = await supabase
-    .from("affiliate_products")
-    .select("id, product_name, brand, price_usd, affiliate_url, supplements!inner(name)")
-    .in("supplements.name", supplementNames)
-    .order("quality_verified", { ascending: false })
-    .order("price_usd", { ascending: true });
-
-  const map = new Map<string, AffiliateProduct>();
-  for (const row of data ?? []) {
-    const name = (row.supplements as unknown as { name: string })?.name;
-    if (name && !map.has(name)) {
-      const { supplements: _, ...product } = row;
-      map.set(name, product as AffiliateProduct);
-    }
-  }
-  return map;
-}
-
-// ─── Content injection helpers ────────────────────────────────────────────────
+// ─── Content splitting ────────────────────────────────────────────────────────
 
 function splitByParagraphs(html: string): string[] {
   const segments: string[] = [];
@@ -203,26 +282,27 @@ function splitByParagraphs(html: string): string[] {
 
 // ─── UI sub-components ────────────────────────────────────────────────────────
 
-function AffiliateCard({ product, note }: { product: AffiliateProduct; note: string }) {
+function AffiliateCard({ product }: { product: HardcodedProduct }) {
   return (
-    <div className="my-6 flex items-stretch gap-0 bg-white rounded-xl border border-[#E8ECF1] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-      <div className="w-1 bg-[#0D9488] flex-shrink-0" />
-      <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 flex-1">
+    <div className="my-6 flex items-stretch bg-white rounded-xl border border-[#E8ECF1] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      <div className="w-1.5 bg-[#0D9488] flex-shrink-0" />
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 flex-1 min-w-0">
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] font-semibold text-[#0D9488] uppercase tracking-wider mb-0.5">
+          <p className="text-[10px] font-semibold text-[#0D9488] uppercase tracking-wider mb-1">
             Recommended Product
           </p>
-          <p className="text-sm font-bold text-[#1A2332] leading-snug truncate">{product.product_name}</p>
+          <p className="text-sm font-bold text-[#1A2332] leading-snug">{product.product_name}</p>
           <p className="text-xs text-[#5A6578] mt-0.5">{product.brand}</p>
-          <p className="text-xs text-[#8896A8] mt-1 leading-relaxed">{note}</p>
+          <p className="text-xs text-[#8896A8] mt-1.5 leading-relaxed">{product.note}</p>
+          <p className="text-[10px] text-[#B0BAC9] mt-1.5">Affiliate link — we may earn a commission at no extra cost to you.</p>
         </div>
         <div className="flex sm:flex-col items-center sm:items-end gap-3 flex-shrink-0">
-          <span className="text-base font-bold text-[#1A2332]">${product.price_usd.toFixed(2)}</span>
+          <span className="text-lg font-bold text-[#1A2332]">${product.price_usd.toFixed(2)}</span>
           <a
             href={product.affiliate_url}
             target="_blank"
             rel="noopener noreferrer nofollow"
-            className="inline-flex items-center gap-1.5 bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition-colors whitespace-nowrap"
+            className="inline-flex items-center gap-1.5 bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
           >
             Shop on iHerb <ExternalLink className="w-3 h-3" />
           </a>
@@ -237,7 +317,7 @@ function InlineAdSlot({ type = "rectangle" }: { type?: "leaderboard" | "rectangl
   return (
     <div
       className={`my-6 flex items-center justify-center border border-dashed border-[#CBD5E1] bg-[#F8FAFC] rounded-xl ${
-        isLeaderboard ? "h-[90px] w-full max-w-[728px] mx-auto" : "h-[250px] sm:h-[200px]"
+        isLeaderboard ? "h-[90px] w-full max-w-[728px] mx-auto" : "h-[200px]"
       }`}
     >
       <div className="text-center">
@@ -296,38 +376,39 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const config = CATEGORY_CONFIG[post.category] ?? DEFAULT_CONFIG;
   const CategoryIcon = config.icon;
 
-  const [related, affiliateProducts, htmlContent] = await Promise.all([
+  const [related, htmlContent] = await Promise.all([
     getRelatedPosts(post),
-    getAffiliateProducts(slug),
     Promise.resolve(markdownToHtml(post.content)),
   ]);
 
   const toc = extractTOC(post.content);
-  const slots = ARTICLE_PRODUCT_SLOTS[slug] ?? [];
+  const articleSlots = ARTICLE_PRODUCTS[slug] ?? [];
+  const affiliateIndices = new Set(articleSlots.map((s) => s.paraIndex));
 
-  // Build injection map: paraIndex → ReactNode
-  const affiliateIndices = new Set(slots.map((s) => s.paraIndex));
-  const injectionEntries: Array<{ paraIndex: number; type: "affiliate" | "ad"; slotIndex?: number }> = [];
+  // Build injection map: paraIndex → what to render after that segment
+  type Injection =
+    | { kind: "affiliate"; product: HardcodedProduct }
+    | { kind: "ad-leaderboard" }
+    | { kind: "ad-rectangle" };
 
-  slots.forEach((slot, i) => {
-    injectionEntries.push({ paraIndex: slot.paraIndex, type: "affiliate", slotIndex: i });
-  });
-  AD_PARAGRAPH_INDICES.forEach((idx) => {
-    if (!affiliateIndices.has(idx)) {
-      injectionEntries.push({ paraIndex: idx, type: "ad" });
+  const injectionMap = new Map<number, Injection>();
+
+  // 1. Affiliate cards (highest priority)
+  for (const slot of articleSlots) {
+    injectionMap.set(slot.paraIndex, { kind: "affiliate", product: slot.product });
+  }
+
+  // 2. Leaderboard after paragraph 2 (paraIndex 1) — skip if affiliate card there
+  if (!affiliateIndices.has(LEADERBOARD_INDEX)) {
+    injectionMap.set(LEADERBOARD_INDEX, { kind: "ad-leaderboard" });
+  }
+
+  // 3. Rectangle ads at configured indices — skip if affiliate card already there
+  for (const idx of RECT_AD_INDICES) {
+    if (!affiliateIndices.has(idx) && idx !== LEADERBOARD_INDEX) {
+      injectionMap.set(idx, { kind: "ad-rectangle" });
     }
-  });
-
-  // Create a map for quick lookup
-  type InjectionEntry = { type: "affiliate"; slot: ProductSlot } | { type: "ad" };
-  const injectionMap = new Map<number, InjectionEntry>();
-  injectionEntries.forEach(({ paraIndex, type, slotIndex }) => {
-    if (type === "affiliate" && slotIndex !== undefined) {
-      injectionMap.set(paraIndex, { type: "affiliate", slot: slots[slotIndex] });
-    } else if (type === "ad") {
-      injectionMap.set(paraIndex, { type: "ad" });
-    }
-  });
+  }
 
   const contentSegments = splitByParagraphs(htmlContent);
 
@@ -356,7 +437,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </span>
       </div>
 
-      {/* Title + excerpt (no author here) */}
+      {/* Title + excerpt */}
       <div className="bg-white border-b border-[#E8ECF1]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A2332] leading-tight mb-3 max-w-3xl">
@@ -375,15 +456,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {/* ── Article body ── */}
           <article>
             {/* Affiliate disclosure */}
-            <p className="text-xs text-[#8896A8] mb-4">
-              This article may contain affiliate links.{" "}
+            <p className="text-xs text-[#B0BAC9] mb-5">
+              This article contains affiliate links. If you purchase through our links, we may earn a small commission at no extra cost to you.{" "}
               <Link href="/blog" className="underline hover:text-[#0D9488] transition-colors">
-                See our disclosure.
+                Disclosure policy.
               </Link>
             </p>
-
-            {/* Leaderboard ad slot */}
-            <InlineAdSlot type="leaderboard" />
 
             {/* Article content with injected cards/ads */}
             <div className="prose-custom">
@@ -392,19 +470,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 return (
                   <div key={i}>
                     <div dangerouslySetInnerHTML={{ __html: seg }} />
-                    {injection?.type === "affiliate" && (() => {
-                      const product = affiliateProducts.get(injection.slot.supplementName);
-                      return product ? (
-                        <AffiliateCard product={product} note={injection.slot.note} />
-                      ) : null;
-                    })()}
-                    {injection?.type === "ad" && <InlineAdSlot type="rectangle" />}
+                    {injection?.kind === "affiliate" && (
+                      <AffiliateCard product={injection.product} />
+                    )}
+                    {injection?.kind === "ad-leaderboard" && (
+                      <InlineAdSlot type="leaderboard" />
+                    )}
+                    {injection?.kind === "ad-rectangle" && (
+                      <InlineAdSlot type="rectangle" />
+                    )}
                   </div>
                 );
               })}
             </div>
 
-            {/* Author / date — at bottom */}
+            {/* Author / date — at bottom of article */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-[#5A6578] mt-10 pt-8 border-t border-[#E8ECF1]">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
@@ -428,7 +508,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {/* Tags */}
             {post.tags?.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-5">
-                <Tag className="w-4 h-4 text-[#8896A8] mt-0.5" />
+                <Tag className="w-4 h-4 text-[#8896A8] mt-0.5 flex-shrink-0" />
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
