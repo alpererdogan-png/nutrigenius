@@ -15,7 +15,8 @@ function slugify(text: string): string {
 
 export function extractTOC(markdown: string): TOCItem[] {
   const items: TOCItem[] = [];
-  const lines = markdown.split("\n");
+  const normalised = markdown.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  const lines = normalised.split("\n");
   for (const line of lines) {
     const match = line.match(/^(#{2,3})\s+(.+)$/);
     if (match) {
@@ -28,7 +29,7 @@ export function extractTOC(markdown: string): TOCItem[] {
 }
 
 export function markdownToHtml(markdown: string): string {
-  let html = markdown;
+  let html = markdown.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
   // Tables
   html = html.replace(

@@ -175,9 +175,27 @@ export default function BlogPage() {
 
       {/* Sticky filters */}
       <div className="bg-white border-b border-[#E8ECF1] sticky top-0 z-10 shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3">
-          {/* Search row */}
-          <div className="relative w-full sm:w-64 mb-2.5 sm:mb-0 sm:float-right">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center gap-2.5">
+          {/* Category pills — wrap on desktop, scroll on mobile */}
+          <div className="flex-1 min-w-0 overflow-x-auto sm:overflow-visible no-scrollbar">
+            <div className="flex flex-nowrap sm:flex-wrap gap-2">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.value}
+                  onClick={() => setCategory(cat.value)}
+                  className={`flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full border transition-all duration-150 whitespace-nowrap ${
+                    category === cat.value
+                      ? "bg-[#0D9488] text-white border-[#0D9488]"
+                      : "bg-white text-[#5A6578] border-[#E8ECF1] hover:border-[#0D9488]/40 hover:text-[#0D9488]"
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          {/* Search */}
+          <div className="relative flex-shrink-0 w-full sm:w-56">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8896A8]" />
             <input
               type="text"
@@ -186,25 +204,6 @@ export default function BlogPage() {
               onChange={(e) => setSearchInput(e.target.value)}
               className="w-full pl-9 pr-3 py-2 text-sm bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl focus:outline-none focus:border-[#0D9488] focus:ring-1 focus:ring-[#0D9488]/20 text-[#1A2332] placeholder:text-[#8896A8]"
             />
-          </div>
-          {/* Category pills — always a single scrollable row */}
-          <div
-            className="flex gap-2 no-scrollbar"
-            style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}
-          >
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.value}
-                onClick={() => setCategory(cat.value)}
-                className={`flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full border transition-all duration-150 ${
-                  category === cat.value
-                    ? "bg-[#0D9488] text-white border-[#0D9488]"
-                    : "bg-white text-[#5A6578] border-[#E8ECF1] hover:border-[#0D9488]/40 hover:text-[#0D9488]"
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
           </div>
         </div>
       </div>

@@ -2,13 +2,14 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ArrowLeft, Clock, Calendar, Tag,
+  ArrowLeft, Tag,
   FlaskConical, ShieldAlert, AlertTriangle,
   HeartPulse, TrendingUp, Brain,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
 import { markdownToHtml, extractTOC } from "@/lib/markdown";
+import { MobileFooterAd } from "./MobileFooterAd";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -351,10 +352,6 @@ function formatCategory(cat: string): string {
   return cat.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
 }
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-}
-
 // ─── Ad slot components ───────────────────────────────────────────────────────
 
 function SidebarAdSlot() {
@@ -404,7 +401,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const toc = extractTOC(post.content);
   const articleSlots = ARTICLE_PRODUCTS[slug] ?? [];
-  const finalHtml = buildArticleHtml(baseHtml, articleSlots, RECT_AD_AFTER_PARAGRAPHS);
+  // First slot goes inline; second slot renders at the end of the article in JSX
+  const inlineSlots = articleSlots.slice(0, 1);
+  const endProduct = articleSlots[1]?.product ?? null;
+  const finalHtml = buildArticleHtml(baseHtml, inlineSlots, RECT_AD_AFTER_PARAGRAPHS);
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-16 lg:pb-0">
@@ -455,41 +455,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {/* ── Article body ── */}
           <article>
-            {/* Affiliate disclosure */}
-            <p className="text-xs text-[#B0BAC9] mb-5">
-              This article contains affiliate links. If you purchase through our links we may earn a small commission at no extra cost to you.
-            </p>
-
             {/* Article content — affiliate cards and ads are injected directly into the HTML */}
             <div
               className="prose-custom"
               dangerouslySetInnerHTML={{ __html: finalHtml }}
             />
 
-            {/* Author / date — at bottom of article */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-[#5A6578] mt-10 pt-8 border-t border-[#E8ECF1]">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                  {post.author_name.split(" ").map((w) => w[0]).join("").slice(0, 2)}
-                </div>
-                <div>
-                  <p className="font-semibold text-[#1A2332] text-xs">{post.author_name}</p>
-                  <p className="text-[10px] text-[#8896A8]">{post.author_title}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-1.5 text-xs">
-                <Calendar className="w-3.5 h-3.5" />
-                {formatDate(post.published_at)}
-              </div>
-              <div className="flex items-center gap-1.5 text-xs">
-                <Clock className="w-3.5 h-3.5" />
-                {post.read_time}
-              </div>
-            </div>
-
             {/* Tags */}
             {post.tags?.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-5">
+              <div className="flex flex-wrap gap-2 mt-8 pt-8 border-t border-[#E8ECF1]">
                 <Tag className="w-4 h-4 text-[#8896A8] mt-0.5 flex-shrink-0" />
                 {post.tags.map((tag) => (
                   <span
@@ -502,21 +476,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </div>
             )}
 
-            {/* Author bio */}
-            <div className="mt-8 p-5 bg-white rounded-2xl border border-[#E8ECF1]">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                  {post.author_name.split(" ").map((w) => w[0]).join("").slice(0, 2)}
-                </div>
-                <div>
-                  <p className="font-semibold text-[#1A2332]">{post.author_name}</p>
-                  <p className="text-sm text-[#0D9488]">{post.author_title}</p>
-                  <p className="text-sm text-[#5A6578] mt-2 leading-relaxed">
-                    Our editorial team applies rigorous evidence standards to every article — citing primary research, systematic reviews, and meta-analyses, never anecdote alone.
-                  </p>
-                </div>
-              </div>
-            </div>
+            {/* Second affiliate card — end of article */}
+            {endProduct && (
+              <div
+                className="mt-6"
+                dangerouslySetInnerHTML={{ __html: affiliateCardHtml(endProduct) }}
+              />
+            )}
+
+            {/* Affiliate disclosure */}
+            <p className="text-[11px] text-[#C4CDD8] mt-4 mb-0 leading-relaxed">
+              This article may contain affiliate links. If you purchase through our links we earn a small commission at no extra cost to you. This does not influence our editorial recommendations.
+            </p>
 
             {/* CTA */}
             <div className="mt-6 p-6 bg-gradient-to-br from-teal-50 to-teal-100/60 rounded-2xl border border-teal-200/60">
@@ -628,12 +599,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       )}
 
       {/* Mobile sticky footer ad */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 flex items-center justify-center h-[50px] border-t border-dashed border-[#CBD5E1] bg-[#F8FAFC]">
-        <div className="text-center">
-          <p className="text-[10px] font-medium text-[#94A3B8] uppercase tracking-wider">Advertisement</p>
-          <p className="text-[9px] text-[#CBD5E1]">320×50</p>
-        </div>
-      </div>
+      <MobileFooterAd />
     </div>
   );
 }
