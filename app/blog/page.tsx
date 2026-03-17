@@ -2,7 +2,12 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import { ArrowRight, Clock, Search, BookOpen } from "lucide-react";
+import {
+  ArrowRight, Clock, Search, BookOpen,
+  FlaskConical, ShieldAlert, AlertTriangle,
+  HeartPulse, TrendingUp, Brain,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase-browser";
 import { useLanguage } from "@/lib/language-context";
 
@@ -28,21 +33,76 @@ const CATEGORIES = [
   { value: "deep-dive", label: "Deep Dive" },
 ];
 
-const CATEGORY_STYLES: Record<string, { tag: string; accent: string }> = {
-  "evidence-review": { tag: "bg-teal-50 text-teal-700 border-teal-200", accent: "bg-teal-500" },
-  "myth-busting": { tag: "bg-orange-50 text-orange-700 border-orange-200", accent: "bg-orange-400" },
-  "safety-alert": { tag: "bg-red-50 text-red-700 border-red-200", accent: "bg-red-500" },
-  "condition-guide": { tag: "bg-purple-50 text-purple-700 border-purple-200", accent: "bg-purple-500" },
-  "research-update": { tag: "bg-blue-50 text-blue-700 border-blue-200", accent: "bg-blue-500" },
-  "deep-dive": { tag: "bg-amber-50 text-amber-700 border-amber-200", accent: "bg-amber-500" },
+interface CategoryConfig {
+  gradient: string;
+  decorColor: string;
+  icon: LucideIcon;
+  tag: string;
+  accent: string;
+}
+
+const CATEGORY_CONFIG: Record<string, CategoryConfig> = {
+  "evidence-review": {
+    gradient: "bg-gradient-to-br from-teal-500 to-teal-700",
+    decorColor: "bg-teal-400",
+    icon: FlaskConical,
+    tag: "bg-teal-50 text-teal-700 border-teal-200",
+    accent: "bg-teal-500",
+  },
+  "myth-busting": {
+    gradient: "bg-gradient-to-br from-orange-400 to-rose-500",
+    decorColor: "bg-orange-300",
+    icon: ShieldAlert,
+    tag: "bg-orange-50 text-orange-700 border-orange-200",
+    accent: "bg-orange-400",
+  },
+  "safety-alert": {
+    gradient: "bg-gradient-to-br from-red-500 to-rose-700",
+    decorColor: "bg-red-400",
+    icon: AlertTriangle,
+    tag: "bg-red-50 text-red-700 border-red-200",
+    accent: "bg-red-500",
+  },
+  "condition-guide": {
+    gradient: "bg-gradient-to-br from-purple-500 to-purple-800",
+    decorColor: "bg-purple-400",
+    icon: HeartPulse,
+    tag: "bg-purple-50 text-purple-700 border-purple-200",
+    accent: "bg-purple-500",
+  },
+  "research-update": {
+    gradient: "bg-gradient-to-br from-blue-500 to-blue-700",
+    decorColor: "bg-blue-400",
+    icon: TrendingUp,
+    tag: "bg-blue-50 text-blue-700 border-blue-200",
+    accent: "bg-blue-500",
+  },
+  "deep-dive": {
+    gradient: "bg-gradient-to-br from-amber-400 to-orange-600",
+    decorColor: "bg-amber-300",
+    icon: Brain,
+    tag: "bg-amber-50 text-amber-700 border-amber-200",
+    accent: "bg-amber-500",
+  },
 };
+
+const DEFAULT_CONFIG = CATEGORY_CONFIG["deep-dive"];
 
 function formatCategory(cat: string): string {
   return cat.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
 }
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+function CardBanner({ config }: { config: CategoryConfig }) {
+  const Icon = config.icon;
+  return (
+    <div className={`h-20 sm:h-[120px] ${config.gradient} flex items-center justify-center relative overflow-hidden flex-shrink-0`}>
+      {/* Decorative circles */}
+      <div className={`absolute -right-6 -bottom-6 w-28 h-28 rounded-full ${config.decorColor} opacity-20`} />
+      <div className={`absolute -left-4 -top-4 w-20 h-20 rounded-full ${config.decorColor} opacity-15`} />
+      <div className={`absolute right-8 top-3 w-8 h-8 rounded-full ${config.decorColor} opacity-10`} />
+      <Icon className="w-9 h-9 sm:w-11 sm:h-11 text-white/90 relative z-10 drop-shadow-md" />
+    </div>
+  );
 }
 
 export default function BlogPage() {
@@ -80,7 +140,7 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      {/* Header */}
+      {/* Page header */}
       <div className="bg-white border-b border-[#E8ECF1]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
           <div className="flex items-center gap-2 mb-3">
@@ -95,12 +155,11 @@ export default function BlogPage() {
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white border-b border-[#E8ECF1] sticky top-0 z-10">
+      {/* Sticky filters */}
+      <div className="bg-white border-b border-[#E8ECF1] sticky top-0 z-10 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3">
           <div className="flex flex-col sm:flex-row gap-3">
-            {/* Search */}
-            <div className="relative flex-1 max-w-xs">
+            <div className="relative flex-shrink-0 w-full sm:w-56">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8896A8]" />
               <input
                 type="text"
@@ -110,8 +169,7 @@ export default function BlogPage() {
                 className="w-full pl-9 pr-3 py-2 text-sm bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl focus:outline-none focus:border-[#0D9488] focus:ring-1 focus:ring-[#0D9488]/20 text-[#1A2332] placeholder:text-[#8896A8]"
               />
             </div>
-            {/* Category pills */}
-            <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+            <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar flex-1">
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.value}
@@ -130,13 +188,13 @@ export default function BlogPage() {
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+      {/* Article grid */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
         {loading ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#E8ECF1] overflow-hidden animate-pulse">
-                <div className="h-1.5 bg-[#E8ECF1]" />
+              <div key={i} className="bg-white rounded-2xl border border-[#E8ECF1] overflow-hidden animate-pulse shadow-sm">
+                <div className="h-20 sm:h-[120px] bg-[#E8ECF1]" />
                 <div className="p-5 space-y-3">
                   <div className="h-4 w-24 bg-[#F1F5F9] rounded-full" />
                   <div className="h-5 bg-[#F1F5F9] rounded" />
@@ -154,32 +212,45 @@ export default function BlogPage() {
             <p className="text-sm mt-1">Try adjusting your search or filter.</p>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map((post) => {
-              const style = CATEGORY_STYLES[post.category] ?? CATEGORY_STYLES["deep-dive"];
+              const config = CATEGORY_CONFIG[post.category] ?? DEFAULT_CONFIG;
+              const Icon = config.icon;
               return (
                 <Link
                   key={post.id}
                   href={`/blog/${post.slug}`}
-                  className="group flex flex-col bg-white border border-[#E8ECF1] rounded-2xl overflow-hidden hover:border-[#0D9488]/30 hover:shadow-lg hover:shadow-teal-500/5 hover:-translate-y-0.5 transition-all duration-300"
+                  className="group flex flex-col bg-white border border-[#E8ECF1] rounded-2xl overflow-hidden
+                    hover:border-transparent hover:shadow-2xl hover:shadow-black/8
+                    hover:-translate-y-1 hover:scale-[1.015]
+                    transition-all duration-300 ease-out"
                 >
-                  <div className={`h-1.5 w-full ${style.accent} flex-shrink-0`} />
-                  <div className="p-5 flex flex-col flex-1">
-                    <span className={`self-start inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border mb-3 ${style.tag}`}>
+                  {/* Gradient banner */}
+                  <div className={`h-20 sm:h-[120px] ${config.gradient} flex items-center justify-center relative overflow-hidden flex-shrink-0`}>
+                    <div className={`absolute -right-6 -bottom-6 w-28 h-28 rounded-full ${config.decorColor} opacity-20`} />
+                    <div className={`absolute -left-4 -top-4 w-20 h-20 rounded-full ${config.decorColor} opacity-15`} />
+                    <div className={`absolute right-8 top-3 w-8 h-8 rounded-full ${config.decorColor} opacity-10`} />
+                    <Icon className="w-9 h-9 sm:w-11 sm:h-11 text-white/90 relative z-10 drop-shadow-md group-hover:scale-110 transition-transform duration-300" />
+                    {/* Category pill overlay */}
+                    <span className="absolute bottom-3 left-3 text-[10px] font-semibold text-white/90 bg-black/20 backdrop-blur-sm px-2 py-0.5 rounded-full">
                       {formatCategory(post.category)}
                     </span>
-                    <h2 className="font-heading text-[15px] font-bold text-[#1A2332] leading-snug mb-3 group-hover:text-[#0D9488] transition-colors line-clamp-3 flex-1">
+                  </div>
+
+                  {/* Card body */}
+                  <div className="p-5 sm:p-6 flex flex-col flex-1">
+                    <h2 className="font-heading text-[15px] font-bold text-[#1A2332] leading-snug mb-3 group-hover:text-[#0D9488] transition-colors duration-200 line-clamp-3 flex-1">
                       {post.title}
                     </h2>
-                    <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-4">
+                    <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-5">
                       {post.excerpt}
                     </p>
-                    <div className="flex items-center justify-between pt-3 border-t border-[#E8ECF1] mt-auto">
+                    <div className="flex items-center justify-between pt-3.5 border-t border-[#E8ECF1] mt-auto">
                       <div className="flex items-center gap-1.5 text-xs text-[#8896A8]">
                         <Clock className="w-3.5 h-3.5" />
                         {post.read_time}
                       </div>
-                      <span className="text-xs font-semibold text-[#0D9488] flex items-center gap-1">
+                      <span className="text-xs font-semibold text-[#0D9488] flex items-center gap-1 group-hover:gap-2 transition-all">
                         Read more <ArrowRight className="w-3.5 h-3.5" />
                       </span>
                     </div>
