@@ -60,7 +60,7 @@ export function LanguageSwitcher() {
 
       {open && (
         <div
-          className="absolute top-full mt-1 end-0 bg-white border border-[#E8ECF1] rounded-xl shadow-lg shadow-black/5 z-[100] min-w-[160px] py-1 overflow-hidden"
+          className="absolute top-full mt-1 right-0 bg-white border border-[#E8ECF1] rounded-xl shadow-lg shadow-black/5 z-[100] min-w-[160px] py-1 overflow-hidden"
           role="listbox"
           aria-label="Language options"
         >

@@ -15,12 +15,13 @@
     "ctaSecondary": "Voir comment ça marche",
     "usersLabel": "utilisateurs",
     "noAccount": "Aucun compte requis",
-    "freeTime": "100% gratuit · 5 min"
+    "freeTime": "100% gratuit · 5 min",
+    "descriptionShort": "Complétez une évaluation de 5 minutes et recevez un protocole personnalisé de compléments avec niveaux de preuve."
   },
   "blog": {
     "badge": "Centre de Connaissances Cliniques",
-    "title": "La science derrière vos compléments",
-    "description": "Articles fondés sur les preuves rédigés par des experts cliniques pour vous aider à prendre des décisions de santé éclairées.",
+    "title": "La science d'une vie saine",
+    "description": "Articles d'experts sur la nutrition fondée sur les preuves pour une meilleure santé.",
     "cta": "Explorer tous les articles",
     "catEvidenceReview": "Revue de preuves",
     "catMythBusting": "Déconstruction des mythes",

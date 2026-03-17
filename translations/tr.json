@@ -15,12 +15,13 @@
     "ctaSecondary": "Nasıl Çalıştığını Gör",
     "usersLabel": "kullanıcı",
     "noAccount": "Hesap gerekmez",
-    "freeTime": "Tamamen ücretsiz · 5 dak"
+    "freeTime": "Tamamen ücretsiz · 5 dak",
+    "descriptionShort": "5 dakikalık bir değerlendirme yapın ve kanıt derecelendirmeleriyle kişisel bir takviye protokolü alın."
   },
   "blog": {
     "badge": "Klinik Bilgi Merkezi",
-    "title": "Takviyelerinizin Arkasındaki Bilim",
-    "description": "Bilinçli sağlık kararları vermenize yardımcı olmak için klinisyen uzmanlar tarafından yazılmış kanıta dayalı makaleler.",
+    "title": "Sağlıklı Yaşamın Bilimi",
+    "description": "Daha sağlıklı yaşamak için kanıta dayalı beslenme üzerine uzman makaleleri.",
     "cta": "Tüm Makaleleri Keşfet",
     "catEvidenceReview": "Kanıt İncelemesi",
     "catMythBusting": "Efsane Çürütme",

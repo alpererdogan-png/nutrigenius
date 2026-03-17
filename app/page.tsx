@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import {
   Shield,
@@ -13,6 +14,8 @@ import {
   Star,
   CheckCircle2,
   BookOpen,
+  Menu,
+  X,
 } from "lucide-react";
 import { BlogCarousel } from "./components/BlogCarousel";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -20,6 +23,7 @@ import { useLanguage } from "@/lib/language-context";
 
 export default function Home() {
   const { t } = useLanguage();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#FAFBFC] text-[#1A2332]">
@@ -34,6 +38,7 @@ export default function Home() {
               Nutri<span className="text-[#0D9488]">Genius</span>
             </span>
           </div>
+          {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-5 text-sm text-[#5A6578]">
             <Link href="#how-it-works" className="hover:text-[#0D9488] transition-colors duration-200">
               {t("nav.howItWorks")}
@@ -49,26 +54,59 @@ export default function Home() {
             </Link>
             <LanguageSwitcher />
           </div>
-          <div className="flex items-center gap-3 sm:hidden">
-            <LanguageSwitcher />
-            <Link
-              href="/quiz"
-              className="bg-[#0D9488] hover:bg-[#0F766E] text-white text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
-            >
-              {t("nav.cta")}
-            </Link>
-          </div>
           <Link
             href="/quiz"
             className="hidden sm:inline-flex bg-[#0D9488] hover:bg-[#0F766E] text-white text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
           >
             {t("nav.cta")}
           </Link>
+          {/* Mobile: language + hamburger */}
+          <div className="flex items-center gap-1 sm:hidden">
+            <LanguageSwitcher />
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="w-10 h-10 flex items-center justify-center rounded-lg text-[#5A6578] hover:bg-[#F1F5F9] transition-colors"
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+        {/* Mobile slide-down menu */}
+        {menuOpen && (
+          <div className="sm:hidden border-t border-[#E8ECF1] bg-white/95 backdrop-blur-md">
+            <div className="max-w-6xl mx-auto px-4 py-2 space-y-0">
+              {[
+                { href: "#how-it-works", label: t("nav.howItWorks") },
+                { href: "#features", label: t("nav.features") },
+                { href: "#safety", label: t("nav.safety") },
+                { href: "/blog", label: t("nav.blog") },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center py-3 text-sm text-[#5A6578] hover:text-[#0D9488] border-b border-[#F1F5F9] last:border-0 transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <Link
+                href="/quiz"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-5 py-3 rounded-xl text-sm transition-colors mt-3 mb-2"
+              >
+                {t("hero.cta")}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* ── Hero Section ── */}
-      <section className="relative pt-20 sm:pt-22 pb-5 px-4 sm:px-6 overflow-hidden">
+      <section className="relative pt-16 sm:pt-20 pb-2 sm:pb-8 px-4 sm:px-6 overflow-hidden">
         {/* Background decoration */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-[#F0FDFA] via-[#CCFBF1]/20 to-transparent rounded-full translate-x-1/3 -translate-y-1/4" />
@@ -88,16 +126,20 @@ export default function Home() {
               {t("hero.badge")}
             </div>
 
-            <h1 className="font-heading text-3xl sm:text-4xl font-bold leading-[1.1] tracking-tight text-[#1A2332] mb-3">
+            <h1 className="font-heading text-2xl sm:text-4xl font-bold leading-[1.1] tracking-tight text-[#1A2332] mb-2 sm:mb-3">
               {t("hero.title")}{" "}
               <span className="text-[#0D9488]">{t("hero.titleHighlight")}</span>
             </h1>
 
-            <p className="text-sm sm:text-base text-[#5A6578] leading-relaxed mb-4 max-w-xl">
+            {/* Short description on mobile, full on desktop */}
+            <p className="sm:hidden text-sm text-[#5A6578] leading-relaxed mb-3 max-w-xl">
+              {t("hero.descriptionShort")}
+            </p>
+            <p className="hidden sm:block text-base text-[#5A6578] leading-relaxed mb-4 max-w-xl">
               {t("hero.description")}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-2.5">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-2.5">
               <Link
                 href="/quiz"
                 className="inline-flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-all duration-200 hover:shadow-lg hover:shadow-teal-500/25 hover:-translate-y-0.5"
@@ -113,22 +155,22 @@ export default function Home() {
               </Link>
             </div>
 
-            {/* Social proof */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-4 text-xs text-[#5A6578]">
+            {/* Social proof — compact row on mobile */}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-3 text-xs text-[#5A6578]">
               <div className="flex items-center gap-1.5">
                 <div className="flex -space-x-1">
                   {["bg-teal-400", "bg-blue-400", "bg-purple-400"].map((c, i) => (
-                    <div key={i} className={`w-5 h-5 rounded-full ${c} border-2 border-white`} />
+                    <div key={i} className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full ${c} border-2 border-white`} />
                   ))}
                 </div>
                 <span className="font-medium text-[#1A2332]">10,000+</span> {t("hero.usersLabel")}
               </div>
               <div className="flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#0D9488]" />
+                <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#0D9488]" />
                 {t("hero.noAccount")}
               </div>
               <div className="flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#0D9488]" />
+                <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#0D9488]" />
                 {t("hero.freeTime")}
               </div>
             </div>
@@ -137,17 +179,17 @@ export default function Home() {
       </section>
 
       {/* ── Blog Carousel Section ── */}
-      <section className="pt-6 pb-12 sm:pb-16 bg-[#FAFBFC] overflow-hidden">
+      <section className="pt-2 sm:pt-6 pb-8 sm:pb-12 lg:pb-16 bg-[#FAFBFC] overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="mb-6">
-            <div className="inline-flex items-center gap-2 bg-[#F0FDFA] border border-[#CCFBF1] text-[#0D9488] text-xs font-medium px-3 py-1.5 rounded-full mb-3">
+          <div className="mb-2 sm:mb-6">
+            <div className="inline-flex items-center gap-2 bg-[#F0FDFA] border border-[#CCFBF1] text-[#0D9488] text-xs font-medium px-3 py-1.5 rounded-full mb-1 sm:mb-3">
               <BookOpen className="w-3.5 h-3.5" />
               {t("blog.badge")}
             </div>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#1A2332] mb-2">
+            <h2 className="font-heading text-xl sm:text-3xl font-bold text-[#1A2332] mb-1 sm:mb-2">
               {t("blog.title")}
             </h2>
-            <p className="text-[#5A6578] text-base max-w-2xl">
+            <p className="text-[#5A6578] text-sm sm:text-base max-w-2xl">
               {t("blog.description")}
             </p>
           </div>
@@ -156,7 +198,7 @@ export default function Home() {
             <BlogCarousel />
           </div>
 
-          <div className="mt-6">
+          <div className="mt-3 sm:mt-6">
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 bg-[#F0FDFA] hover:bg-[#CCFBF1] border border-[#99F6E4] text-[#0D9488] font-semibold px-6 py-3 rounded-xl text-sm transition-all duration-200 hover:shadow-sm"
@@ -169,20 +211,20 @@ export default function Home() {
       </section>
 
       {/* ── Trust Bar ── */}
-      <section className="border-y border-[#E8ECF1] bg-white py-5 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-12 text-sm text-[#5A6578]">
-          <div className="flex items-center gap-2">
-            <FlaskConical className="w-4 h-4 text-[#0D9488]" />
+      <section className="border-y border-[#E8ECF1] bg-white py-2 sm:py-5 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-12 text-xs sm:text-sm text-[#5A6578]">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <FlaskConical className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D9488] flex-shrink-0" />
             {t("trust.research")}
           </div>
           <div className="hidden sm:block w-px h-4 bg-[#E8ECF1]" />
-          <div className="flex items-center gap-2">
-            <Shield className="w-4 h-4 text-[#0D9488]" />
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D9488] flex-shrink-0" />
             {t("trust.drugChecks")}
           </div>
           <div className="hidden sm:block w-px h-4 bg-[#E8ECF1]" />
-          <div className="flex items-center gap-2">
-            <HeartPulse className="w-4 h-4 text-[#0D9488]" />
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <HeartPulse className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D9488] flex-shrink-0" />
             {t("trust.clinicianDesigned")}
           </div>
         </div>
@@ -324,7 +366,7 @@ export default function Home() {
       {/* ── CTA Section ── */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 bg-[#FAFBFC]">
         <div className="max-w-6xl mx-auto">
-          <div className="relative bg-gradient-to-br from-[#0D9488] to-[#0F766E] rounded-3xl p-10 sm:p-16 text-center overflow-hidden">
+          <div className="relative bg-gradient-to-br from-[#0D9488] to-[#0F766E] rounded-3xl p-6 sm:p-10 lg:p-16 text-center overflow-hidden">
             <div className="absolute inset-0 pointer-events-none opacity-10"
               style={{
                 backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,

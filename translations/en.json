@@ -15,12 +15,13 @@
     "ctaSecondary": "See How It Works",
     "usersLabel": "users",
     "noAccount": "No account required",
-    "freeTime": "100% free · 5 min"
+    "freeTime": "100% free · 5 min",
+    "descriptionShort": "Complete a 5-minute assessment and receive a personalized supplement protocol with evidence ratings."
   },
   "blog": {
     "badge": "Clinical Knowledge Hub",
-    "title": "The Science Behind Your Supplements",
-    "description": "Evidence-based articles written by clinical experts to help you make informed health decisions.",
+    "title": "The Science of Healthy Living",
+    "description": "Expert-written articles on evidence-based nutrition to help you live healthier.",
     "cta": "Explore All Articles",
     "catEvidenceReview": "Evidence Review",
     "catMythBusting": "Myth Busting",

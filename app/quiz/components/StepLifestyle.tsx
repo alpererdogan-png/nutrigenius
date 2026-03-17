@@ -104,12 +104,12 @@ export function StepLifestyle({ data, updateData }: Props) {
           <label className="block text-sm font-medium text-[#1A2332] mb-2">
             {t("quiz.sleepQualTitle")}
           </label>
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {SLEEP_QUALITY.map((q) => (
               <button
                 key={q.value}
                 onClick={() => updateData({ sleepQuality: q.value })}
-                className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-colors ${
+                className={`py-2.5 rounded-lg border text-sm font-medium transition-colors ${
                   data.sleepQuality === q.value
                     ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
                     : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
@@ -142,12 +142,12 @@ export function StepLifestyle({ data, updateData }: Props) {
         <label className="block text-sm font-medium text-[#1A2332] mb-2">
           {t("quiz.stressTitle")}
         </label>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {STRESS_LEVELS.map((level) => (
             <button
               key={level.value}
               onClick={() => updateData({ stressLevel: level.value })}
-              className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-colors ${
+              className={`py-2.5 rounded-lg border text-sm font-medium transition-colors ${
                 data.stressLevel === level.value
                   ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
                   : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
@@ -165,25 +165,25 @@ export function StepLifestyle({ data, updateData }: Props) {
           {t("quiz.sunTitle")}
         </label>
         <p className="text-xs text-[#8896A8] mb-2">{t("quiz.sunHint")}</p>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {SUN_EXPOSURE.map((level) => (
             <button
               key={level.value}
               onClick={() => updateData({ sunExposure: level.value })}
-              className={`flex-1 py-3 rounded-xl border text-center transition-colors ${
+              className={`py-3 rounded-xl border text-center transition-colors ${
                 data.sunExposure === level.value
                   ? "bg-[#F0FDFA] border-[#0D9488]"
                   : "border-[#E2E8F0] hover:border-[#CBD5E1]"
               }`}
             >
               <span
-                className={`text-sm font-medium block ${
+                className={`text-xs sm:text-sm font-medium block ${
                   data.sunExposure === level.value ? "text-[#0D9488]" : "text-[#1A2332]"
                 }`}
               >
                 {t(level.labelKey)}
               </span>
-              <span className="text-xs text-[#8896A8]">{t(level.descKey)}</span>
+              <span className="text-[10px] sm:text-xs text-[#8896A8] leading-tight">{t(level.descKey)}</span>
             </button>
           ))}
         </div>

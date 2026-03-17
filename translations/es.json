@@ -15,12 +15,13 @@
     "ctaSecondary": "Ver cómo funciona",
     "usersLabel": "usuarios",
     "noAccount": "Sin cuenta requerida",
-    "freeTime": "100% gratis · 5 min"
+    "freeTime": "100% gratis · 5 min",
+    "descriptionShort": "Completa una evaluación de 5 minutos y recibe un protocolo de suplementos personalizado con calificaciones de evidencia."
   },
   "blog": {
     "badge": "Centro de Conocimiento Clínico",
-    "title": "La ciencia detrás de tus suplementos",
-    "description": "Artículos basados en evidencia escritos por expertos clínicos para ayudarte a tomar decisiones de salud informadas.",
+    "title": "La ciencia de una vida saludable",
+    "description": "Artículos de expertos sobre nutrición basada en evidencias para vivir más saludable.",
     "cta": "Explorar todos los artículos",
     "catEvidenceReview": "Revisión de evidencia",
     "catMythBusting": "Desmontando mitos",

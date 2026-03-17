@@ -127,7 +127,7 @@ function WhereToBuy({ products, halalFirst }: { products: AffiliateProduct[]; ha
         {sorted.slice(0, 3).map((product) => (
           <div
             key={product.id}
-            className="flex items-center justify-between gap-3 bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl px-3 py-2.5 hover:border-[#0D9488]/30 transition-colors"
+            className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl p-3 hover:border-[#0D9488]/30 transition-colors"
           >
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 flex-wrap">
@@ -155,7 +155,7 @@ function WhereToBuy({ products, halalFirst }: { products: AffiliateProduct[]; ha
                 href={product.affiliate_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-semibold px-3 py-2.5 sm:py-1.5 rounded-lg transition-colors min-h-[40px] sm:min-h-0"
               >
                 Buy
                 <ExternalLink className="w-3 h-3" />

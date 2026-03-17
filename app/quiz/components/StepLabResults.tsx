@@ -131,7 +131,7 @@ export function StepLabResults({ data, updateData }: Props) {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 [&>*]:min-w-0">
                   <div>
                     <label className="block text-xs text-[#8896A8] mb-1">{t("quiz.labsValue")}</label>
                     <input

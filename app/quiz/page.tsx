@@ -421,22 +421,11 @@ export default function QuizPage() {
         )}
 
         {/* Navigation buttons */}
-        <div className="flex justify-between mt-10 pt-6 border-t border-[#E8ECF1]">
-          {currentStep > 1 ? (
-            <button
-              onClick={prevStep}
-              className="flex items-center gap-2 text-[#5A6578] hover:text-[#1A2332] font-medium transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              {t("quiz.previous")}
-            </button>
-          ) : (
-            <div />
-          )}
-
+        <div className={`mt-10 pt-6 border-t border-[#E8ECF1] flex flex-col sm:flex-row gap-3 ${currentStep > 1 ? "sm:justify-between" : "sm:justify-end"}`}>
+          {/* Continue — shown first on mobile via order */}
           <button
             onClick={nextStep}
-            className="flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
+            className="order-first sm:order-last flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20 w-full sm:w-auto"
           >
             {currentStep === 5 ? (
               <>
@@ -450,6 +439,15 @@ export default function QuizPage() {
               </>
             )}
           </button>
+          {currentStep > 1 ? (
+            <button
+              onClick={prevStep}
+              className="flex items-center justify-center gap-2 py-3 sm:py-0 text-[#5A6578] hover:text-[#1A2332] font-medium border border-[#E8ECF1] sm:border-0 rounded-xl sm:rounded-none transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              {t("quiz.previous")}
+            </button>
+          ) : null}
         </div>
 
         <p className="text-xs text-[#8896A8] text-center mt-8 leading-relaxed">

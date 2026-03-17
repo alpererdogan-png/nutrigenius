@@ -15,12 +15,13 @@
     "ctaSecondary": "So funktioniert es",
     "usersLabel": "Nutzer",
     "noAccount": "Kein Konto erforderlich",
-    "freeTime": "100% kostenlos · 5 Min."
+    "freeTime": "100% kostenlos · 5 Min.",
+    "descriptionShort": "Absolvieren Sie eine 5-minütige Bewertung und erhalten Sie ein personalisiertes Supplement-Protokoll mit Evidenzbewertungen."
   },
   "blog": {
     "badge": "Klinisches Wissenszentrum",
-    "title": "Die Wissenschaft hinter Ihren Supplementen",
-    "description": "Evidenzbasierte Artikel von klinischen Experten für fundierte Gesundheitsentscheidungen.",
+    "title": "Die Wissenschaft des gesunden Lebens",
+    "description": "Expertenartikel zur evidenzbasierten Ernährung für ein gesünderes Leben.",
     "cta": "Alle Artikel erkunden",
     "catEvidenceReview": "Evidenzprüfung",
     "catMythBusting": "Mythen entlarven",

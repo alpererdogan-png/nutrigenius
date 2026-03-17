@@ -151,7 +151,7 @@ export function BlogCarousel() {
             {/* Accent bar */}
             <div className={`h-1.5 w-full ${article.accentClass} flex-shrink-0`} />
 
-            <div className="p-5 flex flex-col flex-1">
+            <div className="p-4 sm:p-5 flex flex-col flex-1">
               {/* Category tag */}
               <span className={`self-start inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border mb-3 ${article.tagClass}`}>
                 {t(article.categoryKey)}
