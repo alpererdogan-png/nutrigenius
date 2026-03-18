@@ -175,6 +175,24 @@ export default function QuizPage() {
         // Non-blocking
       }
 
+      // Fire-and-forget welcome email — don't await so it doesn't delay redirect
+      fetch("/api/send-welcome", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          supplements: (recommendations.supplements ?? []).slice(0, 3).map(
+            (s: { name: string; doseDisplay?: string; whyRecommended?: string }) => ({
+              name: s.name,
+              doseDisplay: s.doseDisplay,
+              whyRecommended: s.whyRecommended,
+            })
+          ),
+        }),
+      }).catch(() => {
+        // Non-blocking — email failure must not affect the user flow
+      });
+
       sessionStorage.setItem("nutrigenius_recommendations", JSON.stringify(recommendations));
       sessionStorage.setItem("nutrigenius_email", email);
       sessionStorage.setItem("nutrigenius_prefs", JSON.stringify({
