@@ -371,7 +371,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post) return { title: "Article Not Found" };
-  const BASE_URL = "https://nutrigenius-iota.vercel.app";
+  const BASE_URL = "https://nutrigenius.co";
   const url = `${BASE_URL}/blog/${post.slug}`;
   return {
     title: post.title,
@@ -425,9 +425,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://nutrigenius-iota.vercel.app" },
-      { "@type": "ListItem", position: 2, name: "Blog", item: "https://nutrigenius-iota.vercel.app/blog" },
-      { "@type": "ListItem", position: 3, name: post.title, item: `https://nutrigenius-iota.vercel.app/blog/${post.slug}` },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://nutrigenius.co" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://nutrigenius.co/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: `https://nutrigenius.co/blog/${post.slug}` },
     ],
   };
 
@@ -445,11 +445,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     publisher: {
       "@type": "Organization",
       name: "NutriGenius",
-      url: "https://nutrigenius-iota.vercel.app",
+      url: "https://nutrigenius.co",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://nutrigenius-iota.vercel.app/blog/${post.slug}`,
+      "@id": `https://nutrigenius.co/blog/${post.slug}`,
     },
     keywords: post.tags?.join(", "),
     articleSection: post.category,

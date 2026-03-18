@@ -5,14 +5,14 @@ export const metadata: Metadata = {
   description:
     "Complete our 5-minute health assessment to receive personalized supplement recommendations with safety checks and evidence ratings.",
   alternates: {
-    canonical: "https://nutrigenius-iota.vercel.app/quiz",
+    canonical: "https://nutrigenius.co/quiz",
   },
   openGraph: {
     title: "Health Assessment Quiz | NutriGenius — Get Your Free Plan",
     description:
       "Complete our 5-minute health assessment to receive personalized supplement recommendations with safety checks and evidence ratings.",
     type: "website",
-    url: "https://nutrigenius-iota.vercel.app/quiz",
+    url: "https://nutrigenius.co/quiz",
     siteName: "NutriGenius",
   },
   twitter: {

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { createClient } from "@/lib/supabase-server";
 
-const BASE_URL = "https://nutrigenius-iota.vercel.app";
+const BASE_URL = "https://nutrigenius.co";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createClient();

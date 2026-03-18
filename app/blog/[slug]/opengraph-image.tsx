@@ -145,7 +145,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
               <div style={{ fontSize: 24, fontWeight: 700, color: "#1A2332" }}>NutriGenius</div>
             </div>
             <div style={{ fontSize: 18, color: "#8896A8", fontWeight: 400 }}>
-              nutrigenius-iota.vercel.app
+              nutrigenius.co
             </div>
           </div>
         </div>

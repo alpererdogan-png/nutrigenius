@@ -29,7 +29,7 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "NutriGenius",
-    url: "https://nutrigenius-iota.vercel.app",
+    url: "https://nutrigenius.co",
     description: "Evidence-based personalized supplement recommendations",
     sameAs: [],
   };
@@ -38,7 +38,7 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "NutriGenius",
-    url: "https://nutrigenius-iota.vercel.app",
+    url: "https://nutrigenius.co",
     applicationCategory: "HealthApplication",
     operatingSystem: "Web",
     description:

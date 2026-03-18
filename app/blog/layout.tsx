@@ -5,14 +5,14 @@ export const metadata: Metadata = {
   description:
     "Evidence-based articles on supplements, nutrition, and health. Written by clinical pharmacology experts.",
   alternates: {
-    canonical: "https://nutrigenius-iota.vercel.app/blog",
+    canonical: "https://nutrigenius.co/blog",
   },
   openGraph: {
     title: "The Science of Healthy Living | NutriGenius Blog",
     description:
       "Evidence-based articles on supplements, nutrition, and health. Written by clinical pharmacology experts.",
     type: "website",
-    url: "https://nutrigenius-iota.vercel.app/blog",
+    url: "https://nutrigenius.co/blog",
     siteName: "NutriGenius",
   },
   twitter: {

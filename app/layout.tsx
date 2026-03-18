@@ -15,7 +15,7 @@ const plusJakarta = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-const BASE_URL = "https://nutrigenius-iota.vercel.app";
+const BASE_URL = "https://nutrigenius.co";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),

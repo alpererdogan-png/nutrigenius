@@ -313,7 +313,7 @@ export function NutriGeniusPDF({ result, userEmail, userName }: PdfProps) {
         {/* ── Footer ── */}
         <View style={s.footer}>
           <Text style={s.footerText}>
-            This is not medical advice. Consult your healthcare provider before starting any supplement regimen.  |  NutriGenius — nutrigenius-iota.vercel.app
+            This is not medical advice. Consult your healthcare provider before starting any supplement regimen.  |  NutriGenius — nutrigenius.co
           </Text>
         </View>
 

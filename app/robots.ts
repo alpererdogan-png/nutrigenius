@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/results"],
     },
-    sitemap: "https://nutrigenius-iota.vercel.app/sitemap.xml",
+    sitemap: "https://nutrigenius.co/sitemap.xml",
   };
 }
