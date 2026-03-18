@@ -62,6 +62,9 @@ export const metadata: Metadata = {
     site: "@nutrigenius",
     creator: "@nutrigenius",
   },
+  verification: {
+    google: "XkM03ceUSDUrlh0R3aMUTnuIqScm6Kc4U5jD7-Xk_qo",
+  },
   robots: {
     index: true,
     follow: true,
