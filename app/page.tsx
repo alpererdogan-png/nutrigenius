@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { CookieSettingsLink } from "@/components/CookieConsent";
 import {
   Shield,
   FlaskConical,
@@ -449,6 +450,7 @@ export default function Home() {
               <Link href="/disclaimer" className="hover:text-[#0D9488] transition-colors">
                 {t("footer.disclaimer")}
               </Link>
+              <CookieSettingsLink className="hover:text-[#0D9488] transition-colors cursor-pointer" />
             </div>
           </div>
 

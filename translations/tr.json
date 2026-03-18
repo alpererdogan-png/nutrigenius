@@ -334,5 +334,22 @@
     "morning": "Sabah",
     "midday": "Öğle",
     "evening": "Akşam"
+  },
+  "cookies": {
+    "message": "Deneyiminizi iyileştirmek ve site trafiğini analiz etmek için çerezler kullanıyoruz. Gizliliğinize saygı duyuyoruz.",
+    "acceptAll": "Tümünü Kabul Et",
+    "rejectNonEssential": "Zorunlu Olmayanları Reddet",
+    "customize": "Özelleştir",
+    "savePreferences": "Tercihleri Kaydet",
+    "necessary": "Zorunlu",
+    "necessaryDesc": "Sitenin çalışması için gereklidir. Devre dışı bırakılamaz.",
+    "analytics": "Analitik",
+    "analyticsDesc": "Ziyaretçilerin siteyle nasıl etkileşime girdiğini anlamamıza yardımcı olur.",
+    "advertising": "Reklam",
+    "advertisingDesc": "İlgili reklamları göstermek ve bağlı kuruluş tıklamalarını izlemek için kullanılır.",
+    "functional": "İşlevsel",
+    "functionalDesc": "Tercihlerinizi ve test ilerlemenizi kaydeder.",
+    "alwaysOn": "Her Zaman Açık",
+    "cookieSettings": "Çerez Ayarları"
   }
 }

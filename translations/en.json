@@ -334,5 +334,22 @@
     "morning": "Morning",
     "midday": "Midday",
     "evening": "Evening"
+  },
+  "cookies": {
+    "message": "We use cookies to improve your experience and analyze site traffic. We respect your privacy.",
+    "acceptAll": "Accept All",
+    "rejectNonEssential": "Reject Non-Essential",
+    "customize": "Customize",
+    "savePreferences": "Save Preferences",
+    "necessary": "Necessary",
+    "necessaryDesc": "Required for the site to function. Cannot be disabled.",
+    "analytics": "Analytics",
+    "analyticsDesc": "Helps us understand how visitors interact with the site.",
+    "advertising": "Advertising",
+    "advertisingDesc": "Used to show relevant advertisements and track affiliate clicks.",
+    "functional": "Functional",
+    "functionalDesc": "Saves your preferences and quiz progress.",
+    "alwaysOn": "Always On",
+    "cookieSettings": "Cookie Settings"
   }
 }

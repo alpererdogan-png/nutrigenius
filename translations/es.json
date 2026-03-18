@@ -334,5 +334,22 @@
     "morning": "Mañana",
     "midday": "Mediodía",
     "evening": "Noche"
+  },
+  "cookies": {
+    "message": "Usamos cookies para mejorar tu experiencia y analizar el tráfico del sitio. Respetamos tu privacidad.",
+    "acceptAll": "Aceptar todo",
+    "rejectNonEssential": "Rechazar no esenciales",
+    "customize": "Personalizar",
+    "savePreferences": "Guardar preferencias",
+    "necessary": "Necesarias",
+    "necessaryDesc": "Requeridas para el funcionamiento del sitio. No se pueden deshabilitar.",
+    "analytics": "Analítica",
+    "analyticsDesc": "Nos ayuda a entender cómo los visitantes interactúan con el sitio.",
+    "advertising": "Publicidad",
+    "advertisingDesc": "Se utiliza para mostrar anuncios relevantes y rastrear clics de afiliados.",
+    "functional": "Funcional",
+    "functionalDesc": "Guarda tus preferencias y el progreso del cuestionario.",
+    "alwaysOn": "Siempre activo",
+    "cookieSettings": "Configuración de cookies"
   }
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { CookieSettingsLink } from "@/components/CookieConsent";
 import {
   ArrowRight, Clock, Search, BookOpen, ArrowUpRight,
   FlaskConical, ShieldAlert, AlertTriangle,
@@ -299,6 +300,19 @@ export default function BlogPage() {
           </div>
         )}
       </div>
+
+      {/* Footer */}
+      <footer className="border-t border-[#E8ECF1] bg-white py-8 px-4 sm:px-6 mt-12">
+        <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs text-[#8896A8]">
+          <div className="flex flex-wrap gap-5">
+            <Link href="/privacy" className="hover:text-[#0D9488] transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-[#0D9488] transition-colors">Terms of Service</Link>
+            <Link href="/disclaimer" className="hover:text-[#0D9488] transition-colors">Medical Disclaimer</Link>
+            <CookieSettingsLink className="hover:text-[#0D9488] transition-colors cursor-pointer" />
+          </div>
+          <span>© {new Date().getFullYear()} NutriGenius. All rights reserved.</span>
+        </div>
+      </footer>
     </div>
   );
 }
