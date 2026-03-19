@@ -62,7 +62,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
       />
       {/* ── Navigation ── */}
-      <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-[#E8ECF1] z-50">
+      <nav className="fixed top-0 w-full bg-white/70 backdrop-blur-xl border-b border-[#E8ECF1] z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center shadow-sm">
@@ -90,7 +90,7 @@ export default function Home() {
           </div>
           <Link
             href="/quiz"
-            className="hidden sm:inline-flex bg-[#0D9488] hover:bg-[#0F766E] text-white text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
+            className="hidden sm:inline-flex bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 text-white text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
           >
             {t("nav.cta")}
           </Link>
@@ -109,7 +109,7 @@ export default function Home() {
         </div>
         {/* Mobile slide-down menu */}
         {menuOpen && (
-          <div className="sm:hidden border-t border-[#E8ECF1] bg-white/95 backdrop-blur-md">
+          <div className="sm:hidden border-t border-[#E8ECF1] bg-white/80 backdrop-blur-xl">
             <div className="max-w-6xl mx-auto px-4 py-2 space-y-0">
               {[
                 { href: "#how-it-works", label: t("nav.howItWorks") },
@@ -129,7 +129,7 @@ export default function Home() {
               <Link
                 href="/quiz"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-5 py-3 rounded-xl text-sm transition-colors mt-3 mb-2"
+                className="flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 text-white font-semibold px-5 py-3 rounded-xl text-sm transition-all duration-200 mt-3 mb-2"
               >
                 {t("hero.cta")}
                 <ArrowRight className="w-4 h-4" />
@@ -176,14 +176,14 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-2.5">
               <Link
                 href="/quiz"
-                className="inline-flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-all duration-200 hover:shadow-lg hover:shadow-teal-500/25 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-all duration-200 hover:shadow-lg hover:shadow-teal-500/25 hover:-translate-y-0.5"
               >
                 {t("hero.cta")}
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="#how-it-works"
-                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-[#F1F5F9] border border-[#E2E8F0] text-[#1A2332] font-medium px-5 py-2.5 rounded-xl text-sm transition-all duration-200 hover:border-[#CBD5E1]"
+                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-[#F1F5F9] active:scale-95 border border-[#E2E8F0] text-[#1A2332] font-medium px-5 py-2.5 rounded-xl text-sm transition-all duration-200 hover:border-[#CBD5E1]"
               >
                 {t("hero.ctaSecondary")}
               </Link>
@@ -303,7 +303,7 @@ export default function Home() {
             ].map((item) => (
               <div
                 key={item.step}
-                className="bg-white border border-[#E8ECF1] rounded-2xl p-6 hover:border-[#0D9488]/40 hover:shadow-md hover:shadow-teal-500/5 transition-all duration-300 group"
+                className="bg-white border border-[#E8ECF1] rounded-2xl p-6 hover:border-[#0D9488]/40 hover:shadow-md hover:shadow-teal-500/5 hover:scale-[1.02] transition-all duration-200 group cursor-pointer"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-xl bg-[#F0FDFA] flex items-center justify-center text-[#0D9488] group-hover:bg-[#0D9488] group-hover:text-white transition-colors duration-300">
@@ -348,7 +348,7 @@ export default function Home() {
             ].map((feature) => (
               <div
                 key={feature.title}
-                className="border border-[#E8ECF1] rounded-2xl p-6 hover:border-[#0D9488]/40 hover:shadow-md hover:shadow-teal-500/5 transition-all duration-300 bg-[#FAFBFC] group"
+                className="border border-[#E8ECF1] rounded-2xl p-6 hover:border-[#0D9488]/40 hover:shadow-md hover:shadow-teal-500/5 hover:scale-[1.02] transition-all duration-200 bg-[#FAFBFC] group cursor-pointer"
               >
                 <div className="w-10 h-10 rounded-xl bg-[#F0FDFA] flex items-center justify-center text-[#0D9488] mb-4 group-hover:bg-[#0D9488] group-hover:text-white transition-colors duration-300">
                   {feature.icon}
@@ -414,7 +414,7 @@ export default function Home() {
               </p>
               <Link
                 href="/quiz"
-                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-teal-50 text-[#0D9488] font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-teal-50 active:scale-95 text-[#0D9488] font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5"
               >
                 {t("cta.button")}
                 <ArrowRight className="w-5 h-5" />

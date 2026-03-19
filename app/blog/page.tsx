@@ -193,7 +193,7 @@ export default function BlogPage() {
       </div>
 
       {/* Sticky filters */}
-      <div className="bg-white border-b border-[#E8ECF1] sticky top-0 z-10 shadow-sm">
+      <div className="bg-white/70 backdrop-blur-xl border-b border-[#E8ECF1] sticky top-0 z-10 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center gap-2.5">
           {/* Category pills — wrap on desktop, scroll on mobile */}
           <div className="flex-1 min-w-0 overflow-x-auto sm:overflow-visible no-scrollbar">

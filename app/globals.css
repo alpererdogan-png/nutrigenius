@@ -140,11 +140,23 @@
 }
 
 /* Blog article prose styles */
-.prose-custom h2 {
-  font-family: var(--font-heading);
-}
+.prose-custom h1,
+.prose-custom h2,
 .prose-custom h3 {
   font-family: var(--font-heading);
+  letter-spacing: -0.025em;
+}
+
+/* Increased line-height for blog article body text */
+.prose-custom p,
+.prose-custom li {
+  line-height: 1.8;
+}
+
+/* Metadata text */
+.prose-custom time,
+.prose-custom .meta {
+  color: #64748b;
 }
 /* Only style links inside actual text content — not injected card buttons */
 .prose-custom p a,

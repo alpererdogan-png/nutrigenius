@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
   ArrowLeft, Tag,
   FlaskConical, ShieldAlert, AlertTriangle,
-  HeartPulse, TrendingUp, Brain,
+  HeartPulse, TrendingUp, Brain, Lightbulb,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
@@ -233,6 +233,47 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
   ],
 };
 
+// ─── Key Takeaways per article ────────────────────────────────────────────────
+
+const KEY_TAKEAWAYS: Record<string, string[]> = {
+  "the-complete-guide-to-magnesium": [
+    "Magnesium deficiency affects ~70% of the population despite its role in 300+ enzymatic reactions.",
+    "Magnesium glycinate is superior for sleep and anxiety; L-threonate crosses the blood-brain barrier for cognitive support.",
+    "Most people need 300–420 mg/day; absorption is blocked by calcium, alcohol, and chronic stress.",
+    "Modern soil depletion means dietary sources are significantly less reliable than 50 years ago.",
+  ],
+  "supplements-that-dont-mix-critical-interactions": [
+    "Fish oil combined with high-dose vitamin E can dangerously thin the blood — avoid with anticoagulants.",
+    "Calcium blocks iron and magnesium absorption — never take these simultaneously.",
+    "St. John's Wort interacts with 50+ medications including contraceptives and antidepressants.",
+    "Always disclose all supplements to your prescriber before starting new medications.",
+  ],
+  "vitamin-d-why-80-percent-are-deficient": [
+    "Blood levels below 30 ng/mL are deficient; the optimal range is 40–60 ng/mL.",
+    "Vitamin D requires cofactors — K2, magnesium, and zinc — to activate properly in the body.",
+    "Sunscreen with SPF 15+ blocks 93% of vitamin D synthesis from sunlight exposure.",
+    "D3 raises blood levels 87% more effectively than D2 — form matters enormously.",
+  ],
+  "the-pcos-supplement-protocol": [
+    "Myo-inositol (4g/day) improves insulin sensitivity and helps restore ovarian function.",
+    "NAC reduces androgen levels and improves egg quality according to multiple clinical trials.",
+    "Vitamin D and magnesium deficiency are near-universal in women with PCOS.",
+    "Supplement timing and food pairing dramatically affect how well each compound works.",
+  ],
+  "your-gut-brain-connection-probiotics-mental-health": [
+    "90% of serotonin is produced in the gut, not the brain — gut health directly shapes mood.",
+    "Lactobacillus rhamnosus and Bifidobacterium longum have the strongest evidence for anxiety reduction.",
+    "The gut-brain axis communicates bidirectionally via the vagus nerve.",
+    "Psychobiotics typically take 4–8 weeks of consistent use to show measurable mood effects.",
+  ],
+  "5-supplement-myths-your-doctor-didnt-learn": [
+    "Natural doesn't mean safe — many herbal supplements have serious drug interactions.",
+    "The 'you'll pee out excess vitamins' myth is dangerous for fat-soluble vitamins A, D, E, and K.",
+    "Form matters enormously: magnesium oxide has ~4% absorption vs. ~80% for glycinate.",
+    "Expensive supplements rarely outperform evidence-backed low-cost alternatives.",
+  ],
+};
+
 // Ad slots: rectangle ads after these paragraph numbers (1-indexed)
 const RECT_AD_AFTER_PARAGRAPHS = [2, 6];
 
@@ -352,6 +393,27 @@ function formatCategory(cat: string): string {
   return cat.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
 }
 
+// ─── Key Takeaways component ──────────────────────────────────────────────────
+
+function KeyTakeawaysBox({ takeaways }: { takeaways: string[] }) {
+  return (
+    <div className="my-6 border-l-4 border-teal-500 bg-teal-50 rounded-r-xl p-5">
+      <div className="flex items-center gap-2 mb-3">
+        <Lightbulb className="w-5 h-5 text-teal-600 flex-shrink-0" />
+        <h3 className="font-heading font-bold text-[#1A2332] text-base">Key Takeaways</h3>
+      </div>
+      <ul className="space-y-2">
+        {takeaways.map((point, i) => (
+          <li key={i} className="flex items-start gap-2 text-sm text-[#3D4B5F] leading-relaxed">
+            <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-2 flex-shrink-0" />
+            {point}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 // ─── Ad slot components ───────────────────────────────────────────────────────
 
 function SidebarAdSlot() {
@@ -466,7 +528,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       {/* ── Top nav ── */}
-      <div className="sticky top-0 z-20 bg-white border-b border-[#E8ECF1]">
+      <div className="sticky top-0 z-20 bg-white/70 backdrop-blur-xl border-b border-[#E8ECF1]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <Link
             href="/"
@@ -512,6 +574,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {/* ── Article body ── */}
           <article>
+            {/* Key Takeaways box — shown near top of article for articles with defined takeaways */}
+            {KEY_TAKEAWAYS[slug] && (
+              <KeyTakeawaysBox takeaways={KEY_TAKEAWAYS[slug]} />
+            )}
             {/* Article content — affiliate cards and ads are injected directly into the HTML */}
             <div
               className="prose-custom"

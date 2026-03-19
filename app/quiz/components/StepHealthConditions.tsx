@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, X, AlertTriangle } from "lucide-react";
+import { Search, X, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { QuizData } from "../page";
 import { useLanguage } from "@/lib/language-context";
 
@@ -127,8 +127,11 @@ export function StepHealthConditions({ data, updateData }: Props) {
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
           {t("quiz.healthCondTitle")}
         </label>
-        <p className="text-xs text-[#8896A8] mb-3">
+        <p className="text-xs text-[#8896A8] mb-1">
           {t("quiz.healthCondHint")}
+        </p>
+        <p className="text-xs italic text-[#8896A8] mb-3">
+          <span className="font-medium text-[#5A6578]">Clinical note:</span> Your conditions help us match evidence-rated supplements to your specific needs.
         </p>
 
         {data.healthConditions.length > 0 && (
@@ -172,19 +175,23 @@ export function StepHealthConditions({ data, updateData }: Props) {
               </button>
               {expandedCategory === category && (
                 <div className="px-4 pb-3 flex flex-wrap gap-2">
-                  {conditions.map((cond) => (
-                    <button
-                      key={cond}
-                      onClick={() => toggleCondition(cond)}
-                      className={`px-3 py-1.5 rounded-lg border text-sm transition-colors ${
-                        data.healthConditions.includes(cond)
-                          ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
-                          : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
-                      }`}
-                    >
-                      {cond}
-                    </button>
-                  ))}
+                  {conditions.map((cond) => {
+                    const selected = data.healthConditions.includes(cond);
+                    return (
+                      <button
+                        key={cond}
+                        onClick={() => toggleCondition(cond)}
+                        className={`inline-flex items-center gap-1.5 py-2 px-4 rounded-lg border text-sm transition-all duration-200 cursor-pointer ${
+                          selected
+                            ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                            : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
+                        }`}
+                      >
+                        {selected && <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />}
+                        {cond}
+                      </button>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -197,7 +204,10 @@ export function StepHealthConditions({ data, updateData }: Props) {
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
           {t("quiz.healthMedTitle")}
         </label>
-        <p className="text-xs text-[#8896A8] mb-2">{t("quiz.healthMedHint")}</p>
+        <p className="text-xs text-[#8896A8] mb-1">{t("quiz.healthMedHint")}</p>
+        <p className="text-xs italic text-[#8896A8] mb-2">
+          <span className="font-medium text-[#5A6578]">Clinical note:</span> This helps us screen for potentially dangerous supplement-drug interactions.
+        </p>
 
         {data.currentMedications.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
@@ -283,25 +293,29 @@ export function StepHealthConditions({ data, updateData }: Props) {
         </label>
         <p className="text-xs text-[#8896A8] mb-2">{t("quiz.healthFamHint")}</p>
         <div className="flex flex-wrap gap-2">
-          {FAMILY_HISTORY_OPTIONS.map((condition) => (
-            <button
-              key={condition}
-              onClick={() => {
-                const current = data.familyHistory;
-                const updated = current.includes(condition)
-                  ? current.filter((c) => c !== condition)
-                  : [...current, condition];
-                updateData({ familyHistory: updated });
-              }}
-              className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
-                data.familyHistory.includes(condition)
-                  ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
-                  : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
-              }`}
-            >
-              {condition}
-            </button>
-          ))}
+          {FAMILY_HISTORY_OPTIONS.map((condition) => {
+            const selected = data.familyHistory.includes(condition);
+            return (
+              <button
+                key={condition}
+                onClick={() => {
+                  const current = data.familyHistory;
+                  const updated = current.includes(condition)
+                    ? current.filter((c) => c !== condition)
+                    : [...current, condition];
+                  updateData({ familyHistory: updated });
+                }}
+                className={`inline-flex items-center gap-1.5 py-2 px-4 rounded-lg border text-sm font-medium transition-all duration-200 cursor-pointer ${
+                  selected
+                    ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                    : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
+                }`}
+              >
+                {selected && <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />}
+                {condition}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

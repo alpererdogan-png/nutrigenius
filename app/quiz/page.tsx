@@ -301,7 +301,7 @@ export default function QuizPage() {
               <button
                 onClick={handleEmailSubmit}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] disabled:bg-[#0D9488]/60 text-white font-semibold py-3.5 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
+                className="w-full flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 disabled:bg-[#0D9488]/60 text-white font-semibold py-3.5 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
               >
                 {loading ? (
                   <>
@@ -339,7 +339,7 @@ export default function QuizPage() {
   return (
     <div className="min-h-screen bg-[#FAFBFC]">
       {/* Header */}
-      <div className="bg-white border-b border-[#E8ECF1] sticky top-0 z-50">
+      <div className="bg-white/70 backdrop-blur-xl border-b border-[#E8ECF1] sticky top-0 z-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between mb-3">
             <Link href="/" className="flex items-center gap-2">
@@ -443,7 +443,7 @@ export default function QuizPage() {
           {/* Continue — shown first on mobile via order */}
           <button
             onClick={nextStep}
-            className="order-first sm:order-last flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20 w-full sm:w-auto"
+            className="order-first sm:order-last flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20 w-full sm:w-auto"
           >
             {currentStep === 5 ? (
               <>

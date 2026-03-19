@@ -188,7 +188,7 @@ function SupplementCard({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="bg-white border border-[#E8ECF1] rounded-2xl overflow-hidden">
+    <div className="bg-white border border-[#E8ECF1] rounded-2xl overflow-hidden hover:border-[#0D9488]/20 hover:scale-[1.005] transition-all duration-200">
       <div className="p-5 sm:p-6">
         <div className="flex items-start justify-between gap-4 mb-3">
           <div>
@@ -479,10 +479,65 @@ export default function ResultsPage() {
 
   if (!result) {
     return (
-      <div className="min-h-screen bg-[#FAFBFC] flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 text-[#0D9488] animate-spin mx-auto mb-3" />
-          <p className="text-[#5A6578] text-sm">{t("results.loading")}</p>
+      <div className="min-h-screen bg-[#FAFBFC]">
+        {/* Skeleton header */}
+        <div className="bg-white border-b border-[#E8ECF1] sticky top-0 z-50">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+            <div className="h-4 w-24 bg-slate-200 rounded animate-pulse" />
+            <div className="h-6 w-28 bg-slate-200 rounded animate-pulse" />
+            <div className="w-24" />
+          </div>
+        </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+          {/* Skeleton hero */}
+          <div className="bg-[#1A2332] rounded-2xl p-6 sm:p-8 animate-pulse">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex-shrink-0" />
+              <div className="flex-1">
+                <div className="h-3 w-32 bg-white/10 rounded mb-2" />
+                <div className="h-7 w-64 bg-white/10 rounded mb-2" />
+                <div className="h-4 w-48 bg-white/10 rounded" />
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+                  <div className="h-8 w-12 bg-white/10 rounded mx-auto mb-2" />
+                  <div className="h-3 w-16 bg-white/10 rounded mx-auto" />
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Skeleton supplement cards */}
+          <div>
+            <div className="h-5 w-40 bg-slate-200 rounded animate-pulse mb-2" />
+            <div className="h-3 w-64 bg-slate-200 rounded animate-pulse mb-5" />
+            <div className="space-y-4">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="flex gap-3 animate-pulse">
+                  <div className="w-7 h-7 rounded-full bg-slate-200 flex-shrink-0 mt-5" />
+                  <div className="flex-1 bg-white border border-[#E8ECF1] rounded-2xl p-5 sm:p-6">
+                    <div className="flex justify-between mb-3">
+                      <div>
+                        <div className="h-5 w-36 bg-slate-200 rounded mb-2" />
+                        <div className="h-3 w-24 bg-slate-200 rounded" />
+                      </div>
+                      <div className="h-6 w-24 bg-slate-200 rounded-full" />
+                    </div>
+                    <div className="flex gap-2 mb-4">
+                      <div className="h-7 w-28 bg-slate-200 rounded-full" />
+                      <div className="h-7 w-24 bg-slate-200 rounded-full" />
+                    </div>
+                    <div className="h-4 w-48 bg-slate-200 rounded" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="text-center pt-4">
+            <Loader2 className="w-5 h-5 text-[#0D9488] animate-spin inline-block mr-2" />
+            <span className="text-[#5A6578] text-sm">{t("results.loading")}</span>
+          </div>
         </div>
       </div>
     );
@@ -521,7 +576,7 @@ export default function ResultsPage() {
   return (
     <div className="min-h-screen bg-[#FAFBFC]">
       {/* Header */}
-      <div className="bg-white border-b border-[#E8ECF1] sticky top-0 z-50">
+      <div className="bg-white/70 backdrop-blur-xl border-b border-[#E8ECF1] sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <button
             onClick={() => router.push("/quiz")}
@@ -565,7 +620,7 @@ export default function ResultsPage() {
           <button
             onClick={handleDownloadPdf}
             disabled={pdfLoading}
-            className="inline-flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] disabled:bg-[#F8FAFC] disabled:border disabled:border-[#E8ECF1] disabled:text-[#8896A8] text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-colors disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 disabled:bg-[#F8FAFC] disabled:border disabled:border-[#E8ECF1] disabled:text-[#8896A8] text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-200 disabled:cursor-not-allowed"
           >
             {pdfLoading
               ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating PDF…</>
@@ -584,47 +639,64 @@ export default function ResultsPage() {
           </button>
         </div>
 
-        {/* Hero summary */}
-        <div className="bg-gradient-to-br from-[#0D9488] to-[#0F766E] rounded-2xl p-6 sm:p-8 text-white">
-          <div className="flex items-start gap-4 mb-6">
-            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
-              <CheckCircle2 className="w-7 h-7 text-white" />
-            </div>
-            <div>
-              <h1 className="font-heading text-2xl sm:text-3xl font-bold">{t("results.heroTitle")}</h1>
-              <p className="text-teal-100 mt-1 text-sm sm:text-base">{t("results.heroSubtitle")}</p>
-            </div>
-          </div>
+        {/* Protocol Summary Hero */}
+        <div className="bg-[#1A2332] rounded-2xl p-6 sm:p-8 text-white overflow-hidden relative">
+          {/* Subtle background texture */}
+          <div
+            className="absolute inset-0 opacity-[0.03] pointer-events-none"
+            style={{
+              backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
+              backgroundSize: "24px 24px",
+            }}
+          />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#0D9488]/10 rounded-full -translate-y-1/3 translate-x-1/3 pointer-events-none" />
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <div className="bg-white/15 rounded-xl p-4 text-center">
-              <div className="text-3xl font-bold">{supplements.length}</div>
-              <div className="text-teal-100 text-xs mt-1">{t("results.supplementsLabel")}</div>
-            </div>
-            <div className="bg-white/15 rounded-xl p-4 text-center">
-              <div className="text-3xl font-bold">
-                {supplements.filter((s) => s.evidenceRating === "Strong" || s.evidenceRating === "Moderate").length}
+          <div className="relative">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 bg-[#0D9488]/20 border border-[#0D9488]/30 rounded-xl flex items-center justify-center flex-shrink-0">
+                <CheckCircle2 className="w-6 h-6 text-[#2DD4BF]" />
               </div>
-              <div className="text-teal-100 text-xs mt-1">{t("results.evidenceLabel")}</div>
-            </div>
-            <div className="bg-white/15 rounded-xl p-4 text-center col-span-2 sm:col-span-1">
-              <div className="text-3xl font-bold">{blockedSupplements.length}</div>
-              <div className="text-teal-100 text-xs mt-1">{t("results.safetyLabel")}</div>
-            </div>
-          </div>
-
-          {focusAreas.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-white/20">
-              <p className="text-teal-100 text-xs mb-2">{t("results.keyFocusAreas")}</p>
-              <div className="flex flex-wrap gap-2">
-                {focusAreas.map((area) => (
-                  <span key={area} className="bg-white/20 text-white text-xs font-medium px-3 py-1 rounded-full">
-                    {area}
-                  </span>
-                ))}
+              <div>
+                <p className="text-[#6B7E96] text-xs font-semibold uppercase tracking-wider mb-1">Your Personalized Protocol</p>
+                <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight">{t("results.heroTitle")}</h1>
+                <p className="text-slate-400 mt-1 text-sm sm:text-base">{t("results.heroSubtitle")}</p>
               </div>
             </div>
-          )}
+
+            <div className="grid grid-cols-3 gap-3">
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+                <div className="text-3xl font-bold text-white">{supplements.length}</div>
+                <div className="text-slate-400 text-xs mt-1">{t("results.supplementsLabel")}</div>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+                <div className="text-3xl font-bold text-white">
+                  {supplements.filter((s) => s.evidenceRating === "Strong" || s.evidenceRating === "Moderate").length}
+                </div>
+                <div className="text-slate-400 text-xs mt-1">{t("results.evidenceLabel")}</div>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+                <div className="text-3xl font-bold text-[#2DD4BF]">
+                  {focusAreas.length > 0 ? focusAreas[0].split(" ")[0] : supplements.length}
+                </div>
+                <div className="text-slate-400 text-xs mt-1">
+                  {focusAreas.length > 0 ? "Top Goal" : t("results.supplementsLabel")}
+                </div>
+              </div>
+            </div>
+
+            {focusAreas.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <p className="text-slate-500 text-xs mb-2">{t("results.keyFocusAreas")}</p>
+                <div className="flex flex-wrap gap-2">
+                  {focusAreas.map((area) => (
+                    <span key={area} className="bg-[#0D9488]/20 border border-[#0D9488]/30 text-[#2DD4BF] text-xs font-medium px-3 py-1 rounded-full">
+                      {area}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Supplements */}

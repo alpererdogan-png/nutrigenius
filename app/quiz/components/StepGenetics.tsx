@@ -85,9 +85,12 @@ export function StepGenetics({ data, updateData }: Props) {
     <div className="space-y-6">
       {/* Question */}
       <div>
-        <label className="block text-sm font-medium text-[#1A2332] mb-3">
+        <label className="block text-sm font-medium text-[#1A2332] mb-1">
           {t("quiz.genQuestion")}
         </label>
+        <p className="text-xs italic text-[#8896A8] mb-3">
+          <span className="font-medium text-[#5A6578]">Clinical note:</span> Genetic variants affect how your body processes specific supplement forms.
+        </p>
         <div className="flex gap-3">
           <button
             onClick={() => handleToggle(true)}

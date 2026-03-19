@@ -83,6 +83,9 @@ export function StepLabResults({ data, updateData }: Props) {
           <p className="text-xs text-[#0D9488] mt-1">
             {t("quiz.labsWhyDesc")}
           </p>
+          <p className="text-xs italic text-[#0D9488]/80 mt-1">
+            <span className="font-medium">Clinical note:</span> Actual biomarker levels let us identify real deficiencies instead of guessing.
+          </p>
         </div>
       </div>
 

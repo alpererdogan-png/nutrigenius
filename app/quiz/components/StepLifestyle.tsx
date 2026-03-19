@@ -1,5 +1,6 @@
 "use client";
 
+import { CheckCircle2 } from "lucide-react";
 import { QuizData } from "../page";
 import { useLanguage } from "@/lib/language-context";
 
@@ -71,53 +72,69 @@ export function StepLifestyle({ data, updateData }: Props) {
     <div className="space-y-8">
       {/* Activity Level */}
       <div>
-        <label className="block text-sm font-medium text-[#1A2332] mb-2">
+        <label className="block text-sm font-medium text-[#1A2332] mb-1">
           {t("quiz.activityTitle")}
         </label>
+        <p className="text-xs italic text-[#8896A8] mb-2">
+          <span className="font-medium text-[#5A6578]">Clinical note:</span> Exercise intensity affects nutrient depletion and recovery needs.
+        </p>
         <div className="space-y-2">
-          {ACTIVITY_LEVELS.map((level) => (
-            <button
-              key={level.value}
-              onClick={() => updateData({ activityLevel: level.value })}
-              className={`w-full text-left px-4 py-3 rounded-xl border transition-colors ${
-                data.activityLevel === level.value
-                  ? "bg-[#F0FDFA] border-[#0D9488]"
-                  : "border-[#E2E8F0] hover:border-[#CBD5E1]"
-              }`}
-            >
-              <span
-                className={`text-sm font-medium ${
-                  data.activityLevel === level.value ? "text-[#0D9488]" : "text-[#1A2332]"
+          {ACTIVITY_LEVELS.map((level) => {
+            const selected = data.activityLevel === level.value;
+            return (
+              <button
+                key={level.value}
+                onClick={() => updateData({ activityLevel: level.value })}
+                className={`w-full text-left px-4 py-3 rounded-xl border transition-all duration-200 cursor-pointer flex items-center gap-3 ${
+                  selected
+                    ? "bg-[#F0FDFA] border-[#0D9488]"
+                    : "border-[#E2E8F0] hover:border-[#CBD5E1]"
                 }`}
               >
-                {t(level.labelKey)}
-              </span>
-              <span className="text-xs text-[#8896A8] ml-2">{t(level.descKey)}</span>
-            </button>
-          ))}
+                {selected && <CheckCircle2 className="w-4 h-4 text-[#0D9488] flex-shrink-0" />}
+                <div>
+                  <span
+                    className={`text-sm font-medium ${
+                      selected ? "text-[#0D9488]" : "text-[#1A2332]"
+                    }`}
+                  >
+                    {t(level.labelKey)}
+                  </span>
+                  <span className="text-xs text-[#8896A8] ml-2">{t(level.descKey)}</span>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Sleep */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-[#1A2332] mb-2">
+          <label className="block text-sm font-medium text-[#1A2332] mb-1">
             {t("quiz.sleepQualTitle")}
           </label>
+          <p className="text-xs italic text-[#8896A8] mb-2">
+            <span className="font-medium text-[#5A6578]">Clinical note:</span> Sleep patterns influence which supplements and timing work best for you.
+          </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {SLEEP_QUALITY.map((q) => (
-              <button
-                key={q.value}
-                onClick={() => updateData({ sleepQuality: q.value })}
-                className={`py-2.5 rounded-lg border text-sm font-medium transition-colors ${
-                  data.sleepQuality === q.value
-                    ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
-                    : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
-                }`}
-              >
-                {t(q.key)}
-              </button>
-            ))}
+            {SLEEP_QUALITY.map((q) => {
+              const selected = data.sleepQuality === q.value;
+              return (
+                <button
+                  key={q.value}
+                  onClick={() => updateData({ sleepQuality: q.value })}
+                  className={`py-3 px-4 rounded-lg border text-sm font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
+                    selected
+                      ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                      : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
+                  }`}
+                >
+                  {selected && <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />}
+                  {t(q.key)}
+                </button>
+              );
+            })}
           </div>
         </div>
         <div>
@@ -139,23 +156,30 @@ export function StepLifestyle({ data, updateData }: Props) {
 
       {/* Stress Level */}
       <div>
-        <label className="block text-sm font-medium text-[#1A2332] mb-2">
+        <label className="block text-sm font-medium text-[#1A2332] mb-1">
           {t("quiz.stressTitle")}
         </label>
+        <p className="text-xs italic text-[#8896A8] mb-2">
+          <span className="font-medium text-[#5A6578]">Clinical note:</span> Stress levels influence which supplements and timing work best for you.
+        </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          {STRESS_LEVELS.map((level) => (
-            <button
-              key={level.value}
-              onClick={() => updateData({ stressLevel: level.value })}
-              className={`py-2.5 rounded-lg border text-sm font-medium transition-colors ${
-                data.stressLevel === level.value
-                  ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
-                  : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
-              }`}
-            >
-              {t(level.key)}
-            </button>
-          ))}
+          {STRESS_LEVELS.map((level) => {
+            const selected = data.stressLevel === level.value;
+            return (
+              <button
+                key={level.value}
+                onClick={() => updateData({ stressLevel: level.value })}
+                className={`py-3 px-4 rounded-lg border text-sm font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
+                  selected
+                    ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                    : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
+                }`}
+              >
+                {selected && <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />}
+                {t(level.key)}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -240,31 +264,35 @@ export function StepLifestyle({ data, updateData }: Props) {
         </label>
         <p className="text-xs text-[#8896A8] mb-3">{t("quiz.goalsHint")}</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {HEALTH_GOALS.map((goal) => (
-            <button
-              key={goal.value}
-              onClick={() => {
-                const current = data.healthGoals;
-                if (current.includes(goal.value)) {
-                  updateData({ healthGoals: current.filter((g) => g !== goal.value) });
-                } else if (current.length < 5) {
-                  updateData({ healthGoals: [...current, goal.value] });
-                }
-              }}
-              className={`flex items-center gap-2 px-3 py-3 rounded-xl border text-sm font-medium transition-colors text-left ${
-                data.healthGoals.includes(goal.value)
-                  ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
-                  : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
-              } ${
-                data.healthGoals.length >= 5 && !data.healthGoals.includes(goal.value)
-                  ? "opacity-40 cursor-not-allowed"
-                  : ""
-              }`}
-            >
-              <span className="text-base">{goal.emoji}</span>
-              {t(goal.labelKey)}
-            </button>
-          ))}
+          {HEALTH_GOALS.map((goal) => {
+            const selected = data.healthGoals.includes(goal.value);
+            return (
+              <button
+                key={goal.value}
+                onClick={() => {
+                  const current = data.healthGoals;
+                  if (current.includes(goal.value)) {
+                    updateData({ healthGoals: current.filter((g) => g !== goal.value) });
+                  } else if (current.length < 5) {
+                    updateData({ healthGoals: [...current, goal.value] });
+                  }
+                }}
+                className={`flex items-center gap-2 py-3 px-4 rounded-xl border text-sm font-medium transition-all duration-200 text-left cursor-pointer ${
+                  selected
+                    ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                    : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
+                } ${
+                  data.healthGoals.length >= 5 && !selected
+                    ? "opacity-40 cursor-not-allowed"
+                    : ""
+                }`}
+              >
+                <span className="text-base flex-shrink-0">{goal.emoji}</span>
+                <span className="flex-1">{t(goal.labelKey)}</span>
+                {selected && <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />}
+              </button>
+            );
+          })}
         </div>
         {data.healthGoals.length > 0 && (
           <p className="text-xs text-[#0D9488] mt-2">
