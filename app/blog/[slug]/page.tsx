@@ -10,7 +10,11 @@ import type { LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
 import { markdownToHtml, extractTOC } from "@/lib/markdown";
 import { MobileFooterAd } from "./MobileFooterAd";
-import { getAmazonLink } from "@/lib/amazon-affiliate";
+import {
+  getProductsForSupplement,
+  getAmazonProductLink,
+  getAmazonSearchLink,
+} from "@/src/lib/data/amazonProducts";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -107,7 +111,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "NOW Foods Magnesium Glycinate",
         brand: "NOW Foods",
         price_usd: 12.99,
-        affiliate_url: getAmazonLink("Magnesium Glycinate", "NOW Foods"),
+        affiliate_url: getAmazonSearchLink("Magnesium Glycinate", "NOW Foods"),
         note: "Highest bioavailability — ideal for sleep & anxiety",
       },
     },
@@ -117,7 +121,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "Magnesium L-Threonate",
         brand: "Life Extension",
         price_usd: 29.99,
-        affiliate_url: getAmazonLink("Magnesium L-Threonate", "Neuro-Mag"),
+        affiliate_url: getAmazonSearchLink("Magnesium L-Threonate", "Neuro-Mag"),
         note: "Crosses the blood-brain barrier — top choice for cognition",
       },
     },
@@ -129,7 +133,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "Vitamin D3 + K2 Liquid",
         brand: "Thorne",
         price_usd: 24.99,
-        affiliate_url: getAmazonLink("Vitamin D3 K2", "Thorne liquid"),
+        affiliate_url: getAmazonSearchLink("Vitamin D3 K2", "Thorne liquid"),
         note: "D3 + K2 combined — optimal for safe use alongside anticoagulants",
       },
     },
@@ -139,7 +143,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "Ultimate Omega Fish Oil",
         brand: "Nordic Naturals",
         price_usd: 33.99,
-        affiliate_url: getAmazonLink("Omega-3 fish oil", "Nordic Naturals"),
+        affiliate_url: getAmazonSearchLink("Omega-3 fish oil", "Nordic Naturals"),
         note: "IFOS 5-star certified — pharmaceutical-grade purity",
       },
     },
@@ -151,7 +155,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "Vitamin D3 5000 IU",
         brand: "NOW Foods",
         price_usd: 11.99,
-        affiliate_url: getAmazonLink("Vitamin D3 5000 IU", "NOW Foods"),
+        affiliate_url: getAmazonSearchLink("Vitamin D3 5000 IU", "NOW Foods"),
         note: "Third-party tested · excellent value for daily deficiency correction",
       },
     },
@@ -161,7 +165,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "Vitamin D 5000 IU",
         brand: "Thorne",
         price_usd: 19.99,
-        affiliate_url: getAmazonLink("Vitamin D3 5000 IU", "Thorne"),
+        affiliate_url: getAmazonSearchLink("Vitamin D3 5000 IU", "Thorne"),
         note: "NSF Certified · premium pharmaceutical-grade formulation",
       },
     },
@@ -173,7 +177,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "Myo-Inositol + D-Chiro Inositol",
         brand: "Wholesome Story",
         price_usd: 23.99,
-        affiliate_url: getAmazonLink("Myo-Inositol D-Chiro Inositol PCOS"),
+        affiliate_url: getAmazonSearchLink("Myo-Inositol D-Chiro Inositol PCOS"),
         note: "Clinically studied 40:1 myo:D-chiro inositol ratio",
       },
     },
@@ -183,7 +187,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "NAC N-Acetyl Cysteine",
         brand: "Jarrow Formulas",
         price_usd: 15.99,
-        affiliate_url: getAmazonLink("NAC N-Acetyl Cysteine", "Jarrow"),
+        affiliate_url: getAmazonSearchLink("NAC N-Acetyl Cysteine", "Jarrow"),
         note: "Sustained-release NAC — antioxidant & insulin-sensitising support",
       },
     },
@@ -195,7 +199,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "Dr. Formulated Probiotics",
         brand: "Garden of Life",
         price_usd: 34.99,
-        affiliate_url: getAmazonLink("Probiotics mental health", "Garden of Life"),
+        affiliate_url: getAmazonSearchLink("Probiotics mental health", "Garden of Life"),
         note: "Clinician-formulated psychobiotic blend — Lactobacillus + Bifidobacterium",
       },
     },
@@ -205,7 +209,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "Saccharomyces Boulardii",
         brand: "Jarrow Formulas",
         price_usd: 14.99,
-        affiliate_url: getAmazonLink("Saccharomyces Boulardii probiotic"),
+        affiliate_url: getAmazonSearchLink("Saccharomyces Boulardii probiotic"),
         note: "Evidence-backed probiotic yeast for gut microbiome restoration",
       },
     },
@@ -217,7 +221,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "B-Complex Plus",
         brand: "Pure Encapsulations",
         price_usd: 24.99,
-        affiliate_url: getAmazonLink("B-Complex supplement", "Pure Encapsulations"),
+        affiliate_url: getAmazonSearchLink("B-Complex supplement", "Pure Encapsulations"),
         note: "Hypoallergenic · all active B-vitamin forms for maximum absorption",
       },
     },
@@ -227,7 +231,7 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "Buffered Vitamin C",
         brand: "Life Extension",
         price_usd: 10.99,
-        affiliate_url: getAmazonLink("Buffered Vitamin C supplement"),
+        affiliate_url: getAmazonSearchLink("Buffered Vitamin C supplement"),
         note: "High-potency buffered vitamin C with bioflavonoids",
       },
     },
@@ -272,6 +276,49 @@ const KEY_TAKEAWAYS: Record<string, string[]> = {
     "The 'you'll pee out excess vitamins' myth is dangerous for fat-soluble vitamins A, D, E, and K.",
     "Form matters enormously: magnesium oxide has ~4% absorption vs. ~80% for glycinate.",
     "Expensive supplements rarely outperform evidence-backed low-cost alternatives.",
+  ],
+};
+
+// ─── Supplements mentioned per article (for "Supplements Mentioned" section) ──
+
+const ARTICLE_SUPPLEMENTS: Record<string, string[]> = {
+  "the-complete-guide-to-magnesium": [
+    "Magnesium",
+    "Vitamin D3",
+    "Vitamin B12",
+  ],
+  "supplements-that-dont-mix-critical-interactions": [
+    "Vitamin D3",
+    "Vitamin K2",
+    "Omega-3",
+    "Iron",
+    "Calcium",
+  ],
+  "vitamin-d-why-80-percent-are-deficient": [
+    "Vitamin D3",
+    "Vitamin K2",
+    "Magnesium",
+    "Zinc",
+  ],
+  "the-pcos-supplement-protocol": [
+    "Berberine",
+    "NAC",
+    "Vitamin D3",
+    "Magnesium",
+    "Folate",
+  ],
+  "your-gut-brain-connection-probiotics-mental-health": [
+    "Probiotics",
+    "Vitamin D3",
+    "Omega-3",
+    "Magnesium",
+  ],
+  "5-supplement-myths-your-doctor-didnt-learn": [
+    "Magnesium",
+    "Vitamin C",
+    "Vitamin D3",
+    "Folate",
+    "CoQ10",
   ],
 };
 
@@ -618,9 +665,63 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               />
             )}
 
+            {/* Supplements Mentioned */}
+            {(ARTICLE_SUPPLEMENTS[slug] ?? []).length > 0 && (
+              <div className="mt-8 pt-6 border-t border-[#f0f3ff]">
+                <h3 className="font-heading font-bold text-[#1A2332] text-base mb-4">
+                  Supplements Mentioned in This Article
+                </h3>
+                <div className="space-y-3">
+                  {(ARTICLE_SUPPLEMENTS[slug] ?? []).map((suppName) => {
+                    const picks = getProductsForSupplement(suppName);
+                    if (!picks) {
+                      return (
+                        <div key={suppName} className="flex items-center justify-between bg-[#f9f9ff] rounded-xl px-4 py-3 ring-1 ring-black/[0.04]">
+                          <span className="text-sm font-medium text-[#1A2332]">{suppName}</span>
+                          <a
+                            href={getAmazonSearchLink(suppName)}
+                            target="_blank"
+                            rel="noopener noreferrer sponsored"
+                            className="text-xs font-semibold text-[#00685f] hover:text-[#005249] inline-flex items-center gap-1 transition-colors flex-shrink-0"
+                          >
+                            Find on Amazon →
+                          </a>
+                        </div>
+                      );
+                    }
+                    const best = picks.best;
+                    return (
+                      <div key={suppName} className="bg-[#f9f9ff] rounded-xl px-4 py-3 ring-1 ring-black/[0.04]">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="text-sm font-semibold text-[#1A2332]">{suppName}</p>
+                            <p className="text-xs text-[#5A6578] mt-0.5">
+                              <span className="font-medium">{best.brand}</span> · {best.name}
+                            </p>
+                            <p className="text-[11px] text-[#8896A8] mt-0.5">{best.description}</p>
+                          </div>
+                          <a
+                            href={getAmazonProductLink(best.asin)}
+                            target="_blank"
+                            rel="noopener noreferrer sponsored"
+                            className="flex-shrink-0 text-xs font-semibold text-[#00685f] hover:text-[#005249] border border-[#00685f]/30 hover:border-[#00685f]/60 bg-white px-3 py-1.5 rounded-lg transition-colors inline-flex items-center gap-1"
+                          >
+                            Amazon →
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className="text-[10px] text-[#C4CDD8] mt-3 leading-relaxed">
+                  As an Amazon Associate, Clareo Health earns from qualifying purchases. This does not affect the price you pay or our recommendations.
+                </p>
+              </div>
+            )}
+
             {/* Affiliate disclosure */}
             <p className="text-[11px] text-[#C4CDD8] mt-4 mb-0 leading-relaxed">
-              This article contains Amazon affiliate links. As an Amazon Associate, Clareo Health earns from qualifying purchases at no extra cost to you. This does not influence our editorial recommendations.
+              As an Amazon Associate, Clareo Health earns from qualifying purchases at no extra cost to you. This does not influence our editorial recommendations.
             </p>
 
             {/* CTA */}
