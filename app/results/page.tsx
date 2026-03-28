@@ -82,6 +82,40 @@ function EvidenceBadge({ rating }: { rating: string }) {
   );
 }
 
+// ─── Amazon smile icon (inline SVG — no hotlinking) ──────────────────────────
+
+function AmazonSmile({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 60 18"
+      aria-label="Amazon"
+      className={className}
+      fill="currentColor"
+    >
+      {/* Wordmark */}
+      <text x="0" y="14" fontSize="14" fontFamily="Arial, sans-serif" fontWeight="bold" fill="#FF9900">
+        amazon
+      </text>
+      {/* Smile arrow */}
+      <path
+        d="M3 16 Q17 21 37 16"
+        stroke="#FF9900"
+        strokeWidth="2"
+        fill="none"
+        strokeLinecap="round"
+      />
+      <path
+        d="M35 14 L38 17 L35 17"
+        stroke="#FF9900"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 // ─── Where to Buy ─────────────────────────────────────────────────────────────
 
 const TIER_CONFIG = [
@@ -144,10 +178,9 @@ function WhereToBuy({ name, form }: { name: string; form?: string }) {
                       href={getAmazonProductLink(p.asin)}
                       target="_blank"
                       rel="noopener noreferrer sponsored"
-                      className="inline-flex items-center justify-center gap-1 text-xs font-semibold text-[#00685f] hover:text-[#005249] border border-[#00685f]/30 hover:border-[#00685f]/60 bg-white px-3 py-1.5 rounded-lg transition-colors"
+                      className="inline-flex items-center justify-center gap-2 border border-[#FF9900]/40 hover:border-[#FF9900]/80 bg-white hover:bg-[#fffbf2] px-3 py-1.5 rounded-lg transition-colors"
                     >
-                      View on Amazon
-                      <ExternalLink className="w-3 h-3" />
+                      <AmazonSmile className="h-[14px] w-auto" />
                     </a>
                   </div>
                 );
@@ -158,10 +191,10 @@ function WhereToBuy({ name, form }: { name: string; form?: string }) {
               href={getAmazonSearchLink(name, form)}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-[#00685f] hover:text-[#005249] transition-colors"
+              className="inline-flex items-center gap-2 border border-[#FF9900]/40 hover:border-[#FF9900]/80 bg-white hover:bg-[#fffbf2] text-sm font-medium text-[#1A2332] px-3 py-2 rounded-lg transition-colors"
             >
-              Find {name} on Amazon
-              <ExternalLink className="w-3.5 h-3.5" />
+              Find {name} on
+              <AmazonSmile className="h-[14px] w-auto" />
             </a>
           )}
 

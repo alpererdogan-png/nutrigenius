@@ -15,16 +15,75 @@ import {
   Star,
   CheckCircle2,
   BookOpen,
+  Clock,
   Menu,
   X,
   Dna,
   Lock,
   AlertTriangle,
 } from "lucide-react";
-import { BlogCarousel } from "./components/BlogCarousel";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/lib/language-context";
 import { AdSense } from "@/components/AdSense";
+
+// ─── Blog articles data for landing preview ───────────────────────────────────
+
+const BLOG_ARTICLES = [
+  {
+    slug: "the-complete-guide-to-magnesium",
+    category: "Evidence Review",
+    tagClass: "bg-teal-50 text-teal-700 border-teal-200",
+    accentBg: "bg-gradient-to-br from-teal-500 to-teal-700",
+    title: "The Complete Guide to Magnesium: Forms, Doses, and What the Science Actually Says",
+    excerpt: "Not all magnesium is created equal. From glycinate to threonate, here's what 47 clinical trials reveal about choosing the right form.",
+    readTime: "8 min read",
+  },
+  {
+    slug: "5-supplement-myths-your-doctor-didnt-learn",
+    category: "Myth Busting",
+    tagClass: "bg-amber-50 text-amber-700 border-amber-200",
+    accentBg: "bg-gradient-to-br from-amber-400 to-orange-500",
+    title: "5 Supplement Myths Your Doctor Didn't Learn in Medical School",
+    excerpt: "Medical education covers pharmacology extensively but nutrition science? Often just a few hours. Let's separate fact from fiction.",
+    readTime: "6 min read",
+  },
+  {
+    slug: "supplements-that-dont-mix-critical-interactions",
+    category: "Safety Alert",
+    tagClass: "bg-rose-50 text-rose-700 border-rose-200",
+    accentBg: "bg-gradient-to-br from-red-500 to-rose-700",
+    title: "Supplements That Don't Mix: Critical Interactions You Need to Know",
+    excerpt: "That fish oil you take with your blood thinner? It could be dangerous. A pharmacology expert breaks down the interactions that matter.",
+    readTime: "7 min read",
+  },
+  {
+    slug: "the-pcos-supplement-protocol",
+    category: "Condition Guide",
+    tagClass: "bg-blue-50 text-blue-700 border-blue-200",
+    accentBg: "bg-gradient-to-br from-blue-500 to-blue-700",
+    title: "The PCOS Supplement Protocol: What the Evidence Supports",
+    excerpt: "Inositol, berberine, vitamin D — which supplements actually help PCOS? We review the clinical trials so you don't have to.",
+    readTime: "9 min read",
+  },
+  {
+    slug: "vitamin-d-why-80-percent-are-deficient",
+    category: "Research Update",
+    tagClass: "bg-purple-50 text-purple-700 border-purple-200",
+    accentBg: "bg-gradient-to-br from-purple-500 to-purple-700",
+    title: "Vitamin D: Why 80% of People Are Deficient and What to Do About It",
+    excerpt: "The sunshine vitamin isn't just about bones anymore. New research links low vitamin D to immunity, mood, and metabolic health.",
+    readTime: "5 min read",
+  },
+  {
+    slug: "your-gut-brain-connection-probiotics-mental-health",
+    category: "Deep Dive",
+    tagClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    accentBg: "bg-gradient-to-br from-emerald-500 to-teal-600",
+    title: "Your Gut-Brain Connection: How Probiotics Influence Mental Health",
+    excerpt: "The gut-brain axis is revolutionising how we think about anxiety and depression. Here's what the latest psychobiotic research shows.",
+    readTime: "10 min read",
+  },
+];
 
 export default function Home() {
   const { t } = useLanguage();
@@ -281,30 +340,94 @@ export default function Home() {
         <div className="h-20 bg-gradient-to-b from-transparent to-[#f9f9ff]" />
       </section>
 
-      {/* ── Blog Carousel Section ── */}
-      <section className="pb-10 sm:pb-16 bg-[#f9f9ff] overflow-hidden pt-6 sm:pt-10">
+      {/* ══════════════════════════════════════════════════
+          CLINICAL KNOWLEDGE HUB — Blog preview section
+      ══════════════════════════════════════════════════ */}
+      <section className="py-16 sm:py-24 bg-[#f0f3ff] overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="mb-3 sm:mb-6">
-            <div className="inline-flex items-center gap-2 bg-[#e6f4f3] text-[#00685f] text-xs font-medium px-3 py-1.5 rounded-full mb-2 sm:mb-3">
-              <BookOpen className="w-3.5 h-3.5" />
-              {t("blog.badge")}
+          {/* Header */}
+          <div className="flex items-end justify-between mb-10 sm:mb-12">
+            <div>
+              <p className="text-[0.75rem] font-semibold uppercase tracking-[0.05em] text-[#5A6578] mb-3">
+                Clinical Knowledge Hub
+              </p>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A2332] tracking-tight">
+                The Science of Healthy Living
+              </h2>
             </div>
-            <h2 className="font-heading text-xl sm:text-3xl font-bold text-[#1A2332] mb-1 sm:mb-2 tracking-tight">
-              {t("blog.title")}
-            </h2>
-            <p className="text-[#5A6578] text-sm sm:text-base max-w-2xl">
-              {t("blog.description")}
-            </p>
-          </div>
-          <div className="-mx-4 sm:-mx-6 px-4 sm:px-6">
-            <BlogCarousel />
-          </div>
-          <div className="mt-4 sm:mt-6">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 bg-[#e6f4f3] hover:bg-[#d0ecea] active:scale-95 text-[#00685f] font-semibold px-6 py-3 rounded-xl text-sm transition-all duration-200"
+              className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
             >
-              {t("blog.cta")}
+              Explore All Articles
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {/* Featured article — full width */}
+          <Link
+            href={`/blog/${BLOG_ARTICLES[0].slug}`}
+            className="group block bg-white rounded-2xl overflow-hidden shadow-sm shadow-black/5 ring-1 ring-black/[0.04] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10 hover:ring-0 transition-all duration-300 mb-6"
+          >
+            <div className="p-6 sm:p-8 sm:grid sm:grid-cols-[1fr_auto] sm:gap-8 sm:items-center">
+              <div>
+                <span className={`inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border mb-4 ${BLOG_ARTICLES[0].tagClass}`}>
+                  {BLOG_ARTICLES[0].category}
+                </span>
+                <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#1A2332] leading-snug mb-3 group-hover:text-[#00685f] transition-colors duration-200">
+                  {BLOG_ARTICLES[0].title}
+                </h3>
+                <p className="text-[#5A6578] text-sm sm:text-base leading-relaxed line-clamp-2 mb-4">
+                  {BLOG_ARTICLES[0].excerpt}
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-1.5 text-xs text-[#8896A8]">
+                    <Clock className="w-3.5 h-3.5" />
+                    {BLOG_ARTICLES[0].readTime}
+                  </div>
+                  <span className="text-xs font-semibold text-[#00685f] group-hover:text-[#005249] flex items-center gap-1 transition-colors">
+                    Read article <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
+              </div>
+              <div className={`hidden sm:flex w-24 h-24 rounded-2xl ${BLOG_ARTICLES[0].accentBg} items-center justify-center flex-shrink-0`}>
+                <BookOpen className="w-10 h-10 text-white/90" />
+              </div>
+            </div>
+          </Link>
+
+          {/* Remaining articles — 3-column grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            {BLOG_ARTICLES.slice(1).map((article) => (
+              <Link
+                key={article.slug}
+                href={`/blog/${article.slug}`}
+                className="group flex flex-col bg-white rounded-xl overflow-hidden shadow-sm shadow-black/5 ring-1 ring-black/[0.04] hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/10 hover:ring-0 transition-all duration-300 p-5"
+              >
+                <span className={`self-start inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border mb-3 ${article.tagClass}`}>
+                  {article.category}
+                </span>
+                <h3 className="font-heading text-[1.05rem] font-semibold text-[#1A2332] leading-snug mb-2 group-hover:text-[#00685f] transition-colors duration-200 line-clamp-3 flex-1">
+                  {article.title}
+                </h3>
+                <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-4">
+                  {article.excerpt}
+                </p>
+                <div className="flex items-center gap-1.5 text-xs text-[#8896A8] mt-auto">
+                  <Clock className="w-3.5 h-3.5" />
+                  {article.readTime}
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Mobile CTA */}
+          <div className="mt-8 sm:hidden">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
+            >
+              Explore All Articles
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
