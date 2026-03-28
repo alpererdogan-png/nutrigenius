@@ -17,6 +17,7 @@ import { applySynergyPairs } from './synergy/synergyPairs';
 import { runSafetyFilter }   from './safety/safetyFilter';
 import { generateWeeklySchedule } from './schedule/generateWeeklySchedule';
 import { enforceTier }       from './tier/tierEnforcement';
+import { optimizeAbsorption }     from './optimizers/absorptionOptimizer';
 import { optimizeMagnesiumForm } from './optimizers/magnesiumOptimizer';
 import { applyTimeToEffect } from './data/timeToEffect';
 import { applyMonitoringNotes } from './data/monitoringNotes';
@@ -104,6 +105,9 @@ export function generateProtocol(
   // ── Layer 3: Lifestyle modifiers ──────────────────────────────────────────
   recs = layer3Lifestyle(quizData, recs);
   activeLayers.push('lifestyle');
+
+  // ── Absorption optimisation (gut-health form selection) ───────────────────
+  recs = optimizeAbsorption(quizData, recs);
 
   // ── Layer 4: Condition-specific stacks ────────────────────────────────────
   recs = layer4Conditions(quizData, recs);

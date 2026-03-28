@@ -208,6 +208,13 @@ export interface QuizData {
    * re-reading smokingStatus.
    */
   smokerFlag?: boolean;
+  /**
+   * Derived flag — set to `true` when the user has digestive conditions
+   * (IBS, celiac, Crohn's, SIBO, GERD, etc.) or 3+ food allergies.
+   * Populated by the absorption optimizer so downstream layers can
+   * select sublingual/high-bioavailability forms.
+   */
+  absorptionFlag?: boolean;
 
   // ── Layer 4: Health Conditions ─────────────────────────────────────────────
   /** Condition IDs from existing knowledge base, e.g. "type-2-diabetes", "hypothyroidism" */
