@@ -15,7 +15,8 @@ export type LayerName =
   | 'genetics'
   | 'goals'
   | 'synergy'
-  | 'safety';
+  | 'safety'
+  | 'optimization';
 
 // ─── SUPPLEMENT CATEGORIES ───────────────────────────────────────────────────
 

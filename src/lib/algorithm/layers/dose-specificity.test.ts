@@ -342,10 +342,11 @@ describe('Magnesium dose specificity', () => {
     expect(mg!.dose).toBe(400);
   });
 
-  it('migraine → 400 mg', () => {
+  it('migraine → 400 mg (citrate form via optimizer)', () => {
     const quiz = baseQuiz({ healthConditions: ['migraines'] });
     const { recommendations } = generateProtocol(quiz, 'premium');
-    const mg = findRec(recommendations, 'magnesium-glycinate');
+    // Migraine triggers citrate form selection in the magnesium optimizer
+    const mg = findRec(recommendations, 'magnesium-citrate');
 
     expect(mg).toBeDefined();
     expect(mg!.dose).toBeGreaterThanOrEqual(400);

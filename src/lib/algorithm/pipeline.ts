@@ -17,6 +17,7 @@ import { applySynergyPairs } from './synergy/synergyPairs';
 import { runSafetyFilter }   from './safety/safetyFilter';
 import { generateWeeklySchedule } from './schedule/generateWeeklySchedule';
 import { enforceTier }       from './tier/tierEnforcement';
+import { optimizeMagnesiumForm } from './optimizers/magnesiumOptimizer';
 import { applyTimeToEffect } from './data/timeToEffect';
 import { applyMonitoringNotes } from './data/monitoringNotes';
 
@@ -127,6 +128,9 @@ export function generateProtocol(
   // ── Layer 7: Goal optimisation + hard cap at 10 ───────────────────────────
   recs = layer7Goals(quizData, recs);
   activeLayers.push('goals');
+
+  // ── Magnesium form optimisation ────────────────────────────────────────────
+  recs = optimizeMagnesiumForm(quizData, recs);
 
   // ── Synergy enforcement ───────────────────────────────────────────────────
   recs = applySynergyPairs(recs, quizData);

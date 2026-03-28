@@ -37,6 +37,10 @@ export const TIME_TO_EFFECT: Record<string, string> = {
 
   // ── Minerals ────────────────────────────────────────────────────────────────
   'magnesium-glycinate': '1-2 weeks for sleep improvement; 4-6 weeks for anxiety/mood',
+  'magnesium-citrate':   '1-2 weeks for bowel regularity; 4-8 weeks for migraine prevention',
+  'magnesium-malate':    '1-2 weeks for muscle recovery; 4-6 weeks for energy/fatigue',
+  'magnesium-taurate':   '2-4 weeks for blood pressure effects; 4-8 weeks for cardiovascular benefit',
+  'magnesium-l-threonate': '4-8 weeks for cognitive improvements; 12 weeks for full effect',
   'mag-l-threonate':     '2-4 weeks for cognitive effects',
   'iron-bisglycinate':   '3-6 months to normalize ferritin stores',
   'zinc-picolinate':     '2-4 weeks',
