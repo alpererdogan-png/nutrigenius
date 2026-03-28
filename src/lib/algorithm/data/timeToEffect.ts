@@ -88,6 +88,7 @@ export const TIME_TO_EFFECT: Record<string, string> = {
   'l-citrulline':        '1-2 weeks for blood flow effects',
   'beta-alanine':        '2-4 weeks to build carnosine stores',
   'glycine':             'Same evening for sleep improvement',
+  'hmb':                 '2-4 weeks for anti-catabolic effects; 6-12 weeks for lean mass preservation',
   'collagen-peptides':   '8-12 weeks for skin/joint benefits',
   'collagen-type-ii':    '8-12 weeks for joint benefits',
   'l-glutamine':         '2-4 weeks for gut lining repair',

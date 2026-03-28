@@ -197,6 +197,11 @@ export interface QuizData {
 
   // ── Layer 3: Lifestyle ─────────────────────────────────────────────────────
   activityLevel: 'sedentary' | 'light' | 'moderate' | 'very-active' | 'athlete';
+  /**
+   * Training phase — only meaningful when activityLevel is 'very-active' or
+   * 'athlete'. Controls phase-specific supplement adjustments in Layer 3.
+   */
+  trainingPhase?: 'building' | 'maintenance' | 'cutting' | 'competition' | 'recovery';
   sleepQuality: 'poor' | 'fair' | 'good' | 'excellent';
   stressLevel: 'low' | 'moderate' | 'high' | 'very-high';
   sunExposure: 'minimal' | 'moderate' | 'high';

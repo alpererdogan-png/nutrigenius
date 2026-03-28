@@ -841,6 +841,300 @@ function applyActivityModifications(
     }), LAYER);
   }
 
+  // ── Training Phase Modifiers ────────────────────────────────────────────────
+  recs = applyTrainingPhase(quiz, recs);
+
+  return recs;
+}
+
+// ─── TRAINING PHASE ──────────────────────────────────────────────────────────
+
+function applyTrainingPhase(
+  quiz: QuizData,
+  recs: Recommendation[],
+): Recommendation[] {
+  const phase = quiz.trainingPhase;
+  if (!phase) return recs;
+
+  // ── BUILDING ──────────────────────────────────────────────────────────────
+  if (phase === 'building') {
+    // Ensure creatine at 5g (should already be present from athlete block)
+    if (!findExistingRec(recs, 'creatine-monohydrate')) {
+      recs = addOrModify(recs, makeRec({
+        id: 'creatine-monohydrate',
+        supplementName: 'Creatine Monohydrate',
+        form: 'creatine-monohydrate',
+        dose: 5,
+        doseUnit: 'g',
+        frequency: 'daily',
+        timing: ['morning-with-food'],
+        withFood: true,
+        evidenceRating: 'Strong',
+        reasons: [makeReason(
+          'Building phase — creatine saturates muscle phosphocreatine stores for maximal strength and hypertrophy gains',
+        )],
+        warnings: [],
+        contraindications: [],
+        cyclingPattern: CYCLE_DAILY,
+        priority: 7,
+        category: 'amino-acid',
+        separateFrom: [],
+        notes: ['5 g/day maintenance dose — no loading phase needed'],
+      }), LAYER);
+    } else {
+      recs = addReason(recs, 'creatine-monohydrate', LAYER,
+        'Building phase — creatine supports strength and hypertrophy gains');
+    }
+
+    // HMB for newer trainees
+    if (!findExistingRec(recs, 'hmb')) {
+      recs = addOrModify(recs, makeRec({
+        id: 'hmb',
+        supplementName: 'HMB (β-Hydroxy β-Methylbutyrate)',
+        form: 'hmb-free-acid',
+        dose: 3,
+        doseUnit: 'g',
+        frequency: 'daily',
+        timing: ['morning-with-food'],
+        withFood: true,
+        evidenceRating: 'Moderate',
+        reasons: [makeReason(
+          'Building phase — HMB reduces muscle protein breakdown and accelerates recovery, most effective for newer trainees',
+        )],
+        warnings: [],
+        contraindications: [],
+        cyclingPattern: CYCLE_DAILY,
+        priority: 5,
+        category: 'amino-acid',
+        separateFrom: [],
+        notes: [
+          'Most beneficial for those new to resistance training or returning after a break',
+          'Ensure 1.6–2.2 g protein per kg bodyweight from diet for optimal muscle growth',
+        ],
+      }), LAYER);
+    }
+
+    recs = appendNote(recs, 'creatine-monohydrate',
+      'Building phase: ensure 1.6–2.2 g protein per kg bodyweight from diet for optimal muscle growth');
+
+    return recs;
+  }
+
+  // ── CUTTING ───────────────────────────────────────────────────────────────
+  if (phase === 'cutting') {
+    // Magnesium: increase by 100mg for electrolyte depletion in deficit
+    const mg = findExistingRec(recs, 'magnesium-glycinate');
+    if (mg) {
+      const cuttingDose = mg.dose + 100;
+      recs = modifyDose(recs, 'magnesium-glycinate', cuttingDose, LAYER,
+        'Cutting phase — additional magnesium to offset electrolyte depletion during caloric deficit');
+    }
+
+    // HMB 3g — strong evidence for muscle preservation in deficit
+    if (!findExistingRec(recs, 'hmb')) {
+      recs = addOrModify(recs, makeRec({
+        id: 'hmb',
+        supplementName: 'HMB (β-Hydroxy β-Methylbutyrate)',
+        form: 'hmb-free-acid',
+        dose: 3,
+        doseUnit: 'g',
+        frequency: 'daily',
+        timing: ['morning-with-food'],
+        withFood: true,
+        evidenceRating: 'Strong',
+        reasons: [makeReason(
+          'Cutting phase — HMB prevents muscle loss during caloric deficit; strongest evidence in energy-restricted contexts',
+        )],
+        warnings: [],
+        contraindications: [],
+        cyclingPattern: CYCLE_DAILY,
+        priority: 7,
+        category: 'amino-acid',
+        separateFrom: [],
+        notes: [
+          'Critical during caloric deficit — reduces muscle protein breakdown by up to 20%',
+          'Maintain protein intake at 2.0–2.4 g/kg during caloric deficit to preserve muscle mass',
+        ],
+      }), LAYER);
+    }
+
+    // Chromium for blood sugar stability during deficit
+    if (!findExistingRec(recs, 'chromium-picolinate')) {
+      recs = addOrModify(recs, makeRec({
+        id: 'chromium-picolinate',
+        supplementName: 'Chromium Picolinate',
+        form: 'picolinate',
+        dose: 200,
+        doseUnit: 'mcg',
+        frequency: 'daily',
+        timing: ['morning-with-food'],
+        withFood: true,
+        evidenceRating: 'Moderate',
+        reasons: [makeReason(
+          'Cutting phase — chromium supports blood sugar stability and reduces cravings during caloric deficit',
+        )],
+        warnings: [],
+        contraindications: [],
+        cyclingPattern: CYCLE_DAILY,
+        priority: 4,
+        category: 'mineral',
+        separateFrom: [],
+        notes: ['Supports insulin sensitivity during energy restriction'],
+      }), LAYER);
+    }
+
+    // Omega-3: ensure anti-inflammatory dose (deficit increases inflammation)
+    const omega3Id = findExistingRec(recs, 'dha-algae') ? 'dha-algae' : 'omega-3-fish-oil';
+    const omega3 = findExistingRec(recs, omega3Id);
+    if (omega3 && omega3.dose < 2000) {
+      recs = modifyDose(recs, omega3Id, 2000, LAYER,
+        'Cutting phase — caloric deficit increases systemic inflammation; higher omega-3 dose is anti-inflammatory');
+    }
+
+    recs = appendNote(recs, 'creatine-monohydrate',
+      'Cutting phase: maintain creatine — it preserves muscle and strength during a deficit with no fat gain');
+
+    return recs;
+  }
+
+  // ── COMPETITION ───────────────────────────────────────────────────────────
+  if (phase === 'competition') {
+    recs = appendNote(recs, 'creatine-monohydrate',
+      'Competition: be aware of ~1–2 kg water retention from creatine — consider timing relative to weigh-in if applicable');
+
+    // Caffeine timing note (add to any existing supplement or creatine as carrier)
+    const caffNote =
+      'Competition: 200–400 mg caffeine 30–60 min before competition for ergogenic benefit (3–6 mg/kg bodyweight)';
+    if (findExistingRec(recs, 'creatine-monohydrate')) {
+      recs = appendNote(recs, 'creatine-monohydrate', caffNote);
+    }
+
+    // Beetroot / nitrate note
+    const beetrootNote =
+      'Competition: 500 ml beetroot juice (or 6.4 mmol nitrate supplement) 2–3 hours before endurance events for nitric oxide boost';
+    if (findExistingRec(recs, 'l-citrulline')) {
+      recs = appendNote(recs, 'l-citrulline', beetrootNote);
+    } else if (findExistingRec(recs, 'creatine-monohydrate')) {
+      recs = appendNote(recs, 'creatine-monohydrate', beetrootNote);
+    }
+
+    // Sodium / water note
+    const sodiumNote =
+      'Competition: sodium and water manipulation is highly individual — consult a sports dietitian for peaking protocols';
+    if (findExistingRec(recs, 'magnesium-glycinate')) {
+      recs = appendNote(recs, 'magnesium-glycinate', sodiumNote);
+    }
+
+    return recs;
+  }
+
+  // ── RECOVERY ──────────────────────────────────────────────────────────────
+  if (phase === 'recovery') {
+    // Omega-3: increase to 2,000mg+ for anti-inflammatory recovery
+    const omega3Id = findExistingRec(recs, 'dha-algae') ? 'dha-algae' : 'omega-3-fish-oil';
+    const omega3 = findExistingRec(recs, omega3Id);
+    if (omega3 && omega3.dose < 2000) {
+      recs = modifyDose(recs, omega3Id, 2000, LAYER,
+        'Recovery phase — increased omega-3 for anti-inflammatory support during recovery');
+    }
+    if (omega3) {
+      recs = addReason(recs, omega3Id, LAYER,
+        'Recovery phase — omega-3 reduces delayed-onset muscle soreness and supports tissue repair');
+    }
+
+    // Tart Cherry Extract for DOMS reduction
+    if (!findExistingRec(recs, 'tart-cherry-extract')) {
+      recs = addOrModify(recs, makeRec({
+        id: 'tart-cherry-extract',
+        supplementName: 'Tart Cherry Extract',
+        form: 'montmorency-cherry-extract',
+        dose: 500,
+        doseUnit: 'mg',
+        frequency: 'daily',
+        timing: ['evening'],
+        withFood: false,
+        evidenceRating: 'Moderate',
+        reasons: [makeReason(
+          'Recovery phase — tart cherry anthocyanins reduce DOMS and markers of exercise-induced muscle damage',
+        )],
+        warnings: [],
+        contraindications: [],
+        cyclingPattern: CYCLE_DAILY,
+        priority: 5,
+        category: 'herbal',
+        separateFrom: [],
+        notes: ['Reduces delayed-onset muscle soreness (DOMS) by ~13% in meta-analyses'],
+      }), LAYER);
+    } else {
+      recs = addReason(recs, 'tart-cherry-extract', LAYER,
+        'Recovery phase — anthocyanins reduce exercise-induced muscle damage and DOMS');
+    }
+
+    // Collagen peptides for tendon/joint repair
+    if (!findExistingRec(recs, 'collagen-peptides')) {
+      recs = addOrModify(recs, makeRec({
+        id: 'collagen-peptides',
+        supplementName: 'Collagen Peptides',
+        form: 'hydrolysed-type-i-iii',
+        dose: 15,
+        doseUnit: 'g',
+        frequency: 'daily',
+        timing: ['morning-with-food'],
+        withFood: true,
+        evidenceRating: 'Moderate',
+        reasons: [makeReason(
+          'Recovery phase — collagen peptides support tendon, ligament, and joint repair; take with 50 mg vitamin C',
+        )],
+        warnings: [],
+        contraindications: [],
+        cyclingPattern: CYCLE_DAILY,
+        priority: 5,
+        category: 'protein',
+        separateFrom: [],
+        notes: [
+          'Take with 50 mg vitamin C to enhance collagen synthesis',
+          'Hydrolysed type I & III collagen targets tendons, ligaments, and joints',
+        ],
+      }), LAYER);
+    }
+
+    // CoQ10: ensure present for recovery support
+    if (!findExistingRec(recs, 'coq10-ubiquinol')) {
+      recs = addOrModify(recs, makeRec({
+        id: 'coq10-ubiquinol',
+        supplementName: 'CoQ10 (Ubiquinol)',
+        form: 'ubiquinol',
+        dose: 200,
+        doseUnit: 'mg',
+        frequency: 'daily',
+        timing: ['morning-with-food'],
+        withFood: true,
+        evidenceRating: 'Moderate',
+        reasons: [makeReason(
+          'Recovery phase — CoQ10 supports mitochondrial recovery and reduces exercise-induced oxidative stress',
+        )],
+        warnings: [],
+        contraindications: [],
+        cyclingPattern: CYCLE_DAILY,
+        priority: 6,
+        category: 'antioxidant',
+        separateFrom: [],
+        notes: ['Ubiquinol form has 3–8× better absorption than ubiquinone'],
+      }), LAYER);
+    } else {
+      recs = addReason(recs, 'coq10-ubiquinol', LAYER,
+        'Recovery phase — CoQ10 supports mitochondrial repair and reduces oxidative stress');
+    }
+
+    recs = appendNote(recs, 'creatine-monohydrate',
+      'Recovery phase: maintain creatine — it supports muscle repair even during reduced training');
+    recs = appendNote(recs, 'magnesium-glycinate',
+      'Recovery phase — focus on sleep, nutrition, and gentle movement. Reduce training intensity to allow adaptation.');
+
+    return recs;
+  }
+
+  // MAINTENANCE — no additional phase-specific modifications
   return recs;
 }
 

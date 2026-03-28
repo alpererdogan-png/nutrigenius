@@ -692,3 +692,179 @@ describe('Tart cherry: NOT added when melatonin is already present', () => {
     expect(getById(recs, 'tart-cherry-extract')).toBeUndefined();
   });
 });
+
+// ─── TRAINING PHASE: BUILDING ────────────────────────────────────────────────
+
+describe('Training phase: building (athlete)', () => {
+  const [, recs] = run({
+    activityLevel: 'athlete',
+    trainingPhase: 'building',
+  });
+
+  test('creatine present at 5 g', () => {
+    const creatine = getById(recs, 'creatine-monohydrate');
+    expect(creatine).toBeDefined();
+    expect(creatine!.dose).toBe(5);
+    expect(creatine!.doseUnit).toBe('g');
+  });
+
+  test('HMB added at 3 g', () => {
+    const hmb = getById(recs, 'hmb');
+    expect(hmb).toBeDefined();
+    expect(hmb!.dose).toBe(3);
+    expect(hmb!.doseUnit).toBe('g');
+  });
+
+  test('creatine has protein intake note', () => {
+    const creatine = getById(recs, 'creatine-monohydrate');
+    expect(creatine!.notes.some(n => n.includes('1.6–2.2 g protein'))).toBe(true);
+  });
+});
+
+// ─── TRAINING PHASE: CUTTING ─────────────────────────────────────────────────
+
+describe('Training phase: cutting (athlete)', () => {
+  const [, recs] = run({
+    activityLevel: 'athlete',
+    trainingPhase: 'cutting',
+  });
+
+  test('magnesium dose increased by 100 mg relative to athlete baseline', () => {
+    const mg = getById(recs, 'magnesium-glycinate');
+    expect(mg).toBeDefined();
+    // Athlete baseline is 400 mg, cutting adds 100 → 500
+    expect(mg!.dose).toBeGreaterThanOrEqual(500);
+  });
+
+  test('HMB added at 3 g with strong evidence', () => {
+    const hmb = getById(recs, 'hmb');
+    expect(hmb).toBeDefined();
+    expect(hmb!.dose).toBe(3);
+    expect(hmb!.evidenceRating).toBe('Strong');
+  });
+
+  test('HMB has deficit-specific protein note', () => {
+    const hmb = getById(recs, 'hmb');
+    expect(hmb!.notes.some(n => n.includes('2.0–2.4 g/kg'))).toBe(true);
+  });
+
+  test('chromium picolinate added at 200 mcg', () => {
+    const cr = getById(recs, 'chromium-picolinate');
+    expect(cr).toBeDefined();
+    expect(cr!.dose).toBe(200);
+    expect(cr!.doseUnit).toBe('mcg');
+  });
+
+  test('omega-3 at anti-inflammatory dose (≥2,000 mg)', () => {
+    const omega = getById(recs, 'omega-3-fish-oil');
+    expect(omega).toBeDefined();
+    expect(omega!.dose).toBeGreaterThanOrEqual(2000);
+  });
+});
+
+// ─── TRAINING PHASE: COMPETITION ─────────────────────────────────────────────
+
+describe('Training phase: competition (athlete)', () => {
+  const [, recs] = run({
+    activityLevel: 'athlete',
+    trainingPhase: 'competition',
+  });
+
+  test('creatine has water retention note', () => {
+    const creatine = getById(recs, 'creatine-monohydrate');
+    expect(creatine).toBeDefined();
+    expect(creatine!.notes.some(n => n.includes('water retention') && n.includes('weigh-in'))).toBe(true);
+  });
+
+  test('caffeine timing note present', () => {
+    const creatine = getById(recs, 'creatine-monohydrate');
+    expect(creatine!.notes.some(n => n.includes('200–400 mg caffeine'))).toBe(true);
+  });
+
+  test('sodium/water manipulation note present', () => {
+    const mg = getById(recs, 'magnesium-glycinate');
+    expect(mg!.notes.some(n => n.includes('sodium') && n.includes('sports dietitian'))).toBe(true);
+  });
+});
+
+// ─── TRAINING PHASE: RECOVERY ────────────────────────────────────────────────
+
+describe('Training phase: recovery (athlete)', () => {
+  const [, recs] = run({
+    activityLevel: 'athlete',
+    trainingPhase: 'recovery',
+  });
+
+  test('omega-3 at ≥2,000 mg', () => {
+    const omega = getById(recs, 'omega-3-fish-oil');
+    expect(omega).toBeDefined();
+    expect(omega!.dose).toBeGreaterThanOrEqual(2000);
+  });
+
+  test('tart cherry extract added at 500 mg', () => {
+    const cherry = getById(recs, 'tart-cherry-extract');
+    expect(cherry).toBeDefined();
+    expect(cherry!.dose).toBe(500);
+    expect(cherry!.reasons.some(r => r.reason.includes('DOMS'))).toBe(true);
+  });
+
+  test('collagen peptides added at 15 g', () => {
+    const collagen = getById(recs, 'collagen-peptides');
+    expect(collagen).toBeDefined();
+    expect(collagen!.dose).toBe(15);
+    expect(collagen!.notes.some(n => n.includes('vitamin C'))).toBe(true);
+  });
+
+  test('CoQ10 present', () => {
+    expect(getById(recs, 'coq10-ubiquinol')).toBeDefined();
+  });
+
+  test('recovery focus note on magnesium', () => {
+    const mg = getById(recs, 'magnesium-glycinate');
+    expect(mg!.notes.some(n => n.includes('Recovery phase') && n.includes('sleep'))).toBe(true);
+  });
+});
+
+// ─── TRAINING PHASE: MAINTENANCE ─────────────────────────────────────────────
+
+describe('Training phase: maintenance (athlete)', () => {
+  const [, recs] = run({
+    activityLevel: 'athlete',
+    trainingPhase: 'maintenance',
+  });
+
+  test('no HMB added (maintenance is baseline athlete stack)', () => {
+    expect(getById(recs, 'hmb')).toBeUndefined();
+  });
+
+  test('no collagen added', () => {
+    expect(getById(recs, 'collagen-peptides')).toBeUndefined();
+  });
+
+  test('creatine still present from athlete baseline', () => {
+    expect(getById(recs, 'creatine-monohydrate')).toBeDefined();
+  });
+});
+
+// ─── TRAINING PHASE: NO PHASE (non-athlete) ─────────────────────────────────
+
+describe('Training phase: ignored for non-athletes', () => {
+  test('moderate activity + cutting phase → no HMB', () => {
+    const [, recs] = run({
+      activityLevel: 'moderate',
+      trainingPhase: 'cutting',
+    });
+    expect(getById(recs, 'hmb')).toBeUndefined();
+    expect(getById(recs, 'chromium-picolinate')).toBeUndefined();
+  });
+
+  test('sedentary + building phase → no creatine building note', () => {
+    const [, recs] = run({
+      activityLevel: 'sedentary',
+      trainingPhase: 'building',
+    });
+    const creatine = getById(recs, 'creatine-monohydrate');
+    // Sedentary users don't get creatine at all
+    expect(creatine).toBeUndefined();
+  });
+});
