@@ -468,3 +468,62 @@ describe('CoQ10 dose tiers', () => {
     expect(getById(recs, 'coq10-ubiquinol')!.dose).toBe(200);
   });
 });
+
+// ─── SCENARIO 10: Vitamin D seasonal notes ─────────────────────────────────
+
+describe('Vitamin D seasonal notes', () => {
+  test('all Vitamin D recs include year-round seasonal note', () => {
+    const recs = layer1Demographic(baseQuiz({ country: 'US' }));
+    const vitD = getById(recs, 'vitamin-d3')!;
+    expect(vitD.notes.some(n => n.includes('year-round supplementation'))).toBe(true);
+    expect(vitD.notes.some(n => n.includes('reduce your dose by 1,000 IU'))).toBe(true);
+  });
+
+  test('high-latitude country (IE, lat 53°N) includes winter warning', () => {
+    const recs = layer1Demographic(baseQuiz({ country: 'IE' }));
+    const vitD = getById(recs, 'vitamin-d3')!;
+    expect(vitD.notes.some(n => n.includes('October through March'))).toBe(true);
+  });
+
+  test('high-latitude country (SE, lat 62°N) includes winter warning', () => {
+    const recs = layer1Demographic(baseQuiz({ country: 'SE' }));
+    const vitD = getById(recs, 'vitamin-d3')!;
+    expect(vitD.notes.some(n => n.includes('October through March'))).toBe(true);
+  });
+
+  test('high-latitude country (CA, lat 56°N) includes winter warning', () => {
+    const recs = layer1Demographic(baseQuiz({ country: 'CA' }));
+    const vitD = getById(recs, 'vitamin-d3')!;
+    expect(vitD.notes.some(n => n.includes('October through March'))).toBe(true);
+  });
+
+  test('high-latitude country (GB, lat 54°N) includes winter warning', () => {
+    const recs = layer1Demographic(baseQuiz({ country: 'GB' }));
+    const vitD = getById(recs, 'vitamin-d3')!;
+    expect(vitD.notes.some(n => n.includes('negligible from October through March'))).toBe(true);
+  });
+
+  test('mid-latitude country (US, lat 38°N) does NOT include winter warning', () => {
+    const recs = layer1Demographic(baseQuiz({ country: 'US' }));
+    const vitD = getById(recs, 'vitamin-d3')!;
+    expect(vitD.notes.some(n => n.includes('October through March'))).toBe(false);
+  });
+
+  test('low-latitude country (AU, lat 27°S) does NOT include winter warning', () => {
+    const recs = layer1Demographic(baseQuiz({ country: 'AU' }));
+    const vitD = getById(recs, 'vitamin-d3')!;
+    expect(vitD.notes.some(n => n.includes('October through March'))).toBe(false);
+  });
+
+  test('explicit latitude >45 triggers winter warning', () => {
+    const recs = layer1Demographic(baseQuiz({ country: 'US', latitude: 60 }));
+    const vitD = getById(recs, 'vitamin-d3')!;
+    expect(vitD.notes.some(n => n.includes('October through March'))).toBe(true);
+  });
+
+  test('explicit latitude ≤45 does not trigger winter warning', () => {
+    const recs = layer1Demographic(baseQuiz({ country: 'GB', latitude: 40 }));
+    const vitD = getById(recs, 'vitamin-d3')!;
+    expect(vitD.notes.some(n => n.includes('October through March'))).toBe(false);
+  });
+});

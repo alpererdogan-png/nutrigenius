@@ -263,8 +263,18 @@ function addVitaminD(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
     priority: 7,
     category: 'vitamin',
     separateFrom: [],
-    notes: ['Fat-soluble — take with your largest meal for best absorption'],
+    notes: [
+      'Fat-soluble — take with your largest meal for best absorption',
+      'Your Vitamin D dose is calibrated for year-round supplementation. During summer months with regular sun exposure (UV index >3, 15+ minutes of midday sun on exposed skin), you may reduce your dose by 1,000 IU. Consider retesting your levels in both summer and winter to optimize your dose seasonally.',
+    ],
   });
+
+  // High-latitude seasonal warning (>45°N)
+  if (lat > 45) {
+    rec.notes.push(
+      'In your location, Vitamin D production from sunlight is negligible from October through March. Consistent supplementation during these months is especially important.',
+    );
+  }
 
   return addOrModify(recs, rec, LAYER);
 }
