@@ -54,6 +54,13 @@ export type SupplementRecommendation = {
   cyclingPattern?: string;
   notes?: string[];
   timeToEffect?: string;
+  monitoringNotes?: {
+    supplementId: string;
+    test: string;
+    frequency: string;
+    target?: string;
+    urgency: 'routine' | 'important' | 'essential';
+  }[];
 };
 
 type OldWeeklySchedule = {
@@ -483,6 +490,7 @@ function mapRecommendation(rec: Recommendation): SupplementRecommendation {
     cyclingPattern: rec.cyclingPattern.description,
     notes: rec.notes,
     timeToEffect: rec.timeToEffect,
+    monitoringNotes: rec.monitoringNotes,
   };
 }
 

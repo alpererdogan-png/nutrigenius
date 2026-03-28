@@ -150,6 +150,11 @@ export interface Recommendation {
    * Populated by the pipeline from the TIME_TO_EFFECT lookup.
    */
   timeToEffect?: string;
+  /**
+   * Lab-monitoring recommendations for supplements that require periodic
+   * blood work. Populated by the pipeline from monitoringNotes rules.
+   */
+  monitoringNotes?: import('./data/monitoringNotes').MonitoringNote[];
 }
 
 // ─── QUIZ DATA INPUT ─────────────────────────────────────────────────────────

@@ -18,6 +18,7 @@ import { runSafetyFilter }   from './safety/safetyFilter';
 import { generateWeeklySchedule } from './schedule/generateWeeklySchedule';
 import { enforceTier }       from './tier/tierEnforcement';
 import { applyTimeToEffect } from './data/timeToEffect';
+import { applyMonitoringNotes } from './data/monitoringNotes';
 
 import {
   QuizData,
@@ -132,6 +133,9 @@ export function generateProtocol(
 
   // ── Time-to-effect metadata ───────────────────────────────────────────────
   recs = applyTimeToEffect(recs);
+
+  // ── Monitoring notes (lab-tracking recommendations) ───────────────────────
+  recs = applyMonitoringNotes(recs);
 
   // ── Safety filter ─────────────────────────────────────────────────────────
   const safetyResult = runSafetyFilter(quizData, recs);

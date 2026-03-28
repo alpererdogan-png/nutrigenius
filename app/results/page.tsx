@@ -286,6 +286,57 @@ function SupplementCard({ supp }: { supp: SupplementRecommendation }) {
           </div>
         )}
 
+        {supp.monitoringNotes && supp.monitoringNotes.length > 0 && (
+          <div className="mb-4 space-y-1.5">
+            {supp.monitoringNotes.map((note, i) => (
+              <div
+                key={i}
+                className={`flex items-start gap-2 rounded-lg px-3 py-2 ${
+                  note.urgency === 'essential'
+                    ? 'bg-red-50 border border-red-200'
+                    : note.urgency === 'important'
+                    ? 'bg-violet-50 border border-violet-200'
+                    : 'bg-slate-50 border border-slate-200'
+                }`}
+              >
+                <FlaskConical className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${
+                  note.urgency === 'essential'
+                    ? 'text-red-600'
+                    : note.urgency === 'important'
+                    ? 'text-violet-600'
+                    : 'text-slate-500'
+                }`} />
+                <div className="min-w-0">
+                  <p className={`text-xs font-medium ${
+                    note.urgency === 'essential'
+                      ? 'text-red-800'
+                      : note.urgency === 'important'
+                      ? 'text-violet-800'
+                      : 'text-slate-700'
+                  }`}>
+                    {note.test}
+                  </p>
+                  <p className={`text-[11px] mt-0.5 ${
+                    note.urgency === 'essential'
+                      ? 'text-red-700'
+                      : note.urgency === 'important'
+                      ? 'text-violet-700'
+                      : 'text-slate-500'
+                  }`}>
+                    {note.frequency}
+                    {note.target && ` · ${note.target}`}
+                  </p>
+                </div>
+                {note.urgency === 'essential' && (
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-red-600 flex-shrink-0 mt-0.5">
+                    Essential
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
         <button
           onClick={() => setExpanded(!expanded)}
           className="flex items-center gap-2 text-[#00685f] text-sm font-medium hover:text-[#005249] transition-colors w-full text-left"
@@ -836,6 +887,94 @@ export default function ResultsPage() {
             </div>
           </section>
         )}
+
+        {/* Monitoring Schedule summary */}
+        {(() => {
+          const allMonitoring = supplements
+            .flatMap(s => s.monitoringNotes ?? []);
+          if (allMonitoring.length === 0) return null;
+
+          const buckets = new Map<string, typeof allMonitoring>();
+          for (const note of allMonitoring) {
+            const tf = /2-4 weeks/i.test(note.frequency) ? '2-4 weeks'
+              : /3 months/i.test(note.frequency) ? 'At 3 months'
+              : /6 months/i.test(note.frequency) ? 'At 6 months'
+              : 'Ongoing';
+            const list = buckets.get(tf) ?? [];
+            list.push(note);
+            buckets.set(tf, list);
+          }
+          const ORDER = ['2-4 weeks', 'At 3 months', 'At 6 months', 'Ongoing'];
+          const groups = ORDER.filter(tf => buckets.has(tf)).map(tf => ({
+            timeframe: tf,
+            items: buckets.get(tf)!,
+          }));
+
+          return (
+            <section>
+              <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">Monitoring Schedule</h2>
+              <p className="text-sm text-[#5A6578] mb-4">
+                Recommended lab tests to track your supplement progress and safety.
+              </p>
+              <div className="bg-white border border-[#ebebf5] rounded-2xl p-5 sm:p-6 space-y-4">
+                {groups.map(({ timeframe, items }) => (
+                  <div key={timeframe}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className={`w-2 h-2 rounded-full ${
+                        timeframe === '2-4 weeks' ? 'bg-red-500'
+                        : timeframe === 'At 3 months' ? 'bg-violet-500'
+                        : timeframe === 'At 6 months' ? 'bg-blue-500'
+                        : 'bg-slate-400'
+                      }`} />
+                      <h3 className="text-sm font-semibold text-[#1A2332]">{timeframe}</h3>
+                    </div>
+                    <div className="space-y-2 ml-4">
+                      {items.map((note, i) => {
+                        const suppName = supplements.find(s => s.id === note.supplementId)?.name ?? note.supplementId;
+                        return (
+                          <div
+                            key={i}
+                            className={`flex items-start gap-2 rounded-lg px-3 py-2 ${
+                              note.urgency === 'essential'
+                                ? 'bg-red-50 border border-red-200'
+                                : note.urgency === 'important'
+                                ? 'bg-violet-50 border border-violet-200'
+                                : 'bg-slate-50 border border-slate-200'
+                            }`}
+                          >
+                            <TestTube className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${
+                              note.urgency === 'essential' ? 'text-red-600'
+                              : note.urgency === 'important' ? 'text-violet-600'
+                              : 'text-slate-500'
+                            }`} />
+                            <div className="min-w-0">
+                              <p className={`text-xs font-medium ${
+                                note.urgency === 'essential' ? 'text-red-800'
+                                : note.urgency === 'important' ? 'text-violet-800'
+                                : 'text-slate-700'
+                              }`}>
+                                {note.test}
+                                <span className="font-normal text-[#5A6578]"> — for {suppName}</span>
+                              </p>
+                              {note.target && (
+                                <p className="text-[11px] text-[#5A6578] mt-0.5">{note.target}</p>
+                              )}
+                            </div>
+                            {note.urgency === 'essential' && (
+                              <span className="text-[10px] font-semibold uppercase tracking-wider text-red-600 flex-shrink-0 mt-0.5">
+                                Essential
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
 
         {/* Blocked supplements */}
         {blockedSupplements.length > 0 && (
