@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import { CookieSettingsLink } from "@/components/CookieConsent";
 import {
@@ -20,6 +20,8 @@ import {
   Dna,
   Lock,
   AlertTriangle,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/lib/language-context";
@@ -88,6 +90,10 @@ const BLOG_ARTICLES = [
 export default function Home() {
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const scrollCarousel = useCallback((dir: "left" | "right") => {
+    carouselRef.current?.scrollBy({ left: dir === "right" ? 360 : -360, behavior: "smooth" });
+  }, []);
 
   const organizationJsonLd = {
     "@context": "https://schema.org",
@@ -360,39 +366,47 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Scroll-snap carousel — peek cards on right */}
+        {/* Scroll-snap carousel */}
         <div className="relative">
+          {/* Desktop arrow buttons */}
+          <button
+            onClick={() => scrollCarousel("left")}
+            aria-label="Scroll left"
+            className="hidden lg:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white rounded-full shadow-md items-center justify-center text-[#5A6578] hover:text-[#00685f] hover:shadow-lg transition-all duration-200"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => scrollCarousel("right")}
+            aria-label="Scroll right"
+            className="hidden lg:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white rounded-full shadow-md items-center justify-center text-[#5A6578] hover:text-[#00685f] hover:shadow-lg transition-all duration-200"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
           {/* Right-edge fade hint */}
           <div className="absolute right-0 top-0 bottom-4 w-20 bg-gradient-to-l from-[#f0f3ff] to-transparent z-10 pointer-events-none" />
 
+          {/* Track */}
           <div
-            className="flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth pb-4"
-            style={{
-              scrollSnapType: "x mandatory",
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-              WebkitOverflowScrolling: "touch",
-              paddingLeft: "1rem",
-            } as React.CSSProperties}
+            ref={carouselRef}
+            className="no-scrollbar flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 pl-4 sm:pl-6"
+            style={{ WebkitOverflowScrolling: "touch" } as React.CSSProperties}
           >
-            {/* Leading spacer to align with max-w-6xl on large screens */}
+            {/* Leading spacer aligns first card with max-w-6xl header on large screens */}
             <div
               className="flex-none hidden lg:block"
               style={{ width: "max(0px, calc((100vw - 72rem) / 2))" }}
             />
 
-            {BLOG_ARTICLES.map((article, i) => (
+            {BLOG_ARTICLES.map((article) => (
               <Link
                 key={article.slug}
                 href={`/blog/${article.slug}`}
-                className="group flex flex-col bg-white rounded-2xl shadow-sm shadow-black/5 ring-1 ring-black/[0.04] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10 hover:ring-0 transition-all duration-300 p-5 sm:p-6 flex-none"
-                style={{
-                  scrollSnapAlign: "start",
-                  width: "calc(100vw - 3.5rem)",
-                  maxWidth: "340px",
-                }}
+                className="group snap-start flex-none flex flex-col bg-white rounded-2xl shadow-sm shadow-black/5 ring-1 ring-black/[0.04] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10 hover:ring-0 transition-all duration-300 p-5 sm:p-6
+                           w-[calc(100vw-4.5rem)] sm:w-[300px] lg:w-[340px]"
               >
-                {/* Coloured accent bar */}
+                {/* Coloured accent icon */}
                 <div className={`w-10 h-10 rounded-xl ${article.accentBg} flex items-center justify-center mb-4 flex-shrink-0`}>
                   <BookOpen className="w-5 h-5 text-white/90" />
                 </div>
@@ -421,8 +435,8 @@ export default function Home() {
               </Link>
             ))}
 
-            {/* Trailing space */}
-            <div className="flex-none w-4 sm:w-6" />
+            {/* Trailing space so last card isn't flush against edge */}
+            <div className="flex-none w-4 sm:w-6 lg:w-[max(1.5rem,calc((100vw-72rem)/2))]" />
           </div>
         </div>
 
