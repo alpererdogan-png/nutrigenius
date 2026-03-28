@@ -28,21 +28,21 @@ const TOC = [
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-[#FAFBFC]">
+    <div className="min-h-screen bg-[#f9f9ff]">
       {/* Header */}
-      <header className="bg-white border-b border-[#E8ECF1]">
+      <header className="bg-white shadow-sm shadow-black/5">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center shadow-sm">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center shadow-sm">
               <Leaf className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="text-base font-semibold tracking-tight text-[#1A2332] font-heading">
-              Nutri<span className="text-[#0D9488]">Genius</span>
+              Nutri<span className="text-[#00685f]">Genius</span>
             </span>
           </Link>
           <Link
             href="/"
-            className="text-sm text-[#5A6578] hover:text-[#0D9488] transition-colors"
+            className="text-sm text-[#5A6578] hover:text-[#00685f] transition-colors"
           >
             ← Back to home
           </Link>
@@ -74,7 +74,7 @@ export default function PrivacyPage() {
               <li key={item.id}>
                 <a
                   href={`#${item.id}`}
-                  className="text-sm text-[#0D9488] hover:text-[#0F766E] hover:underline transition-colors"
+                  className="text-sm text-[#00685f] hover:text-[#005249] hover:underline transition-colors"
                 >
                   {item.label}
                 </a>
@@ -99,7 +99,7 @@ export default function PrivacyPage() {
               <p>Cork, Ireland</p>
               <p>
                 Email:{" "}
-                <a href="mailto:privacy@nutrigenius.co" className="text-[#0D9488] hover:underline">
+                <a href="mailto:privacy@nutrigenius.co" className="text-[#00685f] hover:underline">
                   privacy@nutrigenius.co
                 </a>
               </p>
@@ -273,7 +273,7 @@ export default function PrivacyPage() {
             </div>
             <p className="mt-4 text-sm text-[#5A6578]">
               To exercise any of these rights, contact us at{" "}
-              <a href="mailto:privacy@nutrigenius.co" className="text-[#0D9488] hover:underline">
+              <a href="mailto:privacy@nutrigenius.co" className="text-[#00685f] hover:underline">
                 privacy@nutrigenius.co
               </a>
               . We will respond within 30 days.
@@ -348,7 +348,7 @@ export default function PrivacyPage() {
               <li>
                 <strong className="text-[#1A2332]">Health assessment data:</strong> Retained until
                 you request deletion. You may email{" "}
-                <a href="mailto:privacy@nutrigenius.co" className="text-[#0D9488] hover:underline">
+                <a href="mailto:privacy@nutrigenius.co" className="text-[#00685f] hover:underline">
                   privacy@nutrigenius.co
                 </a>{" "}
                 to request erasure.
@@ -376,7 +376,7 @@ export default function PrivacyPage() {
               NutriGenius is not intended for use by individuals under the age of 16. We do not
               knowingly collect personal data from children. If you believe a child has provided
               us with personal data, please contact us at{" "}
-              <a href="mailto:privacy@nutrigenius.co" className="text-[#0D9488] hover:underline">
+              <a href="mailto:privacy@nutrigenius.co" className="text-[#00685f] hover:underline">
                 privacy@nutrigenius.co
               </a>{" "}
               and we will promptly delete it.
@@ -408,7 +408,7 @@ export default function PrivacyPage() {
               <p><strong className="text-[#1A2332]">NutriGenius — Privacy</strong></p>
               <p>
                 Email:{" "}
-                <a href="mailto:privacy@nutrigenius.co" className="text-[#0D9488] hover:underline">
+                <a href="mailto:privacy@nutrigenius.co" className="text-[#00685f] hover:underline">
                   privacy@nutrigenius.co
                 </a>
               </p>
@@ -416,7 +416,7 @@ export default function PrivacyPage() {
             <p className="mt-4 text-sm text-[#5A6578]">
               If you are unhappy with our response, you may lodge a complaint with the{" "}
               <strong className="text-[#1A2332]">Irish Data Protection Commission (DPC)</strong>:{" "}
-              <span className="text-[#0D9488]">www.dataprotection.ie</span>
+              <span className="text-[#00685f]">www.dataprotection.ie</span>
             </p>
           </section>
 
@@ -424,9 +424,9 @@ export default function PrivacyPage() {
 
         {/* Footer nav */}
         <div className="border-t border-[#E8ECF1] pt-8 mt-8 flex flex-wrap gap-4 text-sm text-[#8896A8]">
-          <Link href="/terms" className="hover:text-[#0D9488] transition-colors">Terms of Service</Link>
-          <Link href="/disclaimer" className="hover:text-[#0D9488] transition-colors">Medical Disclaimer</Link>
-          <Link href="/" className="hover:text-[#0D9488] transition-colors ml-auto">← Back to NutriGenius</Link>
+          <Link href="/terms" className="hover:text-[#00685f] transition-colors">Terms of Service</Link>
+          <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
+          <Link href="/" className="hover:text-[#00685f] transition-colors ml-auto">← Back to NutriGenius</Link>
         </div>
       </main>
     </div>

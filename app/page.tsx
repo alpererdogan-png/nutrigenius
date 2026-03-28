@@ -62,7 +62,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAFBFC] text-[#1A2332]">
+    <div className="min-h-screen bg-[#f9f9ff] text-[#1A2332]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
@@ -73,27 +73,27 @@ export default function Home() {
       />
 
       {/* ── Navigation ── */}
-      <nav className="fixed top-0 w-full bg-white/70 backdrop-blur-xl border-b border-[#E8ECF1] z-50">
+      <nav className="fixed top-0 w-full bg-white/75 backdrop-blur-xl z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center shadow-sm">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center shadow-sm">
               <Leaf className="w-4 h-4 text-white" />
             </div>
             <span className="text-lg font-semibold tracking-tight text-[#1A2332] font-heading">
-              Nutri<span className="text-[#0D9488]">Genius</span>
+              Nutri<span className="text-[#00685f]">Genius</span>
             </span>
           </div>
           {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-5 text-sm text-[#5A6578]">
-            <Link href="#how-it-works" className="hover:text-[#0D9488] transition-colors duration-200">{t("nav.howItWorks")}</Link>
-            <Link href="#features" className="hover:text-[#0D9488] transition-colors duration-200">{t("nav.features")}</Link>
-            <Link href="#safety" className="hover:text-[#0D9488] transition-colors duration-200">{t("nav.safety")}</Link>
-            <Link href="/blog" className="hover:text-[#0D9488] transition-colors duration-200">{t("nav.blog")}</Link>
+            <Link href="#how-it-works" className="hover:text-[#00685f] transition-colors duration-200">{t("nav.howItWorks")}</Link>
+            <Link href="#features" className="hover:text-[#00685f] transition-colors duration-200">{t("nav.features")}</Link>
+            <Link href="#safety" className="hover:text-[#00685f] transition-colors duration-200">{t("nav.safety")}</Link>
+            <Link href="/blog" className="hover:text-[#00685f] transition-colors duration-200">{t("nav.blog")}</Link>
             <LanguageSwitcher />
           </div>
           <Link
             href="/quiz"
-            className="hidden sm:inline-flex bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 text-white text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
+            className="hidden sm:inline-flex bg-[#00685f] hover:bg-[#005249] active:scale-95 text-white text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
           >
             {t("nav.cta")}
           </Link>
@@ -111,7 +111,7 @@ export default function Home() {
           </div>
         </div>
         {menuOpen && (
-          <div className="sm:hidden border-t border-[#E8ECF1] bg-white/80 backdrop-blur-xl">
+          <div className="sm:hidden bg-white/90 backdrop-blur-xl">
             <div className="max-w-6xl mx-auto px-4 py-2 space-y-0">
               {[
                 { href: "#how-it-works", label: t("nav.howItWorks") },
@@ -123,7 +123,7 @@ export default function Home() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center py-3 text-sm text-[#5A6578] hover:text-[#0D9488] border-b border-[#F1F5F9] last:border-0 transition-colors"
+                  className="flex items-center py-3 text-sm text-[#5A6578] hover:text-[#00685f] transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -131,7 +131,7 @@ export default function Home() {
               <Link
                 href="/quiz"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 text-white font-semibold px-5 py-3 rounded-xl text-sm transition-all duration-200 mt-3 mb-2"
+                className="flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-95 text-white font-semibold px-5 py-3 rounded-xl text-sm transition-all duration-200 mt-3 mb-2"
               >
                 {t("hero.cta")}
                 <ArrowRight className="w-4 h-4" />
@@ -144,7 +144,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           HERO — Two-column, dark gradient background
       ══════════════════════════════════════════════════ */}
-      <section className="relative pt-16 overflow-hidden bg-gradient-to-br from-slate-900 via-[#0B1A2E] to-slate-900">
+      <section className="relative pt-16 overflow-hidden bg-gradient-to-br from-[#111c2c] via-[#0d1822] to-[#111c2c]">
         {/* Ambient glow blobs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-teal-500/10 rounded-full -translate-y-1/3 translate-x-1/4 blur-3xl" />
@@ -182,7 +182,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-3 mb-8">
                 <Link
                   href="/quiz"
-                  className="inline-flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 text-white font-bold px-8 py-4 rounded-xl text-base transition-all duration-200 shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-95 text-white font-bold px-8 py-4 rounded-xl text-base transition-all duration-200 shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 hover:-translate-y-0.5"
                 >
                   {t("hero.cta")}
                   <ArrowRight className="w-5 h-5" />
@@ -206,14 +206,8 @@ export default function Home() {
                   {t("hero.freeTime")}
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="flex -space-x-1.5">
-                    {["bg-teal-400", "bg-blue-400", "bg-purple-400"].map((c, i) => (
-                      <div key={i} className={`w-5 h-5 rounded-full ${c} border-2 border-slate-900`} />
-                    ))}
-                  </div>
-                  <span>
-                    <span className="text-white font-semibold">10,000+</span> {t("hero.usersLabel")}
-                  </span>
+                  <CheckCircle2 className="w-4 h-4 text-teal-400 flex-shrink-0" />
+                  Evidence-graded protocols
                 </div>
               </div>
             </div>
@@ -283,14 +277,14 @@ export default function Home() {
         </div>
 
         {/* Fade to page background */}
-        <div className="h-20 bg-gradient-to-b from-transparent to-[#FAFBFC]" />
+        <div className="h-20 bg-gradient-to-b from-transparent to-[#f9f9ff]" />
       </section>
 
       {/* ── Blog Carousel Section ── */}
-      <section className="pb-10 sm:pb-16 bg-[#FAFBFC] overflow-hidden">
+      <section className="pb-10 sm:pb-16 bg-[#f9f9ff] overflow-hidden pt-6 sm:pt-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="mb-3 sm:mb-6">
-            <div className="inline-flex items-center gap-2 bg-[#F0FDFA] border border-[#CCFBF1] text-[#0D9488] text-xs font-medium px-3 py-1.5 rounded-full mb-2 sm:mb-3">
+            <div className="inline-flex items-center gap-2 bg-[#e6f4f3] text-[#00685f] text-xs font-medium px-3 py-1.5 rounded-full mb-2 sm:mb-3">
               <BookOpen className="w-3.5 h-3.5" />
               {t("blog.badge")}
             </div>
@@ -307,7 +301,7 @@ export default function Home() {
           <div className="mt-4 sm:mt-6">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 bg-[#F0FDFA] hover:bg-[#CCFBF1] active:scale-95 border border-[#99F6E4] text-[#0D9488] font-semibold px-6 py-3 rounded-xl text-sm transition-all duration-200"
+              className="inline-flex items-center gap-2 bg-[#e6f4f3] hover:bg-[#d0ecea] active:scale-95 text-[#00685f] font-semibold px-6 py-3 rounded-xl text-sm transition-all duration-200"
             >
               {t("blog.cta")}
               <ArrowRight className="w-4 h-4" />
@@ -384,19 +378,19 @@ export default function Home() {
           </div>
 
           {/* Trust bar */}
-          <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-10 text-xs sm:text-sm text-[#5A6578] border border-[#E8ECF1] rounded-2xl bg-[#FAFBFC] px-4 py-4">
+          <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-10 text-xs sm:text-sm text-[#5A6578] rounded-2xl bg-[#f0f3ff] px-4 py-4">
             <div className="flex items-center gap-2">
-              <FlaskConical className="w-4 h-4 text-[#0D9488] flex-shrink-0" />
+              <FlaskConical className="w-4 h-4 text-[#00685f] flex-shrink-0" />
               {t("trust.research")}
             </div>
-            <div className="hidden sm:block w-px h-4 bg-[#E8ECF1]" />
+            <div className="hidden sm:block w-px h-4 bg-[#c8cede]" />
             <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-[#0D9488] flex-shrink-0" />
+              <Shield className="w-4 h-4 text-[#00685f] flex-shrink-0" />
               {t("trust.drugChecks")}
             </div>
-            <div className="hidden sm:block w-px h-4 bg-[#E8ECF1]" />
+            <div className="hidden sm:block w-px h-4 bg-[#c8cede]" />
             <div className="flex items-center gap-2">
-              <HeartPulse className="w-4 h-4 text-[#0D9488] flex-shrink-0" />
+              <HeartPulse className="w-4 h-4 text-[#00685f] flex-shrink-0" />
               {t("trust.clinicianDesigned")}
             </div>
           </div>
@@ -406,7 +400,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           FEATURES — Bento grid
       ══════════════════════════════════════════════════ */}
-      <section id="features" className="py-16 sm:py-24 px-4 sm:px-6 bg-[#FAFBFC]">
+      <section id="features" className="py-16 sm:py-24 px-4 sm:px-6 bg-[#f0f3ff]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A2332] mb-4 tracking-tight">
@@ -520,7 +514,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           SAFETY — Dark section with layered stack visual
       ══════════════════════════════════════════════════ */}
-      <section id="safety" className="py-16 sm:py-24 px-4 sm:px-6 bg-slate-900">
+      <section id="safety" className="py-16 sm:py-24 px-4 sm:px-6 bg-[#111c2c]">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
@@ -615,7 +609,7 @@ export default function Home() {
           </p>
           <Link
             href="/quiz"
-            className="inline-flex items-center justify-center gap-3 bg-white hover:bg-teal-50 active:scale-95 text-[#0D9488] font-bold px-12 py-5 rounded-2xl text-xl transition-all duration-200 hover:-translate-y-1"
+            className="inline-flex items-center justify-center gap-3 bg-white hover:bg-teal-50 active:scale-95 text-[#00685f] font-bold px-12 py-5 rounded-2xl text-xl transition-all duration-200 hover:-translate-y-1"
             style={{ boxShadow: "0 0 60px rgba(255,255,255,0.25), 0 20px 50px rgba(0,0,0,0.18)" }}
           >
             {t("cta.button")}
@@ -626,26 +620,26 @@ export default function Home() {
       </section>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-[#E8ECF1] bg-white py-12 px-4 sm:px-6">
+      <footer className="bg-white py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center">
                 <Leaf className="w-4 h-4 text-white" />
               </div>
               <span className="font-heading text-lg font-semibold tracking-tight">
-                Nutri<span className="text-[#0D9488]">Genius</span>
+                Nutri<span className="text-[#00685f]">Genius</span>
               </span>
             </div>
             <div className="flex flex-wrap gap-6 text-sm text-[#5A6578]">
-              <Link href="/blog" className="hover:text-[#0D9488] transition-colors">{t("footer.blog")}</Link>
-              <Link href="/privacy" className="hover:text-[#0D9488] transition-colors">{t("footer.privacy")}</Link>
-              <Link href="/terms" className="hover:text-[#0D9488] transition-colors">{t("footer.terms")}</Link>
-              <Link href="/disclaimer" className="hover:text-[#0D9488] transition-colors">{t("footer.disclaimer")}</Link>
-              <CookieSettingsLink className="hover:text-[#0D9488] transition-colors cursor-pointer" />
+              <Link href="/blog" className="hover:text-[#00685f] transition-colors">{t("footer.blog")}</Link>
+              <Link href="/privacy" className="hover:text-[#00685f] transition-colors">{t("footer.privacy")}</Link>
+              <Link href="/terms" className="hover:text-[#00685f] transition-colors">{t("footer.terms")}</Link>
+              <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">{t("footer.disclaimer")}</Link>
+              <CookieSettingsLink className="hover:text-[#00685f] transition-colors cursor-pointer" />
             </div>
           </div>
-          <div className="border-t border-[#E8ECF1] pt-6 space-y-3">
+          <div className="bg-[#f9f9ff] rounded-xl p-4 mt-4 space-y-3">
             <p className="text-xs text-[#8896A8] leading-relaxed">
               <strong>{t("footer.medicalTitle")}</strong>{" "}{t("footer.medicalText")}
             </p>

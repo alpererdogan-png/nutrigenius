@@ -13,21 +13,21 @@ const LAST_UPDATED = "18 March 2026";
 
 export default function DisclaimerPage() {
   return (
-    <div className="min-h-screen bg-[#FAFBFC]">
+    <div className="min-h-screen bg-[#f9f9ff]">
       {/* Header */}
-      <header className="bg-white border-b border-[#E8ECF1]">
+      <header className="bg-white shadow-sm shadow-black/5">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center shadow-sm">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center shadow-sm">
               <Leaf className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="text-base font-semibold tracking-tight text-[#1A2332] font-heading">
-              Nutri<span className="text-[#0D9488]">Genius</span>
+              Nutri<span className="text-[#00685f]">Genius</span>
             </span>
           </Link>
           <Link
             href="/"
-            className="text-sm text-[#5A6578] hover:text-[#0D9488] transition-colors"
+            className="text-sm text-[#5A6578] hover:text-[#00685f] transition-colors"
           >
             ← Back to home
           </Link>
@@ -66,7 +66,7 @@ export default function DisclaimerPage() {
           <div className="bg-white border border-[#E8ECF1] rounded-2xl p-6">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-xl bg-[#F0FDFA] flex items-center justify-center flex-shrink-0">
-                <ShieldAlert className="w-5 h-5 text-[#0D9488]" />
+                <ShieldAlert className="w-5 h-5 text-[#00685f]" />
               </div>
               <div>
                 <h2 className="font-heading text-lg font-bold text-[#1A2332] mb-2">
@@ -200,9 +200,9 @@ export default function DisclaimerPage() {
 
         {/* Footer nav */}
         <div className="border-t border-[#E8ECF1] pt-8 mt-10 flex flex-wrap gap-4 text-sm text-[#8896A8]">
-          <Link href="/privacy" className="hover:text-[#0D9488] transition-colors">Privacy Policy</Link>
-          <Link href="/terms" className="hover:text-[#0D9488] transition-colors">Terms of Service</Link>
-          <Link href="/" className="hover:text-[#0D9488] transition-colors ml-auto">← Back to NutriGenius</Link>
+          <Link href="/privacy" className="hover:text-[#00685f] transition-colors">Privacy Policy</Link>
+          <Link href="/terms" className="hover:text-[#00685f] transition-colors">Terms of Service</Link>
+          <Link href="/" className="hover:text-[#00685f] transition-colors ml-auto">← Back to NutriGenius</Link>
         </div>
       </main>
     </div>

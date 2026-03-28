@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { DM_Sans, Plus_Jakarta_Sans } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/language-context";
 import CookieConsent from "@/components/CookieConsent";
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
 });
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -90,7 +90,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://eemzruagujvgrioxyuxm.supabase.co" />
       </head>
       <body
-        className={`${dmSans.variable} ${plusJakarta.variable} font-sans antialiased`}
+        className={`${inter.variable} ${plusJakarta.variable} font-sans antialiased`}
       >
         <LanguageProvider>
           {children}

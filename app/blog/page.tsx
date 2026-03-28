@@ -154,23 +154,23 @@ export default function BlogPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC]">
+    <div className="min-h-screen bg-[#f9f9ff]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }}
       />
       {/* ── Top nav ── */}
-      <div className="bg-white border-b border-[#E8ECF1]">
+      <div className="bg-white shadow-sm shadow-black/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <Link
             href="/"
-            className="font-heading font-bold text-lg text-[#0D9488] hover:text-[#0F766E] transition-colors"
+            className="font-heading font-bold text-lg text-[#00685f] hover:text-[#005249] transition-colors"
           >
             NutriGenius
           </Link>
           <Link
             href="/quiz"
-            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-[#0D9488] hover:text-[#0F766E] transition-colors"
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
           >
             Free Assessment <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
@@ -178,10 +178,10 @@ export default function BlogPage() {
       </div>
 
       {/* Page header */}
-      <div className="bg-white border-b border-[#E8ECF1]">
+      <div className="bg-[#f0f3ff]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
           <div className="flex items-center gap-2 mb-3">
-            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0D9488] bg-teal-50 border border-teal-100 px-3 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#00685f] bg-[#e6f4f3] px-3 py-1 rounded-full">
               <BookOpen className="w-3 h-3" /> Clinical Knowledge Hub
             </span>
           </div>
@@ -193,7 +193,7 @@ export default function BlogPage() {
       </div>
 
       {/* Sticky filters */}
-      <div className="bg-white/70 backdrop-blur-xl border-b border-[#E8ECF1] sticky top-0 z-10 shadow-sm">
+      <div className="bg-white/80 backdrop-blur-xl sticky top-0 z-10 shadow-sm shadow-black/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center gap-2.5">
           {/* Category pills — wrap on desktop, scroll on mobile */}
           <div className="flex-1 min-w-0 overflow-x-auto sm:overflow-visible no-scrollbar">
@@ -202,10 +202,10 @@ export default function BlogPage() {
                 <button
                   key={cat.value}
                   onClick={() => setCategory(cat.value)}
-                  className={`flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full border transition-all duration-150 whitespace-nowrap ${
+                  className={`flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full transition-all duration-150 whitespace-nowrap ${
                     category === cat.value
-                      ? "bg-[#0D9488] text-white border-[#0D9488]"
-                      : "bg-white text-[#5A6578] border-[#E8ECF1] hover:border-[#0D9488]/40 hover:text-[#0D9488]"
+                      ? "bg-[#00685f] text-white"
+                      : "bg-[#f0f3ff] text-[#5A6578] hover:bg-[#e6f4f3] hover:text-[#00685f]"
                   }`}
                 >
                   {cat.label}
@@ -221,7 +221,7 @@ export default function BlogPage() {
               placeholder="Search articles..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-sm bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl focus:outline-none focus:border-[#0D9488] focus:ring-1 focus:ring-[#0D9488]/20 text-[#1A2332] placeholder:text-[#8896A8]"
+              className="w-full pl-9 pr-3 py-2 text-sm bg-[#f0f3ff] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00685f]/20 text-[#1A2332] placeholder:text-[#8896A8]"
             />
           </div>
         </div>
@@ -232,7 +232,7 @@ export default function BlogPage() {
         {loading ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#E8ECF1] overflow-hidden animate-pulse shadow-sm">
+              <div key={i} className="bg-white rounded-2xl overflow-hidden animate-pulse shadow-sm shadow-black/5 ring-1 ring-black/[0.04]">
                 <div className="h-20 sm:h-[120px] bg-[#E8ECF1]" />
                 <div className="p-5 space-y-3">
                   <div className="h-4 w-24 bg-[#F1F5F9] rounded-full" />
@@ -259,8 +259,8 @@ export default function BlogPage() {
                 <Link
                   key={post.id}
                   href={`/blog/${post.slug}`}
-                  className="group flex flex-col bg-white border border-[#E8ECF1] rounded-2xl overflow-hidden
-                    hover:border-transparent hover:shadow-2xl hover:shadow-black/8
+                  className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm shadow-black/5 ring-1 ring-black/[0.04]
+                    hover:shadow-xl hover:shadow-black/10 hover:ring-0
                     hover:-translate-y-1 hover:scale-[1.015]
                     transition-all duration-300 ease-out"
                 >
@@ -278,18 +278,18 @@ export default function BlogPage() {
 
                   {/* Card body */}
                   <div className="p-5 sm:p-6 flex flex-col flex-1">
-                    <h2 className="font-heading text-[15px] font-bold text-[#1A2332] leading-snug mb-3 group-hover:text-[#0D9488] transition-colors duration-200 line-clamp-3 flex-1">
+                    <h2 className="font-heading text-[15px] font-bold text-[#1A2332] leading-snug mb-3 group-hover:text-[#00685f] transition-colors duration-200 line-clamp-3 flex-1">
                       {post.title}
                     </h2>
                     <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-5">
                       {post.excerpt}
                     </p>
-                    <div className="flex items-center justify-between pt-3.5 border-t border-[#E8ECF1] mt-auto">
+                    <div className="flex items-center justify-between pt-3.5 mt-auto">
                       <div className="flex items-center gap-1.5 text-xs text-[#8896A8]">
                         <Clock className="w-3.5 h-3.5" />
                         {post.read_time}
                       </div>
-                      <span className="text-xs font-semibold text-[#0D9488] flex items-center gap-1 group-hover:gap-2 transition-all">
+                      <span className="text-xs font-semibold text-[#00685f] flex items-center gap-1 group-hover:gap-2 transition-all">
                         Read more <ArrowRight className="w-3.5 h-3.5" />
                       </span>
                     </div>
@@ -302,13 +302,13 @@ export default function BlogPage() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-[#E8ECF1] bg-white py-8 px-4 sm:px-6 mt-12">
+      <footer className="bg-white py-8 px-4 sm:px-6 mt-12">
         <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs text-[#8896A8]">
           <div className="flex flex-wrap gap-5">
-            <Link href="/privacy" className="hover:text-[#0D9488] transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-[#0D9488] transition-colors">Terms of Service</Link>
-            <Link href="/disclaimer" className="hover:text-[#0D9488] transition-colors">Medical Disclaimer</Link>
-            <CookieSettingsLink className="hover:text-[#0D9488] transition-colors cursor-pointer" />
+            <Link href="/privacy" className="hover:text-[#00685f] transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-[#00685f] transition-colors">Terms of Service</Link>
+            <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
+            <CookieSettingsLink className="hover:text-[#00685f] transition-colors cursor-pointer" />
           </div>
           <span>© {new Date().getFullYear()} NutriGenius. All rights reserved.</span>
         </div>

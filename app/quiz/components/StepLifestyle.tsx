@@ -87,15 +87,15 @@ export function StepLifestyle({ data, updateData }: Props) {
                 onClick={() => updateData({ activityLevel: level.value })}
                 className={`w-full text-left px-4 py-3 rounded-xl border transition-all duration-200 cursor-pointer flex items-center gap-3 ${
                   selected
-                    ? "bg-[#F0FDFA] border-[#0D9488]"
+                    ? "bg-[#F0FDFA] border-[#00685f]"
                     : "border-[#E2E8F0] hover:border-[#CBD5E1]"
                 }`}
               >
-                {selected && <CheckCircle2 className="w-4 h-4 text-[#0D9488] flex-shrink-0" />}
+                {selected && <CheckCircle2 className="w-4 h-4 text-[#00685f] flex-shrink-0" />}
                 <div>
                   <span
                     className={`text-sm font-medium ${
-                      selected ? "text-[#0D9488]" : "text-[#1A2332]"
+                      selected ? "text-[#00685f]" : "text-[#1A2332]"
                     }`}
                   >
                     {t(level.labelKey)}
@@ -126,7 +126,7 @@ export function StepLifestyle({ data, updateData }: Props) {
                   onClick={() => updateData({ sleepQuality: q.value })}
                   className={`py-3 px-4 rounded-lg border text-sm font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
                     selected
-                      ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                      ? "bg-[#F0FDFA] border-[#00685f] text-[#00685f]"
                       : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                   }`}
                 >
@@ -149,7 +149,7 @@ export function StepLifestyle({ data, updateData }: Props) {
             min="1"
             max="16"
             step="0.5"
-            className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+            className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
           />
         </div>
       </div>
@@ -171,7 +171,7 @@ export function StepLifestyle({ data, updateData }: Props) {
                 onClick={() => updateData({ stressLevel: level.value })}
                 className={`py-3 px-4 rounded-lg border text-sm font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
                   selected
-                    ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                    ? "bg-[#F0FDFA] border-[#00685f] text-[#00685f]"
                     : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                 }`}
               >
@@ -196,13 +196,13 @@ export function StepLifestyle({ data, updateData }: Props) {
               onClick={() => updateData({ sunExposure: level.value })}
               className={`py-3 rounded-xl border text-center transition-colors ${
                 data.sunExposure === level.value
-                  ? "bg-[#F0FDFA] border-[#0D9488]"
+                  ? "bg-[#F0FDFA] border-[#00685f]"
                   : "border-[#E2E8F0] hover:border-[#CBD5E1]"
               }`}
             >
               <span
                 className={`text-xs sm:text-sm font-medium block ${
-                  data.sunExposure === level.value ? "text-[#0D9488]" : "text-[#1A2332]"
+                  data.sunExposure === level.value ? "text-[#00685f]" : "text-[#1A2332]"
                 }`}
               >
                 {t(level.labelKey)}
@@ -226,7 +226,7 @@ export function StepLifestyle({ data, updateData }: Props) {
                 onClick={() => updateData({ alcoholConsumption: level.value })}
                 className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
                   data.alcoholConsumption === level.value
-                    ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                    ? "bg-[#F0FDFA] border-[#00685f] text-[#00685f]"
                     : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                 }`}
               >
@@ -246,7 +246,7 @@ export function StepLifestyle({ data, updateData }: Props) {
                 onClick={() => updateData({ smokingStatus: status.value })}
                 className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-colors ${
                   data.smokingStatus === status.value
-                    ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                    ? "bg-[#F0FDFA] border-[#00685f] text-[#00685f]"
                     : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                 }`}
               >
@@ -279,7 +279,7 @@ export function StepLifestyle({ data, updateData }: Props) {
                 }}
                 className={`flex items-center gap-2 py-3 px-4 rounded-xl border text-sm font-medium transition-all duration-200 text-left cursor-pointer ${
                   selected
-                    ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                    ? "bg-[#F0FDFA] border-[#00685f] text-[#00685f]"
                     : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                 } ${
                   data.healthGoals.length >= 5 && !selected
@@ -295,7 +295,7 @@ export function StepLifestyle({ data, updateData }: Props) {
           })}
         </div>
         {data.healthGoals.length > 0 && (
-          <p className="text-xs text-[#0D9488] mt-2">
+          <p className="text-xs text-[#00685f] mt-2">
             {t("quiz.goalsSelected", { count: data.healthGoals.length.toString() })}
           </p>
         )}

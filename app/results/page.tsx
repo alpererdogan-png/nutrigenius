@@ -117,9 +117,9 @@ function WhereToBuy({ products, halalFirst }: { products: AffiliateProduct[]; ha
     : products;
 
   return (
-    <div className="mt-4 pt-4 border-t border-[#E8ECF1]">
+    <div className="mt-4 pt-4 bg-[#f9f9ff] -mx-5 sm:-mx-6 px-5 sm:px-6 -mb-5 sm:-mb-6 py-4 rounded-b-2xl">
       <div className="flex items-center gap-2 mb-3">
-        <ShoppingCart className="w-4 h-4 text-[#0D9488]" />
+        <ShoppingCart className="w-4 h-4 text-[#00685f]" />
         <span className="text-sm font-medium text-[#1A2332]">Where to Buy</span>
       </div>
 
@@ -127,7 +127,7 @@ function WhereToBuy({ products, halalFirst }: { products: AffiliateProduct[]; ha
         {sorted.slice(0, 3).map((product) => (
           <div
             key={product.id}
-            className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl p-3 hover:border-[#0D9488]/30 transition-colors"
+            className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-white rounded-xl p-3 ring-1 ring-black/[0.06] hover:ring-[#00685f]/20 transition-colors"
           >
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 flex-wrap">
@@ -155,7 +155,7 @@ function WhereToBuy({ products, halalFirst }: { products: AffiliateProduct[]; ha
                 href={product.affiliate_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-semibold px-3 py-2.5 sm:py-1.5 rounded-lg transition-colors min-h-[40px] sm:min-h-0"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 bg-[#00685f] hover:bg-[#005249] text-white text-xs font-semibold px-3 py-2.5 sm:py-1.5 rounded-lg transition-colors min-h-[40px] sm:min-h-0"
               >
                 Buy
                 <ExternalLink className="w-3 h-3" />
@@ -188,7 +188,7 @@ function SupplementCard({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="bg-white border border-[#E8ECF1] rounded-2xl overflow-hidden hover:border-[#0D9488]/20 hover:scale-[1.005] transition-all duration-200">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-sm shadow-black/5 ring-1 ring-black/[0.04] hover:shadow-md hover:ring-0 hover:scale-[1.005] transition-all duration-200">
       <div className="p-5 sm:p-6">
         <div className="flex items-start justify-between gap-4 mb-3">
           <div>
@@ -201,16 +201,16 @@ function SupplementCard({
         </div>
 
         <div className="flex flex-wrap gap-2 mb-4">
-          <div className="flex items-center gap-1.5 bg-[#F0FDFA] border border-[#99F6E4] text-[#0F766E] text-xs font-medium px-3 py-1.5 rounded-full">
+          <div className="flex items-center gap-1.5 bg-[#F0FDFA] border border-[#99F6E4] text-[#005249] text-xs font-medium px-3 py-1.5 rounded-full">
             <FlaskConical className="w-3.5 h-3.5" />
             {supp.doseDisplay}
           </div>
-          <div className="flex items-center gap-1.5 bg-[#F8FAFC] border border-[#E8ECF1] text-[#5A6578] text-xs font-medium px-3 py-1.5 rounded-full">
+          <div className="flex items-center gap-1.5 bg-[#f9f9ff] border border-[#ebebf5] text-[#5A6578] text-xs font-medium px-3 py-1.5 rounded-full">
             <Calendar className="w-3.5 h-3.5" />
             {supp.timing}
           </div>
           {supp.category && (
-            <div className="flex items-center gap-1.5 bg-[#F8FAFC] border border-[#E8ECF1] text-[#5A6578] text-xs font-medium px-3 py-1.5 rounded-full">
+            <div className="flex items-center gap-1.5 bg-[#f9f9ff] border border-[#ebebf5] text-[#5A6578] text-xs font-medium px-3 py-1.5 rounded-full">
               {supp.category}
             </div>
           )}
@@ -229,7 +229,7 @@ function SupplementCard({
 
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-2 text-[#0D9488] text-sm font-medium hover:text-[#0F766E] transition-colors w-full text-left"
+          className="flex items-center gap-2 text-[#00685f] text-sm font-medium hover:text-[#005249] transition-colors w-full text-left"
         >
           <Info className="w-4 h-4 flex-shrink-0" />
           {t("results.whyRecommendation")}
@@ -238,7 +238,7 @@ function SupplementCard({
 
         {expanded && (
           <div className="mt-3 space-y-3">
-            <p className="text-sm text-[#5A6578] leading-relaxed bg-[#F8FAFC] rounded-xl p-4 border border-[#E8ECF1]">
+            <p className="text-sm text-[#5A6578] leading-relaxed bg-[#f9f9ff] rounded-xl p-4 border border-[#ebebf5]">
               {supp.whyRecommended}
             </p>
 
@@ -328,7 +328,7 @@ function WeeklySchedule({
           </thead>
           <tbody>
             {SLOTS_EN.map((slot) => (
-              <tr key={slot} className="border-t border-[#E8ECF1]">
+              <tr key={slot} className="border-t border-[#ebebf5]">
                 <td className="px-3 py-3 align-top">
                   <div className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-full border ${slotColors[slot]}`}>
                     <span className={`w-1.5 h-1.5 rounded-full ${slotDotColors[slot]}`} />
@@ -339,7 +339,7 @@ function WeeklySchedule({
                   <td key={day} className="px-2 py-3 align-top">
                     <div className="space-y-1.5">
                       {(schedule[day]?.[slot] ?? []).map((item) => (
-                        <div key={item.supplementId} className="bg-[#F8FAFC] border border-[#E8ECF1] rounded-lg px-2 py-1.5">
+                        <div key={item.supplementId} className="bg-[#f0f3ff] rounded-lg px-2 py-1.5">
                           <p className="text-xs font-medium text-[#1A2332] leading-tight">{item.name}</p>
                           <p className="text-[10px] text-[#8896A8] mt-0.5">{item.dose}</p>
                         </div>
@@ -365,8 +365,8 @@ function WeeklySchedule({
               onClick={() => setActiveDay(i)}
               className={`flex-shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 activeDay === i
-                  ? "bg-[#0D9488] text-white"
-                  : "bg-[#F8FAFC] border border-[#E8ECF1] text-[#5A6578]"
+                  ? "bg-[#00685f] text-white"
+                  : "bg-[#f0f3ff] text-[#5A6578]"
               }`}
             >
               {d}
@@ -387,7 +387,7 @@ function WeeklySchedule({
                 ) : (
                   <div className="space-y-2">
                     {items.map((item) => (
-                      <div key={item.supplementId} className="bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl px-4 py-3">
+                      <div key={item.supplementId} className="bg-[#f0f3ff] rounded-xl px-4 py-3">
                         <p className="text-sm font-medium text-[#1A2332]">{item.name}</p>
                         <p className="text-xs text-[#5A6578] mt-0.5">{item.dose} · {item.note}</p>
                       </div>
@@ -465,11 +465,11 @@ export default function ResultsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#FAFBFC] flex items-center justify-center p-4">
+      <div className="min-h-screen bg-[#f9f9ff] flex items-center justify-center p-4">
         <div className="text-center max-w-sm">
           <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
           <p className="text-[#1A2332] font-medium mb-4">{error}</p>
-          <button onClick={() => router.push("/quiz")} className="bg-[#0D9488] text-white px-6 py-3 rounded-xl font-medium">
+          <button onClick={() => router.push("/quiz")} className="bg-[#00685f] text-white px-6 py-3 rounded-xl font-medium">
             {t("results.retakeQuiz")}
           </button>
         </div>
@@ -479,9 +479,9 @@ export default function ResultsPage() {
 
   if (!result) {
     return (
-      <div className="min-h-screen bg-[#FAFBFC]">
+      <div className="min-h-screen bg-[#f9f9ff]">
         {/* Skeleton header */}
-        <div className="bg-white border-b border-[#E8ECF1] sticky top-0 z-50">
+        <div className="bg-white shadow-sm shadow-black/5 sticky top-0 z-50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
             <div className="h-4 w-24 bg-slate-200 rounded animate-pulse" />
             <div className="h-6 w-28 bg-slate-200 rounded animate-pulse" />
@@ -490,7 +490,7 @@ export default function ResultsPage() {
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-6">
           {/* Skeleton hero */}
-          <div className="bg-[#1A2332] rounded-2xl p-6 sm:p-8 animate-pulse">
+          <div className="bg-[#111c2c] rounded-2xl p-6 sm:p-8 animate-pulse">
             <div className="flex items-start gap-4 mb-6">
               <div className="w-12 h-12 bg-white/10 rounded-xl flex-shrink-0" />
               <div className="flex-1">
@@ -516,7 +516,7 @@ export default function ResultsPage() {
               {[0, 1, 2].map((i) => (
                 <div key={i} className="flex gap-3 animate-pulse">
                   <div className="w-7 h-7 rounded-full bg-slate-200 flex-shrink-0 mt-5" />
-                  <div className="flex-1 bg-white border border-[#E8ECF1] rounded-2xl p-5 sm:p-6">
+                  <div className="flex-1 bg-white rounded-2xl p-5 sm:p-6 ring-1 ring-black/[0.04]">
                     <div className="flex justify-between mb-3">
                       <div>
                         <div className="h-5 w-36 bg-slate-200 rounded mb-2" />
@@ -535,7 +535,7 @@ export default function ResultsPage() {
             </div>
           </div>
           <div className="text-center pt-4">
-            <Loader2 className="w-5 h-5 text-[#0D9488] animate-spin inline-block mr-2" />
+            <Loader2 className="w-5 h-5 text-[#00685f] animate-spin inline-block mr-2" />
             <span className="text-[#5A6578] text-sm">{t("results.loading")}</span>
           </div>
         </div>
@@ -574,9 +574,9 @@ export default function ResultsPage() {
   const deficientLabs = getDeficientLabs(prefs.labResults);
 
   return (
-    <div className="min-h-screen bg-[#FAFBFC]">
+    <div className="min-h-screen bg-[#f9f9ff]">
       {/* Header */}
-      <div className="bg-white/70 backdrop-blur-xl border-b border-[#E8ECF1] sticky top-0 z-50">
+      <div className="bg-white/80 backdrop-blur-xl shadow-sm shadow-black/5 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <button
             onClick={() => router.push("/quiz")}
@@ -587,11 +587,11 @@ export default function ResultsPage() {
           </button>
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center shadow-sm">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center shadow-sm">
                 <Leaf className="w-3.5 h-3.5 text-white" />
               </div>
               <span className="font-heading text-base font-semibold tracking-tight text-[#1A2332]">
-                Nutri<span className="text-[#0D9488]">Genius</span>
+                Nutri<span className="text-[#00685f]">Genius</span>
               </span>
             </Link>
             <LanguageSwitcher />
@@ -604,9 +604,9 @@ export default function ResultsPage() {
 
         {/* Email confirmation banner */}
         {userEmail && (
-          <div className="flex items-center gap-3 bg-[#F0FDFA] border border-[#99F6E4] rounded-xl px-4 py-3">
-            <Mail className="w-5 h-5 text-[#0D9488] flex-shrink-0" />
-            <p className="text-sm text-[#0F766E]">
+          <div className="flex items-center gap-3 bg-[#e6f4f3] rounded-xl px-4 py-3">
+            <Mail className="w-5 h-5 text-[#00685f] flex-shrink-0" />
+            <p className="text-sm text-[#005249]">
               <span className="font-medium">
                 {t("results.planSentTo", { email: userEmail })}
               </span>{" "}
@@ -620,7 +620,7 @@ export default function ResultsPage() {
           <button
             onClick={handleDownloadPdf}
             disabled={pdfLoading}
-            className="inline-flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 disabled:bg-[#F8FAFC] disabled:border disabled:border-[#E8ECF1] disabled:text-[#8896A8] text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-200 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-95 disabled:bg-[#f9f9ff] disabled:border disabled:border-[#ebebf5] disabled:text-[#8896A8] text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-200 disabled:cursor-not-allowed"
           >
             {pdfLoading
               ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating PDF…</>
@@ -629,7 +629,7 @@ export default function ResultsPage() {
           </button>
           <button
             disabled
-            className="inline-flex items-center gap-2 bg-[#F8FAFC] border border-[#E8ECF1] text-[#8896A8] text-sm font-medium px-4 py-2.5 rounded-xl cursor-not-allowed"
+            className="inline-flex items-center gap-2 bg-[#f9f9ff] border border-[#ebebf5] text-[#8896A8] text-sm font-medium px-4 py-2.5 rounded-xl cursor-not-allowed"
           >
             <Bell className="w-4 h-4" />
             {t("results.setReminders")}
@@ -640,7 +640,7 @@ export default function ResultsPage() {
         </div>
 
         {/* Protocol Summary Hero */}
-        <div className="bg-[#1A2332] rounded-2xl p-6 sm:p-8 text-white overflow-hidden relative">
+        <div className="bg-[#111c2c] rounded-2xl p-6 sm:p-8 text-white overflow-hidden relative">
           {/* Subtle background texture */}
           <div
             className="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -649,11 +649,11 @@ export default function ResultsPage() {
               backgroundSize: "24px 24px",
             }}
           />
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#0D9488]/10 rounded-full -translate-y-1/3 translate-x-1/3 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#00685f]/10 rounded-full -translate-y-1/3 translate-x-1/3 pointer-events-none" />
 
           <div className="relative">
             <div className="flex items-start gap-4 mb-6">
-              <div className="w-12 h-12 bg-[#0D9488]/20 border border-[#0D9488]/30 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 bg-[#00685f]/20 border border-[#00685f]/30 rounded-xl flex items-center justify-center flex-shrink-0">
                 <CheckCircle2 className="w-6 h-6 text-[#2DD4BF]" />
               </div>
               <div>
@@ -689,7 +689,7 @@ export default function ResultsPage() {
                 <p className="text-slate-500 text-xs mb-2">{t("results.keyFocusAreas")}</p>
                 <div className="flex flex-wrap gap-2">
                   {focusAreas.map((area) => (
-                    <span key={area} className="bg-[#0D9488]/20 border border-[#0D9488]/30 text-[#2DD4BF] text-xs font-medium px-3 py-1 rounded-full">
+                    <span key={area} className="bg-[#00685f]/20 border border-[#00685f]/30 text-[#2DD4BF] text-xs font-medium px-3 py-1 rounded-full">
                       {area}
                     </span>
                   ))}
@@ -704,7 +704,7 @@ export default function ResultsPage() {
           <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">{t("results.protocolTitle")}</h2>
           <p className="text-sm text-[#5A6578] mb-5">{t("results.protocolSubtitle")}</p>
           {supplements.length === 0 ? (
-            <div className="bg-white border border-[#E8ECF1] rounded-2xl p-8 text-center">
+            <div className="bg-white border border-[#ebebf5] rounded-2xl p-8 text-center">
               <FlaskConical className="w-10 h-10 text-[#CBD5E1] mx-auto mb-3" />
               <p className="text-[#5A6578]">{t("results.noSupplements")}</p>
               <p className="text-sm text-[#8896A8] mt-1">{t("results.noSupplementsHint")}</p>
@@ -713,7 +713,7 @@ export default function ResultsPage() {
             <div className="space-y-4">
               {supplements.map((supp, i) => (
                 <div key={supp.id} className="flex gap-3">
-                  <div className="w-7 h-7 rounded-full bg-[#F0FDFA] border border-[#99F6E4] text-[#0D9488] flex items-center justify-center text-sm font-bold flex-shrink-0 mt-5">
+                  <div className="w-7 h-7 rounded-full bg-[#F0FDFA] border border-[#99F6E4] text-[#00685f] flex items-center justify-center text-sm font-bold flex-shrink-0 mt-5">
                     {i + 1}
                   </div>
                   <div className="flex-1">
@@ -740,7 +740,7 @@ export default function ResultsPage() {
               {deficientLabs.map((lab) => {
                 const rule = LAB_RETEST_MAP[lab.biomarker];
                 return (
-                  <div key={lab.biomarker} className="bg-white border border-[#E8ECF1] rounded-xl p-4 flex items-start justify-between gap-4">
+                  <div key={lab.biomarker} className="bg-white border border-[#ebebf5] rounded-xl p-4 flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <TestTube className="w-4 h-4 text-amber-600" />
@@ -758,7 +758,7 @@ export default function ResultsPage() {
                     </div>
                     <a
                       href="#lab-testing"
-                      className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-medium text-[#0D9488] border border-[#0D9488]/30 bg-[#F0FDFA] hover:bg-[#CCFBF1] px-3 py-1.5 rounded-lg transition-colors"
+                      className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-medium text-[#00685f] border border-[#00685f]/30 bg-[#F0FDFA] hover:bg-[#CCFBF1] px-3 py-1.5 rounded-lg transition-colors"
                     >
                       Find a Lab
                       <ExternalLink className="w-3 h-3" />
@@ -796,14 +796,14 @@ export default function ResultsPage() {
           <section>
             <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">{t("results.scheduleTitle")}</h2>
             <p className="text-sm text-[#5A6578] mb-5">{t("results.scheduleSubtitle")}</p>
-            <div className="bg-white border border-[#E8ECF1] rounded-2xl p-4 sm:p-6 overflow-hidden">
+            <div className="bg-white border border-[#ebebf5] rounded-2xl p-4 sm:p-6 overflow-hidden">
               <WeeklySchedule schedule={schedule} supplements={supplements} />
             </div>
           </section>
         )}
 
         {/* Evidence legend */}
-        <section className="bg-white border border-[#E8ECF1] rounded-2xl p-5 sm:p-6">
+        <section className="bg-white border border-[#ebebf5] rounded-2xl p-5 sm:p-6">
           <h3 className="text-sm font-semibold text-[#1A2332] mb-3">{t("results.evidenceGuideTitle")}</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {(["Strong", "Moderate", "Emerging", "Traditional"] as const).map((r) => {
@@ -820,16 +820,16 @@ export default function ResultsPage() {
         </section>
 
         {/* Retake section */}
-        <section className="bg-white border border-[#E8ECF1] rounded-2xl p-5 sm:p-6 flex items-start gap-4">
+        <section className="bg-white border border-[#ebebf5] rounded-2xl p-5 sm:p-6 flex items-start gap-4">
           <div className="w-10 h-10 rounded-xl bg-[#F0FDFA] flex items-center justify-center flex-shrink-0">
-            <RefreshCw className="w-5 h-5 text-[#0D9488]" />
+            <RefreshCw className="w-5 h-5 text-[#00685f]" />
           </div>
           <div>
             <h3 className="font-heading text-sm font-semibold text-[#1A2332] mb-1">{t("results.updateTitle")}</h3>
             <p className="text-sm text-[#5A6578] leading-relaxed">{t("results.updateDesc")}</p>
             <button
               onClick={() => router.push("/quiz")}
-              className="mt-3 text-sm font-medium text-[#0D9488] hover:text-[#0F766E] transition-colors flex items-center gap-1"
+              className="mt-3 text-sm font-medium text-[#00685f] hover:text-[#005249] transition-colors flex items-center gap-1"
             >
               {t("results.retakeAssessment")}
               <RefreshCw className="w-3.5 h-3.5" />
@@ -849,12 +849,12 @@ export default function ResultsPage() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-[#E8ECF1] bg-white py-8 px-4 sm:px-6 mt-8">
+      <footer className="border-t border-[#ebebf5] bg-white py-8 px-4 sm:px-6 mt-8">
         <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs text-[#8896A8]">
           <div className="flex flex-wrap gap-5">
-            <Link href="/privacy" className="hover:text-[#0D9488] transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-[#0D9488] transition-colors">Terms of Service</Link>
-            <Link href="/disclaimer" className="hover:text-[#0D9488] transition-colors">Medical Disclaimer</Link>
+            <Link href="/privacy" className="hover:text-[#00685f] transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-[#00685f] transition-colors">Terms of Service</Link>
+            <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
           </div>
           <span>© {new Date().getFullYear()} NutriGenius. All rights reserved.</span>
         </div>

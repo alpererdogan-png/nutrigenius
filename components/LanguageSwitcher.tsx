@@ -60,7 +60,7 @@ export function LanguageSwitcher() {
 
       {open && (
         <div
-          className="absolute top-full mt-1 right-0 bg-white border border-[#E8ECF1] rounded-xl shadow-lg shadow-black/5 z-[100] min-w-[160px] py-1 overflow-hidden"
+          className="absolute top-full mt-1 right-0 bg-white rounded-xl shadow-lg shadow-black/10 z-[100] min-w-[160px] py-1 overflow-hidden ring-1 ring-black/[0.04]"
           role="listbox"
           aria-label="Language options"
         >
@@ -75,8 +75,8 @@ export function LanguageSwitcher() {
               }}
               className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors text-left ${
                 lang.code === language
-                  ? "bg-[#F0FDFA] text-[#0D9488] font-medium"
-                  : "text-[#3D4B5F] hover:bg-[#F8FAFC] font-normal"
+                  ? "bg-[#e6f4f3] text-[#00685f] font-medium"
+                  : "text-[#3D4B5F] hover:bg-[#f0f3ff] font-normal"
               }`}
             >
               <img
@@ -88,7 +88,7 @@ export function LanguageSwitcher() {
               />
               <span>{lang.nativeName}</span>
               {lang.code === language && (
-                <span className="ms-auto w-2 h-2 rounded-full bg-[#0D9488]" />
+                <span className="ms-auto w-2 h-2 rounded-full bg-[#00685f]" />
               )}
             </button>
           ))}

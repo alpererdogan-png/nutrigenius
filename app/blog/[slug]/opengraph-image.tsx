@@ -5,7 +5,7 @@ export const contentType = "image/png";
 export const revalidate = 86400;
 
 const CATEGORY_COLORS: Record<string, { bg: string; accent: string; label: string }> = {
-  "evidence-review": { bg: "#F0FDFA", accent: "#0D9488", label: "Evidence Review" },
+  "evidence-review": { bg: "#F0FDFA", accent: "#00685f", label: "Evidence Review" },
   "myth-busting": { bg: "#FFF7ED", accent: "#F97316", label: "Myth Busting" },
   "safety-alert": { bg: "#FEF2F2", accent: "#EF4444", label: "Safety Alert" },
   "condition-guide": { bg: "#FAF5FF", accent: "#A855F7", label: "Condition Guide" },

@@ -31,7 +31,7 @@ function Toggle({
       disabled={disabled}
       onClick={() => !disabled && onChange(!enabled)}
       className={`relative inline-flex h-5 w-9 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${
-        enabled ? "bg-[#0D9488]" : "bg-[#D1D5DB]"
+        enabled ? "bg-[#00685f]" : "bg-[#D1D5DB]"
       } ${disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
     >
       <span
@@ -89,141 +89,100 @@ export default function CookieConsent() {
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-300">
-      <div className="bg-[#1A2332] border-t border-[#2D3748] shadow-2xl">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-          {/* Main row */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
-            {/* Icon + message */}
-            <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
-              <Cookie className="w-4 h-4 text-[#0D9488] flex-shrink-0 mt-0.5 sm:mt-0" />
-              <p className="text-sm text-[#CBD5E1] leading-snug">
+    <div className="fixed bottom-5 right-5 z-50 w-full max-w-[360px] animate-in slide-in-from-bottom-4 duration-300">
+      <div className="bg-white rounded-2xl shadow-xl shadow-black/10 overflow-hidden ring-1 ring-black/5">
+        {/* Card header */}
+        <div className="px-5 pt-5 pb-4">
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-8 h-8 rounded-xl bg-[#00685f]/10 flex items-center justify-center flex-shrink-0">
+              <Cookie className="w-4 h-4 text-[#00685f]" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-[#1a2332] leading-snug">Cookie Preferences</p>
+              <p className="text-xs text-[#5a6578] mt-0.5 leading-snug">
                 {t("cookies.message")}
               </p>
             </div>
-
-            {/* Action buttons */}
-            <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
-              <button
-                onClick={() => setExpanded((e) => !e)}
-                className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-[#94A3B8] hover:text-white border border-[#2D3748] hover:border-[#475569] rounded-lg transition-colors"
-              >
-                {t("cookies.customize")}
-                {expanded ? (
-                  <ChevronUp className="w-3 h-3" />
-                ) : (
-                  <ChevronDown className="w-3 h-3" />
-                )}
-              </button>
-              <button
-                onClick={() => save(false, false, false)}
-                className="px-3 py-1.5 text-xs font-medium text-[#94A3B8] hover:text-white border border-[#2D3748] hover:border-[#475569] rounded-lg transition-colors"
-              >
-                {t("cookies.rejectNonEssential")}
-              </button>
-              <button
-                onClick={() => save(true, true, true)}
-                className="px-4 py-1.5 text-xs font-semibold bg-[#0D9488] hover:bg-[#0F766E] text-white rounded-lg transition-colors"
-              >
-                {t("cookies.acceptAll")}
-              </button>
-            </div>
           </div>
 
-          {/* Expanded customize panel */}
-          {expanded && (
-            <div className="mt-4 pt-4 border-t border-[#2D3748]">
-              <div className="grid sm:grid-cols-2 gap-3 mb-4">
-                {/* Necessary — always on */}
-                <div className="flex items-start justify-between gap-3 bg-[#243044] rounded-xl px-4 py-3">
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-white">
-                      {t("cookies.necessary")}
-                    </p>
-                    <p className="text-xs text-[#94A3B8] mt-0.5 leading-snug">
-                      {t("cookies.necessaryDesc")}
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 flex flex-col items-end gap-1 mt-0.5">
-                    <Toggle enabled={true} onChange={() => {}} disabled />
-                    <span className="text-[10px] text-[#0D9488] font-medium">
-                      {t("cookies.alwaysOn")}
-                    </span>
-                  </div>
-                </div>
+          {/* Action buttons */}
+          <div className="flex gap-2">
+            <button
+              onClick={() => save(false, false, false)}
+              className="flex-1 px-3 py-2 text-xs font-medium text-[#5a6578] bg-[#f0f3ff] hover:bg-[#e5e8f5] rounded-xl transition-colors"
+            >
+              {t("cookies.rejectNonEssential")}
+            </button>
+            <button
+              onClick={() => save(true, true, true)}
+              className="flex-1 px-3 py-2 text-xs font-semibold bg-[#00685f] hover:bg-[#005249] text-white rounded-xl transition-colors"
+            >
+              {t("cookies.acceptAll")}
+            </button>
+          </div>
 
-                {/* Analytics */}
-                <div className="flex items-start justify-between gap-3 bg-[#243044] rounded-xl px-4 py-3">
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-white">
-                      {t("cookies.analytics")}
-                    </p>
-                    <p className="text-xs text-[#94A3B8] mt-0.5 leading-snug">
-                      {t("cookies.analyticsDesc")}
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 mt-0.5">
-                    <Toggle
-                      enabled={prefs.analytics}
-                      onChange={(v) => setPrefs((p) => ({ ...p, analytics: v }))}
-                    />
-                  </div>
-                </div>
+          {/* Customize toggle */}
+          <button
+            onClick={() => setExpanded((e) => !e)}
+            className="flex items-center justify-center gap-1 w-full mt-2 py-1.5 text-xs font-medium text-[#5a6578] hover:text-[#1a2332] transition-colors"
+          >
+            {t("cookies.customize")}
+            {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+          </button>
+        </div>
 
-                {/* Advertising */}
-                <div className="flex items-start justify-between gap-3 bg-[#243044] rounded-xl px-4 py-3">
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-white">
-                      {t("cookies.advertising")}
-                    </p>
-                    <p className="text-xs text-[#94A3B8] mt-0.5 leading-snug">
-                      {t("cookies.advertisingDesc")}
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 mt-0.5">
-                    <Toggle
-                      enabled={prefs.advertising}
-                      onChange={(v) =>
-                        setPrefs((p) => ({ ...p, advertising: v }))
-                      }
-                    />
-                  </div>
+        {/* Expanded customize panel */}
+        {expanded && (
+          <div className="border-t border-[#f0f3ff] bg-[#f9f9ff] px-5 py-4">
+            <div className="space-y-2 mb-4">
+              {/* Necessary — always on */}
+              <div className="flex items-center justify-between gap-3 bg-white rounded-xl px-3 py-2.5">
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-[#1a2332]">{t("cookies.necessary")}</p>
+                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{t("cookies.necessaryDesc")}</p>
                 </div>
-
-                {/* Functional */}
-                <div className="flex items-start justify-between gap-3 bg-[#243044] rounded-xl px-4 py-3">
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-white">
-                      {t("cookies.functional")}
-                    </p>
-                    <p className="text-xs text-[#94A3B8] mt-0.5 leading-snug">
-                      {t("cookies.functionalDesc")}
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 mt-0.5">
-                    <Toggle
-                      enabled={prefs.functional}
-                      onChange={(v) =>
-                        setPrefs((p) => ({ ...p, functional: v }))
-                      }
-                    />
-                  </div>
+                <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
+                  <Toggle enabled={true} onChange={() => {}} disabled />
+                  <span className="text-[10px] text-[#00685f] font-medium">{t("cookies.alwaysOn")}</span>
                 </div>
               </div>
 
-              <div className="flex justify-end">
-                <button
-                  onClick={() =>
-                    save(prefs.analytics, prefs.advertising, prefs.functional)
-                  }
-                  className="px-5 py-2 text-sm font-semibold bg-[#0D9488] hover:bg-[#0F766E] text-white rounded-lg transition-colors"
-                >
-                  {t("cookies.savePreferences")}
-                </button>
+              {/* Analytics */}
+              <div className="flex items-center justify-between gap-3 bg-white rounded-xl px-3 py-2.5">
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-[#1a2332]">{t("cookies.analytics")}</p>
+                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{t("cookies.analyticsDesc")}</p>
+                </div>
+                <Toggle enabled={prefs.analytics} onChange={(v) => setPrefs((p) => ({ ...p, analytics: v }))} />
+              </div>
+
+              {/* Advertising */}
+              <div className="flex items-center justify-between gap-3 bg-white rounded-xl px-3 py-2.5">
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-[#1a2332]">{t("cookies.advertising")}</p>
+                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{t("cookies.advertisingDesc")}</p>
+                </div>
+                <Toggle enabled={prefs.advertising} onChange={(v) => setPrefs((p) => ({ ...p, advertising: v }))} />
+              </div>
+
+              {/* Functional */}
+              <div className="flex items-center justify-between gap-3 bg-white rounded-xl px-3 py-2.5">
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-[#1a2332]">{t("cookies.functional")}</p>
+                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{t("cookies.functionalDesc")}</p>
+                </div>
+                <Toggle enabled={prefs.functional} onChange={(v) => setPrefs((p) => ({ ...p, functional: v }))} />
               </div>
             </div>
-          )}
-        </div>
+
+            <button
+              onClick={() => save(prefs.analytics, prefs.advertising, prefs.functional)}
+              className="w-full px-4 py-2 text-xs font-semibold bg-[#00685f] hover:bg-[#005249] text-white rounded-xl transition-colors"
+            >
+              {t("cookies.savePreferences")}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

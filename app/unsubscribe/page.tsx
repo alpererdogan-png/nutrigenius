@@ -65,7 +65,7 @@ function UnsubscribeContent() {
         {/* Loading */}
         {state === "loading" && (
           <div>
-            <Loader2 className="w-10 h-10 text-[#0D9488] animate-spin mx-auto mb-4" />
+            <Loader2 className="w-10 h-10 text-[#00685f] animate-spin mx-auto mb-4" />
             <p className="text-[#5A6578] text-sm">Updating your preferences…</p>
           </div>
         )}
@@ -74,7 +74,7 @@ function UnsubscribeContent() {
         {state === "unsubscribed" && (
           <div className="bg-white border border-[#E8ECF1] rounded-2xl p-8 shadow-sm">
             <div className="w-14 h-14 bg-[#F0FDFA] rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <CheckCircle2 className="w-7 h-7 text-[#0D9488]" />
+              <CheckCircle2 className="w-7 h-7 text-[#00685f]" />
             </div>
             <h1 className="font-heading text-2xl font-bold text-[#1A2332] mb-2">
               You've been unsubscribed
@@ -93,7 +93,7 @@ function UnsubscribeContent() {
             </p>
             <button
               onClick={handleResubscribe}
-              className="w-full flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20 mb-4"
+              className="w-full flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] text-white font-semibold py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20 mb-4"
             >
               <Mail className="w-4 h-4" />
               Re-subscribe to Updates
@@ -111,7 +111,7 @@ function UnsubscribeContent() {
         {state === "resubscribed" && (
           <div className="bg-white border border-[#E8ECF1] rounded-2xl p-8 shadow-sm">
             <div className="w-14 h-14 bg-[#F0FDFA] rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <Mail className="w-7 h-7 text-[#0D9488]" />
+              <Mail className="w-7 h-7 text-[#00685f]" />
             </div>
             <h1 className="font-heading text-2xl font-bold text-[#1A2332] mb-2">
               Welcome back!
@@ -122,7 +122,7 @@ function UnsubscribeContent() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
+              className="inline-flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
             >
               Go to NutriGenius
             </Link>
@@ -143,7 +143,7 @@ function UnsubscribeContent() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200"
+              className="inline-flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200"
             >
               Return Home
             </Link>
@@ -154,7 +154,7 @@ function UnsubscribeContent() {
         {state === "missing" && (
           <div className="bg-white border border-[#E8ECF1] rounded-2xl p-8 shadow-sm">
             <div className="w-14 h-14 bg-[#F0FDFA] rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <Mail className="w-7 h-7 text-[#0D9488]" />
+              <Mail className="w-7 h-7 text-[#00685f]" />
             </div>
             <h1 className="font-heading text-xl font-bold text-[#1A2332] mb-2">
               Invalid unsubscribe link
@@ -165,7 +165,7 @@ function UnsubscribeContent() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200"
+              className="inline-flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200"
             >
               Return Home
             </Link>
@@ -184,11 +184,11 @@ export default function UnsubscribePage() {
       <div className="bg-white border-b border-[#E8ECF1]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-center">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center shadow-sm">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center shadow-sm">
               <Leaf className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="text-base font-semibold tracking-tight text-[#1A2332] font-heading">
-              Nutri<span className="text-[#0D9488]">Genius</span>
+              Nutri<span className="text-[#00685f]">Genius</span>
             </span>
           </Link>
         </div>
@@ -198,7 +198,7 @@ export default function UnsubscribePage() {
       <Suspense
         fallback={
           <div className="flex-1 flex items-center justify-center">
-            <Loader2 className="w-10 h-10 text-[#0D9488] animate-spin" />
+            <Loader2 className="w-10 h-10 text-[#00685f] animate-spin" />
           </div>
         }
       >

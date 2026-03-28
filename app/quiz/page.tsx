@@ -212,9 +212,9 @@ export default function QuizPage() {
   // ── Email Capture Screen (step 6) ──
   if (currentStep === 6) {
     return (
-      <div className="min-h-screen bg-[#FAFBFC] flex flex-col">
+      <div className="min-h-screen bg-[#f9f9ff] flex flex-col">
         {/* Header */}
-        <div className="bg-white border-b border-[#E8ECF1]">
+        <div className="bg-white shadow-sm shadow-black/5">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
             <button
               onClick={() => setCurrentStep(5)}
@@ -225,11 +225,11 @@ export default function QuizPage() {
             </button>
             <div className="flex items-center gap-3">
               <Link href="/" className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center shadow-sm">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center shadow-sm">
                   <Leaf className="w-3.5 h-3.5 text-white" />
                 </div>
                 <span className="text-base font-semibold tracking-tight text-[#1A2332] font-heading">
-                  Nutri<span className="text-[#0D9488]">Genius</span>
+                  Nutri<span className="text-[#00685f]">Genius</span>
                 </span>
               </Link>
               <LanguageSwitcher />
@@ -241,7 +241,7 @@ export default function QuizPage() {
         <div className="flex-1 flex items-center justify-center px-4 py-12">
           <div className="w-full max-w-lg">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#0D9488] to-[#0F766E] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-teal-500/20">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#00685f] to-[#005249] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-teal-500/20">
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
               <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#1A2332] mb-2">
@@ -252,7 +252,7 @@ export default function QuizPage() {
               </p>
             </div>
 
-            <div className="bg-white border border-[#E8ECF1] rounded-2xl p-6 sm:p-8 shadow-sm">
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm shadow-black/5 ring-1 ring-black/5">
               {/* What you'll get */}
               <div className="space-y-3 mb-6">
                 {[
@@ -266,11 +266,11 @@ export default function QuizPage() {
                         type="checkbox"
                         checked={item.state}
                         onChange={(e) => item.setter(e.target.checked)}
-                        className="w-4 h-4 rounded border-[#E2E8F0] text-[#0D9488] focus:ring-[#0D9488]"
+                        className="w-4 h-4 rounded border-[#E2E8F0] text-[#00685f] focus:ring-[#00685f]"
                       />
                     </div>
                     <div className="flex items-center gap-2 text-sm text-[#3D4B5F] group-hover:text-[#1A2332] transition-colors">
-                      <span className="text-[#0D9488]">{item.icon}</span>
+                      <span className="text-[#00685f]">{item.icon}</span>
                       {item.label}
                     </div>
                   </label>
@@ -289,7 +289,7 @@ export default function QuizPage() {
                     value={email}
                     onChange={(e) => { setEmail(e.target.value); setEmailError(null); }}
                     placeholder={t("quiz.emailPlaceholder")}
-                    className="w-full pl-10 pr-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+                    className="w-full pl-10 pr-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
                     onKeyDown={(e) => { if (e.key === "Enter") handleEmailSubmit(); }}
                   />
                 </div>
@@ -301,7 +301,7 @@ export default function QuizPage() {
               <button
                 onClick={handleEmailSubmit}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 disabled:bg-[#0D9488]/60 text-white font-semibold py-3.5 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
+                className="w-full flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-95 disabled:bg-[#00685f]/60 text-white font-semibold py-3.5 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
               >
                 {loading ? (
                   <>
@@ -337,17 +337,17 @@ export default function QuizPage() {
 
   // ── Normal quiz steps 1–5 ──
   return (
-    <div className="min-h-screen bg-[#FAFBFC]">
+    <div className="min-h-screen bg-[#f9f9ff]">
       {/* Header */}
-      <div className="bg-white/70 backdrop-blur-xl border-b border-[#E8ECF1] sticky top-0 z-50">
+      <div className="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm shadow-black/5">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between mb-3">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#0D9488] to-[#0F766E] flex items-center justify-center shadow-sm">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center shadow-sm">
                 <Leaf className="w-3.5 h-3.5 text-white" />
               </div>
               <span className="text-base font-semibold tracking-tight text-[#1A2332] font-heading">
-                Nutri<span className="text-[#0D9488]">Genius</span>
+                Nutri<span className="text-[#00685f]">Genius</span>
               </span>
             </Link>
             <div className="flex items-center gap-3">
@@ -359,9 +359,9 @@ export default function QuizPage() {
           </div>
 
           {/* Progress bar */}
-          <div className="w-full bg-[#E8ECF1] rounded-full h-2">
+          <div className="w-full bg-[#f0f3ff] rounded-full h-[3px]">
             <div
-              className="bg-[#0D9488] h-2 rounded-full transition-all duration-500 ease-out"
+              className="bg-[#00685f] h-[3px] rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -383,9 +383,9 @@ export default function QuizPage() {
                 <div
                   className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
                     step.number < currentStep
-                      ? "bg-[#0D9488] text-white"
+                      ? "bg-[#00685f] text-white"
                       : step.number === currentStep
-                      ? "bg-[#0D9488] text-white ring-4 ring-[#0D9488]/20"
+                      ? "bg-[#00685f] text-white ring-4 ring-[#00685f]/20"
                       : "bg-[#E8ECF1] text-[#8896A8]"
                   }`}
                 >
@@ -398,7 +398,7 @@ export default function QuizPage() {
                 <span
                   className={`text-[10px] mt-1 hidden sm:block ${
                     step.number === currentStep
-                      ? "text-[#0D9488] font-medium"
+                      ? "text-[#00685f] font-medium"
                       : "text-[#8896A8]"
                   }`}
                 >
@@ -439,11 +439,11 @@ export default function QuizPage() {
         )}
 
         {/* Navigation buttons */}
-        <div className={`mt-10 pt-6 border-t border-[#E8ECF1] flex flex-col sm:flex-row gap-3 ${currentStep > 1 ? "sm:justify-between" : "sm:justify-end"}`}>
+        <div className={`mt-10 pt-6 flex flex-col sm:flex-row gap-3 ${currentStep > 1 ? "sm:justify-between" : "sm:justify-end"}`}>
           {/* Continue — shown first on mobile via order */}
           <button
             onClick={nextStep}
-            className="order-first sm:order-last flex items-center justify-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] active:scale-95 text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20 w-full sm:w-auto"
+            className="order-first sm:order-last flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-95 text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20 w-full sm:w-auto"
           >
             {currentStep === 5 ? (
               <>
@@ -460,7 +460,7 @@ export default function QuizPage() {
           {currentStep > 1 ? (
             <button
               onClick={prevStep}
-              className="flex items-center justify-center gap-2 py-3 sm:py-0 text-[#5A6578] hover:text-[#1A2332] font-medium border border-[#E8ECF1] sm:border-0 rounded-xl sm:rounded-none transition-colors"
+              className="flex items-center justify-center gap-2 py-3 sm:py-0 text-[#5A6578] hover:text-[#1A2332] font-medium bg-[#f9f9ff] sm:bg-transparent rounded-xl sm:rounded-none transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               {t("quiz.previous")}

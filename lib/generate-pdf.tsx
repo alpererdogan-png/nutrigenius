@@ -4,8 +4,8 @@ import type { RecommendationResult } from "@/app/api/recommend/route";
 
 // ─── Palette ──────────────────────────────────────────────────────────────────
 
-const TEAL       = "#0D9488";
-const TEAL_TEXT  = "#0F766E";
+const TEAL       = "#00685f";
+const TEAL_TEXT  = "#005249";
 const TEAL_LIGHT = "#E6F7F6";
 const DARK       = "#1A2332";
 const MID        = "#5A6578";

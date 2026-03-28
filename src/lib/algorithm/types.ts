@@ -13,7 +13,8 @@ export type LayerName =
   | 'conditions'
   | 'labs'
   | 'genetics'
-  | 'goals';
+  | 'goals'
+  | 'safety';
 
 // ─── SUPPLEMENT CATEGORIES ───────────────────────────────────────────────────
 
@@ -118,6 +119,18 @@ export interface Recommendation {
    * Priority 1–10. Higher = more clinically important.
    * Used by capProtocol() to decide which supplements to drop when the
    * protocol exceeds the maximum count.
+   *
+   * Scale:
+   *  10 — Pregnancy-critical (folate, iron, DHA, iodine during pregnancy)
+   *   9 — Severe deficiency / universal essentials (Vitamin D in high-latitude winter)
+   *   8 — Strong-evidence condition-specific / core nutrients
+   *   7 — Moderate-evidence condition-specific / age-related (B12 age 50+, D baseline)
+   *   6 — Lifestyle-triggered (magnesium, calcium postmenopausal, folate women 18–50)
+   *   5 — Goal-optimisation, Moderate evidence (CoQ10, zinc, lycopene, omega-3)
+   *   4 — Goal-optimisation, Emerging evidence
+   *   3 — Nice-to-have / supportive
+   *   2 — Low-priority
+   *   1 — Experimental
    */
   priority: number;
   category: SupplementCategory;
@@ -125,6 +138,11 @@ export interface Recommendation {
   separateFrom: string[];
   /** Additional clinical notes surfaced on the results card */
   notes: string[];
+  /**
+   * Allergy-driven flags set by Layer 2 (dietary).
+   * Guides form-swaps and ingredient warnings on the results card.
+   */
+  allergyFlags?: AllergyFlag[];
 }
 
 // ─── QUIZ DATA INPUT ─────────────────────────────────────────────────────────
@@ -171,6 +189,12 @@ export interface QuizData {
   sunExposure: 'minimal' | 'moderate' | 'high';
   alcoholConsumption: 'none' | 'light' | 'moderate' | 'heavy';
   smokingStatus: 'never' | 'former' | 'current';
+  /**
+   * Derived convenience flag — set to `true` when smokingStatus === 'current'.
+   * Populated by Layer 3 so all subsequent layers can check it without
+   * re-reading smokingStatus.
+   */
+  smokerFlag?: boolean;
 
   // ── Layer 4: Health Conditions ─────────────────────────────────────────────
   /** Condition IDs from existing knowledge base, e.g. "type-2-diabetes", "hypothyroidism" */
@@ -217,6 +241,22 @@ export interface QuizData {
     fut2?:          'secretor' | 'non-secretor';
     /** CYP1A2 caffeine metabolism — affects supplement timing windows */
     cyp1a2?:        'fast' | 'slow';
+    /** CBS (Cystathionine Beta-Synthase) — upregulation increases sulfur throughput */
+    cbs?:           'normal' | 'upregulation';
+    /** BCMO1 — reduced beta-carotene → retinol conversion */
+    bcmo1?:         'normal' | 'poor-converter';
+    /** FADS1/FADS2 — reduced ALA → EPA/DHA conversion */
+    fads?:          boolean;
+    /** HFE hemochromatosis gene variants — increased iron absorption risk */
+    hfe?:           { c282y?: boolean; h63d?: boolean };
+    /** SOD2 Val/Ala variant — altered mitochondrial antioxidant capacity */
+    sod2?:          'val-val' | 'val-ala' | 'ala-ala';
+    /** PEMT variant — increased dietary choline requirement */
+    pemt?:          boolean;
+    /** TNF-α pro-inflammatory variant */
+    tnfAlpha?:      boolean;
+    /** IL-6 pro-inflammatory variant */
+    il6?:           boolean;
   };
 
   // ── Layer 7: Health Goals ──────────────────────────────────────────────────
@@ -520,3 +560,94 @@ export type CapProtocolFn = (
   recs: Recommendation[],
   maxCount: number,
 ) => Recommendation[];
+
+// ─── ALLERGY FLAGS ────────────────────────────────────────────────────────────
+
+/**
+ * Attached to a Recommendation by Layer 2 (dietary) when a user's allergy
+ * affects the supplement's default ingredient or form.
+ *
+ * e.g. fish allergy → omega-3 fish oil needs 'swap-form' to algae-based DHA.
+ */
+export interface AllergyFlag {
+  /** The allergen that triggered this flag, e.g. "fish", "shellfish", "dairy" */
+  allergen: string;
+  action: 'swap-form' | 'avoid-ingredient' | 'use-alternative';
+  /** Human-readable note surfaced on the results card */
+  note: string;
+}
+
+// ─── PLAN TIERS ───────────────────────────────────────────────────────────────
+
+export type PlanTier = 'free' | 'premium';
+
+export interface TierConfig {
+  /** Maximum number of supplements shown in the protocol */
+  maxSupplements: number;
+  /** Whether the full 7-day timing schedule is shown */
+  showFullSchedule: boolean;
+  /** Whether per-supplement layer explanations ("why this was recommended") are shown */
+  showLayerExplanations: boolean;
+  /** Whether genetic variant insights are shown */
+  showGeneticInsights: boolean;
+  /** Whether lab value interpretation callouts are shown */
+  showLabInterpretation: boolean;
+  /** Whether drug-interaction detail cards are shown (safety warnings always visible) */
+  showDrugInteractionDetails: boolean;
+  /** Whether molecular form optimisation notes are shown */
+  showFormOptimization: boolean;
+  /** Whether the PDF download button is enabled */
+  pdfDownload: boolean;
+  /** Whether iHerb affiliate links are shown on supplement cards */
+  iherbLinks: boolean;
+}
+
+export const TIER_CONFIG: Record<PlanTier, TierConfig> = {
+  free: {
+    maxSupplements: 5,
+    showFullSchedule: true,
+    showLayerExplanations: false,
+    showGeneticInsights: false,
+    showLabInterpretation: false,
+    showDrugInteractionDetails: true,  // safety information always visible
+    showFormOptimization: false,
+    pdfDownload: true,
+    iherbLinks: true,
+  },
+  premium: {
+    maxSupplements: 10,
+    showFullSchedule: true,
+    showLayerExplanations: true,
+    showGeneticInsights: true,
+    showLabInterpretation: true,
+    showDrugInteractionDetails: true,
+    showFormOptimization: true,
+    pdfDownload: true,
+    iherbLinks: true,
+  },
+};
+
+// ─── PROTOCOL RESULT ─────────────────────────────────────────────────────────
+
+/**
+ * The final output of the full 7-layer pipeline, post-safety-filter.
+ * Separates displayed vs. hidden recommendations based on the user's tier,
+ * and carries the complete safety and scheduling output.
+ */
+export interface ProtocolResult {
+  tier: PlanTier;
+  /**
+   * Supplements shown to the user — capped at TIER_CONFIG[tier].maxSupplements,
+   * sorted by priority descending.
+   */
+  displayedRecommendations: Recommendation[];
+  /**
+   * Supplements calculated but hidden because the user is on the free tier.
+   * Shown as a blurred/locked upsell row on the results page.
+   */
+  hiddenRecommendations: Recommendation[];
+  /** Optional upsell copy, e.g. "Unlock 5 more personalised supplements with Premium" */
+  upsellMessage?: string;
+  safetyResult: SafetyResult;
+  weeklySchedule: WeeklySchedule;
+}

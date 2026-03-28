@@ -96,7 +96,7 @@ export function StepGenetics({ data, updateData }: Props) {
             onClick={() => handleToggle(true)}
             className={`flex-1 py-3 rounded-xl border text-sm font-medium transition-colors ${
               showEntry
-                ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                ? "bg-[#F0FDFA] border-[#00685f] text-[#00685f]"
                 : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
             }`}
           >
@@ -106,7 +106,7 @@ export function StepGenetics({ data, updateData }: Props) {
             onClick={() => handleToggle(false)}
             className={`flex-1 py-3 rounded-xl border text-sm font-medium transition-colors ${
               !showEntry
-                ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                ? "bg-[#F0FDFA] border-[#00685f] text-[#00685f]"
                 : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
             }`}
           >
@@ -136,7 +136,7 @@ export function StepGenetics({ data, updateData }: Props) {
               <select
                 value={getVariantStatus(gv.gene, gv.variant)}
                 onChange={(e) => updateVariant(gv.gene, gv.variant, e.target.value)}
-                className="w-full px-3 py-2 border border-[#E2E8F0] rounded-lg text-sm text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+                className="w-full px-3 py-2 border border-[#E2E8F0] rounded-lg text-sm text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
               >
                 <option value="">{t("quiz.genNotTested")}</option>
                 {gv.options.map((opt) => (
@@ -177,7 +177,7 @@ export function StepGenetics({ data, updateData }: Props) {
       {/* Data entered summary */}
       {data.geneticVariants.length > 0 && (
         <div className="bg-[#F0FDFA] border border-[#99F6E4] rounded-xl p-4">
-          <p className="text-sm font-medium text-[#0F766E] mb-2">
+          <p className="text-sm font-medium text-[#005249] mb-2">
             {t("quiz.genSummaryTitle")} ({data.geneticVariants.length}{" "}
             {data.geneticVariants.length > 1 ? t("quiz.genVariants") : t("quiz.genVariant")})
           </p>
@@ -185,7 +185,7 @@ export function StepGenetics({ data, updateData }: Props) {
             {data.geneticVariants.map((v) => (
               <span
                 key={`${v.gene}-${v.variant}`}
-                className="inline-flex items-center gap-1 bg-white border border-[#99F6E4] text-[#0D9488] text-xs px-2.5 py-1 rounded-full"
+                className="inline-flex items-center gap-1 bg-white border border-[#99F6E4] text-[#00685f] text-xs px-2.5 py-1 rounded-full"
               >
                 {v.gene} {v.variant}: {v.status}
               </span>

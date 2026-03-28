@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-dm-sans);
+  --font-sans: var(--font-inter);
   --font-heading: var(--font-plus-jakarta);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -49,14 +49,14 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.99 0.004 285);
+  --foreground: oklch(0.21 0.018 242);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.21 0.018 242);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --popover-foreground: oklch(0.21 0.018 242);
+  --primary: oklch(0.44 0.089 174);
+  --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -162,12 +162,12 @@
 .prose-custom p a,
 .prose-custom li a,
 .prose-custom blockquote a {
-  color: #0D9488;
+  color: #00685f;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 .prose-custom p a:hover,
 .prose-custom li a:hover,
 .prose-custom blockquote a:hover {
-  color: #0F766E;
+  color: #005249;
 }

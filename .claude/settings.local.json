@@ -8,7 +8,14 @@
       "Bash(ls:*)",
       "Bash(taskkill:*)",
       "Bash(curl:*)",
-      "Bash(python3 -c \"import json,sys; ids=list\\({r[''''supplement_id''''] for r in json.load\\(sys.stdin\\)}\\); print\\(''''\\\\n''''.join\\(ids\\)\\)\")"
+      "Bash(python3 -c \"import json,sys; ids=list\\({r[''''supplement_id''''] for r in json.load\\(sys.stdin\\)}\\); print\\(''''\\\\n''''.join\\(ids\\)\\)\")",
+      "Bash(npx jest:*)",
+      "Bash(npx tsc:*)",
+      "Bash(python3:*)",
+      "Bash(node:*)",
+      "Bash(node -e \":*)",
+      "Bash(grep -v \"^$\")",
+      "Bash(cd:*)"
     ]
   }
 }

@@ -82,7 +82,7 @@ export function StepDemographics({ data, updateData }: Props) {
             placeholder="e.g. 35"
             min="1"
             max="120"
-            className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+            className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
           />
         </div>
         <div>
@@ -99,7 +99,7 @@ export function StepDemographics({ data, updateData }: Props) {
                 onClick={() => updateData({ biologicalSex: sex.value })}
                 className={`flex-1 py-2.5 px-4 rounded-lg border text-sm font-medium transition-colors ${
                   data.biologicalSex === sex.value
-                    ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                    ? "bg-[#F0FDFA] border-[#00685f] text-[#00685f]"
                     : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                 }`}
               >
@@ -121,7 +121,7 @@ export function StepDemographics({ data, updateData }: Props) {
             value={data.heightCm}
             onChange={(e) => updateData({ heightCm: e.target.value })}
             placeholder="e.g. 175"
-            className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+            className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
           />
         </div>
         <div>
@@ -133,14 +133,14 @@ export function StepDemographics({ data, updateData }: Props) {
             value={data.weightKg}
             onChange={(e) => updateData({ weightKg: e.target.value })}
             placeholder="e.g. 72"
-            className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+            className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
           />
         </div>
         <div>
           <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
             {t("quiz.demoBmi")}
           </label>
-          <div className="px-3 py-2.5 border border-[#E2E8F0] rounded-lg bg-[#F8FAFC]">
+          <div className="px-3 py-2.5 border border-[#E2E8F0] rounded-lg bg-[#f9f9ff]">
             {bmi ? (
               <span className="text-sm">
                 <span className="font-semibold text-[#1A2332]">{bmi}</span>{" "}
@@ -163,7 +163,7 @@ export function StepDemographics({ data, updateData }: Props) {
         <select
           value={data.country}
           onChange={(e) => updateData({ country: e.target.value })}
-          className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+          className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
         >
           <option value="">{t("quiz.demoSelectCountry")}</option>
           {COUNTRIES.map((c) => (
@@ -186,7 +186,7 @@ export function StepDemographics({ data, updateData }: Props) {
                 type="checkbox"
                 checked={data.pregnant}
                 onChange={(e) => updateData({ pregnant: e.target.checked })}
-                className="w-4 h-4 rounded border-[#E2E8F0] text-[#0D9488] focus:ring-[#0D9488]"
+                className="w-4 h-4 rounded border-[#E2E8F0] text-[#00685f] focus:ring-[#00685f]"
               />
               <span className="text-sm text-[#1A2332]">{t("quiz.demoPregnant")}</span>
             </label>
@@ -195,7 +195,7 @@ export function StepDemographics({ data, updateData }: Props) {
                 type="checkbox"
                 checked={data.breastfeeding}
                 onChange={(e) => updateData({ breastfeeding: e.target.checked })}
-                className="w-4 h-4 rounded border-[#E2E8F0] text-[#0D9488] focus:ring-[#0D9488]"
+                className="w-4 h-4 rounded border-[#E2E8F0] text-[#00685f] focus:ring-[#00685f]"
               />
               <span className="text-sm text-[#1A2332]">{t("quiz.demoBreastfeeding")}</span>
             </label>
@@ -215,7 +215,7 @@ export function StepDemographics({ data, updateData }: Props) {
               onClick={() => updateData({ dietaryPattern: value })}
               className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
                 data.dietaryPattern === value
-                  ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                  ? "bg-[#F0FDFA] border-[#00685f] text-[#00685f]"
                   : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
               }`}
             >
@@ -261,7 +261,7 @@ export function StepDemographics({ data, updateData }: Props) {
             type="checkbox"
             checked={data.halalPreference}
             onChange={(e) => updateData({ halalPreference: e.target.checked })}
-            className="w-4 h-4 rounded border-[#E2E8F0] text-[#0D9488] focus:ring-[#0D9488]"
+            className="w-4 h-4 rounded border-[#E2E8F0] text-[#00685f] focus:ring-[#00685f]"
           />
           <div>
             <span className="text-sm font-medium text-[#1A2332]">{t("quiz.demoHalalTitle")}</span>

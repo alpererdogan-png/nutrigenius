@@ -74,12 +74,12 @@ export function markdownToHtml(markdown: string): string {
   html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
 
   // Inline code
-  html = html.replace(/`([^`]+)`/g, '<code class="bg-[#F1F5F9] text-[#0D9488] text-sm px-1.5 py-0.5 rounded font-mono">$1</code>');
+  html = html.replace(/`([^`]+)`/g, '<code class="bg-[#F1F5F9] text-[#00685f] text-sm px-1.5 py-0.5 rounded font-mono">$1</code>');
 
   // Blockquotes
   html = html.replace(
     /^> (.+)$/gm,
-    '<blockquote class="border-l-4 border-[#0D9488] pl-4 italic text-[#5A6578] my-4">$1</blockquote>'
+    '<blockquote class="border-l-4 border-[#00685f] pl-4 italic text-[#5A6578] my-4">$1</blockquote>'
   );
 
   // Lists
@@ -92,7 +92,7 @@ export function markdownToHtml(markdown: string): string {
         .split("\n")
         .map((line) => line.replace(/^[ \t]*[-*+] /, "").trim())
         .filter(Boolean)
-        .map((item) => `<li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#0D9488] flex-shrink-0"></span><span>${item}</span></li>`)
+        .map((item) => `<li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#00685f] flex-shrink-0"></span><span>${item}</span></li>`)
         .join("");
       return `<ul class="space-y-2 my-4 text-[#374151]">${items}</ul>\n`;
     }
@@ -108,7 +108,7 @@ export function markdownToHtml(markdown: string): string {
         .split("\n")
         .map((line) => line.replace(/^\d+\. /, "").trim())
         .filter(Boolean)
-        .map((item) => `<li class="flex gap-3 items-start"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-teal-50 text-[#0D9488] text-xs font-bold flex items-center justify-center mt-0.5">${i++}</span><span>${item}</span></li>`)
+        .map((item) => `<li class="flex gap-3 items-start"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-teal-50 text-[#00685f] text-xs font-bold flex items-center justify-center mt-0.5">${i++}</span><span>${item}</span></li>`)
         .join("");
       return `<ol class="space-y-2 my-4 text-[#374151]">${items}</ol>\n`;
     }

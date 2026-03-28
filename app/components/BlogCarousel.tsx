@@ -124,7 +124,7 @@ export function BlogCarousel() {
       <button
         onClick={() => scrollBy("left")}
         aria-label="Scroll left"
-        className={`hidden lg:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white border border-[#E8ECF1] rounded-full shadow-md items-center justify-center text-[#5A6578] hover:text-[#0D9488] hover:border-[#0D9488]/40 hover:shadow-lg transition-all duration-200 ${
+        className={`hidden lg:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-md shadow-black/10 items-center justify-center text-[#5A6578] hover:text-[#00685f] hover:shadow-lg transition-all duration-200 ${
           canScrollLeft ? "opacity-100" : "opacity-30 pointer-events-none"
         }`}
       >
@@ -151,7 +151,7 @@ export function BlogCarousel() {
             key={article.title}
             href={`/blog/${article.slug}`}
             data-card
-            className="flex-shrink-0 flex flex-col bg-white border border-[#E8ECF1] rounded-2xl overflow-hidden hover:border-[#0D9488]/30 hover:shadow-lg hover:shadow-teal-500/5 transition-all duration-300 hover:-translate-y-0.5 group
+            className="flex-shrink-0 flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm shadow-black/5 ring-1 ring-black/[0.04] hover:shadow-lg hover:ring-0 hover:shadow-black/8 transition-all duration-300 hover:-translate-y-0.5 group
               w-[80vw] sm:w-80 lg:w-[340px]"
             style={{ scrollSnapAlign: "start" }}
           >
@@ -165,7 +165,7 @@ export function BlogCarousel() {
               </span>
 
               {/* Title */}
-              <h3 className="font-heading text-[15px] font-bold text-[#1A2332] leading-snug mb-3 group-hover:text-[#0D9488] transition-colors duration-200 line-clamp-3 flex-1">
+              <h3 className="font-heading text-[15px] font-bold text-[#1A2332] leading-snug mb-3 group-hover:text-[#00685f] transition-colors duration-200 line-clamp-3 flex-1">
                 {article.title}
               </h3>
 
@@ -175,12 +175,12 @@ export function BlogCarousel() {
               </p>
 
               {/* Footer */}
-              <div className="flex items-center justify-between pt-3 border-t border-[#E8ECF1] mt-auto">
+              <div className="flex items-center justify-between pt-3 mt-auto">
                 <div className="flex items-center gap-1.5 text-xs text-[#8896A8]">
                   <Clock className="w-3.5 h-3.5" />
                   {article.readTime}
                 </div>
-                <span className="text-xs font-semibold text-[#0D9488] group-hover:text-[#0F766E] flex items-center gap-1 transition-colors">
+                <span className="text-xs font-semibold text-[#00685f] group-hover:text-[#005249] flex items-center gap-1 transition-colors">
                   Read more
                   <ArrowRight className="w-3.5 h-3.5" />
                 </span>
@@ -197,7 +197,7 @@ export function BlogCarousel() {
       <button
         onClick={() => scrollBy("right")}
         aria-label="Scroll right"
-        className={`hidden lg:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white border border-[#E8ECF1] rounded-full shadow-md items-center justify-center text-[#5A6578] hover:text-[#0D9488] hover:border-[#0D9488]/40 hover:shadow-lg transition-all duration-200 ${
+        className={`hidden lg:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-md shadow-black/10 items-center justify-center text-[#5A6578] hover:text-[#00685f] hover:shadow-lg transition-all duration-200 ${
           canScrollRight ? "opacity-100" : "opacity-30 pointer-events-none"
         }`}
       >

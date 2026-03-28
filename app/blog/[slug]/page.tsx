@@ -291,16 +291,16 @@ function esc(str: string): string {
 
 function affiliateCardHtml(product: HardcodedProduct): string {
   return `<div class="my-6 flex items-stretch bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-  <div class="w-1.5 flex-shrink-0" style="background:#0D9488"></div>
+  <div class="w-1.5 flex-shrink-0" style="background:#00685f"></div>
   <div class="p-4 flex-1 min-w-0">
-    <p class="text-[10px] font-semibold uppercase tracking-wider mb-1" style="color:#0D9488;margin:0">Recommended Product</p>
+    <p class="text-[10px] font-semibold uppercase tracking-wider mb-1" style="color:#00685f;margin:0">Recommended Product</p>
     <p class="text-sm font-bold leading-snug" style="color:#1A2332;margin:0 0 2px">${esc(product.product_name)}</p>
     <p class="text-xs" style="color:#5A6578;margin:0 0 6px">${esc(product.brand)}</p>
     <p class="text-xs leading-relaxed" style="color:#8896A8;margin:0 0 10px">${esc(product.note)}</p>
     <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
       <span class="text-base font-bold" style="color:#1A2332">$${product.price_usd.toFixed(2)}</span>
       <a href="${esc(product.affiliate_url)}" target="_blank" rel="noopener noreferrer nofollow"
-         style="display:inline-flex;align-items:center;gap:5px;background:#0D9488;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none;white-space:nowrap">
+         style="display:inline-flex;align-items:center;gap:5px;background:#00685f;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none;white-space:nowrap">
         Shop on iHerb &rarr;
       </a>
     </div>
@@ -397,7 +397,7 @@ function formatCategory(cat: string): string {
 
 function KeyTakeawaysBox({ takeaways }: { takeaways: string[] }) {
   return (
-    <div className="my-6 border-l-4 border-teal-500 bg-teal-50 rounded-r-xl p-5">
+    <div className="my-6 border-l-4 border-[#00685f] bg-[#e6f4f3] rounded-r-xl p-5">
       <div className="flex items-center gap-2 mb-3">
         <Lightbulb className="w-5 h-5 text-teal-600 flex-shrink-0" />
         <h3 className="font-heading font-bold text-[#1A2332] text-base">Key Takeaways</h3>
@@ -405,7 +405,7 @@ function KeyTakeawaysBox({ takeaways }: { takeaways: string[] }) {
       <ul className="space-y-2">
         {takeaways.map((point, i) => (
           <li key={i} className="flex items-start gap-2 text-sm text-[#3D4B5F] leading-relaxed">
-            <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-2 flex-shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00685f] mt-2 flex-shrink-0" />
             {point}
           </li>
         ))}
@@ -418,7 +418,7 @@ function KeyTakeawaysBox({ takeaways }: { takeaways: string[] }) {
 
 function SidebarAdSlot() {
   return (
-    <div className="h-[280px] flex items-center justify-center border border-dashed border-[#CBD5E1] bg-[#F8FAFC] rounded-xl">
+    <div className="h-[280px] flex items-center justify-center bg-[#f0f3ff] rounded-xl">
       <div className="text-center">
         <p className="text-xs font-medium text-[#94A3B8] uppercase tracking-wider">Advertisement</p>
         <p className="text-[10px] text-[#CBD5E1] mt-0.5">300×250</p>
@@ -518,7 +518,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-16 lg:pb-0">
+    <div className="min-h-screen bg-[#f9f9ff] pb-16 lg:pb-0">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
@@ -528,17 +528,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       {/* ── Top nav ── */}
-      <div className="sticky top-0 z-20 bg-white/70 backdrop-blur-xl border-b border-[#E8ECF1]">
+      <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-xl shadow-sm shadow-black/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <Link
             href="/"
-            className="font-heading font-bold text-lg text-[#0D9488] hover:text-[#0F766E] transition-colors"
+            className="font-heading font-bold text-lg text-[#00685f] hover:text-[#005249] transition-colors"
           >
             NutriGenius
           </Link>
           <Link
             href="/blog"
-            className="inline-flex items-center gap-1.5 text-sm text-[#5A6578] hover:text-[#0D9488] transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm text-[#5A6578] hover:text-[#00685f] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> All articles
           </Link>
@@ -557,7 +557,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </div>
 
       {/* Title + excerpt */}
-      <div className="bg-white border-b border-[#E8ECF1]">
+      <div className="bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A2332] leading-tight mb-3 max-w-3xl">
             {post.title}
@@ -586,7 +586,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
             {/* Tags */}
             {post.tags?.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-8 pt-8 border-t border-[#E8ECF1]">
+              <div className="flex flex-wrap gap-2 mt-8 pt-8">
                 <Tag className="w-4 h-4 text-[#8896A8] mt-0.5 flex-shrink-0" />
                 {post.tags.map((tag) => (
                   <span
@@ -613,14 +613,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </p>
 
             {/* CTA */}
-            <div className="mt-6 p-6 bg-gradient-to-br from-teal-50 to-teal-100/60 rounded-2xl border border-teal-200/60">
+            <div className="mt-6 p-6 bg-[#e6f4f3] rounded-2xl">
               <h3 className="font-heading font-bold text-[#1A2332] mb-2">Get your personalised supplement plan</h3>
               <p className="text-sm text-[#5A6578] mb-4">
                 Take our 5-minute assessment to discover which supplements are right for your specific health goals, medications, and lifestyle.
               </p>
               <Link
                 href="/quiz"
-                className="inline-flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+                className="inline-flex items-center gap-2 bg-[#00685f] hover:bg-[#005249] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
               >
                 Start free assessment
               </Link>
@@ -632,7 +632,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div className="sticky top-[61px] space-y-5">
               {/* TOC */}
               {toc.length > 0 && (
-                <div className="bg-white rounded-2xl border border-[#E8ECF1] p-5">
+                <div className="bg-white rounded-2xl ring-1 ring-black/[0.04] p-5">
                   <p className="text-xs font-semibold text-[#8896A8] uppercase tracking-wider mb-3">
                     In this article
                   </p>
@@ -641,7 +641,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                       <a
                         key={item.id}
                         href={`#${item.id}`}
-                        className={`block text-sm text-[#5A6578] hover:text-[#0D9488] transition-colors py-0.5 leading-snug ${
+                        className={`block text-sm text-[#5A6578] hover:text-[#00685f] transition-colors py-0.5 leading-snug ${
                           item.level === 3 ? "pl-3 text-xs" : ""
                         }`}
                       >
@@ -657,7 +657,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
               {/* Related articles */}
               {related.length > 0 && (
-                <div className="bg-white rounded-2xl border border-[#E8ECF1] p-5">
+                <div className="bg-white rounded-2xl ring-1 ring-black/[0.04] p-5">
                   <p className="text-xs font-semibold text-[#8896A8] uppercase tracking-wider mb-3">
                     Related articles
                   </p>
@@ -675,7 +675,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                             <RelIcon className="w-5 h-5 text-white/90" />
                           </div>
                           <div className="min-w-0">
-                            <p className="text-sm font-semibold text-[#1A2332] group-hover:text-[#0D9488] transition-colors leading-snug line-clamp-2">
+                            <p className="text-sm font-semibold text-[#1A2332] group-hover:text-[#00685f] transition-colors leading-snug line-clamp-2">
                               {rel.title}
                             </p>
                             <p className="text-xs text-[#8896A8] mt-0.5">{rel.read_time}</p>
@@ -703,13 +703,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 <Link
                   key={rel.id}
                   href={`/blog/${rel.slug}`}
-                  className="flex gap-3 bg-white rounded-xl border border-[#E8ECF1] p-4 hover:border-[#0D9488]/30 transition-all group"
+                  className="flex gap-3 bg-white rounded-xl ring-1 ring-black/[0.04] p-4 hover:border-[#00685f]/30 transition-all group"
                 >
                   <div className={`w-10 h-10 rounded-xl ${relConfig.gradient} flex items-center justify-center flex-shrink-0`}>
                     <RelIcon className="w-5 h-5 text-white/90" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-[#1A2332] group-hover:text-[#0D9488] transition-colors leading-snug">
+                    <p className="text-sm font-semibold text-[#1A2332] group-hover:text-[#00685f] transition-colors leading-snug">
                       {rel.title}
                     </p>
                     <p className="text-xs text-[#8896A8] mt-0.5">{rel.read_time}</p>
@@ -728,9 +728,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <footer className="border-t border-[#E8ECF1] bg-white py-8 px-4 sm:px-6 mt-8">
         <div className="max-w-3xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs text-[#8896A8]">
           <div className="flex flex-wrap gap-5">
-            <Link href="/privacy" className="hover:text-[#0D9488] transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-[#0D9488] transition-colors">Terms of Service</Link>
-            <Link href="/disclaimer" className="hover:text-[#0D9488] transition-colors">Medical Disclaimer</Link>
+            <Link href="/privacy" className="hover:text-[#00685f] transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-[#00685f] transition-colors">Terms of Service</Link>
+            <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
           </div>
           <span>© {new Date().getFullYear()} NutriGenius. All rights reserved.</span>
         </div>

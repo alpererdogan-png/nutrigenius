@@ -22,7 +22,7 @@ export function buildWelcomeHtml(
             <td width="32" valign="top" style="padding-right:12px;">
               <div style="
                 width:28px; height:28px; border-radius:50%;
-                background:linear-gradient(135deg,#0D9488,#0F766E);
+                background:linear-gradient(135deg,#00685f,#005249);
                 display:flex; align-items:center; justify-content:center;
                 font-size:13px; font-weight:700; color:#fff;
                 line-height:28px; text-align:center;
@@ -30,7 +30,7 @@ export function buildWelcomeHtml(
             </td>
             <td valign="top">
               <p style="margin:0 0 2px; font-size:15px; font-weight:600; color:#1A2332;">${s.name}</p>
-              ${s.doseDisplay ? `<p style="margin:0; font-size:12px; color:#0D9488;">${s.doseDisplay}</p>` : ""}
+              ${s.doseDisplay ? `<p style="margin:0; font-size:12px; color:#00685f;">${s.doseDisplay}</p>` : ""}
               ${s.whyRecommended ? `<p style="margin:4px 0 0; font-size:13px; color:#5A6578; line-height:1.5;">${s.whyRecommended}</p>` : ""}
             </td>
           </tr>
@@ -59,7 +59,7 @@ export function buildWelcomeHtml(
 
           <!-- Header gradient -->
           <tr>
-            <td style="background:linear-gradient(135deg,#0D9488 0%,#0F766E 100%); padding:32px 40px; text-align:center;">
+            <td style="background:linear-gradient(135deg,#00685f 0%,#005249 100%); padding:32px 40px; text-align:center;">
               <!-- Logo -->
               <table cellpadding="0" cellspacing="0" align="center" style="margin-bottom:20px;">
                 <tr>
@@ -119,7 +119,7 @@ export function buildWelcomeHtml(
                     <a href="${siteUrl}/results"
                       style="
                         display:inline-block;
-                        background:linear-gradient(135deg,#0D9488,#0F766E);
+                        background:linear-gradient(135deg,#00685f,#005249);
                         color:#FFFFFF; font-size:15px; font-weight:700;
                         text-decoration:none; padding:14px 36px;
                         border-radius:12px; letter-spacing:0.2px;
@@ -137,10 +137,10 @@ export function buildWelcomeHtml(
                 <tr>
                   <td style="width:36px; vertical-align:top; padding-right:12px; font-size:20px; line-height:1;">📅</td>
                   <td>
-                    <p style="margin:0 0 4px; font-size:14px; font-weight:600; color:#0F766E;">
+                    <p style="margin:0 0 4px; font-size:14px; font-weight:600; color:#005249;">
                       Download Your Weekly Schedule
                     </p>
-                    <p style="margin:0; font-size:13px; color:#0D9488;">
+                    <p style="margin:0; font-size:13px; color:#00685f;">
                       Get a printable PDF with your full supplement protocol and timing guide.
                       Click "Download PDF" on your results page.
                     </p>
@@ -179,7 +179,7 @@ export function buildWelcomeHtml(
           <tr>
             <td style="background:#F8FAFC; border-top:1px solid #E8ECF1; padding:24px 40px; text-align:center;">
               <p style="margin:0 0 12px;">
-                <a href="${siteUrl}" style="color:#0D9488; text-decoration:none; font-weight:600; font-size:14px;">NutriGenius</a>
+                <a href="${siteUrl}" style="color:#00685f; text-decoration:none; font-weight:600; font-size:14px;">NutriGenius</a>
                 <span style="color:#CBD5E1; padding:0 8px;">·</span>
                 <a href="${siteUrl}/blog" style="color:#5A6578; text-decoration:none; font-size:13px;">Blog</a>
                 <span style="color:#CBD5E1; padding:0 8px;">·</span>

@@ -40,7 +40,7 @@ export function buildNewsletterHtml(props: NewsletterProps): string {
 
           <!-- ── HEADER ─────────────────────────────────────────────── -->
           <tr>
-            <td style="background:linear-gradient(135deg,#0D9488 0%,#0F766E 100%); padding:28px 40px; text-align:center;">
+            <td style="background:linear-gradient(135deg,#00685f 0%,#005249 100%); padding:28px 40px; text-align:center;">
               <table cellpadding="0" cellspacing="0" align="center" style="margin-bottom:16px;">
                 <tr>
                   <td style="
@@ -70,7 +70,7 @@ export function buildNewsletterHtml(props: NewsletterProps): string {
                 style="border:1px solid #E8ECF1; border-radius:12px; overflow:hidden; margin-bottom:28px;">
                 <tr>
                   <td style="background:linear-gradient(135deg,#F0FDFA,#CCFBF1); padding:20px 24px; border-bottom:1px solid #E8ECF1;">
-                    <p style="margin:0 0 4px; font-size:11px; font-weight:700; color:#0D9488; text-transform:uppercase; letter-spacing:1px;">
+                    <p style="margin:0 0 4px; font-size:11px; font-weight:700; color:#00685f; text-transform:uppercase; letter-spacing:1px;">
                       Featured Article
                     </p>
                     <h2 style="margin:0 0 10px; font-size:20px; font-weight:700; color:#1A2332; line-height:1.3;">
@@ -82,7 +82,7 @@ export function buildNewsletterHtml(props: NewsletterProps): string {
                     <a href="${articleUrl}"
                       style="
                         display:inline-block;
-                        background:#0D9488; color:#FFFFFF;
+                        background:#00685f; color:#FFFFFF;
                         font-size:13px; font-weight:700;
                         text-decoration:none; padding:10px 22px;
                         border-radius:8px;
@@ -145,15 +145,15 @@ export function buildNewsletterHtml(props: NewsletterProps): string {
                 style="background:#F0FDFA; border:1px solid #99F6E4; border-radius:12px; padding:16px 24px; margin-bottom:28px;">
                 <tr>
                   <td>
-                    <p style="margin:0 0 6px; font-size:14px; font-weight:600; color:#0F766E;">
+                    <p style="margin:0 0 6px; font-size:14px; font-weight:600; color:#005249;">
                       🔄 Haven't checked your plan recently?
                     </p>
-                    <p style="margin:0 0 12px; font-size:13px; color:#0D9488; line-height:1.5;">
+                    <p style="margin:0 0 12px; font-size:13px; color:#00685f; line-height:1.5;">
                       Your body changes — so should your supplement protocol.
                       Update your assessment to get the most accurate recommendations.
                     </p>
                     <a href="${siteUrl}/quiz"
-                      style="font-size:13px; font-weight:700; color:#0D9488; text-decoration:none;">
+                      style="font-size:13px; font-weight:700; color:#00685f; text-decoration:none;">
                       Update Your Plan →
                     </a>
                   </td>
@@ -187,7 +187,7 @@ export function buildNewsletterHtml(props: NewsletterProps): string {
           <tr>
             <td style="background:#F8FAFC; border-top:1px solid #E8ECF1; padding:24px 40px; text-align:center;">
               <p style="margin:0 0 12px;">
-                <a href="${siteUrl}" style="color:#0D9488; text-decoration:none; font-weight:600; font-size:14px;">NutriGenius</a>
+                <a href="${siteUrl}" style="color:#00685f; text-decoration:none; font-weight:600; font-size:14px;">NutriGenius</a>
                 <span style="color:#CBD5E1; padding:0 8px;">·</span>
                 <a href="${siteUrl}/blog" style="color:#5A6578; text-decoration:none; font-size:13px;">Blog</a>
                 <span style="color:#CBD5E1; padding:0 8px;">·</span>

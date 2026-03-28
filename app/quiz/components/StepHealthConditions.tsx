@@ -139,10 +139,10 @@ export function StepHealthConditions({ data, updateData }: Props) {
             {data.healthConditions.map((cond) => (
               <span
                 key={cond}
-                className="inline-flex items-center gap-1.5 bg-[#F0FDFA] border border-[#99F6E4] text-[#0D9488] text-sm px-3 py-1 rounded-full"
+                className="inline-flex items-center gap-1.5 bg-[#F0FDFA] border border-[#99F6E4] text-[#00685f] text-sm px-3 py-1 rounded-full"
               >
                 {cond}
-                <button onClick={() => toggleCondition(cond)} className="hover:text-[#0F766E]">
+                <button onClick={() => toggleCondition(cond)} className="hover:text-[#005249]">
                   <X className="w-3.5 h-3.5" />
                 </button>
               </span>
@@ -157,12 +157,12 @@ export function StepHealthConditions({ data, updateData }: Props) {
                 onClick={() =>
                   setExpandedCategory(expandedCategory === category ? null : category)
                 }
-                className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-[#1A2332] hover:bg-[#F8FAFC] transition-colors"
+                className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-[#1A2332] hover:bg-[#f9f9ff] transition-colors"
               >
                 <span>
                   {t(CATEGORY_KEY_MAP[category] ?? `quiz.cat${category}`)}
                   {data.healthConditions.some((c) => conditions.includes(c)) && (
-                    <span className="ml-2 text-xs text-[#0D9488] font-normal">
+                    <span className="ml-2 text-xs text-[#00685f] font-normal">
                       (
                       {data.healthConditions.filter((c) => conditions.includes(c)).length}{" "}
                       {t("quiz.healthSelected")})
@@ -183,7 +183,7 @@ export function StepHealthConditions({ data, updateData }: Props) {
                         onClick={() => toggleCondition(cond)}
                         className={`inline-flex items-center gap-1.5 py-2 px-4 rounded-lg border text-sm transition-all duration-200 cursor-pointer ${
                           selected
-                            ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                            ? "bg-[#F0FDFA] border-[#00685f] text-[#00685f]"
                             : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                         }`}
                       >
@@ -232,7 +232,7 @@ export function StepHealthConditions({ data, updateData }: Props) {
             value={medSearch}
             onChange={(e) => setMedSearch(e.target.value)}
             placeholder="Search medications (e.g. Metformin, Levothyroxine...)"
-            className="w-full pl-10 pr-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+            className="w-full pl-10 pr-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
           />
           {medSearch && filteredMeds.length > 0 && (
             <div className="absolute z-10 top-full mt-1 w-full bg-white border border-[#E2E8F0] rounded-lg shadow-lg max-h-48 overflow-y-auto">
@@ -262,10 +262,10 @@ export function StepHealthConditions({ data, updateData }: Props) {
             {data.currentSupplements.map((supp) => (
               <span
                 key={supp}
-                className="inline-flex items-center gap-1.5 bg-[#F0FDFA] border border-[#99F6E4] text-[#0D9488] text-sm px-3 py-1 rounded-full"
+                className="inline-flex items-center gap-1.5 bg-[#F0FDFA] border border-[#99F6E4] text-[#00685f] text-sm px-3 py-1 rounded-full"
               >
                 {supp}
-                <button onClick={() => removeSupplement(supp)} className="hover:text-[#0F766E]">
+                <button onClick={() => removeSupplement(supp)} className="hover:text-[#005249]">
                   <X className="w-3.5 h-3.5" />
                 </button>
               </span>
@@ -281,7 +281,7 @@ export function StepHealthConditions({ data, updateData }: Props) {
             if (e.key === "Enter") addSupplement(suppSearch);
           }}
           placeholder="e.g. Vitamin D, Fish Oil, Magnesium..."
-          className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+          className="w-full px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
         />
       </div>
 
@@ -307,7 +307,7 @@ export function StepHealthConditions({ data, updateData }: Props) {
                 }}
                 className={`inline-flex items-center gap-1.5 py-2 px-4 rounded-lg border text-sm font-medium transition-all duration-200 cursor-pointer ${
                   selected
-                    ? "bg-[#F0FDFA] border-[#0D9488] text-[#0D9488]"
+                    ? "bg-[#F0FDFA] border-[#00685f] text-[#00685f]"
                     : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
                 }`}
               >

@@ -75,15 +75,15 @@ export function StepLabResults({ data, updateData }: Props) {
     <div className="space-y-6">
       {/* Explanation */}
       <div className="bg-[#F0FDFA] border border-[#99F6E4] rounded-xl p-4 flex gap-3">
-        <FlaskConical className="w-5 h-5 text-[#0D9488] flex-shrink-0 mt-0.5" />
+        <FlaskConical className="w-5 h-5 text-[#00685f] flex-shrink-0 mt-0.5" />
         <div>
-          <p className="text-sm font-medium text-[#0F766E]">
+          <p className="text-sm font-medium text-[#005249]">
             {t("quiz.labsWhyTitle")}
           </p>
-          <p className="text-xs text-[#0D9488] mt-1">
+          <p className="text-xs text-[#00685f] mt-1">
             {t("quiz.labsWhyDesc")}
           </p>
-          <p className="text-xs italic text-[#0D9488]/80 mt-1">
+          <p className="text-xs italic text-[#00685f]/80 mt-1">
             <span className="font-medium">Clinical note:</span> Actual biomarker levels let us identify real deficiencies instead of guessing.
           </p>
         </div>
@@ -95,7 +95,7 @@ export function StepLabResults({ data, updateData }: Props) {
           <select
             value={selectedBiomarker}
             onChange={(e) => setSelectedBiomarker(e.target.value)}
-            className="flex-1 px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] text-sm focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488] bg-white"
+            className="flex-1 px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] text-sm focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
           >
             <option value="">{t("quiz.labsSelect")}</option>
             {availableBiomarkers.map((b) => (
@@ -107,7 +107,7 @@ export function StepLabResults({ data, updateData }: Props) {
           <button
             onClick={addLabResult}
             disabled={!selectedBiomarker}
-            className="flex items-center gap-1.5 px-4 py-2.5 bg-[#0D9488] hover:bg-[#0F766E] disabled:bg-[#E2E8F0] disabled:text-[#8896A8] text-white text-sm font-medium rounded-lg transition-colors"
+            className="flex items-center gap-1.5 px-4 py-2.5 bg-[#00685f] hover:bg-[#005249] disabled:bg-[#E2E8F0] disabled:text-[#8896A8] text-white text-sm font-medium rounded-lg transition-colors"
           >
             <Plus className="w-4 h-4" />
             {t("quiz.labsAdd")}
@@ -143,7 +143,7 @@ export function StepLabResults({ data, updateData }: Props) {
                       onChange={(e) => updateLabResult(index, "value", e.target.value)}
                       placeholder={t("quiz.labsEnterValue")}
                       step="0.1"
-                      className="w-full px-3 py-2 border border-[#E2E8F0] rounded-lg text-sm text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488]"
+                      className="w-full px-3 py-2 border border-[#E2E8F0] rounded-lg text-sm text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f]"
                     />
                   </div>
 
@@ -152,7 +152,7 @@ export function StepLabResults({ data, updateData }: Props) {
                     <select
                       value={result.unit}
                       onChange={(e) => updateLabResult(index, "unit", e.target.value)}
-                      className="w-full px-3 py-2 border border-[#E2E8F0] rounded-lg text-sm text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488]"
+                      className="w-full px-3 py-2 border border-[#E2E8F0] rounded-lg text-sm text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f]"
                     >
                       {ref?.units.map((u) => (
                         <option key={u} value={u}>{u}</option>
@@ -166,7 +166,7 @@ export function StepLabResults({ data, updateData }: Props) {
                       type="date"
                       value={result.testDate}
                       onChange={(e) => updateLabResult(index, "testDate", e.target.value)}
-                      className="w-full px-3 py-2 border border-[#E2E8F0] rounded-lg text-sm text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30 focus:border-[#0D9488]"
+                      className="w-full px-3 py-2 border border-[#E2E8F0] rounded-lg text-sm text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f]"
                     />
                   </div>
 
