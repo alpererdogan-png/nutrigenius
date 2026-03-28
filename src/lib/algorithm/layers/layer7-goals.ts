@@ -1114,7 +1114,7 @@ function blockBetaCarotene(recs: Recommendation[]): Recommendation[] {
 
 const LAYER_ORDER: Record<LayerName, number> = {
   demographic: 6, dietary: 5, lifestyle: 4,
-  conditions: 3, labs: 2, genetics: 1, goals: 0, safety: -1,
+  conditions: 3, labs: 2, genetics: 1, goals: 0, synergy: -1, safety: -2,
 };
 
 const EVIDENCE_ORDER: Record<string, number> = {

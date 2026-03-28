@@ -13,6 +13,7 @@ import { layer4Conditions }  from './layers/layer4-conditions';
 import { layer5Labs }        from './layers/layer5-labs';
 import { layer6Genetics }    from './layers/layer6-genetics';
 import { layer7Goals }       from './layers/layer7-goals';
+import { applySynergyPairs } from './synergy/synergyPairs';
 import { runSafetyFilter }   from './safety/safetyFilter';
 import { generateWeeklySchedule } from './schedule/generateWeeklySchedule';
 import { enforceTier }       from './tier/tierEnforcement';
@@ -124,6 +125,9 @@ export function generateProtocol(
   // ── Layer 7: Goal optimisation + hard cap at 10 ───────────────────────────
   recs = layer7Goals(quizData, recs);
   activeLayers.push('goals');
+
+  // ── Synergy enforcement ───────────────────────────────────────────────────
+  recs = applySynergyPairs(recs, quizData);
 
   // ── Safety filter ─────────────────────────────────────────────────────────
   const safetyResult = runSafetyFilter(quizData, recs);

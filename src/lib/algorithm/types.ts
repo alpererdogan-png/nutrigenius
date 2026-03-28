@@ -14,6 +14,7 @@ export type LayerName =
   | 'labs'
   | 'genetics'
   | 'goals'
+  | 'synergy'
   | 'safety';
 
 // ─── SUPPLEMENT CATEGORIES ───────────────────────────────────────────────────
