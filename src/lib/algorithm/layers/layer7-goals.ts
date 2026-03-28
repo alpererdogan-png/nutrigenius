@@ -24,6 +24,7 @@ import {
   LayerSource,
   RecommendationReason,
   CYCLE_DAILY,
+  CYCLE_6ON1OFF,
 } from '../types';
 
 import {
@@ -1091,6 +1092,21 @@ function handleSleep(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
       reasons: [makeReason('Sleep goal — Passionflower chrysin and other flavonoids bind GABA-A receptors, reducing anxiety and improving sleep quality')],
       warnings: [], contraindications: [], cyclingPattern: CYCLE_DAILY, priority: 4,
       category: 'herbal', separateFrom: [], notes: [],
+    }));
+  }
+
+  // Ashwagandha Sensoril — sleep-specific form (GABAergic; triethylene glycol)
+  // Only add if no KSM-66 already present from stress layers
+  if (!findExistingRec(r, 'ashwagandha-ksm66') && !findExistingRec(r, 'ashwagandha')) {
+    r = put(r, makeRec({
+      id: 'ashwagandha', supplementName: 'Ashwagandha (Sensoril)', form: 'sensoril-extract',
+      dose: 300, doseUnit: 'mg', frequency: 'daily',
+      timing: ['bedtime'], withFood: false, evidenceRating: 'Moderate',
+      reasons: [makeReason('Sleep goal — Sensoril ashwagandha 300 mg improves sleep quality via GABAergic activity; triethylene glycol promotes non-REM sleep')],
+      warnings: ['Avoid in pregnancy. May interact with thyroid medications.'],
+      contraindications: [], cyclingPattern: CYCLE_6ON1OFF, priority: 4,
+      category: 'adaptogen', separateFrom: [],
+      notes: ['Sensoril extract is preferred over KSM-66 for sleep due to higher withanolide glycoside content'],
     }));
   }
 

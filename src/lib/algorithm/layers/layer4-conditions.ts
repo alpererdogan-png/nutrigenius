@@ -380,13 +380,13 @@ function handleAnxiety(quiz: QuizData, recs: Recommendation[]): Recommendation[]
       id: 'ashwagandha-ksm66',
       supplementName: 'Ashwagandha (KSM-66)',
       form: 'ksm-66-extract',
-      dose: 300,
+      dose: 600,
       doseUnit: 'mg',
       frequency: 'daily',
       timing: ['morning-with-food'],
       withFood: true,
       evidenceRating: 'Strong',
-      reasons: [makeReason('Anxiety — KSM-66 ashwagandha reduces cortisol and GAD symptoms in multiple RCTs')],
+      reasons: [makeReason('Anxiety — KSM-66 ashwagandha 600 mg reduces cortisol and GAD symptoms in multiple RCTs')],
       warnings: [],
       contraindications: [],
       cyclingPattern: CYCLE_6ON1OFF,
@@ -508,19 +508,19 @@ function handleBipolar(quiz: QuizData, recs: Recommendation[]): Recommendation[]
   // Vitamin D
   r = ensureVitD(r, 2000, 'Bipolar disorder — vitamin D deficiency associated with worse mood outcomes', 6);
 
-  // NAC — for depressive phase
+  // NAC — for depressive phase (1,200 mg twice daily = 2,400 mg/day)
   if (!findExistingRec(r, 'nac')) {
     r = put(r, makeRec({
       id: 'nac',
       supplementName: 'N-Acetyl Cysteine (NAC)',
       form: 'n-acetyl-cysteine',
-      dose: 1000,
+      dose: 1200,
       doseUnit: 'mg',
       frequency: 'twice-daily',
       timing: ['morning-with-food', 'evening'],
       withFood: true,
       evidenceRating: 'Moderate',
-      reasons: [makeReason('Bipolar disorder — NAC reduces depressive symptoms in bipolar depression via glutathione replenishment and glutamate modulation')],
+      reasons: [makeReason('Bipolar disorder — NAC 2,400 mg/day reduces depressive symptoms via glutathione replenishment and glutamate modulation')],
       warnings: [],
       contraindications: [],
       cyclingPattern: CYCLE_WEEKDAYS,
@@ -1043,19 +1043,19 @@ function handleHighCholesterol(quiz: QuizData, recs: Recommendation[]): Recommen
       r = addReason(r, 'coq10-ubiquinol', LAYER, 'Red yeast rice use — monacolin-induced CoQ10 depletion prevention');
     }
   } else {
-    // On statins — just add CoQ10 (statins deplete it)
+    // On statins — CoQ10 200 mg (statins deplete it)
     if (!findExistingRec(r, 'coq10-ubiquinol')) {
       r = put(r, makeRec({
         id: 'coq10-ubiquinol',
         supplementName: 'CoQ10 (Ubiquinol)',
         form: 'ubiquinol',
-        dose: 100,
+        dose: 200,
         doseUnit: 'mg',
         frequency: 'daily',
         timing: ['morning-with-food'],
         withFood: true,
         evidenceRating: 'Strong',
-        reasons: [makeReason('Statin therapy — statins inhibit the mevalonate pathway, depleting endogenous CoQ10; supplementation reduces myopathy risk and fatigue')],
+        reasons: [makeReason('Statin therapy — statins inhibit the mevalonate pathway, depleting endogenous CoQ10; 200 mg reduces myopathy risk and fatigue')],
         warnings: [],
         contraindications: [],
         cyclingPattern: CYCLE_DAILY,
@@ -1295,18 +1295,18 @@ function handleRheumatoidArthritis(quiz: QuizData, recs: Recommendation[]): Reco
     }
   }
 
-  // Turmeric/Curcumin
+  // Turmeric/Curcumin — 1,000 mg/day for arthritis
   r = put(r, makeRec({
     id: 'curcumin',
     supplementName: 'Curcumin (with Piperine)',
     form: 'bcm-95',
-    dose: 500,
+    dose: 1000,
     doseUnit: 'mg',
-    frequency: 'twice-daily',
-    timing: ['morning-with-food', 'evening'],
+    frequency: 'daily',
+    timing: ['midday'],
     withFood: true,
     evidenceRating: 'Moderate',
-    reasons: [makeReason('Rheumatoid arthritis — curcumin inhibits NF-κB and COX-2; reduces joint pain and swelling comparably to NSAIDs in some RCTs')],
+    reasons: [makeReason('Rheumatoid arthritis — curcumin 1,000 mg/day inhibits NF-κB and COX-2; reduces joint pain and swelling comparably to NSAIDs in RCTs')],
     warnings: [],
     contraindications: [],
     cyclingPattern: CYCLE_DAILY,
@@ -2345,12 +2345,12 @@ function handleInsResistance(quiz: QuizData, recs: Recommendation[]): Recommenda
   if (!findExistingRec(r, 'berberine')) {
     r = put(r, makeRec({
       id: 'berberine', supplementName: 'Berberine', form: 'berberine-hcl',
-      dose: 1500, doseUnit: 'mg', frequency: 'three-times-daily',
-      timing: ['morning-with-food', 'midday', 'evening'], withFood: true, evidenceRating: 'Strong',
-      reasons: [makeReason('Insulin resistance — AMPK activation; meta-analyses show glucose-lowering comparable to metformin')],
+      dose: 500, doseUnit: 'mg', frequency: 'twice-daily',
+      timing: ['morning-with-food', 'evening'], withFood: true, evidenceRating: 'Strong',
+      reasons: [makeReason('Insulin resistance — AMPK activation; 500 mg twice daily (1,000 mg/day) shows glucose-lowering comparable to metformin')],
       warnings: ['May potentiate blood-sugar-lowering medications — monitor blood glucose'],
       contraindications: [], cyclingPattern: CYCLE_DAILY, priority: 8,
-      category: 'herbal', separateFrom: [], notes: ['500 mg three times daily with meals'],
+      category: 'herbal', separateFrom: [], notes: ['500 mg twice daily with meals'],
     }));
   }
 
@@ -2681,9 +2681,9 @@ function handleSIBO(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
   if (!findExistingRec(r, 'berberine')) {
     r = put(r, makeRec({
       id: 'berberine', supplementName: 'Berberine', form: 'berberine-hcl',
-      dose: 1500, doseUnit: 'mg', frequency: 'three-times-daily',
+      dose: 500, doseUnit: 'mg', frequency: 'three-times-daily',
       timing: ['morning-with-food', 'midday', 'evening'], withFood: true, evidenceRating: 'Emerging',
-      reasons: [makeReason('SIBO — antimicrobial activity against gut bacteria; comparable to rifaximin in small study')],
+      reasons: [makeReason('SIBO — antimicrobial berberine 500 mg three times daily; comparable to rifaximin in small study')],
       warnings: ['May lower blood sugar — caution with diabetes medications'],
       contraindications: [], cyclingPattern: CYCLE_DAILY, priority: 8,
       category: 'herbal', separateFrom: [], notes: ['500 mg three times daily with meals'],
@@ -3168,11 +3168,11 @@ function handleLongCOVID(quiz: QuizData, recs: Recommendation[]): Recommendation
   if (!findExistingRec(r, 'nac')) {
     r = put(r, makeRec({
       id: 'nac', supplementName: 'N-Acetyl Cysteine (NAC)', form: 'nac',
-      dose: 1800, doseUnit: 'mg', frequency: 'daily',
+      dose: 1200, doseUnit: 'mg', frequency: 'daily',
       timing: ['morning-with-food', 'evening'], withFood: true, evidenceRating: 'Emerging',
-      reasons: [makeReason('Long COVID — glutathione precursor; reduces oxidative stress; emerging evidence for post-COVID recovery')],
+      reasons: [makeReason('Long COVID — glutathione precursor; 1,200 mg/day reduces oxidative stress; emerging evidence for post-COVID recovery')],
       warnings: [], contraindications: [], cyclingPattern: CYCLE_DAILY, priority: 9,
-      category: 'amino-acid', separateFrom: [], notes: ['600–1,800 mg/day in divided doses'],
+      category: 'amino-acid', separateFrom: [], notes: ['600 mg twice daily'],
     }));
   }
 

@@ -626,12 +626,12 @@ function handleHbA1c(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
     if (!findExistingRec(r, 'berberine')) {
       r = put(r, makeRec({
         id: 'berberine', supplementName: 'Berberine', form: 'berberine-hcl',
-        dose: 1000, doseUnit: 'mg', frequency: 'twice-daily',
+        dose: 500, doseUnit: 'mg', frequency: 'twice-daily',
         timing: ['morning-with-food', 'evening'], withFood: true, evidenceRating: 'Strong',
-        reasons: [makeReason(`Lab HbA1c ${value}% — prediabetes; berberine AMPK activation comparable to metformin`)],
+        reasons: [makeReason(`Lab HbA1c ${value}% — prediabetes; berberine 500 mg twice daily (1,000 mg/day) — AMPK activation comparable to metformin`)],
         warnings: ['May potentiate blood-sugar-lowering medications — monitor blood glucose'],
         contraindications: [], cyclingPattern: CYCLE_DAILY, priority: 8,
-        category: 'herbal', separateFrom: [], notes: [],
+        category: 'herbal', separateFrom: [], notes: ['500 mg twice daily with meals'],
       }));
     }
     return r;
@@ -641,16 +641,16 @@ function handleHbA1c(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
   if (!findExistingRec(r, 'berberine')) {
     r = put(r, makeRec({
       id: 'berberine', supplementName: 'Berberine', form: 'berberine-hcl',
-      dose: 1500, doseUnit: 'mg', frequency: 'three-times-daily',
+      dose: 500, doseUnit: 'mg', frequency: 'three-times-daily',
       timing: ['morning-with-food', 'midday', 'evening'], withFood: true, evidenceRating: 'Strong',
-      reasons: [makeReason(`Lab HbA1c ${value}% — diabetes range; berberine as adjunctive glucose management`)],
+      reasons: [makeReason(`Lab HbA1c ${value}% — diabetes range; berberine 500 mg three times daily (1,500 mg/day) as adjunctive glucose management`)],
       warnings: [
         `HbA1c ${value}% indicates diabetes. This requires physician management. Supplements are adjunctive only.`,
         'May potentiate blood-sugar-lowering medications — monitor blood glucose closely.',
       ],
       contraindications: [], cyclingPattern: CYCLE_DAILY, priority: 9,
       category: 'herbal', separateFrom: [],
-      notes: [`HbA1c ${value}% indicates diabetes. This requires physician management. Supplements are adjunctive only.`],
+      notes: ['500 mg three times daily with meals', `HbA1c ${value}% indicates diabetes. This requires physician management. Supplements are adjunctive only.`],
     }));
   } else {
     r = liftPriority(r, 'berberine', 9);

@@ -270,8 +270,8 @@ function addVitaminD(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
 }
 
 function addMagnesium(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
-  // Age 60+ benefits from slightly higher dose for muscle and sleep
-  const dose = quiz.age >= 60 ? 300 : 200;
+  // 300 mg baseline for all adults; higher doses set by condition/lifestyle layers
+  const dose = 300;
 
   const rec = makeRec({
     id: 'magnesium-glycinate',

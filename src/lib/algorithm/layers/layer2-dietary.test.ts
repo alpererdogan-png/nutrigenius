@@ -255,7 +255,7 @@ describe('Keto user — magnesium dose increased to ≥400 mg, not duplicated', 
       s => s.layer === 'dietary' && s.action === 'modified-dose',
     );
     expect(modSource).toBeDefined();
-    expect(modSource!.previousValue).toBe('200 mg');
+    expect(modSource!.previousValue).toBe('300 mg');
     expect(modSource!.newValue).toBe('400 mg');
   });
 
