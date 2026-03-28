@@ -453,6 +453,9 @@ function WeeklySchedule({
                         <div key={item.supplementId} className="bg-[#f0f3ff] rounded-lg px-2 py-1.5">
                           <p className="text-xs font-medium text-[#1A2332] leading-tight">{item.name}</p>
                           <p className="text-[10px] text-[#8896A8] mt-0.5">{item.dose}</p>
+                          {item.foodNotes?.map((fn, i) => (
+                            <p key={i} className="text-[9px] text-amber-600 mt-0.5 leading-tight">{fn}</p>
+                          ))}
                         </div>
                       ))}
                       {(schedule[day]?.[slot] ?? []).length === 0 && (
@@ -501,6 +504,9 @@ function WeeklySchedule({
                       <div key={item.supplementId} className="bg-[#f0f3ff] rounded-xl px-4 py-3">
                         <p className="text-sm font-medium text-[#1A2332]">{item.name}</p>
                         <p className="text-xs text-[#5A6578] mt-0.5">{item.dose} · {item.note}</p>
+                        {item.foodNotes?.map((fn, i) => (
+                          <p key={i} className="text-[10px] text-amber-600 mt-1 leading-tight">{fn}</p>
+                        ))}
                       </div>
                     ))}
                   </div>

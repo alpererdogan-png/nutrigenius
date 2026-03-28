@@ -248,12 +248,92 @@ function applyCalciumSplit(
   slotMap.set(calcRec.id, ordered);
 }
 
+// ── Food-interaction note rules ──────────────────────────────────────────────
+
+const isProbiotic = (id: string) => /probiotic|lactobacillus|bifidobacterium/.test(id);
+const isNac = (id: string) => id === 'nac' || /n-acetyl-cysteine/.test(id);
+const isFiber = (id: string) => /psyllium|fiber/.test(id);
+const isGreenTea = (id: string) => /green.?tea|egcg/.test(id);
+const isCurcumin = (id: string) => /curcumin|turmeric/.test(id);
+
+/**
+ * Build food-supplement interaction notes for a supplement in a given slot.
+ * These are actionable per-slot tips displayed as helper text.
+ */
+function buildFoodNotes(
+  rec: Recommendation,
+  slot: TimingSlot,
+  quiz?: QuizData,
+): string[] {
+  const foodNotes: string[] = [];
+
+  // Iron — tannin / calcium interaction
+  if (isIron(rec.id)) {
+    foodNotes.push(
+      'Avoid coffee, tea, and dairy within 1 hour of taking iron — tannins and calcium block iron absorption',
+    );
+  }
+
+  // Probiotics — empty stomach
+  if (isProbiotic(rec.id) && slot === 'morning-empty') {
+    foodNotes.push('Take on an empty stomach, 30 minutes before eating');
+  }
+
+  // NAC — empty stomach
+  if (isNac(rec.id) && slot === 'morning-empty') {
+    foodNotes.push('Best absorbed on an empty stomach');
+  }
+
+  // Fat-soluble vitamins (A, D, E, K2, CoQ10, Astaxanthin, Lycopene)
+  if (isFatSoluble(rec.id)) {
+    foodNotes.push(
+      'Take with a meal containing fat (eggs, avocado, nuts, olive oil) for proper absorption',
+    );
+  }
+
+  // Fiber / Psyllium
+  if (isFiber(rec.id)) {
+    foodNotes.push(
+      'Take with a large glass of water. Separate from other supplements and medications by 2 hours — fiber can bind and reduce their absorption',
+    );
+  }
+
+  // Thyroid medication — check if user is on levothyroxine
+  if (
+    quiz?.medications?.some(m =>
+      /levothyroxine|synthroid|thyroxine|eltroxin/.test(m.toLowerCase()),
+    ) &&
+    (isIron(rec.id) || isCalcium(rec.id) || /magnesium/.test(rec.id))
+  ) {
+    foodNotes.push(
+      'Take thyroid medication first thing in the morning on empty stomach. Wait 4 hours before taking calcium, iron, or magnesium supplements',
+    );
+  }
+
+  // Green Tea Extract / EGCG
+  if (isGreenTea(rec.id)) {
+    foodNotes.push(
+      'Take between meals — EGCG can inhibit iron absorption if taken with food',
+    );
+  }
+
+  // Curcumin (non-liposomal/phytosome)
+  if (isCurcumin(rec.id) && !/liposomal|phytosome|novaSOL|meriva/.test(rec.form.toLowerCase())) {
+    foodNotes.push(
+      'Take with a fat-containing meal and black pepper for absorption',
+    );
+  }
+
+  return foodNotes;
+}
+
 // ── ScheduledSupplement builder ───────────────────────────────────────────────
 
 function toScheduledSupplement(
   rec: Recommendation,
   slot: TimingSlot,
   isSplit: boolean,
+  quiz?: QuizData,
 ): ScheduledSupplement {
   const notes: string[] = [...rec.notes];
 
@@ -268,6 +348,8 @@ function toScheduledSupplement(
     notes.push('Dose split — absorption is limited to ~500 mg per dose');
   }
 
+  const foodNotes = buildFoodNotes(rec, slot, quiz);
+
   return {
     supplementName: rec.supplementName,
     form: rec.form,
@@ -275,6 +357,7 @@ function toScheduledSupplement(
     doseUnit: rec.doseUnit,
     withFood: rec.withFood,
     notes,
+    foodNotes: foodNotes.length > 0 ? foodNotes : undefined,
   };
 }
 
@@ -366,7 +449,7 @@ export function generateWeeklySchedule(
 
       for (const slot of slots) {
         if (!daySlotMap.has(slot)) daySlotMap.set(slot, []);
-        daySlotMap.get(slot)!.push(toScheduledSupplement(rec, slot, isSplit));
+        daySlotMap.get(slot)!.push(toScheduledSupplement(rec, slot, isSplit, quiz));
       }
     }
 

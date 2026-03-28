@@ -76,6 +76,7 @@ type ScheduleItem = {
   name: string;
   dose: string;
   note: string;
+  foodNotes?: string[];
 };
 
 export type RecommendationResult = {
@@ -519,6 +520,7 @@ function convertSchedule(ws: PipelineWeeklySchedule): OldWeeklySchedule {
           name: supp.supplementName,
           dose: `${supp.dose} ${supp.doseUnit}`,
           note: supp.notes[0] ?? timeSlot.displayLabel,
+          foodNotes: supp.foodNotes,
         });
       }
     }

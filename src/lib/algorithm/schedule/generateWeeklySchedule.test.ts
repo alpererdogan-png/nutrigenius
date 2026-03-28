@@ -6,6 +6,8 @@ import { generateWeeklySchedule } from './generateWeeklySchedule';
 import {
   Recommendation,
   DaySchedule,
+  QuizData,
+  ScheduledSupplement,
   CYCLE_DAILY,
   CYCLE_WEEKDAYS,
   CYCLE_ALTERNATE_DAY,
@@ -504,5 +506,166 @@ describe('Test 14 — Fat-soluble vitamins in morning-with-food or midday', () =
         }
       }
     }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FOOD-SUPPLEMENT INTERACTION NOTES
+// ─────────────────────────────────────────────────────────────────────────────
+
+function findSupp(schedule: ReturnType<typeof generateWeeklySchedule>, name: string): ScheduledSupplement | undefined {
+  for (const day of schedule.days) {
+    for (const ts of day.timeSlots) {
+      const found = ts.supplements.find(s => s.supplementName === name);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
+
+function baseQuiz(overrides: Partial<QuizData> = {}): QuizData {
+  return {
+    age: 30,
+    biologicalSex: 'male',
+    country: 'US',
+    isPregnant: false,
+    isBreastfeeding: false,
+    dietaryPattern: 'omnivore',
+    allergies: [],
+    fishIntake: 'moderate',
+    dairyIntake: 'moderate',
+    vegetableIntake: 'moderate',
+    activityLevel: 'moderate',
+    sleepQuality: 'good',
+    stressLevel: 'low',
+    sunExposure: 'moderate',
+    alcoholConsumption: 'none',
+    smokingStatus: 'never',
+    healthConditions: [],
+    familyHistory: [],
+    medications: [],
+    healthGoals: [],
+    ...overrides,
+  };
+}
+
+describe('Food-supplement interaction notes', () => {
+  it('iron gets tannin/calcium avoidance note', () => {
+    const recs = [makeRec('iron-bisglycinate', { dose: 25, timing: ['morning-with-food'] })];
+    const schedule = generateWeeklySchedule(recs);
+    const supp = findSupp(schedule, 'Iron Bisglycinate');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes).toBeDefined();
+    expect(supp!.foodNotes!.some(n => n.includes('tannins and calcium'))).toBe(true);
+  });
+
+  it('probiotics in morning-empty slot get empty stomach note', () => {
+    const recs = [makeRec('probiotic-blend', { timing: ['morning-empty'] })];
+    const schedule = generateWeeklySchedule(recs);
+    const supp = findSupp(schedule, 'Probiotic Blend');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes!.some(n => n.includes('empty stomach'))).toBe(true);
+  });
+
+  it('NAC in morning-empty slot gets empty stomach note', () => {
+    const recs = [makeRec('nac', { timing: ['morning-empty'] })];
+    const schedule = generateWeeklySchedule(recs);
+    const supp = findSupp(schedule, 'Nac');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes!.some(n => n.includes('empty stomach'))).toBe(true);
+  });
+
+  it('fat-soluble vitamins get "take with fat" note', () => {
+    const recs = [makeRec('vitamin-d3', { dose: 2000, doseUnit: 'IU', timing: ['morning-with-food'] })];
+    const schedule = generateWeeklySchedule(recs);
+    const supp = findSupp(schedule, 'Vitamin D3');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes!.some(n => n.includes('fat'))).toBe(true);
+  });
+
+  it('CoQ10 gets fat-soluble note', () => {
+    const recs = [makeRec('coq10', { dose: 100, timing: ['morning-with-food'] })];
+    const schedule = generateWeeklySchedule(recs);
+    const supp = findSupp(schedule, 'Coq10');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes!.some(n => n.includes('fat'))).toBe(true);
+  });
+
+  it('fiber/psyllium gets water + separation note', () => {
+    const recs = [makeRec('psyllium-husk', { timing: ['evening'] })];
+    const schedule = generateWeeklySchedule(recs);
+    const supp = findSupp(schedule, 'Psyllium Husk');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes!.some(n => n.includes('glass of water'))).toBe(true);
+    expect(supp!.foodNotes!.some(n => n.includes('2 hours'))).toBe(true);
+  });
+
+  it('thyroid medication user gets timing warning for iron', () => {
+    const quiz = baseQuiz({ medications: ['levothyroxine'] });
+    const recs = [makeRec('iron-bisglycinate', { dose: 25, timing: ['morning-with-food'] })];
+    const schedule = generateWeeklySchedule(recs, quiz);
+    const supp = findSupp(schedule, 'Iron Bisglycinate');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes!.some(n => n.includes('thyroid medication'))).toBe(true);
+  });
+
+  it('thyroid medication user gets timing warning for calcium', () => {
+    const quiz = baseQuiz({ medications: ['Synthroid'] });
+    const recs = [makeRec('calcium-citrate', { dose: 500, timing: ['evening'] })];
+    const schedule = generateWeeklySchedule(recs, quiz);
+    const supp = findSupp(schedule, 'Calcium Citrate');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes!.some(n => n.includes('thyroid medication'))).toBe(true);
+  });
+
+  it('thyroid medication user gets timing warning for magnesium', () => {
+    const quiz = baseQuiz({ medications: ['levothyroxine'] });
+    const recs = [makeRec('magnesium-glycinate', { dose: 200, timing: ['evening'] })];
+    const schedule = generateWeeklySchedule(recs, quiz);
+    const supp = findSupp(schedule, 'Magnesium Glycinate');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes!.some(n => n.includes('thyroid medication'))).toBe(true);
+  });
+
+  it('no thyroid note when user is NOT on levothyroxine', () => {
+    const quiz = baseQuiz({ medications: ['metformin'] });
+    const recs = [makeRec('iron-bisglycinate', { dose: 25, timing: ['morning-with-food'] })];
+    const schedule = generateWeeklySchedule(recs, quiz);
+    const supp = findSupp(schedule, 'Iron Bisglycinate');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes!.every(n => !n.includes('thyroid'))).toBe(true);
+  });
+
+  it('green tea / EGCG gets between-meals note', () => {
+    const recs = [makeRec('green-tea-extract', { timing: ['midday'] })];
+    const schedule = generateWeeklySchedule(recs);
+    const supp = findSupp(schedule, 'Green Tea Extract');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes!.some(n => n.includes('between meals'))).toBe(true);
+  });
+
+  it('curcumin (standard form) gets fat + black pepper note', () => {
+    const recs = [makeRec('curcumin', { form: 'standard extract', timing: ['morning-with-food'] })];
+    const schedule = generateWeeklySchedule(recs);
+    const supp = findSupp(schedule, 'Curcumin');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes!.some(n => n.includes('black pepper'))).toBe(true);
+  });
+
+  it('curcumin phytosome does NOT get black pepper note', () => {
+    const recs = [makeRec('curcumin', { form: 'Meriva phytosome', timing: ['morning-with-food'] })];
+    const schedule = generateWeeklySchedule(recs);
+    const supp = findSupp(schedule, 'Curcumin');
+    expect(supp).toBeDefined();
+    const hasBlackPepper = supp!.foodNotes?.some(n => n.includes('black pepper'));
+    expect(hasBlackPepper).toBeFalsy();
+  });
+
+  it('supplement with no interaction rules has no foodNotes', () => {
+    const recs = [makeRec('b-complex', { timing: ['morning-with-food'] })];
+    const schedule = generateWeeklySchedule(recs);
+    const supp = findSupp(schedule, 'B Complex');
+    expect(supp).toBeDefined();
+    expect(supp!.foodNotes).toBeUndefined();
   });
 });

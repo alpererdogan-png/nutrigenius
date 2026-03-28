@@ -364,6 +364,8 @@ export interface ScheduledSupplement {
   withFood: boolean;
   /** e.g. ["Take with Vitamin C for absorption", "Avoid calcium within 2 hours"] */
   notes: string[];
+  /** Food-supplement interaction notes for this time slot, e.g. ["Avoid coffee within 1 hour"] */
+  foodNotes?: string[];
 }
 
 export interface TimeSlot {
