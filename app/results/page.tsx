@@ -577,7 +577,16 @@ export default function ResultsPage() {
     }
   }
 
-  const { supplements, schedule, focusAreas, blockedSupplements } = result;
+  const {
+    supplements,
+    schedule,
+    focusAreas,
+    blockedSupplements,
+    hiddenSupplementsCount = 0,
+    upsellMessage,
+    safetyWarnings = [],
+    cyclingNotes = [],
+  } = result;
   const deficientLabs = getDeficientLabs(prefs.labResults);
 
   return (
@@ -727,6 +736,34 @@ export default function ResultsPage() {
           )}
         </section>
 
+        {/* Hidden supplements upsell */}
+        {hiddenSupplementsCount > 0 && (
+          <div className="bg-gradient-to-br from-[#111c2c] to-[#1a2d42] rounded-2xl p-5 sm:p-6 text-white">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-[#00685f]/30 border border-[#00685f]/40 flex items-center justify-center flex-shrink-0">
+                <Shield className="w-5 h-5 text-[#2DD4BF]" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs font-semibold text-[#2DD4BF] uppercase tracking-wider mb-1">Your Full Protocol</p>
+                <h3 className="font-heading text-lg font-bold text-white mb-1">
+                  {hiddenSupplementsCount} More Supplement{hiddenSupplementsCount !== 1 ? "s" : ""} Identified
+                </h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  {upsellMessage ?? `Our algorithm identified ${hiddenSupplementsCount} additional personalised supplement${hiddenSupplementsCount !== 1 ? "s" : ""} for your protocol. Upgrade to see your full plan.`}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  {Array.from({ length: Math.min(hiddenSupplementsCount, 3) }, (_, i) => (
+                    <div key={i} className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-[#00685f]/60" />
+                      <span className="text-xs text-slate-400 blur-sm select-none">Hidden supplement {i + 1}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Lab Retest Prompts */}
         {deficientLabs.length > 0 && (
           <section>
@@ -789,6 +826,32 @@ export default function ResultsPage() {
           </section>
         )}
 
+        {/* Safety warnings (non-blocking interactions) */}
+        {safetyWarnings.length > 0 && (
+          <section>
+            <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">
+              Supplement–Medication Notes
+            </h2>
+            <p className="text-sm text-[#5A6578] mb-4">
+              These interactions are informational — the supplements are still included in your plan but require care.
+            </p>
+            <div className="space-y-2">
+              {safetyWarnings.map((w, i) => (
+                <div key={i} className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+                  <Info className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium text-amber-900">{w.description}</p>
+                    {w.recommendation && (
+                      <p className="text-xs text-amber-700 mt-0.5">{w.recommendation}</p>
+                    )}
+                    <p className="text-[10px] text-amber-600 mt-1 uppercase tracking-wide font-medium">{w.severity}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Weekly schedule */}
         {supplements.length > 0 && (
           <section>
@@ -797,6 +860,16 @@ export default function ResultsPage() {
             <div className="bg-white border border-[#ebebf5] rounded-2xl p-4 sm:p-6 overflow-hidden">
               <WeeklySchedule schedule={schedule} supplements={supplements} />
             </div>
+            {cyclingNotes.length > 0 && (
+              <div className="mt-3 space-y-1.5">
+                {cyclingNotes.map((note, i) => (
+                  <div key={i} className="flex items-start gap-2 text-xs text-[#5A6578] bg-[#f9f9ff] border border-[#ebebf5] rounded-lg px-3 py-2">
+                    <Calendar className="w-3.5 h-3.5 text-[#8896A8] flex-shrink-0 mt-0.5" />
+                    <span>{note}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
         )}
 
