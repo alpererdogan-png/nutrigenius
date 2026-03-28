@@ -341,12 +341,12 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
-          CLINICAL KNOWLEDGE HUB — Blog preview section
+          CLINICAL KNOWLEDGE HUB — Blog preview carousel
       ══════════════════════════════════════════════════ */}
-      <section className="py-16 sm:py-24 bg-[#f0f3ff] overflow-hidden">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          {/* Header */}
-          <div className="flex items-end justify-between mb-10 sm:mb-12">
+      <section className="py-16 sm:py-24 bg-[#f0f3ff]">
+        {/* Header */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-10 sm:mb-12">
+          <div className="flex items-end justify-between">
             <div>
               <p className="text-[0.75rem] font-semibold uppercase tracking-[0.05em] text-[#5A6578] mb-3">
                 Clinical Knowledge Hub
@@ -363,74 +363,83 @@ export default function Home() {
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
+        </div>
 
-          {/* Featured article — full width */}
-          <Link
-            href={`/blog/${BLOG_ARTICLES[0].slug}`}
-            className="group block bg-white rounded-2xl overflow-hidden shadow-sm shadow-black/5 ring-1 ring-black/[0.04] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10 hover:ring-0 transition-all duration-300 mb-6"
+        {/* Scroll-snap carousel — peek cards on right */}
+        <div className="relative">
+          {/* Right-edge fade hint */}
+          <div className="absolute right-0 top-0 bottom-4 w-20 bg-gradient-to-l from-[#f0f3ff] to-transparent z-10 pointer-events-none" />
+
+          <div
+            className="flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth pb-4"
+            style={{
+              scrollSnapType: "x mandatory",
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              WebkitOverflowScrolling: "touch",
+              paddingLeft: "1rem",
+            } as React.CSSProperties}
           >
-            <div className="p-6 sm:p-8 sm:grid sm:grid-cols-[1fr_auto] sm:gap-8 sm:items-center">
-              <div>
-                <span className={`inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border mb-4 ${BLOG_ARTICLES[0].tagClass}`}>
-                  {BLOG_ARTICLES[0].category}
-                </span>
-                <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#1A2332] leading-snug mb-3 group-hover:text-[#00685f] transition-colors duration-200">
-                  {BLOG_ARTICLES[0].title}
-                </h3>
-                <p className="text-[#5A6578] text-sm sm:text-base leading-relaxed line-clamp-2 mb-4">
-                  {BLOG_ARTICLES[0].excerpt}
-                </p>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1.5 text-xs text-[#8896A8]">
-                    <Clock className="w-3.5 h-3.5" />
-                    {BLOG_ARTICLES[0].readTime}
-                  </div>
-                  <span className="text-xs font-semibold text-[#00685f] group-hover:text-[#005249] flex items-center gap-1 transition-colors">
-                    Read article <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                </div>
-              </div>
-              <div className={`hidden sm:flex w-24 h-24 rounded-2xl ${BLOG_ARTICLES[0].accentBg} items-center justify-center flex-shrink-0`}>
-                <BookOpen className="w-10 h-10 text-white/90" />
-              </div>
-            </div>
-          </Link>
+            {/* Leading spacer to align with max-w-6xl on large screens */}
+            <div
+              className="flex-none hidden lg:block"
+              style={{ width: "max(0px, calc((100vw - 72rem) / 2))" }}
+            />
 
-          {/* Remaining articles — 3-column grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-            {BLOG_ARTICLES.slice(1).map((article) => (
+            {BLOG_ARTICLES.map((article, i) => (
               <Link
                 key={article.slug}
                 href={`/blog/${article.slug}`}
-                className="group flex flex-col bg-white rounded-xl overflow-hidden shadow-sm shadow-black/5 ring-1 ring-black/[0.04] hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/10 hover:ring-0 transition-all duration-300 p-5"
+                className="group flex flex-col bg-white rounded-2xl shadow-sm shadow-black/5 ring-1 ring-black/[0.04] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10 hover:ring-0 transition-all duration-300 p-5 sm:p-6 flex-none"
+                style={{
+                  scrollSnapAlign: "start",
+                  width: "calc(100vw - 3.5rem)",
+                  maxWidth: "340px",
+                }}
               >
+                {/* Coloured accent bar */}
+                <div className={`w-10 h-10 rounded-xl ${article.accentBg} flex items-center justify-center mb-4 flex-shrink-0`}>
+                  <BookOpen className="w-5 h-5 text-white/90" />
+                </div>
+
                 <span className={`self-start inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border mb-3 ${article.tagClass}`}>
                   {article.category}
                 </span>
+
                 <h3 className="font-heading text-[1.05rem] font-semibold text-[#1A2332] leading-snug mb-2 group-hover:text-[#00685f] transition-colors duration-200 line-clamp-3 flex-1">
                   {article.title}
                 </h3>
+
                 <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-4">
                   {article.excerpt}
                 </p>
-                <div className="flex items-center gap-1.5 text-xs text-[#8896A8] mt-auto">
-                  <Clock className="w-3.5 h-3.5" />
-                  {article.readTime}
+
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-center gap-1.5 text-xs text-[#8896A8]">
+                    <Clock className="w-3.5 h-3.5" />
+                    {article.readTime}
+                  </div>
+                  <span className="text-xs font-semibold text-[#00685f] group-hover:text-[#005249] flex items-center gap-1 transition-colors">
+                    Read <ArrowRight className="w-3 h-3" />
+                  </span>
                 </div>
               </Link>
             ))}
-          </div>
 
-          {/* Mobile CTA */}
-          <div className="mt-8 sm:hidden">
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
-            >
-              Explore All Articles
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            {/* Trailing space */}
+            <div className="flex-none w-4 sm:w-6" />
           </div>
+        </div>
+
+        {/* Mobile CTA */}
+        <div className="mt-6 px-4 sm:hidden">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
+          >
+            Explore All Articles
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
 
