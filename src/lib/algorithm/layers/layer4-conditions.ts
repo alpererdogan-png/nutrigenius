@@ -111,6 +111,12 @@ const LITHIUM_MEDS = new Set([
   'lithium', 'lithium-carbonate', 'lithium-citrate', 'eskalith', 'lithobid',
 ]);
 
+const PPI_MEDS = new Set([
+  'omeprazole', 'esomeprazole', 'lansoprazole', 'pantoprazole', 'rabeprazole',
+  'dexlansoprazole', 'prilosec', 'nexium', 'prevacid', 'protonix', 'aciphex',
+  'dexilant', 'ppi', 'proton-pump-inhibitor',
+]);
+
 // ─── LOCAL HELPERS ────────────────────────────────────────────────────────────
 
 function makeReason(reason: string, detail?: string): RecommendationReason {
@@ -3412,6 +3418,109 @@ function handleWoundHealing(quiz: QuizData, recs: Recommendation[]): Recommendat
 }
 
 
+// ─── PPI DEPLETION ───────────────────────────────────────────────────────────
+
+/**
+ * PPI medications (omeprazole, etc.) reduce stomach acid, impairing absorption
+ * of B12, magnesium, and calcium over long-term use.
+ */
+function handlePPIDepletion(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
+  if (!takesAnyMed(quiz, PPI_MEDS)) return recs;
+
+  let r = recs;
+
+  // B12 — PPI reduces gastric acid needed for B12 liberation from food
+  if (!findExistingRec(r, 'vitamin-b12')) {
+    r = put(r, makeRec({
+      id: 'vitamin-b12',
+      supplementName: 'Vitamin B12',
+      form: 'methylcobalamin',
+      dose: 1000,
+      doseUnit: 'mcg',
+      frequency: 'daily',
+      timing: ['morning-empty'],
+      withFood: false,
+      evidenceRating: 'Strong',
+      reasons: [makeReason('PPI use — proton pump inhibitors reduce gastric acid, impairing B12 liberation from food; sublingual or high-dose oral repletion recommended')],
+      warnings: [],
+      contraindications: [],
+      cyclingPattern: CYCLE_DAILY,
+      priority: 8,
+      category: 'vitamin',
+      separateFrom: [],
+      notes: ['Sublingual form bypasses acid-dependent absorption'],
+    }));
+  } else {
+    r = addReason(r, 'vitamin-b12', LAYER, 'PPI use — long-term PPI therapy impairs B12 absorption');
+  }
+
+  // Magnesium — PPI reduces active magnesium transport in the gut
+  r = ensureMg(r, 400, 'PPI use — proton pump inhibitors impair intestinal magnesium absorption; hypomagnesemia reported in 10–15% of long-term users', 7);
+
+  // Calcium — PPI reduces calcium absorption (acid-dependent solubility)
+  if (!findExistingRec(r, 'calcium-citrate')) {
+    r = put(r, makeRec({
+      id: 'calcium-citrate',
+      supplementName: 'Calcium Citrate',
+      form: 'citrate',
+      dose: 600,
+      doseUnit: 'mg',
+      frequency: 'daily',
+      timing: ['evening'],
+      withFood: true,
+      evidenceRating: 'Strong',
+      reasons: [makeReason('PPI use — reduced stomach acid impairs calcium carbonate absorption; citrate form is acid-independent and preferred for PPI users')],
+      warnings: [],
+      contraindications: [],
+      cyclingPattern: CYCLE_DAILY,
+      priority: 7,
+      category: 'mineral',
+      separateFrom: ['iron-bisglycinate'],
+      notes: ['Calcium citrate preferred over carbonate — does not require stomach acid for absorption'],
+    }));
+  } else {
+    r = addReason(r, 'calcium-citrate', LAYER, 'PPI use — long-term PPI therapy reduces calcium absorption');
+  }
+
+  return r;
+}
+
+// ─── STATIN DEPLETION (medication-based, condition-independent) ──────────────
+
+/**
+ * Statin medications deplete CoQ10 regardless of diagnosis. This ensures
+ * CoQ10 is added even if the user doesn't report high cholesterol.
+ */
+function handleStatinDepletion(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
+  if (!takesAnyMed(quiz, STATINS)) return recs;
+
+  let r = recs;
+  if (!findExistingRec(r, 'coq10-ubiquinol')) {
+    r = put(r, makeRec({
+      id: 'coq10-ubiquinol',
+      supplementName: 'CoQ10 (Ubiquinol)',
+      form: 'ubiquinol',
+      dose: 200,
+      doseUnit: 'mg',
+      frequency: 'daily',
+      timing: ['morning-with-food'],
+      withFood: true,
+      evidenceRating: 'Strong',
+      reasons: [makeReason('Statin therapy — statins inhibit the mevalonate pathway, depleting endogenous CoQ10; 200 mg reduces myopathy risk and fatigue')],
+      warnings: [],
+      contraindications: [],
+      cyclingPattern: CYCLE_DAILY,
+      priority: 8,
+      category: 'antioxidant',
+      separateFrom: [],
+      notes: ['Ubiquinol (reduced form) has superior absorption'],
+    }));
+  } else {
+    r = addReason(r, 'coq10-ubiquinol', LAYER, 'Statin therapy — statins deplete CoQ10; supplementation reduces myopathy risk');
+  }
+  return r;
+}
+
 // ─── MAIN DISPATCH TABLE ──────────────────────────────────────────────────────
 
 /**
@@ -3528,6 +3637,10 @@ export const layer4Conditions = (quiz: QuizData, recs: Recommendation[]): Recomm
   r = handleThalassemia(quiz, r);        // Must run before post-processing (removes iron)
   r = blockBetaCaroteneForSmokers(quiz, r);
   r = blockEchinaceaForAutoimmune(quiz, r);
+
+  // ── Medication depletion (condition-independent) ────────────────────────────
+  r = handleStatinDepletion(quiz, r);
+  r = handlePPIDepletion(quiz, r);
 
   // ── Post-processing ──────────────────────────────────────────────────────────
   r = postProcessCopper(r);

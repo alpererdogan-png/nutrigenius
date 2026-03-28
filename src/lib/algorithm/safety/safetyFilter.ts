@@ -250,9 +250,9 @@ const DRUG_INTERACTIONS: DrugInteractionRule[] = [
   {
     medKeywords: STATIN_KW, medLabel: 'Statins',
     suppIds: ['berberine'],
-    severity: 'moderate',
-    description: 'Berberine has LDL-lowering effects through PCSK9 inhibition. Additive lipid lowering with statins is generally beneficial but may need dose adjustment.',
-    recommendation: 'Monitor lipid panel if adding berberine to statin therapy. Dose reduction of either may be warranted.',
+    severity: 'major',
+    description: 'Berberine inhibits CYP3A4, the enzyme that metabolises simvastatin, lovastatin, and atorvastatin. This can increase statin blood levels and raise the risk of myopathy and rhabdomyolysis. Berberine also has additive LDL-lowering effects through PCSK9 inhibition.',
+    recommendation: 'Avoid combining berberine with CYP3A4-dependent statins (simvastatin, lovastatin, atorvastatin) without medical supervision. If using rosuvastatin or pravastatin (not CYP3A4-dependent), risk is lower but still monitor lipids and muscle symptoms.',
   },
   {
     medKeywords: STATIN_KW, medLabel: 'Statins',
@@ -1126,6 +1126,38 @@ function checkSuppSupplementInteractions(
   return { approved, supplementInteractions, warnings };
 }
 
+/**
+ * Counts total warnings per supplement across drug interactions and
+ * supplement-supplement interactions. If a single supplement has 3+
+ * distinct warnings, attach a cumulative interaction warning.
+ */
+function checkCumulativeInteractionWarnings(
+  warnings: SafetyWarning[],
+): SafetyWarning[] {
+  const perSupp = new Map<string, number>();
+  for (const w of warnings) {
+    perSupp.set(w.supplementId, (perSupp.get(w.supplementId) ?? 0) + 1);
+  }
+
+  const extra: SafetyWarning[] = [];
+  for (const [suppId, count] of perSupp) {
+    if (count >= 3) {
+      // Only add once per supplement
+      if (!warnings.some(w => w.supplementId === suppId && w.medication === 'cumulative-interactions')) {
+        extra.push({
+          supplementId: suppId,
+          medication: 'cumulative-interactions',
+          severity: 'major',
+          description: `This supplement has ${count} separate interaction warnings in your protocol. The combined risk may be greater than each individual interaction suggests.`,
+          recommendation: 'Review this supplement with your doctor or pharmacist before starting. Provide them your full supplement and medication list.',
+        });
+      }
+    }
+  }
+
+  return extra;
+}
+
 // ─── 3. UL CHECKS ─────────────────────────────────────────────────────────────
 
 function checkULs(quiz: QuizData, recs: Recommendation[]): {
@@ -1366,6 +1398,10 @@ export function runSafetyFilter(quiz: QuizData, recs: Recommendation[]): SafetyR
     ...ulResult.warnings,
     ...specialResult.warnings,
   ];
+
+  // Check for cumulative interaction warnings (3+ warnings on one supplement)
+  const cumulativeWarnings = checkCumulativeInteractionWarnings(allWarnings);
+  allWarnings.push(...cumulativeWarnings);
 
   return {
     approvedRecommendations: specialResult.approved,

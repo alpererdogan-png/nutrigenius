@@ -210,6 +210,26 @@ const MONITORING_RULES: MonitoringRule[] = [
       return [];
     },
   },
+
+  // ── Calcium (osteoporosis / bone health context) ──────────────────────
+  {
+    ids: ['calcium-citrate', 'calcium-carbonate', 'calcium-hydroxyapatite', 'calcium-gluconate'],
+    evaluate: (rec) => {
+      const isOsteo = rec.reasons?.some(r =>
+        /osteoporosis|bone.*density|bone.*loss|fracture/i.test(r.reason),
+      );
+      if (isOsteo) {
+        return [{
+          supplementId: rec.id,
+          test: 'DEXA bone density scan',
+          frequency: 'Baseline if not done within 2 years, then every 1–2 years',
+          target: 'T-score improvement or stabilisation. Goal: T-score > −2.5.',
+          urgency: 'important',
+        }];
+      }
+      return [];
+    },
+  },
 ];
 
 // ── Pipeline function ────────────────────────────────────────────────────────
