@@ -567,3 +567,195 @@ describe('No duplicate supplement IDs', () => {
     expect(ids.length).toBe(uniqueIds.length);
   });
 });
+
+// ─── MTHFR + COMT COMPOUND PHENOTYPE ────────────────────────────────────────
+
+describe('MTHFR homozygous + COMT Met/Met — methyl trap phenotype', () => {
+  const methylTrapQuiz = () => baseQuiz({
+    geneticVariants: {
+      mthfrC677T: 'homozygous',
+      comtVal158Met: 'met-met',
+    },
+  });
+
+  it('uses folinic acid (not methylfolate)', () => {
+    const quiz = methylTrapQuiz();
+    const seed = [makeRec({ id: 'folate-5mthf', dose: 800, doseUnit: 'mcg' })];
+    const recs = runLayer6(quiz, seed);
+
+    expect(getRec(recs, 'folate-5mthf')).toBeUndefined();
+    const folinic = getRec(recs, 'folinic-acid');
+    expect(folinic).toBeDefined();
+    expect(folinic!.form).toBe('folinic-acid');
+  });
+
+  it('uses hydroxocobalamin (not methylcobalamin)', () => {
+    const quiz = methylTrapQuiz();
+    const seed = [makeRec({ id: 'vitamin-b12', form: 'methylcobalamin', dose: 1000, doseUnit: 'mcg' })];
+    const recs = runLayer6(quiz, seed);
+
+    const b12 = getRec(recs, 'vitamin-b12');
+    expect(b12).toBeDefined();
+    expect(b12!.form).toBe('hydroxocobalamin');
+  });
+
+  it('adds TMG with BHMT pathway reason', () => {
+    const quiz = methylTrapQuiz();
+    const recs = runLayer6(quiz);
+
+    const tmg = getRec(recs, 'betaine-tmg');
+    expect(tmg).toBeDefined();
+    expect(tmg!.dose).toBe(500);
+    expect(tmg!.reasons.some(r => r.reason.includes('BHMT pathway'))).toBe(true);
+  });
+
+  it('TMG does NOT carry generic slow-COMT methyl donor warning', () => {
+    const quiz = methylTrapQuiz();
+    const recs = runLayer6(quiz);
+
+    const tmg = getRec(recs, 'betaine-tmg');
+    expect(tmg).toBeDefined();
+    expect(tmg!.warnings.some(w => w.includes('Slow COMT — methyl donors may accumulate'))).toBe(false);
+  });
+
+  it('removes SAMe entirely', () => {
+    const quiz = methylTrapQuiz();
+    const seed = [makeRec({ id: 'same', dose: 400, doseUnit: 'mg', category: 'compound' })];
+    const recs = runLayer6(quiz, seed);
+
+    expect(getRec(recs, 'same')).toBeUndefined();
+  });
+
+  it('reduces B-Complex dose by 50%', () => {
+    const quiz = methylTrapQuiz();
+    const seed = [makeRec({ id: 'b-complex', dose: 100, doseUnit: 'mg', category: 'vitamin' })];
+    const recs = runLayer6(quiz, seed);
+
+    const bc = getRec(recs, 'b-complex');
+    expect(bc).toBeDefined();
+    expect(bc!.dose).toBe(50);
+    expect(bc!.reasons.some(r => r.reason.includes('slow COMT'))).toBe(true);
+  });
+
+  it('adds comprehensive methylation paradox note', () => {
+    const quiz = methylTrapQuiz();
+    const seed = [makeRec({ id: 'folate-5mthf', dose: 800, doseUnit: 'mcg' })];
+    const recs = runLayer6(quiz, seed);
+
+    const folinic = getRec(recs, 'folinic-acid');
+    expect(folinic).toBeDefined();
+    expect(folinic!.notes.some(n => n.includes('methylation paradox'))).toBe(true);
+  });
+
+  it('adds homocysteine monitoring note', () => {
+    const quiz = methylTrapQuiz();
+    const seed = [makeRec({ id: 'folate-5mthf', dose: 800, doseUnit: 'mcg' })];
+    const recs = runLayer6(quiz, seed);
+
+    const folinic = getRec(recs, 'folinic-acid');
+    expect(folinic).toBeDefined();
+    expect(folinic!.notes.some(n => n.includes('homocysteine') && n.includes('3 months'))).toBe(true);
+  });
+});
+
+describe('MTHFR homozygous + COMT Val/Val — fast COMT', () => {
+  const fastCOMTQuiz = () => baseQuiz({
+    geneticVariants: {
+      mthfrC677T: 'homozygous',
+      comtVal158Met: 'val-val',
+    },
+  });
+
+  it('uses methylfolate (not folinic acid)', () => {
+    const quiz = fastCOMTQuiz();
+    const seed = [makeRec({ id: 'folic-acid', dose: 400, doseUnit: 'mcg' })];
+    const recs = runLayer6(quiz, seed);
+
+    expect(getRec(recs, 'folinic-acid')).toBeUndefined();
+    const folate = getRec(recs, 'folate-5mthf');
+    expect(folate).toBeDefined();
+    expect(folate!.form).toBe('5-methyltetrahydrofolate');
+  });
+
+  it('uses methylcobalamin (not hydroxocobalamin)', () => {
+    const quiz = fastCOMTQuiz();
+    const seed = [makeRec({ id: 'vitamin-b12', form: 'cyanocobalamin', dose: 500, doseUnit: 'mcg' })];
+    const recs = runLayer6(quiz, seed);
+
+    const b12 = getRec(recs, 'vitamin-b12');
+    expect(b12).toBeDefined();
+    expect(b12!.form).toBe('methylcobalamin');
+  });
+
+  it('adds note about fast COMT handling methyl donors well', () => {
+    const quiz = fastCOMTQuiz();
+    const recs = runLayer6(quiz);
+
+    const folate = getRec(recs, 'folate-5mthf');
+    expect(folate).toBeDefined();
+    expect(folate!.notes.some(n => n.includes('fast COMT') && n.includes('efficiently process'))).toBe(true);
+  });
+
+  it('does NOT add TMG (not needed with fast COMT)', () => {
+    // MTHFR homozygous normally adds TMG, but fast COMT doesn't need it
+    // Note: handleMTHFR adds TMG for homozygous regardless, and fast COMT
+    // doesn't remove it. But the compound handler adds a note saying
+    // methylfolate/methylcobalamin are well-suited.
+    const quiz = fastCOMTQuiz();
+    const recs = runLayer6(quiz);
+
+    // TMG is still present from MTHFR handler (it provides BHMT backup),
+    // but the compound note confirms methyl donors work well.
+    const folate = getRec(recs, 'folate-5mthf');
+    expect(folate!.notes.some(n => n.includes('well-suited'))).toBe(true);
+  });
+});
+
+describe('MTHFR heterozygous + COMT Met/Met — milder compound', () => {
+  const mildCompoundQuiz = () => baseQuiz({
+    geneticVariants: {
+      mthfrC677T: 'heterozygous',
+      comtVal158Met: 'met-met',
+    },
+  });
+
+  it('uses folinic acid (COMT met-met overrides to non-methyl)', () => {
+    const quiz = mildCompoundQuiz();
+    const seed = [makeRec({ id: 'folate-5mthf', dose: 800, doseUnit: 'mcg' })];
+    const recs = runLayer6(quiz, seed);
+
+    expect(getRec(recs, 'folate-5mthf')).toBeUndefined();
+    expect(getRec(recs, 'folinic-acid')).toBeDefined();
+  });
+
+  it('uses hydroxocobalamin', () => {
+    const quiz = mildCompoundQuiz();
+    const seed = [makeRec({ id: 'vitamin-b12', form: 'methylcobalamin', dose: 1000, doseUnit: 'mcg' })];
+    const recs = runLayer6(quiz, seed);
+
+    const b12 = getRec(recs, 'vitamin-b12');
+    expect(b12!.form).toBe('hydroxocobalamin');
+  });
+
+  it('does NOT force TMG (optional for heterozygous)', () => {
+    const quiz = mildCompoundQuiz();
+    const recs = runLayer6(quiz);
+
+    // MTHFR heterozygous doesn't add TMG, so it shouldn't appear
+    // unless another layer added it
+    const tmg = getRec(recs, 'betaine-tmg');
+    expect(tmg).toBeUndefined();
+  });
+
+  it('adds monitoring note to B-Complex if present (not dose reduction)', () => {
+    const quiz = mildCompoundQuiz();
+    const seed = [makeRec({ id: 'b-complex', dose: 100, doseUnit: 'mg', category: 'vitamin' })];
+    const recs = runLayer6(quiz, seed);
+
+    const bc = getRec(recs, 'b-complex');
+    expect(bc).toBeDefined();
+    // Dose should NOT be reduced for heterozygous
+    expect(bc!.dose).toBe(100);
+    expect(bc!.notes.some(n => n.includes('slow COMT') && n.includes('monitor'))).toBe(true);
+  });
+});

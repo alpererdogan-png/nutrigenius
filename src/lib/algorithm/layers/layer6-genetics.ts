@@ -280,6 +280,145 @@ function handleCOMT(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
   return r;
 }
 
+// ─── MTHFR + COMT COMPOUND PHENOTYPE ─────────────────────────────────────────
+
+const METHYL_TRAP_NOTE =
+  'Your genetic profile shows a methylation paradox: your MTHFR variant means ' +
+  'you need methylation support, but your COMT variant means you\'re sensitive ' +
+  'to methyl donors. This protocol uses non-methyl forms (folinic acid, ' +
+  'hydroxocobalamin) and supports methylation through the alternative BHMT ' +
+  'pathway (TMG). Start with lower doses and increase gradually. If you ' +
+  'experience anxiety, irritability, or insomnia, reduce B vitamin doses further.';
+
+/**
+ * Handles compound MTHFR + COMT interactions that cannot be resolved by
+ * running each handler independently. Must run AFTER handleMTHFR and
+ * handleCOMT, which set up the base forms.
+ */
+function handleMTHFR_COMT_Compound(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
+  const gv = quiz.geneticVariants;
+  if (!gv) return recs;
+
+  const c677t = gv.mthfrC677T ?? 'normal';
+  const a1298c = gv.mthfrA1298C ?? 'normal';
+  const comt = gv.comtVal158Met;
+  if (!comt) return recs;
+
+  // Determine effective MTHFR severity (same logic as handleMTHFR)
+  const isCompoundHetero = c677t === 'heterozygous' && a1298c === 'heterozygous';
+  let mthfrSeverity: 'normal' | 'heterozygous' | 'homozygous' = 'normal';
+  if (isCompoundHetero || c677t === 'homozygous') {
+    mthfrSeverity = 'homozygous';
+  } else if (c677t === 'heterozygous' || a1298c === 'homozygous' || a1298c === 'heterozygous') {
+    mthfrSeverity = 'heterozygous';
+  }
+
+  if (mthfrSeverity === 'normal') return recs;
+
+  let r = recs;
+
+  // ── MTHFR (any) + COMT Val/Val — fast COMT handles methyl donors well ────
+  if (comt === 'val-val') {
+    const note =
+      'Your fast COMT can efficiently process methyl donors. ' +
+      'Methylfolate and methylcobalamin are well-suited to your genetics.';
+    if (findExistingRec(r, 'folate-5mthf')) r = addNote(r, 'folate-5mthf', note);
+    if (findExistingRec(r, 'vitamin-b12'))  r = addNote(r, 'vitamin-b12', note);
+    return r;
+  }
+
+  // ── MTHFR homo + COMT Met/Met — "Methyl Trap" phenotype ──────────────────
+  if (mthfrSeverity === 'homozygous' && comt === 'met-met') {
+    const trapReason = 'MTHFR homozygous + slow COMT — methylation paradox (methyl trap phenotype)';
+
+    // 1. Forms already handled by handleMTHFR then handleCOMT:
+    //    folate → folinic-acid, B12 → hydroxocobalamin ✓
+
+    // 2. Ensure TMG is present with BHMT pathway reasoning
+    //    handleMTHFR already adds TMG, but we update the reason to reflect
+    //    compound phenotype and remove the methyl-donor warning that handleCOMT
+    //    added (TMG is specifically needed for the BHMT bypass here)
+    const tmg = findExistingRec(r, 'betaine-tmg');
+    if (tmg) {
+      r = addReason(r, 'betaine-tmg', LAYER,
+        'TMG provides methylation support through the BHMT pathway, bypassing both MTHFR and COMT limitations');
+      // Remove the generic COMT methyl-donor warning — TMG is intentional here
+      r = r.map(rec => {
+        if (rec.id !== 'betaine-tmg') return rec;
+        return {
+          ...rec,
+          warnings: rec.warnings.filter(w => !w.includes('Slow COMT — methyl donors may accumulate')),
+        };
+      });
+    } else {
+      r = put(r, makeRec({
+        id: 'betaine-tmg', supplementName: 'Betaine (TMG)', form: 'trimethylglycine',
+        dose: 500, doseUnit: 'mg', frequency: 'daily',
+        timing: ['morning-with-food'], withFood: true, evidenceRating: 'Moderate',
+        reasons: [makeReason('TMG provides methylation support through the BHMT pathway, bypassing both MTHFR and COMT limitations')],
+        warnings: [], contraindications: [], cyclingPattern: CYCLE_DAILY, priority: 8,
+        category: 'compound', separateFrom: [],
+        notes: ['Key supplement for methyl trap phenotype — supports methylation via the alternative BHMT pathway'],
+      }));
+    }
+    r = liftPriority(r, 'betaine-tmg', 8);
+
+    // 3. Reduce B-Complex dose by 50% if present
+    const bComplex = findExistingRec(r, 'b-complex');
+    if (bComplex) {
+      const reducedDose = Math.round(bComplex.dose / 2);
+      r = modifyDose(r, 'b-complex', reducedDose, LAYER,
+        `${trapReason} — B-complex reduced by 50% to prevent overwhelming slow COMT`);
+      r = addReason(r, 'b-complex', LAYER,
+        'Lower B vitamin doses prevent overwhelming slow COMT');
+    }
+
+    // 4. Remove or cap SAMe (handleCOMT already capped to 100mg, but for
+    //    full methyl trap we remove it entirely)
+    const same = findExistingRec(r, 'same');
+    if (same) {
+      r = removeRec(r, 'same', LAYER,
+        'Slow COMT cannot process SAMe efficiently — may cause anxiety, irritability, and insomnia');
+    }
+
+    // 5. Add comprehensive methylation paradox note to folate and B12
+    const folinic = findExistingRec(r, 'folinic-acid');
+    if (folinic) r = addNote(r, 'folinic-acid', METHYL_TRAP_NOTE);
+    const b12 = findExistingRec(r, 'vitamin-b12');
+    if (b12) r = addNote(r, 'vitamin-b12', METHYL_TRAP_NOTE);
+
+    // 6. Add homocysteine monitoring note to folinic acid
+    if (folinic) {
+      r = addNote(r, 'folinic-acid',
+        'Monitor homocysteine: test in 3 months to verify methylation support is adequate (target <10 µmol/L)');
+    }
+
+    return r;
+  }
+
+  // ── MTHFR hetero + COMT Met/Met — milder version ─────────────────────────
+  if (mthfrSeverity === 'heterozygous' && comt === 'met-met') {
+    // handleCOMT already swapped to folinic acid + hydroxocobalamin ✓
+    // TMG is optional — don't force it, but note it's beneficial
+    const tmg = findExistingRec(r, 'betaine-tmg');
+    if (tmg) {
+      r = addNote(r, 'betaine-tmg',
+        'MTHFR heterozygous + slow COMT — TMG supports the BHMT methylation pathway as a helpful adjunct');
+    }
+
+    // Don't aggressively reduce B-Complex, but add monitoring note
+    const bComplex = findExistingRec(r, 'b-complex');
+    if (bComplex) {
+      r = addNote(r, 'b-complex',
+        'MTHFR heterozygous + slow COMT — monitor for anxiety or irritability; reduce dose if needed');
+    }
+
+    return r;
+  }
+
+  return r;
+}
+
 // ─── VDR (VITAMIN D RECEPTOR) ─────────────────────────────────────────────────
 
 function handleVDR(quiz: QuizData, recs: Recommendation[]): Recommendation[] {
@@ -817,6 +956,7 @@ export function layer6Genetics(quiz: QuizData, recs: Recommendation[]): Recommen
   // ── Methylation / Folate ────────────────────────────────────────────────────
   r = handleMTHFR(quiz, r);
   r = handleCOMT(quiz, r);
+  r = handleMTHFR_COMT_Compound(quiz, r);
 
   // ── Micronutrient Receptors / Absorption ────────────────────────────────────
   r = handleVDR(quiz, r);
