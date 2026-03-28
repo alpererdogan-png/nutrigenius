@@ -598,8 +598,8 @@ export interface TierConfig {
   showFormOptimization: boolean;
   /** Whether the PDF download button is enabled */
   pdfDownload: boolean;
-  /** Whether iHerb affiliate links are shown on supplement cards */
-  iherbLinks: boolean;
+  /** Whether Amazon affiliate links are shown on supplement cards */
+  amazonLinks: boolean;
 }
 
 export const TIER_CONFIG: Record<PlanTier, TierConfig> = {
@@ -612,7 +612,7 @@ export const TIER_CONFIG: Record<PlanTier, TierConfig> = {
     showDrugInteractionDetails: true,  // safety information always visible
     showFormOptimization: false,
     pdfDownload: true,
-    iherbLinks: true,
+    amazonLinks: true,
   },
   premium: {
     maxSupplements: 10,
@@ -623,7 +623,7 @@ export const TIER_CONFIG: Record<PlanTier, TierConfig> = {
     showDrugInteractionDetails: true,
     showFormOptimization: true,
     pdfDownload: true,
-    iherbLinks: true,
+    amazonLinks: true,
   },
 };
 

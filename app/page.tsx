@@ -24,6 +24,7 @@ import {
 import { BlogCarousel } from "./components/BlogCarousel";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/lib/language-context";
+import { AdSense } from "@/components/AdSense";
 
 export default function Home() {
   const { t } = useLanguage();
@@ -309,6 +310,13 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Ad unit — between blog preview and next sections */}
+      <div className="py-4 px-4 sm:px-6 bg-[#f9f9ff]">
+        <div className="max-w-3xl mx-auto">
+          <AdSense slot="1122334455" format="horizontal" />
+        </div>
+      </div>
 
       {/* ══════════════════════════════════════════════════
           HOW IT WORKS — Horizontal timeline

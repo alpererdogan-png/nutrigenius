@@ -1101,6 +1101,7 @@ function checkSuppSupplementInteractions(
       warnings.push({
         supplementId: rec.id,
         severity: 'major',
+        medication: 'cumulative-effect',
         description: 'Cumulative antiplatelet effect: 3+ blood-thinning supplements detected in this protocol. Increased bleeding risk.',
         recommendation: 'Consult a clinician, especially if on prescription anticoagulants or planning surgery.',
       });
@@ -1171,6 +1172,7 @@ function checkULs(quiz: QuizData, recs: Recommendation[]): {
           const msg = `${nutrient} total across this protocol (${total} ${info.ulUnit}) exceeds the established UL (${adjustedUL} ${info.ulUnit}).${note}`;
           warnings.push({
             supplementId: id,
+            medication: 'none',
             severity: 'moderate',
             description: msg,
             recommendation: `Review total ${nutrient} intake. Consider reducing dose or seeking medical supervision for this therapeutic level.`,
@@ -1269,6 +1271,7 @@ function checkSpecialSafety(
       if (CKD_FLAGGED_IDS.has(rec.id)) {
         warnings.push({
           supplementId: rec.id,
+          medication: 'CKD',
           severity: 'major',
           description: `${rec.supplementName} may accumulate to dangerous levels in chronic kidney disease. Impaired renal clearance increases the risk of hyperkalaemia and other complications.`,
           recommendation: 'Consult a nephrologist before using this supplement. Potassium and phosphorus supplements generally require medical supervision in CKD.',
@@ -1278,6 +1281,7 @@ function checkSpecialSafety(
         if (rec.doseUnit === 'IU' && rec.dose > CKD_HIGH_DOSE_VITAMIN_A_THRESHOLD) {
           warnings.push({
             supplementId: rec.id,
+            medication: 'CKD',
             severity: 'moderate',
             description: 'High-dose Vitamin A accumulates in CKD due to impaired renal metabolism of retinol-binding proteins.',
             recommendation: 'Limit Vitamin A to <5,000 IU/day in CKD. Monitor with nephrologist.',
@@ -1287,6 +1291,7 @@ function checkSpecialSafety(
       if (rec.id === 'vitamin-c' && rec.doseUnit === 'mg' && rec.dose > CKD_HIGH_DOSE_VITAMIN_C_THRESHOLD) {
         warnings.push({
           supplementId: rec.id,
+          medication: 'CKD',
           severity: 'moderate',
           description: 'High-dose Vitamin C is metabolised to oxalate, which can accumulate and form kidney stones in CKD.',
           recommendation: 'Limit Vitamin C to ≤500mg/day in CKD. Avoid doses >1,000mg.',
@@ -1301,6 +1306,7 @@ function checkSpecialSafety(
       if (rec.id === 'glucosamine-chondroitin' && rec.form === 'glucosamine-sulfate') {
         warnings.push({
           supplementId: rec.id,
+          medication: 'shellfish-allergy',
           severity: 'major',
           description: 'Standard glucosamine sulfate is derived from shellfish. This patient has a reported shellfish allergy.',
           recommendation: 'Switch to corn-derived vegan glucosamine. Verify the supplement label confirms no shellfish source.',
@@ -1312,6 +1318,7 @@ function checkSpecialSafety(
             rec.id === 'omega-3-fish-oil') {
           warnings.push({
             supplementId: rec.id,
+            medication: 'fish-allergy',
             severity: 'major',
             description: `${rec.supplementName} is derived from fish. This patient has a reported fish allergy.`,
             recommendation: 'Switch to a non-fish alternative. For omega-3, use algae-based DHA. For collagen, use plant-based alternatives or marine collagen from a non-fish source.',

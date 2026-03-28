@@ -15,7 +15,12 @@
       "Bash(node:*)",
       "Bash(node -e \":*)",
       "Bash(grep -v \"^$\")",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(grep -r \"iherb\\\\|IHERB\" C:UsersalperDocumentsnutrigenius --include=*.env*)",
+      "Bash(grep -r iherb C:UsersalperDocumentsnutrigenius --include=*.ts --include=*.tsx --include=*.js --include=*.json --exclude-dir=.next --exclude-dir=node_modules)",
+      "Bash(grep -rn \"https://www.iherb.com\\\\|iherbLinks\" C:UsersalperDocumentsnutrigenius --include=*.ts --include=*.tsx --exclude-dir=.next --exclude-dir=node_modules)",
+      "Bash(grep -n iherb C:UsersalperDocumentsnutrigeniusappblog[slug]page.tsx)",
+      "Bash(grep -n \"advertisingDesc\" translations/*.json)"
     ]
   }
 }

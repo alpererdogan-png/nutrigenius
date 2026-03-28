@@ -11,6 +11,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase-browser";
 import { useLanguage } from "@/lib/language-context";
+import { AdSense } from "@/components/AdSense";
 
 interface BlogPost {
   id: string;
@@ -251,52 +252,100 @@ export default function BlogPage() {
             <p className="text-sm mt-1">Try adjusting your search or filter.</p>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.map((post) => {
-              const config = CATEGORY_CONFIG[post.category] ?? DEFAULT_CONFIG;
-              const Icon = config.icon;
-              return (
-                <Link
-                  key={post.id}
-                  href={`/blog/${post.slug}`}
-                  className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm shadow-black/5 ring-1 ring-black/[0.04]
-                    hover:shadow-xl hover:shadow-black/10 hover:ring-0
-                    hover:-translate-y-1 hover:scale-[1.015]
-                    transition-all duration-300 ease-out"
-                >
-                  {/* Gradient banner */}
-                  <div className={`h-20 sm:h-[120px] ${config.gradient} flex items-center justify-center relative overflow-hidden flex-shrink-0`}>
-                    <div className={`absolute -right-6 -bottom-6 w-28 h-28 rounded-full ${config.decorColor} opacity-20`} />
-                    <div className={`absolute -left-4 -top-4 w-20 h-20 rounded-full ${config.decorColor} opacity-15`} />
-                    <div className={`absolute right-8 top-3 w-8 h-8 rounded-full ${config.decorColor} opacity-10`} />
-                    <Icon className="w-9 h-9 sm:w-11 sm:h-11 text-white/90 relative z-10 drop-shadow-md group-hover:scale-110 transition-transform duration-300" />
-                    {/* Category pill overlay */}
-                    <span className="absolute bottom-3 left-3 text-[10px] font-semibold text-white/90 bg-black/20 backdrop-blur-sm px-2 py-0.5 rounded-full">
-                      {formatCategory(post.category)}
-                    </span>
-                  </div>
-
-                  {/* Card body */}
-                  <div className="p-5 sm:p-6 flex flex-col flex-1">
-                    <h2 className="font-heading text-[15px] font-bold text-[#1A2332] leading-snug mb-3 group-hover:text-[#00685f] transition-colors duration-200 line-clamp-3 flex-1">
-                      {post.title}
-                    </h2>
-                    <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-5">
-                      {post.excerpt}
-                    </p>
-                    <div className="flex items-center justify-between pt-3.5 mt-auto">
-                      <div className="flex items-center gap-1.5 text-xs text-[#8896A8]">
-                        <Clock className="w-3.5 h-3.5" />
-                        {post.read_time}
-                      </div>
-                      <span className="text-xs font-semibold text-[#00685f] flex items-center gap-1 group-hover:gap-2 transition-all">
-                        Read more <ArrowRight className="w-3.5 h-3.5" />
+          <div className="space-y-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {posts.slice(0, 3).map((post) => {
+                const config = CATEGORY_CONFIG[post.category] ?? DEFAULT_CONFIG;
+                const Icon = config.icon;
+                return (
+                  <Link
+                    key={post.id}
+                    href={`/blog/${post.slug}`}
+                    className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm shadow-black/5 ring-1 ring-black/[0.04]
+                      hover:shadow-xl hover:shadow-black/10 hover:ring-0
+                      hover:-translate-y-1 hover:scale-[1.015]
+                      transition-all duration-300 ease-out"
+                  >
+                    <div className={`h-20 sm:h-[120px] ${config.gradient} flex items-center justify-center relative overflow-hidden flex-shrink-0`}>
+                      <div className={`absolute -right-6 -bottom-6 w-28 h-28 rounded-full ${config.decorColor} opacity-20`} />
+                      <div className={`absolute -left-4 -top-4 w-20 h-20 rounded-full ${config.decorColor} opacity-15`} />
+                      <div className={`absolute right-8 top-3 w-8 h-8 rounded-full ${config.decorColor} opacity-10`} />
+                      <Icon className="w-9 h-9 sm:w-11 sm:h-11 text-white/90 relative z-10 drop-shadow-md group-hover:scale-110 transition-transform duration-300" />
+                      <span className="absolute bottom-3 left-3 text-[10px] font-semibold text-white/90 bg-black/20 backdrop-blur-sm px-2 py-0.5 rounded-full">
+                        {formatCategory(post.category)}
                       </span>
                     </div>
-                  </div>
-                </Link>
-              );
-            })}
+                    <div className="p-5 sm:p-6 flex flex-col flex-1">
+                      <h2 className="font-heading text-[15px] font-bold text-[#1A2332] leading-snug mb-3 group-hover:text-[#00685f] transition-colors duration-200 line-clamp-3 flex-1">
+                        {post.title}
+                      </h2>
+                      <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-5">
+                        {post.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between pt-3.5 mt-auto">
+                        <div className="flex items-center gap-1.5 text-xs text-[#8896A8]">
+                          <Clock className="w-3.5 h-3.5" />
+                          {post.read_time}
+                        </div>
+                        <span className="text-xs font-semibold text-[#00685f] flex items-center gap-1 group-hover:gap-2 transition-all">
+                          Read more <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {posts.length > 3 && (
+              <AdSense slot="5566778899" format="horizontal" style={{ minHeight: "90px" }} />
+            )}
+
+            {posts.length > 3 && (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {posts.slice(3).map((post) => {
+                  const config = CATEGORY_CONFIG[post.category] ?? DEFAULT_CONFIG;
+                  const Icon = config.icon;
+                  return (
+                    <Link
+                      key={post.id}
+                      href={`/blog/${post.slug}`}
+                      className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm shadow-black/5 ring-1 ring-black/[0.04]
+                        hover:shadow-xl hover:shadow-black/10 hover:ring-0
+                        hover:-translate-y-1 hover:scale-[1.015]
+                        transition-all duration-300 ease-out"
+                    >
+                      <div className={`h-20 sm:h-[120px] ${config.gradient} flex items-center justify-center relative overflow-hidden flex-shrink-0`}>
+                        <div className={`absolute -right-6 -bottom-6 w-28 h-28 rounded-full ${config.decorColor} opacity-20`} />
+                        <div className={`absolute -left-4 -top-4 w-20 h-20 rounded-full ${config.decorColor} opacity-15`} />
+                        <div className={`absolute right-8 top-3 w-8 h-8 rounded-full ${config.decorColor} opacity-10`} />
+                        <Icon className="w-9 h-9 sm:w-11 sm:h-11 text-white/90 relative z-10 drop-shadow-md group-hover:scale-110 transition-transform duration-300" />
+                        <span className="absolute bottom-3 left-3 text-[10px] font-semibold text-white/90 bg-black/20 backdrop-blur-sm px-2 py-0.5 rounded-full">
+                          {formatCategory(post.category)}
+                        </span>
+                      </div>
+                      <div className="p-5 sm:p-6 flex flex-col flex-1">
+                        <h2 className="font-heading text-[15px] font-bold text-[#1A2332] leading-snug mb-3 group-hover:text-[#00685f] transition-colors duration-200 line-clamp-3 flex-1">
+                          {post.title}
+                        </h2>
+                        <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-5">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center justify-between pt-3.5 mt-auto">
+                          <div className="flex items-center gap-1.5 text-xs text-[#8896A8]">
+                            <Clock className="w-3.5 h-3.5" />
+                            {post.read_time}
+                          </div>
+                          <span className="text-xs font-semibold text-[#00685f] flex items-center gap-1 group-hover:gap-2 transition-all">
+                            Read more <ArrowRight className="w-3.5 h-3.5" />
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
       </div>

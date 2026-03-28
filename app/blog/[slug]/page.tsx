@@ -10,6 +10,7 @@ import type { LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
 import { markdownToHtml, extractTOC } from "@/lib/markdown";
 import { MobileFooterAd } from "./MobileFooterAd";
+import { getAmazonLink } from "@/lib/amazon-affiliate";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -106,17 +107,17 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
         product_name: "NOW Foods Magnesium Glycinate",
         brand: "NOW Foods",
         price_usd: 12.99,
-        affiliate_url: "https://www.iherb.com/pr/now-foods-magnesium-glycinate?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("Magnesium Glycinate", "NOW Foods"),
         note: "Highest bioavailability — ideal for sleep & anxiety",
       },
     },
     {
       afterParagraph: 4,
       product: {
-        product_name: "Life Extension Neuro-Mag Magnesium L-Threonate",
+        product_name: "Magnesium L-Threonate",
         brand: "Life Extension",
         price_usd: 29.99,
-        affiliate_url: "https://www.iherb.com/pr/life-extension-neuro-mag-magnesium-l-threonate?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("Magnesium L-Threonate", "Neuro-Mag"),
         note: "Crosses the blood-brain barrier — top choice for cognition",
       },
     },
@@ -125,20 +126,20 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
     {
       afterParagraph: 1,
       product: {
-        product_name: "Thorne Vitamin D/K2 Liquid",
+        product_name: "Vitamin D3 + K2 Liquid",
         brand: "Thorne",
         price_usd: 24.99,
-        affiliate_url: "https://www.iherb.com/pr/thorne-vitamin-d-k2-liquid?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("Vitamin D3 K2", "Thorne liquid"),
         note: "D3 + K2 combined — optimal for safe use alongside anticoagulants",
       },
     },
     {
       afterParagraph: 4,
       product: {
-        product_name: "Nordic Naturals Ultimate Omega",
+        product_name: "Ultimate Omega Fish Oil",
         brand: "Nordic Naturals",
         price_usd: 33.99,
-        affiliate_url: "https://www.iherb.com/pr/nordic-naturals-ultimate-omega?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("Omega-3 fish oil", "Nordic Naturals"),
         note: "IFOS 5-star certified — pharmaceutical-grade purity",
       },
     },
@@ -147,20 +148,20 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
     {
       afterParagraph: 1,
       product: {
-        product_name: "NOW Foods Vitamin D3 5000 IU",
+        product_name: "Vitamin D3 5000 IU",
         brand: "NOW Foods",
         price_usd: 11.99,
-        affiliate_url: "https://www.iherb.com/pr/now-foods-vitamin-d3-5000-iu?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("Vitamin D3 5000 IU", "NOW Foods"),
         note: "Third-party tested · excellent value for daily deficiency correction",
       },
     },
     {
       afterParagraph: 4,
       product: {
-        product_name: "Thorne Vitamin D 5000 IU",
+        product_name: "Vitamin D 5000 IU",
         brand: "Thorne",
         price_usd: 19.99,
-        affiliate_url: "https://www.iherb.com/pr/thorne-vitamin-d-5000?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("Vitamin D3 5000 IU", "Thorne"),
         note: "NSF Certified · premium pharmaceutical-grade formulation",
       },
     },
@@ -169,20 +170,20 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
     {
       afterParagraph: 1,
       product: {
-        product_name: "Wholesome Story Myo-Inositol",
+        product_name: "Myo-Inositol + D-Chiro Inositol",
         brand: "Wholesome Story",
         price_usd: 23.99,
-        affiliate_url: "https://www.iherb.com/pr/wholesome-story-myo-inositol?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("Myo-Inositol D-Chiro Inositol PCOS"),
         note: "Clinically studied 40:1 myo:D-chiro inositol ratio",
       },
     },
     {
       afterParagraph: 4,
       product: {
-        product_name: "Jarrow Formulas NAC Sustain",
+        product_name: "NAC N-Acetyl Cysteine",
         brand: "Jarrow Formulas",
         price_usd: 15.99,
-        affiliate_url: "https://www.iherb.com/pr/jarrow-formulas-nac-sustain?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("NAC N-Acetyl Cysteine", "Jarrow"),
         note: "Sustained-release NAC — antioxidant & insulin-sensitising support",
       },
     },
@@ -191,20 +192,20 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
     {
       afterParagraph: 1,
       product: {
-        product_name: "Garden of Life Dr. Formulated Probiotics",
+        product_name: "Dr. Formulated Probiotics",
         brand: "Garden of Life",
         price_usd: 34.99,
-        affiliate_url: "https://www.iherb.com/pr/garden-of-life-dr-formulated-probiotics?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("Probiotics mental health", "Garden of Life"),
         note: "Clinician-formulated psychobiotic blend — Lactobacillus + Bifidobacterium",
       },
     },
     {
       afterParagraph: 4,
       product: {
-        product_name: "Jarrow Formulas Saccharomyces Boulardii",
+        product_name: "Saccharomyces Boulardii",
         brand: "Jarrow Formulas",
         price_usd: 14.99,
-        affiliate_url: "https://www.iherb.com/pr/jarrow-formulas-saccharomyces-boulardii?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("Saccharomyces Boulardii probiotic"),
         note: "Evidence-backed probiotic yeast for gut microbiome restoration",
       },
     },
@@ -213,20 +214,20 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
     {
       afterParagraph: 1,
       product: {
-        product_name: "Pure Encapsulations B-Complex Plus",
+        product_name: "B-Complex Plus",
         brand: "Pure Encapsulations",
         price_usd: 24.99,
-        affiliate_url: "https://www.iherb.com/pr/pure-encapsulations-b-complex-plus?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("B-Complex supplement", "Pure Encapsulations"),
         note: "Hypoallergenic · all active B-vitamin forms for maximum absorption",
       },
     },
     {
       afterParagraph: 4,
       product: {
-        product_name: "Life Extension Vitamin C",
+        product_name: "Buffered Vitamin C",
         brand: "Life Extension",
         price_usd: 10.99,
-        affiliate_url: "https://www.iherb.com/pr/life-extension-vitamin-c?rcode=NUTRIGENIUS",
+        affiliate_url: getAmazonLink("Buffered Vitamin C supplement"),
         note: "High-potency buffered vitamin C with bioflavonoids",
       },
     },
@@ -301,19 +302,24 @@ function affiliateCardHtml(product: HardcodedProduct): string {
       <span class="text-base font-bold" style="color:#1A2332">$${product.price_usd.toFixed(2)}</span>
       <a href="${esc(product.affiliate_url)}" target="_blank" rel="noopener noreferrer nofollow"
          style="display:inline-flex;align-items:center;gap:5px;background:#00685f;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none;white-space:nowrap">
-        Shop on iHerb &rarr;
+        Find on Amazon &rarr;
       </a>
     </div>
-    <p style="font-size:10px;color:#B0BAC9;margin:8px 0 0">Affiliate link &mdash; we may earn a commission at no extra cost to you.</p>
+    <p style="font-size:10px;color:#B0BAC9;margin:8px 0 0">Amazon affiliate link &mdash; as an Amazon Associate, Clareo Health earns from qualifying purchases.</p>
   </div>
 </div>`;
 }
 
-const rectangleAdHtml = `<div class="my-6" style="display:flex;align-items:center;justify-content:center;border:1px dashed #CBD5E1;background:#F8FAFC;border-radius:12px;height:160px">
-  <div style="text-align:center">
-    <p style="font-size:11px;font-weight:500;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin:0">Advertisement</p>
-    <p style="font-size:10px;color:#CBD5E1;margin:3px 0 0">300&times;250</p>
-  </div>
+// Slot IDs — replace with actual values from Google AdSense dashboard
+const INLINE_AD_SLOT = "1234567890"; // TODO: replace with real slot ID
+
+const rectangleAdHtml = `<div class="my-6">
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-1364229532852275"
+    data-ad-slot="${INLINE_AD_SLOT}"
+    data-ad-format="rectangle"
+    data-full-width-responsive="true"></ins>
 </div>`;
 
 /** Insert `insertion` after the nth occurrence of `</p>` in `html` (1-indexed). */
@@ -416,14 +422,19 @@ function KeyTakeawaysBox({ takeaways }: { takeaways: string[] }) {
 
 // ─── Ad slot components ───────────────────────────────────────────────────────
 
+// Slot IDs — replace with actual values from Google AdSense dashboard
+const SIDEBAR_AD_SLOT = "0987654321"; // TODO: replace with real slot ID
+
 function SidebarAdSlot() {
   return (
-    <div className="h-[280px] flex items-center justify-center bg-[#f0f3ff] rounded-xl">
-      <div className="text-center">
-        <p className="text-xs font-medium text-[#94A3B8] uppercase tracking-wider">Advertisement</p>
-        <p className="text-[10px] text-[#CBD5E1] mt-0.5">300×250</p>
-      </div>
-    </div>
+    <ins
+      className="adsbygoogle"
+      style={{ display: "block" }}
+      data-ad-client="ca-pub-1364229532852275"
+      data-ad-slot={SIDEBAR_AD_SLOT}
+      data-ad-format="rectangle"
+      data-full-width-responsive="true"
+    />
   );
 }
 
@@ -609,7 +620,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
             {/* Affiliate disclosure */}
             <p className="text-[11px] text-[#C4CDD8] mt-4 mb-0 leading-relaxed">
-              This article may contain affiliate links. If you purchase through our links we earn a small commission at no extra cost to you. This does not influence our editorial recommendations.
+              This article contains Amazon affiliate links. As an Amazon Associate, Clareo Health earns from qualifying purchases at no extra cost to you. This does not influence our editorial recommendations.
             </p>
 
             {/* CTA */}

@@ -3,6 +3,7 @@ import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/language-context";
 import CookieConsent from "@/components/CookieConsent";
+import { AdSenseLoader } from "@/components/AdSenseLoader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -95,6 +96,7 @@ export default function RootLayout({
         <LanguageProvider>
           {children}
           <CookieConsent />
+          <AdSenseLoader />
         </LanguageProvider>
       </body>
     </html>

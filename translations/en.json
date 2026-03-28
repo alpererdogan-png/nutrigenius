@@ -346,7 +346,7 @@
     "analytics": "Analytics",
     "analyticsDesc": "Helps us understand how visitors interact with the site.",
     "advertising": "Advertising",
-    "advertisingDesc": "Used to show relevant advertisements and track affiliate clicks.",
+    "advertisingDesc": "Used to display Google AdSense ads and support Amazon affiliate partnerships.",
     "functional": "Functional",
     "functionalDesc": "Saves your preferences and quiz progress.",
     "alwaysOn": "Always On",

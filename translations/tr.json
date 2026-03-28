@@ -346,7 +346,7 @@
     "analytics": "Analitik",
     "analyticsDesc": "Ziyaretçilerin siteyle nasıl etkileşime girdiğini anlamamıza yardımcı olur.",
     "advertising": "Reklam",
-    "advertisingDesc": "İlgili reklamları göstermek ve bağlı kuruluş tıklamalarını izlemek için kullanılır.",
+    "advertisingDesc": "Google AdSense reklamlarını göstermek ve Amazon ortaklıklarını desteklemek için kullanılır.",
     "functional": "İşlevsel",
     "functionalDesc": "Tercihlerinizi ve test ilerlemenizi kaydeder.",
     "alwaysOn": "Her Zaman Açık",
