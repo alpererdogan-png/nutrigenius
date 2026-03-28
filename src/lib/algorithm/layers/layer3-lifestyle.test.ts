@@ -266,6 +266,12 @@ describe('Athlete — creatine, CoQ10, higher magnesium, higher omega-3', () => 
     expect(getById(recs, 'creatine-monohydrate')!.evidenceRating).toBe('Strong');
   });
 
+  test('creatine has flexible timing note', () => {
+    const creatine = getById(recs, 'creatine-monohydrate')!;
+    expect(creatine.notes.some(n => n.includes('timing is flexible'))).toBe(true);
+    expect(creatine.notes.some(n => n.includes('daily muscle saturation'))).toBe(true);
+  });
+
   test('exactly one magnesium-glycinate entry at ≥ 400 mg', () => {
     expect(recs.filter(r => r.id === 'magnesium-glycinate').length).toBe(1);
     expect(getById(recs, 'magnesium-glycinate')!.dose).toBeGreaterThanOrEqual(400);
@@ -706,6 +712,11 @@ describe('Training phase: building (athlete)', () => {
     expect(creatine).toBeDefined();
     expect(creatine!.dose).toBe(5);
     expect(creatine!.doseUnit).toBe('g');
+  });
+
+  test('creatine has flexible timing note', () => {
+    const creatine = getById(recs, 'creatine-monohydrate')!;
+    expect(creatine.notes.some(n => n.includes('timing is flexible'))).toBe(true);
   });
 
   test('HMB added at 3 g', () => {

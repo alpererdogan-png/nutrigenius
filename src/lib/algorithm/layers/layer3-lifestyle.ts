@@ -735,6 +735,7 @@ function applyActivityModifications(
         '5 g/day maintenance dose — no loading phase needed',
         'Monohydrate is the most studied and cost-effective form',
         'Mix with water or protein shake; takes 4 weeks to saturate muscle stores',
+        'Creatine timing is flexible — it works through daily muscle saturation, not acute timing. Take whenever most convenient and consistent for you. Post-workout with a meal is a popular choice but not required.',
       ],
     }), LAYER);
   }
@@ -879,7 +880,10 @@ function applyTrainingPhase(
         priority: 7,
         category: 'amino-acid',
         separateFrom: [],
-        notes: ['5 g/day maintenance dose — no loading phase needed'],
+        notes: [
+          '5 g/day maintenance dose — no loading phase needed',
+          'Creatine timing is flexible — it works through daily muscle saturation, not acute timing. Take whenever most convenient and consistent for you. Post-workout with a meal is a popular choice but not required.',
+        ],
       }), LAYER);
     } else {
       recs = addReason(recs, 'creatine-monohydrate', LAYER,

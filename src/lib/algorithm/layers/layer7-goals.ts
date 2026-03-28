@@ -261,7 +261,8 @@ function handleCognitive(quiz: QuizData, recs: Recommendation[]): Recommendation
       timing: ['morning-with-food'], withFood: true, evidenceRating: 'Emerging',
       reasons: [makeReason('Cognitive goal — creatine replenishes brain PCr stores and has emerging evidence for cognitive function (strong evidence for physical performance)')],
       warnings: [], contraindications: [], cyclingPattern: CYCLE_DAILY, priority: 5,
-      category: 'compound', separateFrom: [], notes: [],
+      category: 'compound', separateFrom: [],
+      notes: ['Creatine timing is flexible — it works through daily muscle saturation, not acute timing. Take whenever most convenient and consistent for you. Post-workout with a meal is a popular choice but not required.'],
     }));
   }
 
@@ -944,7 +945,10 @@ function handleAthleticPerformance(quiz: QuizData, recs: Recommendation[]): Reco
       reasons: [makeReason('Athletic performance goal — creatine is the most evidence-backed ergogenic supplement, increasing maximal power output and reducing recovery time')],
       warnings: [], contraindications: [], cyclingPattern: CYCLE_DAILY, priority: 7,
       category: 'compound', separateFrom: [],
-      notes: ['No loading phase required — 5g/day achieves saturation over 3–4 weeks with fewer side effects'],
+      notes: [
+        'No loading phase required — 5g/day achieves saturation over 3–4 weeks with fewer side effects',
+        'Creatine timing is flexible — it works through daily muscle saturation, not acute timing. Take whenever most convenient and consistent for you. Post-workout with a meal is a popular choice but not required.',
+      ],
     }));
   }
 
