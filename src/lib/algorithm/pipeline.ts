@@ -27,6 +27,7 @@ import {
   PlanTier,
   LayerName,
   Recommendation,
+  ProtocolNote,
   BlockedSupplement,
   SafetyWarning,
   SupplementInteraction,
@@ -65,7 +66,38 @@ export interface PipelineResult {
   schedule: WeeklySchedule;
   tier: PlanTier;
   upsellMessage?: string;
+  /** Protocol-level notes not tied to a single supplement (e.g. athlete guides). */
+  protocolNotes: ProtocolNote[];
   metadata: PipelineMetadata;
+}
+
+// ── Protocol notes ───────────────────────────────────────────────────────────
+
+const ATHLETE_ELECTROLYTE_GUIDE: ProtocolNote = {
+  type: 'athlete-electrolyte-guide',
+  title: 'Athlete Electrolyte Guide',
+  content: `During training lasting >60 minutes:
+• Sodium: 500–1,000 mg per hour of intense activity (sports drink, salt capsules, or salted foods)
+• Potassium: 200–400 mg per hour (coconut water, banana, or electrolyte mix)
+• Magnesium: already in your supplement protocol — take daily
+
+Pre-training (2 hours before): 500 mg sodium + 16 oz water
+During training: sip electrolyte drink with sodium/potassium
+Post-training: replace losses with food + electrolyte drink
+
+A quality electrolyte mix (look for ones with sodium, potassium, and magnesium without excessive sugar) is more practical than individual supplements for training-specific electrolyte needs.`,
+};
+
+function buildProtocolNotes(quizData: QuizData): ProtocolNote[] {
+  const notes: ProtocolNote[] = [];
+
+  const isAthlete =
+    quizData.activityLevel === 'very-active' || quizData.activityLevel === 'athlete';
+  if (isAthlete) {
+    notes.push(ATHLETE_ELECTROLYTE_GUIDE);
+  }
+
+  return notes;
 }
 
 // ── Pipeline ──────────────────────────────────────────────────────────────────
@@ -168,6 +200,7 @@ export function generateProtocol(
     schedule,
     tier,
     upsellMessage: tieredResult.upsellMessage,
+    protocolNotes: buildProtocolNotes(quizData),
     metadata: {
       totalLayers:          7,
       activeLayers,

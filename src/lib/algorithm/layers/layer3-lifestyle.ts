@@ -782,9 +782,9 @@ function applyActivityModifications(
       'High physical activity — taurine supports cardiovascular function and reduces exercise oxidative damage');
   }
 
-  // Electrolyte note
+  // Electrolyte note (detailed guide is a protocol-level note in pipeline.ts)
   recs = appendNote(recs, 'magnesium-glycinate',
-    'Athletes: ensure adequate sodium (2–3 g/day), potassium (3–4 g/day from diet + supplement), and magnesium daily — especially during intense training blocks');
+    'Electrolyte needs are elevated during intense training — see the Athlete Electrolyte Guide in your protocol notes for specific sodium, potassium, and timing guidance');
 
   // Beta-Alanine: only if athletic-performance goal selected
   const hasAthleteGoal = quiz.healthGoals?.includes('athletic-performance');

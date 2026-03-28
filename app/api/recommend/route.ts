@@ -93,6 +93,7 @@ export type RecommendationResult = {
     recommendation: string;
   }[];
   cyclingNotes: string[];
+  protocolNotes: { type: string; title: string; content: string }[];
   metadata: {
     totalLayers: number;
     activeLayers: string[];
@@ -569,6 +570,11 @@ function mapPipelineToResponse(result: PipelineResult): RecommendationResult {
       recommendation: w.recommendation,
     })),
     cyclingNotes: result.schedule.summary.cyclingNotes,
+    protocolNotes: result.protocolNotes.map(n => ({
+      type: n.type,
+      title: n.title,
+      content: n.content,
+    })),
     metadata: {
       totalLayers: result.metadata.totalLayers,
       activeLayers: result.metadata.activeLayers,

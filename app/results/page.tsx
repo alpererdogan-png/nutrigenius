@@ -21,6 +21,7 @@ import {
   ExternalLink,
   TestTube,
   Clock,
+  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import type { RecommendationResult, SupplementRecommendation } from "@/app/api/recommend/route";
@@ -669,6 +670,7 @@ export default function ResultsPage() {
     upsellMessage,
     safetyWarnings = [],
     cyclingNotes = [],
+    protocolNotes = [],
   } = result;
   const deficientLabs = getDeficientLabs(prefs.labResults);
 
@@ -818,6 +820,35 @@ export default function ResultsPage() {
             </div>
           )}
         </section>
+
+        {/* Protocol Notes (e.g. Athlete Electrolyte Guide) */}
+        {protocolNotes.length > 0 && (
+          <section>
+            {protocolNotes.map((note) => (
+              <div
+                key={note.type}
+                className="bg-white border border-[#ebebf5] rounded-2xl p-5 sm:p-6 mb-4"
+              >
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center flex-shrink-0">
+                    <Zap className="w-4 h-4 text-amber-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-heading text-base font-bold text-[#1A2332]">
+                      {note.title}
+                    </h3>
+                    <p className="text-xs text-[#5A6578] mt-0.5">
+                      Personalised guidance based on your activity level
+                    </p>
+                  </div>
+                </div>
+                <pre className="text-sm text-[#1A2332] leading-relaxed whitespace-pre-wrap font-sans bg-[#f9f9ff] border border-[#ebebf5] rounded-xl px-4 py-3">
+                  {note.content}
+                </pre>
+              </div>
+            ))}
+          </section>
+        )}
 
         {/* Hidden supplements upsell */}
         {hiddenSupplementsCount > 0 && (

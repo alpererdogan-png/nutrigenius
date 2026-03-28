@@ -158,6 +158,21 @@ export interface Recommendation {
   monitoringNotes?: import('./data/monitoringNotes').MonitoringNote[];
 }
 
+// ─── PROTOCOL NOTES ─────────────────────────────────────────────────────────
+
+/**
+ * A structured, protocol-level note (not tied to a single supplement).
+ * Displayed as its own card section on the results page.
+ */
+export interface ProtocolNote {
+  /** Machine identifier, e.g. 'athlete-electrolyte-guide'. */
+  type: string;
+  /** Human-readable card title. */
+  title: string;
+  /** Full multi-line content (rendered with whitespace preserved). */
+  content: string;
+}
+
 // ─── QUIZ DATA INPUT ─────────────────────────────────────────────────────────
 
 export interface LabValue<U extends string> {
