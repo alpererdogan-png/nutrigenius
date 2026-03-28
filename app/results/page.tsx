@@ -20,6 +20,7 @@ import {
   RefreshCw,
   ExternalLink,
   TestTube,
+  Clock,
 } from "lucide-react";
 import Link from "next/link";
 import type { RecommendationResult, SupplementRecommendation } from "@/app/api/recommend/route";
@@ -251,6 +252,37 @@ function SupplementCard({ supp }: { supp: SupplementRecommendation }) {
                 <p className="text-xs text-amber-800">{w}</p>
               </div>
             ))}
+          </div>
+        )}
+
+        {supp.timeToEffect && (
+          <div className={`flex items-start gap-2 mb-4 rounded-lg px-3 py-2 ${
+            /^Immediate|^Same evening|^Within/.test(supp.timeToEffect)
+              ? 'bg-green-50 border border-green-200'
+              : /^8-12 weeks|^3-6 months|^3\+ months/.test(supp.timeToEffect)
+              ? 'bg-amber-50 border border-amber-200'
+              : 'bg-slate-50 border border-slate-200'
+          }`}>
+            <Clock className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${
+              /^Immediate|^Same evening|^Within/.test(supp.timeToEffect)
+                ? 'text-green-600'
+                : /^8-12 weeks|^3-6 months|^3\+ months/.test(supp.timeToEffect)
+                ? 'text-amber-600'
+                : 'text-slate-500'
+            }`} />
+            <p className={`text-xs ${
+              /^Immediate|^Same evening|^Within/.test(supp.timeToEffect)
+                ? 'text-green-800'
+                : /^8-12 weeks|^3-6 months|^3\+ months/.test(supp.timeToEffect)
+                ? 'text-amber-800'
+                : 'text-slate-600'
+            }`}>
+              {/^Immediate|^Same evening|^Within/.test(supp.timeToEffect)
+                ? `${supp.timeToEffect}`
+                : /^8-12 weeks|^3-6 months|^3\+ months/.test(supp.timeToEffect)
+                ? `Allow ${supp.timeToEffect} — be patient for best results`
+                : `Allow ${supp.timeToEffect}`}
+            </p>
           </div>
         )}
 

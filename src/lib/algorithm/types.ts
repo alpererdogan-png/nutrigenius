@@ -144,6 +144,12 @@ export interface Recommendation {
    * Guides form-swaps and ingredient warnings on the results card.
    */
   allergyFlags?: AllergyFlag[];
+  /**
+   * Human-readable estimate of how long until the supplement produces
+   * noticeable effects, e.g. "4-8 weeks for anti-inflammatory effects".
+   * Populated by the pipeline from the TIME_TO_EFFECT lookup.
+   */
+  timeToEffect?: string;
 }
 
 // ─── QUIZ DATA INPUT ─────────────────────────────────────────────────────────

@@ -17,6 +17,7 @@ import { applySynergyPairs } from './synergy/synergyPairs';
 import { runSafetyFilter }   from './safety/safetyFilter';
 import { generateWeeklySchedule } from './schedule/generateWeeklySchedule';
 import { enforceTier }       from './tier/tierEnforcement';
+import { applyTimeToEffect } from './data/timeToEffect';
 
 import {
   QuizData,
@@ -128,6 +129,9 @@ export function generateProtocol(
 
   // ── Synergy enforcement ───────────────────────────────────────────────────
   recs = applySynergyPairs(recs, quizData);
+
+  // ── Time-to-effect metadata ───────────────────────────────────────────────
+  recs = applyTimeToEffect(recs);
 
   // ── Safety filter ─────────────────────────────────────────────────────────
   const safetyResult = runSafetyFilter(quizData, recs);
