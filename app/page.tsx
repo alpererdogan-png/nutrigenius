@@ -11,7 +11,6 @@ import {
   ArrowRight,
   Pill,
   HeartPulse,
-  Leaf,
   Star,
   CheckCircle2,
   BookOpen,
@@ -25,6 +24,7 @@ import {
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/lib/language-context";
 import { AdSense } from "@/components/AdSense";
+import { Logo } from "@/src/components/ui/Logo";
 
 // ─── Blog articles data for landing preview ───────────────────────────────────
 
@@ -135,14 +135,9 @@ export default function Home() {
       {/* ── Navigation ── */}
       <nav className="fixed top-0 w-full bg-white/75 backdrop-blur-xl z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center shadow-sm">
-              <Leaf className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-lg font-semibold tracking-tight text-[#1A2332] font-heading">
-              Nutri<span className="text-[#00685f]">Genius</span>
-            </span>
-          </div>
+          <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
+            <Logo size="sm" variant="light" />
+          </Link>
           {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-5 text-sm text-[#5A6578]">
             <Link href="#how-it-works" className="hover:text-[#00685f] transition-colors duration-200">{t("nav.howItWorks")}</Link>
@@ -763,14 +758,9 @@ export default function Home() {
       <footer className="bg-white py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center">
-                <Leaf className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-heading text-lg font-semibold tracking-tight">
-                Nutri<span className="text-[#00685f]">Genius</span>
-              </span>
-            </div>
+            <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
+              <Logo size="md" variant="light" />
+            </Link>
             <div className="flex flex-wrap gap-6 text-sm text-[#5A6578]">
               <Link href="/blog" className="hover:text-[#00685f] transition-colors">{t("footer.blog")}</Link>
               <Link href="/privacy" className="hover:text-[#00685f] transition-colors">{t("footer.privacy")}</Link>

@@ -28,6 +28,7 @@ import {
   getAmazonProductLink,
   getAmazonSearchLink,
 } from "@/src/lib/data/amazonProducts";
+import { Logo } from "@/src/components/ui/Logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/lib/language-context";
 
@@ -592,13 +593,8 @@ export default function ResultsPage() {
             {t("results.retakeQuiz")}
           </button>
           <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center shadow-sm">
-                <Leaf className="w-3.5 h-3.5 text-white" />
-              </div>
-              <span className="font-heading text-base font-semibold tracking-tight text-[#1A2332]">
-                Nutri<span className="text-[#00685f]">Genius</span>
-              </span>
+            <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
+              <Logo size="sm" variant="light" />
             </Link>
             <LanguageSwitcher />
           </div>

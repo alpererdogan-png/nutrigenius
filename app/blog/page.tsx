@@ -12,6 +12,7 @@ import type { LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase-browser";
 import { useLanguage } from "@/lib/language-context";
 import { AdSense } from "@/components/AdSense";
+import { Logo } from "@/src/components/ui/Logo";
 
 interface BlogPost {
   id: string;
@@ -163,11 +164,8 @@ export default function BlogPage() {
       {/* ── Top nav ── */}
       <div className="bg-white shadow-sm shadow-black/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-heading font-bold text-lg text-[#00685f] hover:text-[#005249] transition-colors"
-          >
-            NutriGenius
+          <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
+            <Logo size="sm" variant="light" />
           </Link>
           <Link
             href="/quiz"

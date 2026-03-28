@@ -13,9 +13,9 @@ import {
   Calendar,
   FileText,
   Sparkles,
-  Leaf,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase-browser";
+import { Logo } from "@/src/components/ui/Logo";
 import { StepDemographics } from "./components/StepDemographics";
 import { StepHealthConditions } from "./components/StepHealthConditions";
 import { StepLifestyle } from "./components/StepLifestyle";
@@ -224,13 +224,8 @@ export default function QuizPage() {
               {t("quiz.back")}
             </button>
             <div className="flex items-center gap-3">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center shadow-sm">
-                  <Leaf className="w-3.5 h-3.5 text-white" />
-                </div>
-                <span className="text-base font-semibold tracking-tight text-[#1A2332] font-heading">
-                  Nutri<span className="text-[#00685f]">Genius</span>
-                </span>
+              <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
+                <Logo size="sm" variant="light" />
               </Link>
               <LanguageSwitcher />
             </div>
@@ -342,13 +337,8 @@ export default function QuizPage() {
       <div className="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm shadow-black/5">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between mb-3">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00685f] to-[#005249] flex items-center justify-center shadow-sm">
-                <Leaf className="w-3.5 h-3.5 text-white" />
-              </div>
-              <span className="text-base font-semibold tracking-tight text-[#1A2332] font-heading">
-                Nutri<span className="text-[#00685f]">Genius</span>
-              </span>
+            <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
+              <Logo size="sm" variant="light" />
             </Link>
             <div className="flex items-center gap-3">
               <span className="text-sm text-[#5A6578]">
