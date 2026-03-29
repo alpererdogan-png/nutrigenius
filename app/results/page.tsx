@@ -181,9 +181,10 @@ function WhereToBuy({ name, form }: { name: string; form?: string }) {
                       href={getAmazonProductLink(p.asin)}
                       target="_blank"
                       rel="noopener noreferrer sponsored"
-                      className="inline-flex items-center justify-center gap-2 border border-[#FF9900]/40 hover:border-[#FF9900]/80 bg-white hover:bg-[#fffbf2] px-3 py-1.5 rounded-lg transition-colors"
+                      className="inline-flex items-center justify-center gap-1.5 border border-[#FF9900]/40 hover:border-[#FF9900]/80 bg-white hover:bg-[#fffbf2] px-3 py-1.5 rounded-lg transition-colors text-xs text-[#5A6578]"
                     >
-                      <AmazonSmile className="h-[14px] w-auto" />
+                      Available on
+                      <AmazonSmile className="h-[18px] w-auto" />
                     </a>
                   </div>
                 );
@@ -194,10 +195,10 @@ function WhereToBuy({ name, form }: { name: string; form?: string }) {
               href={getAmazonSearchLink(name, form)}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="inline-flex items-center gap-2 border border-[#FF9900]/40 hover:border-[#FF9900]/80 bg-white hover:bg-[#fffbf2] text-sm font-medium text-[#1A2332] px-3 py-2 rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 border border-[#FF9900]/40 hover:border-[#FF9900]/80 bg-white hover:bg-[#fffbf2] text-sm text-[#5A6578] px-3 py-2 rounded-lg transition-colors"
             >
-              Find {name} on
-              <AmazonSmile className="h-[14px] w-auto" />
+              Available on
+              <AmazonSmile className="h-[18px] w-auto" />
             </a>
           )}
 
