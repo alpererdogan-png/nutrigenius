@@ -237,6 +237,226 @@ const ARTICLE_PRODUCTS: Record<string, Array<{ afterParagraph: number; product: 
       },
     },
   ],
+  "migraine-prevention-supplements": [
+    {
+      afterParagraph: 1,
+      product: {
+        product_name: "Magnesium Glycinate 400mg",
+        brand: "Doctor's Best",
+        price_usd: 14.99,
+        affiliate_url: getAmazonSearchLink("Magnesium Glycinate 400mg", "Doctor's Best"),
+        note: "High-absorption chelated magnesium — top choice for migraine prevention",
+      },
+    },
+    {
+      afterParagraph: 4,
+      product: {
+        product_name: "Riboflavin (B2) 400mg",
+        brand: "NOW Foods",
+        price_usd: 9.99,
+        affiliate_url: getAmazonSearchLink("Riboflavin B2 400mg"),
+        note: "Clinical-dose riboflavin for migraine frequency reduction",
+      },
+    },
+  ],
+  "menopause-supplement-guide": [
+    {
+      afterParagraph: 1,
+      product: {
+        product_name: "Black Cohosh Root 540mg",
+        brand: "Nature's Way",
+        price_usd: 12.99,
+        affiliate_url: getAmazonSearchLink("Black Cohosh menopause", "Nature's Way"),
+        note: "Standardized extract for hot flash relief — most studied herbal for menopause",
+      },
+    },
+    {
+      afterParagraph: 4,
+      product: {
+        product_name: "Calcium + D3 + K2",
+        brand: "Garden of Life",
+        price_usd: 29.99,
+        affiliate_url: getAmazonSearchLink("Calcium D3 K2 bone health", "Garden of Life"),
+        note: "Complete bone support formula with plant-sourced calcium",
+      },
+    },
+  ],
+  "fatty-liver-nafld-supplements": [
+    {
+      afterParagraph: 1,
+      product: {
+        product_name: "Ultimate Omega 2X",
+        brand: "Nordic Naturals",
+        price_usd: 39.99,
+        affiliate_url: getAmazonSearchLink("Omega-3 high dose EPA DHA", "Nordic Naturals"),
+        note: "Therapeutic-dose omega-3 — IFOS 5-star certified purity",
+      },
+    },
+    {
+      afterParagraph: 4,
+      product: {
+        product_name: "Milk Thistle (Silymarin)",
+        brand: "Jarrow Formulas",
+        price_usd: 14.99,
+        affiliate_url: getAmazonSearchLink("Milk Thistle Silymarin", "Jarrow"),
+        note: "Standardized 80% silymarin extract for liver support",
+      },
+    },
+  ],
+  "adhd-supplements-clinical-evidence": [
+    {
+      afterParagraph: 1,
+      product: {
+        product_name: "DHA Xtra",
+        brand: "Nordic Naturals",
+        price_usd: 27.99,
+        affiliate_url: getAmazonSearchLink("DHA omega-3 supplement", "Nordic Naturals"),
+        note: "High-DHA formula — the specific omega-3 with strongest ADHD evidence",
+      },
+    },
+    {
+      afterParagraph: 4,
+      product: {
+        product_name: "Zinc Picolinate 30mg",
+        brand: "Thorne",
+        price_usd: 15.99,
+        affiliate_url: getAmazonSearchLink("Zinc Picolinate", "Thorne"),
+        note: "Highly bioavailable zinc — commonly deficient in ADHD",
+      },
+    },
+  ],
+  "vegan-supplement-checklist": [
+    {
+      afterParagraph: 1,
+      product: {
+        product_name: "Methylcobalamin B12 5000mcg",
+        brand: "Jarrow Formulas",
+        price_usd: 13.99,
+        affiliate_url: getAmazonSearchLink("Vegan B12 Methylcobalamin", "Jarrow"),
+        note: "Active-form B12 — non-negotiable for every vegan",
+      },
+    },
+    {
+      afterParagraph: 4,
+      product: {
+        product_name: "Algae Omega DHA+EPA",
+        brand: "Nordic Naturals",
+        price_usd: 33.99,
+        affiliate_url: getAmazonSearchLink("Algae Omega DHA EPA vegan", "Nordic Naturals"),
+        note: "Plant-based omega-3 from microalgae — superior to flax conversion",
+      },
+    },
+  ],
+  "keto-electrolyte-guide": [
+    {
+      afterParagraph: 1,
+      product: {
+        product_name: "Electrolyte Powder (Keto)",
+        brand: "LMNT",
+        price_usd: 39.99,
+        affiliate_url: getAmazonSearchLink("LMNT electrolyte keto"),
+        note: "Formulated for low-carb diets — sodium, potassium, magnesium",
+      },
+    },
+    {
+      afterParagraph: 4,
+      product: {
+        product_name: "Magnesium Glycinate 400mg",
+        brand: "Doctor's Best",
+        price_usd: 14.99,
+        affiliate_url: getAmazonSearchLink("Magnesium Glycinate 400mg", "Doctor's Best"),
+        note: "High-absorption magnesium — critical for keto electrolyte balance",
+      },
+    },
+  ],
+  "athlete-recovery-supplements": [
+    {
+      afterParagraph: 1,
+      product: {
+        product_name: "Creatine Monohydrate Powder",
+        brand: "Thorne",
+        price_usd: 29.99,
+        affiliate_url: getAmazonSearchLink("Creatine Monohydrate", "Thorne"),
+        note: "NSF Certified for Sport — the gold standard in creatine",
+      },
+    },
+    {
+      afterParagraph: 4,
+      product: {
+        product_name: "Tart Cherry Extract",
+        brand: "Sports Research",
+        price_usd: 21.99,
+        affiliate_url: getAmazonSearchLink("Tart Cherry Extract recovery"),
+        note: "Concentrated Montmorency cherry — clinically shown to reduce DOMS",
+      },
+    },
+  ],
+  "stress-supplements-adaptogens": [
+    {
+      afterParagraph: 1,
+      product: {
+        product_name: "KSM-66 Ashwagandha",
+        brand: "Jarrow Formulas",
+        price_usd: 18.99,
+        affiliate_url: getAmazonSearchLink("KSM-66 Ashwagandha", "Jarrow"),
+        note: "Full-spectrum root extract — the most clinically studied ashwagandha",
+      },
+    },
+    {
+      afterParagraph: 4,
+      product: {
+        product_name: "L-Theanine 200mg",
+        brand: "NOW Foods",
+        price_usd: 12.99,
+        affiliate_url: getAmazonSearchLink("L-Theanine 200mg", "NOW Foods"),
+        note: "Calm focus without drowsiness — works in 30–60 minutes",
+      },
+    },
+  ],
+  "sleep-supplements-pharmacologist-guide": [
+    {
+      afterParagraph: 1,
+      product: {
+        product_name: "Magnesium Glycinate",
+        brand: "NOW Foods",
+        price_usd: 15.99,
+        affiliate_url: getAmazonSearchLink("Magnesium Glycinate sleep", "NOW Foods"),
+        note: "The specific magnesium form preferred for sleep — calming glycine carrier",
+      },
+    },
+    {
+      afterParagraph: 4,
+      product: {
+        product_name: "Glycine Powder",
+        brand: "BulkSupplements",
+        price_usd: 14.99,
+        affiliate_url: getAmazonSearchLink("Glycine powder sleep"),
+        note: "3g before bed lowers core body temperature to initiate sleep",
+      },
+    },
+  ],
+  "hashimotos-thyroiditis-supplements": [
+    {
+      afterParagraph: 1,
+      product: {
+        product_name: "Selenium 200mcg (Selenomethionine)",
+        brand: "Pure Encapsulations",
+        price_usd: 16.99,
+        affiliate_url: getAmazonSearchLink("Selenium Selenomethionine 200mcg", "Pure Encapsulations"),
+        note: "Selenomethionine form — the best-studied form for TPO antibody reduction",
+      },
+    },
+    {
+      afterParagraph: 4,
+      product: {
+        product_name: "Vitamin D3 5000 IU",
+        brand: "Thorne",
+        price_usd: 19.99,
+        affiliate_url: getAmazonSearchLink("Vitamin D3 5000 IU", "Thorne"),
+        note: "Autoimmune-supportive dose — commonly deficient in Hashimoto's",
+      },
+    },
+  ],
 };
 
 // ─── Key Takeaways per article ────────────────────────────────────────────────
@@ -277,6 +497,66 @@ const KEY_TAKEAWAYS: Record<string, string[]> = {
     "The 'you'll pee out excess vitamins' myth is dangerous for fat-soluble vitamins A, D, E, and K.",
     "Form matters enormously: magnesium oxide has ~4% absorption vs. ~80% for glycinate.",
     "Expensive supplements rarely outperform evidence-backed low-cost alternatives.",
+  ],
+  "migraine-prevention-supplements": [
+    "Magnesium (400 mg citrate/glycinate) reduces migraine frequency by up to 50% in multiple RCTs.",
+    "Riboflavin (B2) at 400 mg/day is one of the cheapest, safest, and most underrated migraine preventives.",
+    "CoQ10 at 300 mg/day shows moderate benefit, particularly in patients with low baseline levels.",
+    "These supplements are preventive — they reduce frequency over weeks, not acute pain during an attack.",
+  ],
+  "menopause-supplement-guide": [
+    "Black cohosh is the most studied herbal for hot flashes, with multiple meta-analyses supporting its use.",
+    "Calcium + D3 + K2 is essential post-menopause for bone protection — osteoporosis risk doubles after menopause.",
+    "Maca root (2–3 g/day) shows promise for energy and libido in Peruvian clinical studies.",
+    "HRT remains first-line for many women — supplements complement but don't replace medical treatment.",
+  ],
+  "fatty-liver-nafld-supplements": [
+    "Omega-3 at therapeutic doses (2,000–4,000 mg/day) has strong evidence for reducing liver fat in NAFLD.",
+    "Vitamin E (400–800 IU) improved liver histology in the landmark PIVENS trial for NASH patients.",
+    "Weight loss of just 5–10% body weight is more effective than any supplement for fatty liver.",
+    "Liver enzyme levels (ALT/AST) alone don't tell the full story — imaging and fibrosis markers matter more.",
+  ],
+  "adhd-supplements-clinical-evidence": [
+    "Omega-3 fatty acids (especially DHA) have the strongest nutritional evidence for ADHD symptom improvement.",
+    "Ferritin levels below 30 ng/mL are associated with worse ADHD symptoms — iron testing is critical.",
+    "Zinc and magnesium are commonly deficient in ADHD patients and may improve symptoms when corrected.",
+    "Supplements are adjunctive — they support but do not replace behavioral therapy or medication.",
+  ],
+  "vegan-supplement-checklist": [
+    "B12 supplementation is non-negotiable on a vegan diet — no plant food provides adequate B12.",
+    "Algae-based omega-3 (DHA/EPA) is essential because flaxseed conversion to DHA is below 5%.",
+    "Vegans need ~50% more zinc and iron due to phytates and non-heme iron absorption differences.",
+    "The BCMO1 gene variant means some people cannot efficiently convert beta-carotene to vitamin A.",
+  ],
+  "keto-electrolyte-guide": [
+    "The 'keto flu' is primarily an electrolyte imbalance, not carbohydrate withdrawal.",
+    "Sodium needs on keto are 3–5 g/day — far higher than standard dietary recommendations.",
+    "Magnesium is rapidly depleted on keto through increased renal excretion — supplement 300–400 mg/day.",
+    "Simply adding salt is insufficient — potassium and magnesium must be addressed simultaneously.",
+  ],
+  "athlete-recovery-supplements": [
+    "Creatine monohydrate is the most studied supplement in sports science — 5 g/day, no loading or cycling needed.",
+    "Collagen + vitamin C taken 30–60 minutes pre-exercise stimulates tendon and ligament synthesis.",
+    "Tart cherry extract reduces delayed-onset muscle soreness (DOMS) by 13–25% in multiple trials.",
+    "Sleep is the #1 recovery tool — supplements support recovery but cannot compensate for poor sleep.",
+  ],
+  "stress-supplements-adaptogens": [
+    "Ashwagandha (KSM-66) reduced serum cortisol by ~30% in randomized controlled trials.",
+    "L-theanine produces calm focus within 30–60 minutes without sedation — ideal for acute stress.",
+    "Adaptogens work best when cycled (6 weeks on, 1 week off) to maintain receptor sensitivity.",
+    "The COMT gene variant affects how individuals metabolize stress compounds — not all adaptogens suit everyone.",
+  ],
+  "sleep-supplements-pharmacologist-guide": [
+    "Melatonin at 0.5–1 mg works better than 5–10 mg — higher doses can paradoxically worsen sleep quality.",
+    "Glycine (3 g before bed) lowers core body temperature, which is the physiological trigger for sleep onset.",
+    "Sleep hygiene must come first — no supplement can override blue light, caffeine, or irregular schedules.",
+    "Sleep supplements interact with benzodiazepines, SSRIs, and antihistamines — always check for interactions.",
+  ],
+  "hashimotos-thyroiditis-supplements": [
+    "Selenium 200 mcg/day reduces TPO antibodies — the strongest supplement evidence in Hashimoto's management.",
+    "High-dose iodine and kelp supplements can worsen Hashimoto's — this is one of the most common mistakes.",
+    "Levothyroxine must be taken 4 hours apart from calcium, iron, and magnesium to avoid absorption interference.",
+    "Monitoring TPO antibodies (not just TSH) is essential to track autoimmune disease activity.",
   ],
 };
 
@@ -320,6 +600,72 @@ const ARTICLE_SUPPLEMENTS: Record<string, string[]> = {
     "Vitamin D3",
     "Folate",
     "CoQ10",
+  ],
+  "migraine-prevention-supplements": [
+    "Magnesium",
+    "Riboflavin (B2)",
+    "CoQ10",
+  ],
+  "menopause-supplement-guide": [
+    "Black Cohosh",
+    "Calcium",
+    "Vitamin D3",
+    "Vitamin K2",
+    "Magnesium",
+    "Maca",
+  ],
+  "fatty-liver-nafld-supplements": [
+    "Omega-3",
+    "Vitamin E",
+    "Milk Thistle",
+    "NAC",
+    "Berberine",
+  ],
+  "adhd-supplements-clinical-evidence": [
+    "Omega-3",
+    "Iron",
+    "Zinc",
+    "Magnesium",
+  ],
+  "vegan-supplement-checklist": [
+    "Vitamin B12",
+    "Omega-3",
+    "Iron",
+    "Zinc",
+    "Vitamin D3",
+    "Calcium",
+    "Iodine",
+  ],
+  "keto-electrolyte-guide": [
+    "Magnesium",
+    "Potassium",
+    "Sodium",
+    "Taurine",
+  ],
+  "athlete-recovery-supplements": [
+    "Creatine",
+    "Omega-3",
+    "Magnesium",
+    "Collagen",
+    "Tart Cherry Extract",
+  ],
+  "stress-supplements-adaptogens": [
+    "Ashwagandha",
+    "Rhodiola",
+    "L-Theanine",
+    "Magnesium",
+  ],
+  "sleep-supplements-pharmacologist-guide": [
+    "Magnesium",
+    "Melatonin",
+    "L-Theanine",
+    "Glycine",
+  ],
+  "hashimotos-thyroiditis-supplements": [
+    "Selenium",
+    "Vitamin D3",
+    "Zinc",
+    "Iron",
   ],
 };
 
