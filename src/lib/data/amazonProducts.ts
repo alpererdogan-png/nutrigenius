@@ -1,4 +1,67 @@
-const AMAZON_TAG = "clareohealth-20";
+// ─── Geo-routed Amazon affiliate stores ──────────────────────────────────────
+
+const AMAZON_STORES: Record<string, { domain: string; tag: string }> = {
+  US: { domain: "amazon.com", tag: "clareohealth-20" },
+  GB: { domain: "amazon.co.uk", tag: "clareohealth-21" },
+  DE: { domain: "amazon.de", tag: "clareohealt01-21" },
+  FR: { domain: "amazon.fr", tag: "clareohealt0a-21" },
+  IT: { domain: "amazon.it", tag: "clareohealt07-21" },
+  ES: { domain: "amazon.es", tag: "clareoheal02a-21" },
+  TR: { domain: "amazon.com.tr", tag: "clareohealt03-21" },
+  IE: { domain: "amazon.co.uk", tag: "clareohealth-21" },
+};
+
+const EU_COUNTRIES = [
+  "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "GR",
+  "HU", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SE",
+  "SI", "SK", "NO", "CH",
+];
+
+function getAmazonStore(countryCode?: string): { domain: string; tag: string } {
+  if (!countryCode) return AMAZON_STORES.US;
+  const upper = countryCode.toUpperCase();
+  if (AMAZON_STORES[upper]) return AMAZON_STORES[upper];
+  if (EU_COUNTRIES.includes(upper)) return AMAZON_STORES.DE;
+  return AMAZON_STORES.US;
+}
+
+/** Map quiz country name to ISO 2-letter code */
+const COUNTRY_NAME_TO_CODE: Record<string, string> = {
+  "Ireland": "IE", "United Kingdom": "GB", "United States": "US",
+  "Canada": "CA", "Australia": "AU", "Germany": "DE", "France": "FR",
+  "Spain": "ES", "Italy": "IT", "Netherlands": "NL", "Belgium": "BE",
+  "Sweden": "SE", "Denmark": "DK", "Norway": "NO", "Finland": "FI",
+  "Austria": "AT", "Switzerland": "CH", "Poland": "PL", "Portugal": "PT",
+  "Greece": "GR", "Czech Republic": "CZ", "Romania": "RO", "Hungary": "HU",
+  "Croatia": "HR", "Bulgaria": "BG", "Turkey": "TR", "UAE": "AE",
+  "Saudi Arabia": "SA", "India": "IN",
+};
+
+export function countryNameToCode(name: string): string {
+  return COUNTRY_NAME_TO_CODE[name] ?? "US";
+}
+
+/**
+ * Detect country from navigator.language (client-side fallback).
+ * Returns a 2-letter country code.
+ */
+export function detectCountryFromLocale(): string {
+  if (typeof navigator === "undefined") return "US";
+  const lang = navigator.language ?? "";
+  // Try region subtag first (e.g. "en-GB" → "GB", "de-DE" → "DE")
+  const parts = lang.split("-");
+  if (parts.length >= 2) {
+    const region = parts[parts.length - 1].toUpperCase();
+    if (region.length === 2) return region;
+  }
+  // Map primary language to most likely country
+  const LANG_TO_COUNTRY: Record<string, string> = {
+    de: "DE", fr: "FR", it: "IT", es: "ES", tr: "TR",
+    ar: "SA", nl: "NL", pt: "PT", pl: "PL", sv: "SE",
+  };
+  const primary = parts[0].toLowerCase();
+  return LANG_TO_COUNTRY[primary] ?? "US";
+}
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -19,17 +82,19 @@ export interface SupplementProducts {
 
 // ─── Link builders ────────────────────────────────────────────────────────────
 
-/** Direct product link for curated picks */
-export function getAmazonProductLink(asin: string): string {
-  return `https://www.amazon.com/dp/${asin}?tag=${AMAZON_TAG}`;
+/** Direct product link for curated picks (geo-routed) */
+export function getAmazonProductLink(asin: string, countryCode?: string): string {
+  const store = getAmazonStore(countryCode);
+  return `https://www.${store.domain}/dp/${asin}?tag=${store.tag}`;
 }
 
-/** Search link fallback for supplements without curated picks */
-export function getAmazonSearchLink(supplementName: string, form?: string): string {
+/** Search link fallback for supplements without curated picks (geo-routed) */
+export function getAmazonSearchLink(supplementName: string, form?: string, countryCode?: string): string {
   const query = form
     ? `${supplementName} ${form} supplement`
     : `${supplementName} supplement`;
-  return `https://www.amazon.com/s?k=${encodeURIComponent(query)}&tag=${AMAZON_TAG}`;
+  const store = getAmazonStore(countryCode);
+  return `https://www.${store.domain}/s?k=${encodeURIComponent(query)}&tag=${store.tag}`;
 }
 
 // ─── Curated picks ────────────────────────────────────────────────────────────

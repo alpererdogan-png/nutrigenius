@@ -29,6 +29,8 @@ import {
   getProductsForSupplement,
   getAmazonProductLink,
   getAmazonSearchLink,
+  detectCountryFromLocale,
+  countryNameToCode,
 } from "@/src/lib/data/amazonProducts";
 import { Logo } from "@/src/components/ui/Logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -152,7 +154,7 @@ function AmazonButton({ href, className = "" }: { href: string; className?: stri
   );
 }
 
-function WhereToBuy({ name, form }: { name: string; form?: string }) {
+function WhereToBuy({ name, form, countryCode }: { name: string; form?: string; countryCode: string }) {
   const [open, setOpen] = useState(false);
   const products = getProductsForSupplement(name);
 
@@ -188,12 +190,12 @@ function WhereToBuy({ name, form }: { name: string; form?: string }) {
                     </div>
                     <p className="text-[11px] text-[#5A6578] leading-snug mt-0.5">{p.description}</p>
                   </div>
-                  <AmazonButton href={getAmazonProductLink(p.asin)} className="flex-shrink-0" />
+                  <AmazonButton href={getAmazonProductLink(p.asin, countryCode)} className="flex-shrink-0" />
                 </div>
               );
             })
           ) : (
-            <AmazonButton href={getAmazonSearchLink(name, form)} />
+            <AmazonButton href={getAmazonSearchLink(name, form, countryCode)} />
           )}
         </div>
       )}
@@ -203,7 +205,7 @@ function WhereToBuy({ name, form }: { name: string; form?: string }) {
 
 // ─── Supplement Card ──────────────────────────────────────────────────────────
 
-function SupplementCard({ supp }: { supp: SupplementRecommendation }) {
+function SupplementCard({ supp, countryCode }: { supp: SupplementRecommendation; countryCode: string }) {
   const { t } = useLanguage();
   const [expanded, setExpanded] = useState(false);
 
@@ -365,7 +367,7 @@ function SupplementCard({ supp }: { supp: SupplementRecommendation }) {
         )}
 
         {/* Where to Buy */}
-        <WhereToBuy name={supp.name} form={supp.form} />
+        <WhereToBuy name={supp.name} form={supp.form} countryCode={countryCode} />
       </div>
     </div>
   );
@@ -670,6 +672,7 @@ export default function ResultsPage() {
     protocolNotes = [],
   } = result;
   const deficientLabs = getDeficientLabs(prefs.labResults);
+  const amazonCountry = prefs.country ? countryNameToCode(prefs.country) : detectCountryFromLocale();
 
   return (
     <div className="min-h-screen bg-[#f9f9ff]">
@@ -810,7 +813,7 @@ export default function ResultsPage() {
                     {i + 1}
                   </div>
                   <div className="flex-1">
-                    <SupplementCard supp={supp} />
+                    <SupplementCard supp={supp} countryCode={amazonCountry} />
                   </div>
                 </div>
               ))}
