@@ -89,8 +89,8 @@ export default function CookieConsent() {
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 w-full max-w-[360px] animate-in slide-in-from-bottom-4 duration-300">
-      <div className="bg-white rounded-2xl shadow-xl shadow-black/10 overflow-hidden ring-1 ring-black/5">
+    <div className="fixed bottom-0 left-0 right-0 sm:bottom-5 sm:right-5 sm:left-auto z-50 w-full sm:max-w-[360px] animate-in slide-in-from-bottom-4 duration-300">
+      <div className="bg-white rounded-t-2xl sm:rounded-2xl shadow-xl shadow-black/10 overflow-hidden ring-1 ring-black/5">
         {/* Card header */}
         <div className="px-5 pt-5 pb-4">
           <div className="flex items-start gap-3 mb-4">

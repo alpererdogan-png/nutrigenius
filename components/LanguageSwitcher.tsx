@@ -60,7 +60,7 @@ export function LanguageSwitcher() {
 
       {open && (
         <div
-          className="absolute top-full mt-1 right-0 bg-white rounded-xl shadow-lg shadow-black/10 z-[100] min-w-[160px] py-1 overflow-hidden ring-1 ring-black/[0.04]"
+          className="absolute top-full mt-1 right-0 bg-white rounded-xl shadow-lg shadow-black/10 z-[100] w-[180px] max-w-[calc(100vw-2rem)] py-1 overflow-hidden ring-1 ring-black/[0.04]"
           role="listbox"
           aria-label="Language options"
         >
@@ -73,7 +73,7 @@ export function LanguageSwitcher() {
                 setLanguage(lang.code);
                 setOpen(false);
               }}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors text-left ${
+              className={`w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors text-left ${
                 lang.code === language
                   ? "bg-[#e6f4f3] text-[#00685f] font-medium"
                   : "text-[#3D4B5F] hover:bg-[#f0f3ff] font-normal"

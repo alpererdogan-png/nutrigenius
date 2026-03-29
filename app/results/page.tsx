@@ -477,7 +477,7 @@ function WeeklySchedule({
             <button
               key={d}
               onClick={() => setActiveDay(i)}
-              className={`flex-shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`flex-shrink-0 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 activeDay === i
                   ? "bg-[#00685f] text-white"
                   : "bg-[#f0f3ff] text-[#5A6578]"
@@ -684,13 +684,13 @@ export default function ResultsPage() {
     <div className="min-h-screen bg-[#f9f9ff]">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-xl shadow-sm shadow-black/5 sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <button
             onClick={() => router.push("/quiz")}
             className="flex items-center gap-2 text-[#5A6578] hover:text-[#1A2332] text-sm font-medium transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            {t("results.retakeQuiz")}
+            <span className="hidden sm:inline">{t("results.retakeQuiz")}</span>
           </button>
           <div className="flex items-center gap-3">
             <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
@@ -698,7 +698,7 @@ export default function ResultsPage() {
             </Link>
             <LanguageSwitcher />
           </div>
-          <div className="w-24" />
+          <div className="hidden sm:block w-24" />
         </div>
       </div>
 
@@ -765,22 +765,22 @@ export default function ResultsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
-                <div className="text-3xl font-bold text-white">{supplements.length}</div>
-                <div className="text-slate-400 text-xs mt-1">{t("results.supplementsLabel")}</div>
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4 text-center">
+                <div className="text-2xl sm:text-3xl font-bold text-white">{supplements.length}</div>
+                <div className="text-slate-400 text-[10px] sm:text-xs mt-1">{t("results.supplementsLabel")}</div>
               </div>
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
-                <div className="text-3xl font-bold text-white">
+              <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4 text-center">
+                <div className="text-2xl sm:text-3xl font-bold text-white">
                   {supplements.filter((s) => s.evidenceRating === "Strong" || s.evidenceRating === "Moderate").length}
                 </div>
-                <div className="text-slate-400 text-xs mt-1">{t("results.evidenceLabel")}</div>
+                <div className="text-slate-400 text-[10px] sm:text-xs mt-1">{t("results.evidenceLabel")}</div>
               </div>
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
-                <div className="text-3xl font-bold text-[#2DD4BF]">
+              <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4 text-center">
+                <div className="text-2xl sm:text-3xl font-bold text-[#2DD4BF]">
                   {focusAreas.length > 0 ? focusAreas[0].split(" ")[0] : supplements.length}
                 </div>
-                <div className="text-slate-400 text-xs mt-1">
+                <div className="text-slate-400 text-[10px] sm:text-xs mt-1">
                   {focusAreas.length > 0 ? "Top Goal" : t("results.supplementsLabel")}
                 </div>
               </div>
