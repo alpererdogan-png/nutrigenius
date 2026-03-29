@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ArrowLeft, Tag,
+  ArrowLeft, ArrowRight, Tag,
   FlaskConical, ShieldAlert, AlertTriangle,
   HeartPulse, TrendingUp, Brain, Lightbulb,
 } from "lucide-react";
@@ -492,7 +492,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post) return { title: "Article Not Found" };
-  const BASE_URL = "https://nutrigenius.co";
+  const BASE_URL = "https://www.nutrigenius.co";
   const url = `${BASE_URL}/blog/${post.slug}`;
   return {
     title: post.title,
@@ -546,9 +546,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://nutrigenius.co" },
-      { "@type": "ListItem", position: 2, name: "Blog", item: "https://nutrigenius.co/blog" },
-      { "@type": "ListItem", position: 3, name: post.title, item: `https://nutrigenius.co/blog/${post.slug}` },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.nutrigenius.co" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.nutrigenius.co/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: `https://www.nutrigenius.co/blog/${post.slug}` },
     ],
   };
 
@@ -560,20 +560,33 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     datePublished: post.published_at,
     dateModified: post.updated_at ?? post.published_at,
     author: {
-      "@type": "Person",
-      name: post.author_name ?? "NutriGenius Clinical Team",
+      "@type": "Organization",
+      name: "NutriGenius Clinical Team",
     },
     publisher: {
       "@type": "Organization",
       name: "NutriGenius",
-      url: "https://nutrigenius.co",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.nutrigenius.co/icon-512.png",
+      },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://nutrigenius.co/blog/${post.slug}`,
+      "@id": `https://www.nutrigenius.co/blog/${post.slug}`,
     },
     keywords: post.tags?.join(", "),
     articleSection: post.category,
+  };
+
+  const medicalWebPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    about: {
+      "@type": "MedicalCondition",
+      name: formatCategory(post.category),
+    },
+    lastReviewed: post.updated_at ?? post.published_at,
   };
 
   return (
@@ -585,6 +598,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageJsonLd) }}
       />
       {/* ── Top nav ── */}
       <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-xl shadow-sm shadow-black/5">
@@ -830,6 +847,24 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
         </div>
       )}
+
+      {/* CTA: Take the assessment */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-10">
+        <div className="bg-gradient-to-r from-[#00685f] to-[#008577] rounded-2xl p-6 sm:p-8 text-center">
+          <h3 className="font-heading text-lg sm:text-xl font-bold text-white mb-2">
+            Ready to get your personalized protocol?
+          </h3>
+          <p className="text-white/80 text-sm sm:text-base mb-5 max-w-lg mx-auto">
+            Our 5-minute assessment analyzes your health profile and creates an evidence-based supplement plan just for you.
+          </p>
+          <Link
+            href="/quiz"
+            className="inline-flex items-center gap-2 bg-white text-[#00685f] font-semibold text-sm sm:text-base px-6 py-3 rounded-xl hover:bg-white/90 transition-colors"
+          >
+            Take the free assessment <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
 
       {/* Mobile sticky footer ad */}
       <MobileFooterAd />

@@ -147,11 +147,11 @@ export default function BlogPage() {
     name: "NutriGenius Blog — The Science of Healthy Living",
     description:
       "Evidence-based articles on supplements, nutrition, and health. Written by clinical pharmacology experts.",
-    url: "https://nutrigenius.co/blog",
+    url: "https://www.nutrigenius.co/blog",
     publisher: {
       "@type": "Organization",
       name: "NutriGenius",
-      url: "https://nutrigenius.co",
+      url: "https://www.nutrigenius.co",
     },
   };
 

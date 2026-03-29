@@ -9,15 +9,17 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
-const BASE_URL = "https://nutrigenius.co";
+const BASE_URL = "https://www.nutrigenius.co";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -26,7 +28,7 @@ export const metadata: Metadata = {
     template: "%s | NutriGenius",
   },
   description:
-    "Get a free personalized supplement plan backed by science. Drug interaction checks, evidence ratings, and a visual weekly schedule. Designed by clinical pharmacology experts.",
+    "Get a free, science-backed supplement plan in 5 minutes. Our 7-layer algorithm checks drug interactions, adjusts for your diet, lifestyle, genetics, and lab values. Designed by clinical pharmacology experts.",
   keywords: [
     "supplements",
     "personalized nutrition",
@@ -44,24 +46,39 @@ export const metadata: Metadata = {
     canonical: BASE_URL,
     languages: {
       "x-default": BASE_URL,
+      en: BASE_URL,
+      de: BASE_URL,
+      fr: BASE_URL,
+      es: BASE_URL,
+      tr: BASE_URL,
+      ar: BASE_URL,
     },
   },
   openGraph: {
-    title: "NutriGenius — Free Personalized Supplement Recommendations",
+    title: "NutriGenius — Your Supplements, Backed by Science",
     description:
-      "Get a free personalized supplement plan backed by science. Drug interaction checks, evidence ratings, and a visual weekly schedule.",
+      "Free personalized supplement protocol with drug interaction checks, evidence ratings, and a visual weekly schedule.",
     type: "website",
     url: BASE_URL,
     siteName: "NutriGenius",
     locale: "en_US",
+    images: [
+      {
+        url: `${BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "NutriGenius — Free Personalized Supplement Recommendations",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NutriGenius — Free Personalized Supplement Recommendations",
+    title: "NutriGenius — Your Supplements, Backed by Science",
     description:
-      "Get a free personalized supplement plan backed by science. Drug interaction checks, evidence ratings, and a visual weekly schedule.",
+      "Free personalized supplement protocol with drug interaction checks, evidence ratings, and a visual weekly schedule.",
     site: "@nutrigenius",
     creator: "@nutrigenius",
+    images: [`${BASE_URL}/og-image.png`],
   },
   verification: {
     google: "XkM03ceUSDUrlh0R3aMUTnuIqScm6Kc4U5jD7-Xk_qo",

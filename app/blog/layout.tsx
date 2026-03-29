@@ -1,25 +1,25 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "The Science of Healthy Living",
+  title: "Clinical Knowledge Hub — Evidence-Based Supplement Science",
   description:
-    "Evidence-based articles on supplements, nutrition, and health. Written by clinical pharmacology experts.",
+    "Expert articles on evidence-based nutrition, supplement science, drug interactions, and personalized health protocols.",
   alternates: {
-    canonical: "https://nutrigenius.co/blog",
+    canonical: "https://www.nutrigenius.co/blog",
   },
   openGraph: {
-    title: "The Science of Healthy Living | NutriGenius Blog",
+    title: "Clinical Knowledge Hub — Evidence-Based Supplement Science | NutriGenius",
     description:
-      "Evidence-based articles on supplements, nutrition, and health. Written by clinical pharmacology experts.",
+      "Expert articles on evidence-based nutrition, supplement science, drug interactions, and personalized health protocols.",
     type: "website",
-    url: "https://nutrigenius.co/blog",
+    url: "https://www.nutrigenius.co/blog",
     siteName: "NutriGenius",
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Science of Healthy Living | NutriGenius Blog",
+    title: "Clinical Knowledge Hub | NutriGenius",
     description:
-      "Evidence-based articles on supplements, nutrition, and health. Written by clinical pharmacology experts.",
+      "Expert articles on evidence-based nutrition, supplement science, drug interactions, and personalized health protocols.",
   },
 };
 

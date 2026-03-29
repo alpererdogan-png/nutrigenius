@@ -87,7 +87,7 @@ export default async function Image() {
               maxWidth: 900,
             }}
           >
-            Personalized Supplement Recommendations
+            Your Supplements, Backed by Science
           </div>
 
           <div style={{ fontSize: 24, color: "rgba(255,255,255,0.7)", fontWeight: 400 }}>
