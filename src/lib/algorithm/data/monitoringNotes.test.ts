@@ -8,6 +8,7 @@ import {
   MonitoringNote,
 } from './monitoringNotes';
 import { generateProtocol } from '../pipeline';
+import { CYCLE_DAILY } from '../types';
 import type { QuizData, Recommendation } from '../types';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -51,7 +52,7 @@ function stubRec(overrides: Partial<Recommendation> & { id: string }): Recommend
     reasons: [],
     warnings: [],
     contraindications: [],
-    cyclingPattern: { activeDays: [true, true, true, true, true, true, true], description: 'Daily' },
+    cyclingPattern: CYCLE_DAILY,
     sources: [],
     priority: 5,
     category: 'vitamin',

@@ -4,7 +4,7 @@
 
 import { layer5Labs } from './layer5-labs';
 import { layer1Demographic } from './layer1-demographic';
-import { QuizData, Recommendation } from '../types';
+import { QuizData, Recommendation, CYCLE_DAILY } from '../types';
 
 // ─── TEST HELPERS ─────────────────────────────────────────────────────────────
 
@@ -68,7 +68,7 @@ function runLab5WithSeed(
           reasons: [],
           warnings: [],
           contraindications: [],
-          cyclingPattern: 'daily',
+          cyclingPattern: CYCLE_DAILY,
           priority: 5,
           category: 'vitamin',
           separateFrom: [],
@@ -207,7 +207,7 @@ describe('Ferritin — very high (350 ng/mL)', () => {
         reasons: [],
         warnings: [],
         contraindications: [],
-        cyclingPattern: 'daily' as const,
+        cyclingPattern: CYCLE_DAILY,
         priority: 5,
         category: 'mineral' as const,
         separateFrom: [],
@@ -265,7 +265,7 @@ describe('TSH — suppressed / hyperthyroid (0.2 mIU/L)', () => {
       reasons: [],
       warnings: [],
       contraindications: [],
-      cyclingPattern: 'daily',
+      cyclingPattern: CYCLE_DAILY,
       priority: 5,
       category: 'mineral',
       separateFrom: [],
@@ -293,7 +293,7 @@ describe('TSH — suppressed / hyperthyroid (0.2 mIU/L)', () => {
       reasons: [],
       warnings: [],
       contraindications: [],
-      cyclingPattern: 'daily',
+      cyclingPattern: CYCLE_DAILY,
       priority: 7,
       category: 'mineral',
       separateFrom: [],
@@ -376,7 +376,7 @@ describe('HbA1c — normal (5.5%)', () => {
       reasons: [],
       warnings: [],
       contraindications: [],
-      cyclingPattern: 'daily',
+      cyclingPattern: CYCLE_DAILY,
       priority: 7,
       category: 'herbal',
       separateFrom: [],
@@ -405,7 +405,7 @@ describe('HbA1c — normal (5.5%)', () => {
       reasons: [],
       warnings: [],
       contraindications: [],
-      cyclingPattern: 'daily',
+      cyclingPattern: CYCLE_DAILY,
       priority: 7,
       category: 'herbal',
       separateFrom: [],
@@ -551,7 +551,7 @@ describe('Vitamin B12 — high level (900 pg/mL) for vegan', () => {
       reasons: [],
       warnings: [],
       contraindications: [],
-      cyclingPattern: 'daily',
+      cyclingPattern: CYCLE_DAILY,
       priority: 8,
       category: 'vitamin',
       separateFrom: [],
@@ -586,7 +586,7 @@ describe('Vitamin B12 — high level (900 pg/mL) for omnivore', () => {
       reasons: [],
       warnings: [],
       contraindications: [],
-      cyclingPattern: 'daily',
+      cyclingPattern: CYCLE_DAILY,
       priority: 8,
       category: 'vitamin',
       separateFrom: [],
