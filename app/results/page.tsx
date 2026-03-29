@@ -139,6 +139,20 @@ const TIER_CONFIG = [
   },
 ] as const;
 
+function AmazonButton({ href, className = "" }: { href: string; className?: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer sponsored"
+      className={`inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors ${className}`}
+    >
+      <AmazonSmile className="h-[14px] w-auto" />
+      View on Amazon →
+    </a>
+  );
+}
+
 function WhereToBuy({ name, form }: { name: string; form?: string }) {
   const [open, setOpen] = useState(false);
   const products = getProductsForSupplement(name);
@@ -155,56 +169,33 @@ function WhereToBuy({ name, form }: { name: string; form?: string }) {
       </button>
 
       {open && (
-        <div className="mt-3">
+        <div className="mt-3 space-y-2">
           {products ? (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              {TIER_CONFIG.map(({ key, label, badge }) => {
-                const p = products[key];
-                return (
-                  <div
-                    key={key}
-                    className="flex flex-col bg-[#f9f9ff] rounded-xl p-3 ring-1 ring-black/[0.04] hover:ring-[#00685f]/20 transition-colors"
-                  >
-                    <span className={`self-start text-[10px] font-semibold px-2 py-0.5 rounded-full border mb-2 ${badge}`}>
-                      {label}
-                    </span>
-                    <p className="text-[13px] font-semibold text-[#1A2332] leading-snug mb-0.5">
-                      {p.brand}
-                    </p>
-                    <p className="text-xs font-medium text-[#3D4B5F] leading-snug mb-1">
-                      {p.name}
-                    </p>
-                    <p className="text-[11px] text-[#5A6578] leading-snug mb-3 flex-1">
-                      {p.description}
-                    </p>
-                    <a
-                      href={getAmazonProductLink(p.asin)}
-                      target="_blank"
-                      rel="noopener noreferrer sponsored"
-                      className="inline-flex items-center justify-center gap-1.5 border border-[#FF9900]/40 hover:border-[#FF9900]/80 bg-white hover:bg-[#fffbf2] px-3 py-1.5 rounded-lg transition-colors text-xs text-[#5A6578]"
-                    >
-                      Available on
-                      <AmazonSmile className="h-[18px] w-auto" />
-                    </a>
+            TIER_CONFIG.map(({ key, label }) => {
+              const p = products[key];
+              return (
+                <div
+                  key={key}
+                  className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 ring-1 ring-black/[0.04]"
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className={`text-[10px] font-semibold flex-shrink-0 ${key === "best" ? "text-[#00685f]" : "text-[#8896A8]"}`}>
+                        {label}
+                      </span>
+                      <span className="text-[13px] font-semibold text-[#1A2332] leading-snug">
+                        {p.brand} {p.name}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[#5A6578] leading-snug mt-0.5">{p.description}</p>
                   </div>
-                );
-              })}
-            </div>
+                  <AmazonButton href={getAmazonProductLink(p.asin)} className="flex-shrink-0" />
+                </div>
+              );
+            })
           ) : (
-            <a
-              href={getAmazonSearchLink(name, form)}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="inline-flex items-center gap-1.5 border border-[#FF9900]/40 hover:border-[#FF9900]/80 bg-white hover:bg-[#fffbf2] text-sm text-[#5A6578] px-3 py-2 rounded-lg transition-colors"
-            >
-              Available on
-              <AmazonSmile className="h-[18px] w-auto" />
-            </a>
+            <AmazonButton href={getAmazonSearchLink(name, form)} />
           )}
-
-          <p className="text-[10px] text-[#B0B8C4] mt-3 leading-relaxed">
-            As an Amazon Associate, Clareo Health earns from qualifying purchases. This does not affect the price you pay or our recommendations.
-          </p>
         </div>
       )}
     </div>
@@ -1126,6 +1117,10 @@ export default function ResultsPage() {
           </div>
         </div>
 
+        {/* Affiliate disclosure */}
+        <p className="text-xs text-gray-400 text-center mt-8">
+          As an Amazon Associate, Clareo Health earns from qualifying purchases.
+        </p>
       </div>
 
       {/* Footer */}

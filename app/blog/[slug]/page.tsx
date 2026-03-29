@@ -371,27 +371,21 @@ function esc(str: string): string {
 }
 
 function affiliateCardHtml(product: HardcodedProduct): string {
-  return `<div class="my-6 flex items-stretch bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-  <div class="w-1.5 flex-shrink-0" style="background:#00685f"></div>
-  <div class="p-4 flex-1 min-w-0">
-    <p class="text-[10px] font-semibold uppercase tracking-wider mb-1" style="color:#00685f;margin:0">Recommended Product</p>
-    <p class="text-sm font-bold leading-snug" style="color:#1A2332;margin:0 0 2px">${esc(product.product_name)}</p>
-    <p class="text-xs" style="color:#5A6578;margin:0 0 6px">${esc(product.brand)}</p>
-    <p class="text-xs leading-relaxed" style="color:#8896A8;margin:0 0 10px">${esc(product.note)}</p>
-    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
-      <span class="text-base font-bold" style="color:#1A2332">$${product.price_usd.toFixed(2)}</span>
-      <a href="${esc(product.affiliate_url)}" target="_blank" rel="noopener noreferrer nofollow"
-         style="display:inline-flex;align-items:center;gap:5px;background:#00685f;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none;white-space:nowrap">
-        <svg viewBox="0 0 60 18" aria-label="Amazon" style="height:14px;width:auto;flex-shrink:0" fill="currentColor">
-          <text x="0" y="14" font-size="14" font-family="Arial, sans-serif" font-weight="bold" fill="#FF9900">amazon</text>
-          <path d="M3 16 Q17 21 37 16" stroke="#FF9900" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M35 14 L38 17 L35 17" stroke="#FF9900" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Find on Amazon &rarr;
-      </a>
-    </div>
-    <p style="font-size:10px;color:#B0BAC9;margin:8px 0 0">Amazon affiliate link &mdash; as an Amazon Associate, Clareo Health earns from qualifying purchases.</p>
+  return `<div class="my-6" style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06)">
+  <div style="flex:1;min-width:0">
+    <p style="font-size:13px;font-weight:600;color:#1A2332;margin:0;line-height:1.4">${esc(product.product_name)}</p>
+    <p style="font-size:12px;color:#5A6578;margin:2px 0 0">${esc(product.brand)}</p>
+    <p style="font-size:11px;color:#8896A8;margin:2px 0 0;line-height:1.4">${esc(product.note)}</p>
   </div>
+  <a href="${esc(product.affiliate_url)}" target="_blank" rel="noopener noreferrer nofollow"
+     style="display:inline-flex;align-items:center;gap:6px;background:#fff;color:#111c2c;font-size:12px;font-weight:500;padding:8px 16px;border-radius:9999px;text-decoration:none;white-space:nowrap;border:1px solid rgba(0,0,0,0.08);flex-shrink:0;transition:background 0.15s">
+    <svg viewBox="0 0 60 18" aria-label="Amazon" style="height:14px;width:auto;flex-shrink:0" fill="currentColor">
+      <text x="0" y="14" font-size="14" font-family="Arial, sans-serif" font-weight="bold" fill="#FF9900">amazon</text>
+      <path d="M3 16 Q17 21 37 16" stroke="#FF9900" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M35 14 L38 17 L35 17" stroke="#FF9900" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    View on Amazon &rarr;
+  </a>
 </div>`;
 }
 
@@ -711,54 +705,48 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     const picks = getProductsForSupplement(suppName);
                     if (!picks) {
                       return (
-                        <div key={suppName} className="flex items-center justify-between bg-[#f9f9ff] rounded-xl px-4 py-3 ring-1 ring-black/[0.04]">
+                        <div key={suppName} className="flex items-center justify-between gap-3 bg-white rounded-xl px-4 py-3 ring-1 ring-black/[0.04]">
                           <span className="text-sm font-medium text-[#1A2332]">{suppName}</span>
                           <a
                             href={getAmazonSearchLink(suppName)}
                             target="_blank"
                             rel="noopener noreferrer sponsored"
-                            className="text-xs font-semibold text-[#00685f] hover:text-[#005249] inline-flex items-center gap-1.5 transition-colors flex-shrink-0"
+                            className="inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors flex-shrink-0"
                           >
                             <AmazonSmile className="h-[14px] w-auto" />
-                            Find on Amazon →
+                            View on Amazon →
                           </a>
                         </div>
                       );
                     }
                     const best = picks.best;
                     return (
-                      <div key={suppName} className="bg-[#f9f9ff] rounded-xl px-4 py-3 ring-1 ring-black/[0.04]">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="min-w-0">
-                            <p className="text-sm font-semibold text-[#1A2332]">{suppName}</p>
-                            <p className="text-xs text-[#5A6578] mt-0.5">
-                              <span className="font-medium">{best.brand}</span> · {best.name}
-                            </p>
-                            <p className="text-[11px] text-[#8896A8] mt-0.5">{best.description}</p>
-                          </div>
-                          <a
-                            href={getAmazonProductLink(best.asin)}
-                            target="_blank"
-                            rel="noopener noreferrer sponsored"
-                            className="flex-shrink-0 text-xs font-semibold text-[#00685f] hover:text-[#005249] border border-[#00685f]/30 hover:border-[#00685f]/60 bg-white px-3 py-1.5 rounded-lg transition-colors inline-flex items-center gap-1.5"
-                          >
-                            <AmazonSmile className="h-[14px] w-auto" />
-                            Amazon →
-                          </a>
+                      <div key={suppName} className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 ring-1 ring-black/[0.04]">
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[13px] font-semibold text-[#1A2332] leading-snug">
+                            {best.brand} {best.name}
+                          </p>
+                          <p className="text-[11px] text-[#5A6578] mt-0.5">{best.description}</p>
                         </div>
+                        <a
+                          href={getAmazonProductLink(best.asin)}
+                          target="_blank"
+                          rel="noopener noreferrer sponsored"
+                          className="inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors flex-shrink-0"
+                        >
+                          <AmazonSmile className="h-[14px] w-auto" />
+                          View on Amazon →
+                        </a>
                       </div>
                     );
                   })}
                 </div>
-                <p className="text-[10px] text-[#C4CDD8] mt-3 leading-relaxed">
-                  As an Amazon Associate, Clareo Health earns from qualifying purchases. This does not affect the price you pay or our recommendations.
-                </p>
               </div>
             )}
 
             {/* Affiliate disclosure */}
-            <p className="text-[11px] text-[#C4CDD8] mt-4 mb-0 leading-relaxed">
-              As an Amazon Associate, Clareo Health earns from qualifying purchases at no extra cost to you. This does not influence our editorial recommendations.
+            <p className="text-xs text-gray-400 text-center mt-8">
+              As an Amazon Associate, Clareo Health earns from qualifying purchases.
             </p>
 
             {/* CTA */}
