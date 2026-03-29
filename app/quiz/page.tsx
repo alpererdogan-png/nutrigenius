@@ -401,7 +401,7 @@ export default function QuizPage() {
       </div>
 
       {/* Form content */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 pb-32 sm:pb-8">
         <div className="mb-8">
           <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#1A2332] mb-2">
             {STEPS[currentStep - 1].title}
@@ -428,12 +428,12 @@ export default function QuizPage() {
           <StepGenetics data={quizData} updateData={updateData} />
         )}
 
-        {/* Navigation buttons */}
-        <div className={`mt-10 pt-6 flex flex-col sm:flex-row gap-3 ${currentStep > 1 ? "sm:justify-between" : "sm:justify-end"}`}>
+        {/* Navigation buttons — fixed bottom on mobile */}
+        <div className={`fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-[#E8ECF1] px-4 py-3 sm:static sm:bg-transparent sm:backdrop-blur-none sm:border-0 sm:px-0 sm:py-0 sm:mt-10 sm:pt-6 flex flex-col sm:flex-row gap-3 z-40 ${currentStep > 1 ? "sm:justify-between" : "sm:justify-end"}`}>
           {/* Continue — shown first on mobile via order */}
           <button
             onClick={nextStep}
-            className="order-first sm:order-last flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-95 text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20 w-full sm:w-auto"
+            className="order-first sm:order-last flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-95 text-white font-medium px-6 py-3.5 sm:py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20 w-full sm:w-auto"
           >
             {currentStep === 5 ? (
               <>

@@ -189,7 +189,7 @@ export function StepLifestyle({ data, updateData }: Props) {
           {t("quiz.sunTitle")}
         </label>
         <p className="text-xs text-[#8896A8] mb-2">{t("quiz.sunHint")}</p>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           {SUN_EXPOSURE.map((level) => (
             <button
               key={level.value}
