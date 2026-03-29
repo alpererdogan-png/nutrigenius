@@ -99,16 +99,33 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "NutriGenius",
-    url: "https://nutrigenius.co",
-    description: "Evidence-based personalized supplement recommendations",
+    url: "https://www.nutrigenius.co",
+    logo: "https://www.nutrigenius.co/icon-512.png",
+    description: "AI-powered personalized supplement recommendations backed by clinical evidence",
+    parentOrganization: {
+      "@type": "Organization",
+      name: "Clareo Health",
+    },
     sameAs: [],
+  };
+
+  const webSiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "NutriGenius",
+    url: "https://www.nutrigenius.co",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://www.nutrigenius.co/blog?q={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
   };
 
   const webAppJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "NutriGenius",
-    url: "https://nutrigenius.co",
+    url: "https://www.nutrigenius.co",
     applicationCategory: "HealthApplication",
     operatingSystem: "Web",
     description:
@@ -118,6 +135,53 @@ export default function Home() {
       price: "0",
       priceCurrency: "EUR",
     },
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "How does NutriGenius work?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "NutriGenius uses a 7-layer algorithm that analyzes your demographics, diet, lifestyle, health conditions, medications, lab results, and genetic variants to generate personalized supplement recommendations. Every recommendation passes through safety checks for drug interactions, dosage limits, and pregnancy safety.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is NutriGenius free?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, NutriGenius is completely free. No account or credit card is required. You get your full personalized supplement protocol with evidence ratings and a visual weekly schedule in about 5 minutes.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Does NutriGenius check drug interactions?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. Every supplement recommendation is checked against your current medications for potential interactions. The system flags major, moderate, and minor interactions, and will block or adjust recommendations accordingly to keep you safe.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How long does the assessment take?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "The health assessment takes about 5 minutes to complete. You'll answer questions about your demographics, diet, lifestyle, health conditions, medications, and optionally provide lab results and genetic data.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is this medical advice?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. NutriGenius provides educational and informational supplement recommendations only. It is not a medical service and does not replace professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare professional before starting any supplement regimen.",
+        },
+      },
+    ],
   };
 
   const HOW_STEPS = [
@@ -135,7 +199,15 @@ export default function Home() {
       />
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       {/* ── Navigation ── */}

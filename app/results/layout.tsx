@@ -1,25 +1,25 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Your Personalized Supplement Plan",
+  title: "Your Personalized Protocol — NutriGenius",
   description:
-    "Your evidence-based supplement protocol with doses, timing, drug interaction checks, and a downloadable weekly schedule.",
+    "Your evidence-based supplement recommendations with optimal doses, timing schedule, and drug interaction safety checks.",
   robots: {
     index: false,
     follow: false,
   },
   openGraph: {
-    title: "Your Personalized Supplement Plan | NutriGenius",
+    title: "Your Personalized Protocol — NutriGenius",
     description:
-      "Your evidence-based supplement protocol with doses, timing, drug interaction checks, and a downloadable weekly schedule.",
+      "Your evidence-based supplement recommendations with optimal doses, timing schedule, and drug interaction safety checks.",
     type: "website",
     siteName: "NutriGenius",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Your Personalized Supplement Plan | NutriGenius",
+    title: "Your Personalized Protocol — NutriGenius",
     description:
-      "Your evidence-based supplement protocol with doses, timing, drug interaction checks, and a downloadable weekly schedule.",
+      "Your evidence-based supplement recommendations with optimal doses, timing schedule, and drug interaction safety checks.",
   },
 };
 

@@ -1,25 +1,25 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Health Assessment Quiz — Get Your Free Plan",
+  title: "Health Assessment — NutriGenius",
   description:
-    "Complete our 5-minute health assessment to receive personalized supplement recommendations with safety checks and evidence ratings.",
+    "Complete a 5-minute health assessment to receive your personalized supplement protocol. We analyze your demographics, diet, lifestyle, conditions, and medications.",
   alternates: {
-    canonical: "https://nutrigenius.co/quiz",
+    canonical: "https://www.nutrigenius.co/quiz",
   },
   openGraph: {
-    title: "Health Assessment Quiz | NutriGenius — Get Your Free Plan",
+    title: "Health Assessment — NutriGenius",
     description:
-      "Complete our 5-minute health assessment to receive personalized supplement recommendations with safety checks and evidence ratings.",
+      "Complete a 5-minute health assessment to receive your personalized supplement protocol. We analyze your demographics, diet, lifestyle, conditions, and medications.",
     type: "website",
-    url: "https://nutrigenius.co/quiz",
+    url: "https://www.nutrigenius.co/quiz",
     siteName: "NutriGenius",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Health Assessment Quiz | NutriGenius",
+    title: "Health Assessment — NutriGenius",
     description:
-      "Complete our 5-minute health assessment to receive personalized supplement recommendations with safety checks and evidence ratings.",
+      "Complete a 5-minute health assessment to receive your personalized supplement protocol.",
   },
 };
 

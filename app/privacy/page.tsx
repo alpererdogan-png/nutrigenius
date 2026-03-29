@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Privacy Policy | NutriGenius",
   description:
     "NutriGenius Privacy Policy — how we collect, use, and protect your personal and health data under GDPR.",
+  alternates: {
+    canonical: "https://www.nutrigenius.co/privacy",
+  },
   robots: { index: true, follow: true },
 };
 

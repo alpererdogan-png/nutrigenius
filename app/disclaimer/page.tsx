@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Medical Disclaimer | NutriGenius",
   description:
     "NutriGenius Medical Disclaimer — important information about the limitations of our supplement recommendations.",
+  alternates: {
+    canonical: "https://www.nutrigenius.co/disclaimer",
+  },
   robots: { index: true, follow: true },
 };
 

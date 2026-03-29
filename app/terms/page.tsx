@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Terms of Service | NutriGenius",
   description:
     "NutriGenius Terms of Service — your rights and responsibilities when using our supplement recommendation platform.",
+  alternates: {
+    canonical: "https://www.nutrigenius.co/terms",
+  },
   robots: { index: true, follow: true },
 };
 
