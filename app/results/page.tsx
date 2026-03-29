@@ -147,8 +147,7 @@ function AmazonButton({ href, className = "" }: { href: string; className?: stri
       rel="noopener noreferrer sponsored"
       className={`inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors ${className}`}
     >
-      <AmazonSmile className="h-[14px] w-auto" />
-      View on Amazon →
+      View on <AmazonSmile className="h-[14px] w-auto" /> →
     </a>
   );
 }

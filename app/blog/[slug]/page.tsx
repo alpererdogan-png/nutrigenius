@@ -378,13 +378,14 @@ function affiliateCardHtml(product: HardcodedProduct): string {
     <p style="font-size:11px;color:#8896A8;margin:2px 0 0;line-height:1.4">${esc(product.note)}</p>
   </div>
   <a href="${esc(product.affiliate_url)}" target="_blank" rel="noopener noreferrer nofollow"
-     style="display:inline-flex;align-items:center;gap:6px;background:#fff;color:#111c2c;font-size:12px;font-weight:500;padding:8px 16px;border-radius:9999px;text-decoration:none;white-space:nowrap;border:1px solid rgba(0,0,0,0.08);flex-shrink:0;transition:background 0.15s">
+     style="display:inline-flex;align-items:center;gap:5px;background:#fff;color:#111c2c;font-size:12px;font-weight:500;padding:8px 16px;border-radius:9999px;text-decoration:none;white-space:nowrap;border:1px solid rgba(0,0,0,0.08);flex-shrink:0;transition:background 0.15s">
+    View on
     <svg viewBox="0 0 60 18" aria-label="Amazon" style="height:14px;width:auto;flex-shrink:0" fill="currentColor">
       <text x="0" y="14" font-size="14" font-family="Arial, sans-serif" font-weight="bold" fill="#FF9900">amazon</text>
       <path d="M3 16 Q17 21 37 16" stroke="#FF9900" stroke-width="2" fill="none" stroke-linecap="round"/>
       <path d="M35 14 L38 17 L35 17" stroke="#FF9900" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    View on Amazon &rarr;
+    &rarr;
   </a>
 </div>`;
 }
@@ -713,8 +714,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                             rel="noopener noreferrer sponsored"
                             className="inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors flex-shrink-0"
                           >
-                            <AmazonSmile className="h-[14px] w-auto" />
-                            View on Amazon →
+                            View on <AmazonSmile className="h-[14px] w-auto" /> →
                           </a>
                         </div>
                       );
@@ -734,8 +734,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                           rel="noopener noreferrer sponsored"
                           className="inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors flex-shrink-0"
                         >
-                          <AmazonSmile className="h-[14px] w-auto" />
-                          View on Amazon →
+                          View on <AmazonSmile className="h-[14px] w-auto" /> →
                         </a>
                       </div>
                     );
