@@ -297,7 +297,7 @@ export default function PrivacyPage() {
                     ["Vercel", "Website hosting and CDN", "Global (EU edge nodes available)"],
                     ["Resend", "Transactional email delivery", "US (Standard Contractual Clauses apply)"],
                     ["Google AdSense", "Display advertising (future)", "US (Standard Contractual Clauses apply)"],
-                    ["iHerb Affiliate", "Product affiliate links", "US (click tracking only)"],
+                    ["Amazon Associates", "Product affiliate links", "US (click tracking only)"],
                     ["Anthropic Claude API", "AI-powered supplement explanations", "US (no health data retained by Anthropic)"],
                   ].map(([service, purpose, location]) => (
                     <tr key={service as string} className="border border-[#E8ECF1]">

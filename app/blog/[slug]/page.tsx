@@ -17,6 +17,38 @@ import {
 } from "@/src/lib/data/amazonProducts";
 import { Logo } from "@/src/components/ui/Logo";
 
+// ─── Amazon smile icon (inline SVG — matches results page) ─────────────────
+
+function AmazonSmile({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 60 18"
+      aria-label="Amazon"
+      className={className}
+      fill="currentColor"
+    >
+      <text x="0" y="14" fontSize="14" fontFamily="Arial, sans-serif" fontWeight="bold" fill="#FF9900">
+        amazon
+      </text>
+      <path
+        d="M3 16 Q17 21 37 16"
+        stroke="#FF9900"
+        strokeWidth="2"
+        fill="none"
+        strokeLinecap="round"
+      />
+      <path
+        d="M35 14 L38 17 L35 17"
+        stroke="#FF9900"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface BlogPost {
@@ -350,6 +382,11 @@ function affiliateCardHtml(product: HardcodedProduct): string {
       <span class="text-base font-bold" style="color:#1A2332">$${product.price_usd.toFixed(2)}</span>
       <a href="${esc(product.affiliate_url)}" target="_blank" rel="noopener noreferrer nofollow"
          style="display:inline-flex;align-items:center;gap:5px;background:#00685f;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none;white-space:nowrap">
+        <svg viewBox="0 0 60 18" aria-label="Amazon" style="height:14px;width:auto;flex-shrink:0" fill="currentColor">
+          <text x="0" y="14" font-size="14" font-family="Arial, sans-serif" font-weight="bold" fill="#FF9900">amazon</text>
+          <path d="M3 16 Q17 21 37 16" stroke="#FF9900" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M35 14 L38 17 L35 17" stroke="#FF9900" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
         Find on Amazon &rarr;
       </a>
     </div>
@@ -680,8 +717,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                             href={getAmazonSearchLink(suppName)}
                             target="_blank"
                             rel="noopener noreferrer sponsored"
-                            className="text-xs font-semibold text-[#00685f] hover:text-[#005249] inline-flex items-center gap-1 transition-colors flex-shrink-0"
+                            className="text-xs font-semibold text-[#00685f] hover:text-[#005249] inline-flex items-center gap-1.5 transition-colors flex-shrink-0"
                           >
+                            <AmazonSmile className="h-[14px] w-auto" />
                             Find on Amazon →
                           </a>
                         </div>
@@ -702,8 +740,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                             href={getAmazonProductLink(best.asin)}
                             target="_blank"
                             rel="noopener noreferrer sponsored"
-                            className="flex-shrink-0 text-xs font-semibold text-[#00685f] hover:text-[#005249] border border-[#00685f]/30 hover:border-[#00685f]/60 bg-white px-3 py-1.5 rounded-lg transition-colors inline-flex items-center gap-1"
+                            className="flex-shrink-0 text-xs font-semibold text-[#00685f] hover:text-[#005249] border border-[#00685f]/30 hover:border-[#00685f]/60 bg-white px-3 py-1.5 rounded-lg transition-colors inline-flex items-center gap-1.5"
                           >
+                            <AmazonSmile className="h-[14px] w-auto" />
                             Amazon →
                           </a>
                         </div>

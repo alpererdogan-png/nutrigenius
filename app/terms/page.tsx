@@ -168,12 +168,12 @@ export default function TermsPage() {
               7. Affiliate Disclosure
             </h2>
             <p className="text-[#5A6578] leading-relaxed">
-              NutriGenius participates in affiliate programmes, including the iHerb affiliate
-              programme. When you click a product link on our site and make a purchase, we may
-              earn a commission at no additional cost to you. This affiliate relationship does
-              not influence our supplement recommendations — products are recommended based on
-              scientific evidence, not commercial relationships. Prices on third-party sites
-              are set by those retailers and may differ from what is shown.
+              As an Amazon Associate, Clareo Health earns from qualifying purchases. When you
+              click a product link on our site and make a purchase, we may earn a commission at
+              no additional cost to you. This affiliate relationship does not influence our
+              supplement recommendations — products are recommended based on scientific evidence,
+              not commercial relationships. Prices on third-party sites are set by those
+              retailers and may differ from what is shown.
             </p>
           </section>
 
