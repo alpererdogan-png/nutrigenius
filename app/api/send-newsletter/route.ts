@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
         });
 
         const { error } = await resend.emails.send({
-          from: "NutriGenius <onboarding@resend.dev>",
+          from: "NutriGenius <noreply@clareohealth.co>",
           to: [subscriber.email],
           subject: `Your Supplement Intelligence Update 🌿`,
           html,

@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const html = buildWelcomeHtml(email, top3);
 
     const { data, error } = await resend.emails.send({
-      from: "NutriGenius <onboarding@resend.dev>",
+      from: "NutriGenius <noreply@clareohealth.co>",
       to: [email],
       subject: "Your personalized supplement plan is ready 🌿",
       html,
