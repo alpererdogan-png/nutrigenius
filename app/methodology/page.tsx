@@ -9,7 +9,7 @@ import { Logo } from "@/src/components/ui/Logo";
 export const metadata: Metadata = {
   title: "Methodology — How NutriGenius Works",
   description:
-    "Our 7-layer clinical algorithm, evidence standards, drug interaction screening, and safety layers explained. Reviewed by Dr. Esra Ata Erdogan, MD.",
+    "Our 7-layer clinical algorithm, evidence standards, drug interaction screening, and safety layers explained. Reviewed by Dr. Esra Ata, MD.",
   alternates: {
     canonical: "https://www.nutrigenius.co/methodology",
   },
@@ -97,7 +97,7 @@ export default function MethodologyPage() {
             className="inline-flex items-center gap-2 text-xs text-[#5A6578] bg-[#f0f9f8] border border-[#d1ede9] px-3 py-1.5 rounded-full hover:bg-[#e6f4f3] transition-colors"
           >
             <ShieldCheck className="w-3.5 h-3.5 text-[#00685f]" />
-            <span>Reviewed by <strong className="text-[#1A2332]">Dr. Esra Ata Erdogan, MD</strong></span>
+            <span>Reviewed by <strong className="text-[#1A2332]">Dr. Esra Ata, MD</strong></span>
           </Link>
         </div>
 

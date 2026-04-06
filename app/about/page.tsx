@@ -9,7 +9,7 @@ import { Logo } from "@/src/components/ui/Logo";
 export const metadata: Metadata = {
   title: "About — NutriGenius | Evidence-Based Supplement Guidance",
   description:
-    "Meet the team behind NutriGenius. Our medical reviewer Dr. Esra Ata Erdogan, MD, ensures all recommendations are grounded in clinical evidence and safety.",
+    "Meet the team behind NutriGenius. Our medical reviewer Dr. Esra Ata, MD, ensures all recommendations are grounded in clinical evidence and safety.",
   alternates: {
     canonical: "https://www.nutrigenius.co/about",
   },
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Dr. Esra Ata Erdogan",
+  name: "Dr. Esra Ata",
   jobTitle: "Medical Reviewer",
   alumniOf: [
     { "@type": "CollegeOrUniversity", name: "Uludag University" },
@@ -103,16 +103,16 @@ export default function AboutPage() {
             </div>
             <div className="flex-1">
               <h3 className="font-heading text-lg font-bold text-[#1A2332] mb-1">
-                Dr. Esra Ata Erdogan, MD
+                Dr. Esra Ata, MD
               </h3>
               <p className="text-sm text-[#00685f] font-semibold mb-3">
                 Physician · Functional Medicine Certified · GAPS Certified
               </p>
               <p className="text-[#5A6578] leading-relaxed mb-4">
-                Dr. Esra Ata Erdogan earned her medical degree from Uludag University and pursued
+                Dr. Esra Ata earned her medical degree from Uludag University and pursued
                 postgraduate medical education at Istanbul University&apos;s Cerrahpasa Faculty of
                 Medicine. She is certified in Functional Medicine and the GAPS (Gut and Psychology
-                Syndrome) Protocol. At NutriGenius, Dr. Ata Erdogan oversees medical content review
+                Syndrome) Protocol. At NutriGenius, Dr. Ata oversees medical content review
                 and ensures all recommendations are grounded in clinical evidence and safety.
               </p>
               <div className="flex flex-wrap gap-3">

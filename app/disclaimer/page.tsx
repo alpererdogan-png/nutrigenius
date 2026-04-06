@@ -189,7 +189,7 @@ export default function DisclaimerPage() {
             <p className="text-[#5A6578] leading-relaxed">
               NutriGenius content is medically reviewed by{" "}
               <Link href="/about#medical-reviewer" className="text-[#00685f] font-semibold hover:underline">
-                Dr. Esra Ata Erdogan, MD
+                Dr. Esra Ata, MD
               </Link>
               {" "}— a physician certified in Functional Medicine and the GAPS Protocol.
               However, this platform provides educational information and does not constitute

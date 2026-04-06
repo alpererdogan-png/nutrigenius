@@ -358,7 +358,7 @@ export default function BlogPage() {
             <CookieSettingsLink className="hover:text-[#00685f] transition-colors cursor-pointer" />
           </div>
           <div className="w-full text-xs text-[#8896A8] space-y-1">
-            <p>Medical Review: <Link href="/about#medical-reviewer" className="text-[#00685f] hover:underline">Dr. Esra Ata Erdogan, MD</Link></p>
+            <p>Medical Review: <Link href="/about#medical-reviewer" className="text-[#00685f] hover:underline">Dr. Esra Ata, MD</Link></p>
             <p>© {new Date().getFullYear()} NutriGenius. All rights reserved.</p>
           </div>
         </div>

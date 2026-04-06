@@ -745,7 +745,7 @@ export default function Home() {
                 {"Your safety is non-negotiable"}
               </h2>
               <p className="text-slate-300 text-lg leading-relaxed mb-8">
-                {"Medically reviewed by Dr. Esra Ata Erdogan, MD — a physician certified in Functional Medicine and GAPS Protocol. Clinical architecture by a Pharmaceutical Clinical Development Expert. Every recommendation passes through multiple safety layers before it reaches you."}
+                {"Medically reviewed by Dr. Esra Ata, MD — a physician certified in Functional Medicine and GAPS Protocol. Clinical architecture by a Pharmaceutical Clinical Development Expert. Every recommendation passes through multiple safety layers before it reaches you."}
               </p>
               <div className="space-y-4">
                 {[
@@ -870,7 +870,7 @@ export default function Home() {
             </p>
             <p className="text-xs text-[#8896A8] leading-relaxed">
               <strong>Medical Review:</strong>{" "}
-              <Link href="/about#medical-reviewer" className="text-[#00685f] hover:underline">Dr. Esra Ata Erdogan, MD</Link>
+              <Link href="/about#medical-reviewer" className="text-[#00685f] hover:underline">Dr. Esra Ata, MD</Link>
               {" "}— Physician, Functional Medicine &amp; GAPS Certified
             </p>
             <p className="text-xs text-[#8896A8] mt-4">

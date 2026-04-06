@@ -943,7 +943,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     },
     reviewedBy: {
       "@type": "Person",
-      name: "Dr. Esra Ata Erdogan",
+      name: "Dr. Esra Ata",
       jobTitle: "Physician, Functional Medicine Certified",
       url: "https://www.nutrigenius.co/about#medical-reviewer",
     },
@@ -973,7 +973,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     lastReviewed: post.updated_at ?? post.published_at,
     reviewedBy: {
       "@type": "Person",
-      name: "Dr. Esra Ata Erdogan",
+      name: "Dr. Esra Ata",
       jobTitle: "Physician, Functional Medicine Certified",
       url: "https://www.nutrigenius.co/about#medical-reviewer",
     },
@@ -1034,7 +1034,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             className="inline-flex items-center gap-2 text-xs text-[#5A6578] bg-[#f0f9f8] border border-[#d1ede9] px-3 py-1.5 rounded-full hover:bg-[#e6f4f3] transition-colors"
           >
             <ShieldCheck className="w-3.5 h-3.5 text-[#00685f]" />
-            <span>Medically reviewed by <strong className="text-[#1A2332]">Dr. Esra Ata Erdogan, MD</strong></span>
+            <span>Medically reviewed by <strong className="text-[#1A2332]">Dr. Esra Ata, MD</strong></span>
           </Link>
         </div>
       </div>
@@ -1271,8 +1271,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <p className="text-sm text-[#1A2332] font-semibold mb-1">Medically Reviewed</p>
             <p className="text-sm text-[#5A6578] leading-relaxed">
               This article was medically reviewed by{" "}
-              <strong className="text-[#1A2332]">Dr. Esra Ata Erdogan, MD</strong> — a physician
-              certified in Functional Medicine and the GAPS Protocol. Dr. Ata Erdogan graduated
+              <strong className="text-[#1A2332]">Dr. Esra Ata, MD</strong> — a physician
+              certified in Functional Medicine and the GAPS Protocol. Dr. Ata graduated
               from Uludag University and pursued postgraduate medical education at Istanbul
               University Cerrahpasa.{" "}
               <Link href="/about" className="text-[#00685f] font-semibold hover:underline">
