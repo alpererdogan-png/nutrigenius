@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { LanguageProvider } from "@/lib/language-context";
+
 import CookieConsent from "@/components/CookieConsent";
 import { AdSenseLoader } from "@/components/AdSenseLoader";
 
@@ -44,15 +44,6 @@ export const metadata: Metadata = {
   publisher: "NutriGenius",
   alternates: {
     canonical: BASE_URL,
-    languages: {
-      "x-default": BASE_URL,
-      en: BASE_URL,
-      de: BASE_URL,
-      fr: BASE_URL,
-      es: BASE_URL,
-      tr: BASE_URL,
-      ar: BASE_URL,
-    },
   },
   openGraph: {
     title: "NutriGenius — Your Supplements, Backed by Science",
@@ -113,11 +104,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${plusJakarta.variable} font-sans antialiased`}
       >
-        <LanguageProvider>
-          {children}
-          <CookieConsent />
-          <AdSenseLoader />
-        </LanguageProvider>
+        {children}
+        <CookieConsent />
+        <AdSenseLoader />
       </body>
     </html>
   );

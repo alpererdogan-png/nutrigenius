@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useLanguage } from "@/lib/language-context";
 import { Cookie, ChevronDown, ChevronUp } from "lucide-react";
 
 interface CookiePrefs {
@@ -44,7 +43,6 @@ function Toggle({
 }
 
 export default function CookieConsent() {
-  const { t } = useLanguage();
   const [show, setShow] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [prefs, setPrefs] = useState({
@@ -100,7 +98,7 @@ export default function CookieConsent() {
             <div className="min-w-0">
               <p className="text-sm font-semibold text-[#1a2332] leading-snug">Cookie Preferences</p>
               <p className="text-xs text-[#5a6578] mt-0.5 leading-snug">
-                {t("cookies.message")}
+                {"We use cookies to improve your experience and analyze site traffic. We respect your privacy."}
               </p>
             </div>
           </div>
@@ -111,13 +109,13 @@ export default function CookieConsent() {
               onClick={() => save(false, false, false)}
               className="flex-1 px-3 py-2 text-xs font-medium text-[#5a6578] bg-[#f0f3ff] hover:bg-[#e5e8f5] rounded-xl transition-colors"
             >
-              {t("cookies.rejectNonEssential")}
+              {"Reject Non-Essential"}
             </button>
             <button
               onClick={() => save(true, true, true)}
               className="flex-1 px-3 py-2 text-xs font-semibold bg-[#00685f] hover:bg-[#005249] text-white rounded-xl transition-colors"
             >
-              {t("cookies.acceptAll")}
+              {"Accept All"}
             </button>
           </div>
 
@@ -126,7 +124,7 @@ export default function CookieConsent() {
             onClick={() => setExpanded((e) => !e)}
             className="flex items-center justify-center gap-1 w-full mt-2 py-1.5 text-xs font-medium text-[#5a6578] hover:text-[#1a2332] transition-colors"
           >
-            {t("cookies.customize")}
+            {"Customize"}
             {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
           </button>
         </div>
@@ -138,20 +136,20 @@ export default function CookieConsent() {
               {/* Necessary — always on */}
               <div className="flex items-center justify-between gap-3 bg-white rounded-xl px-3 py-2.5">
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold text-[#1a2332]">{t("cookies.necessary")}</p>
-                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{t("cookies.necessaryDesc")}</p>
+                  <p className="text-xs font-semibold text-[#1a2332]">{"Necessary"}</p>
+                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{"Required for the site to function. Cannot be disabled."}</p>
                 </div>
                 <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
                   <Toggle enabled={true} onChange={() => {}} disabled />
-                  <span className="text-[10px] text-[#00685f] font-medium">{t("cookies.alwaysOn")}</span>
+                  <span className="text-[10px] text-[#00685f] font-medium">{"Always On"}</span>
                 </div>
               </div>
 
               {/* Analytics */}
               <div className="flex items-center justify-between gap-3 bg-white rounded-xl px-3 py-2.5">
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold text-[#1a2332]">{t("cookies.analytics")}</p>
-                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{t("cookies.analyticsDesc")}</p>
+                  <p className="text-xs font-semibold text-[#1a2332]">{"Analytics"}</p>
+                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{"Helps us understand how visitors interact with the site."}</p>
                 </div>
                 <Toggle enabled={prefs.analytics} onChange={(v) => setPrefs((p) => ({ ...p, analytics: v }))} />
               </div>
@@ -159,8 +157,8 @@ export default function CookieConsent() {
               {/* Advertising */}
               <div className="flex items-center justify-between gap-3 bg-white rounded-xl px-3 py-2.5">
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold text-[#1a2332]">{t("cookies.advertising")}</p>
-                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{t("cookies.advertisingDesc")}</p>
+                  <p className="text-xs font-semibold text-[#1a2332]">{"Advertising"}</p>
+                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{"Used to display Google AdSense ads and support Amazon affiliate partnerships."}</p>
                 </div>
                 <Toggle enabled={prefs.advertising} onChange={(v) => setPrefs((p) => ({ ...p, advertising: v }))} />
               </div>
@@ -168,8 +166,8 @@ export default function CookieConsent() {
               {/* Functional */}
               <div className="flex items-center justify-between gap-3 bg-white rounded-xl px-3 py-2.5">
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold text-[#1a2332]">{t("cookies.functional")}</p>
-                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{t("cookies.functionalDesc")}</p>
+                  <p className="text-xs font-semibold text-[#1a2332]">{"Functional"}</p>
+                  <p className="text-[11px] text-[#5a6578] leading-snug mt-0.5">{"Saves your preferences and quiz progress."}</p>
                 </div>
                 <Toggle enabled={prefs.functional} onChange={(v) => setPrefs((p) => ({ ...p, functional: v }))} />
               </div>
@@ -179,7 +177,7 @@ export default function CookieConsent() {
               onClick={() => save(prefs.analytics, prefs.advertising, prefs.functional)}
               className="w-full px-4 py-2 text-xs font-semibold bg-[#00685f] hover:bg-[#005249] text-white rounded-xl transition-colors"
             >
-              {t("cookies.savePreferences")}
+              {"Save Preferences"}
             </button>
           </div>
         )}
@@ -194,7 +192,6 @@ export function CookieSettingsLink({
 }: {
   className?: string;
 }) {
-  const { t } = useLanguage();
   return (
     <button
       type="button"
@@ -205,7 +202,7 @@ export function CookieSettingsLink({
       }}
       className={className}
     >
-      {t("cookies.cookieSettings")}
+      {"Cookie Settings"}
     </button>
   );
 }

@@ -23,8 +23,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { useLanguage } from "@/lib/language-context";
 import { AdSense } from "@/components/AdSense";
 import { Logo } from "@/src/components/ui/Logo";
 
@@ -88,7 +86,7 @@ const BLOG_ARTICLES = [
 ];
 
 export default function Home() {
-  const { t } = useLanguage();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const scrollCarousel = useCallback((dir: "left" | "right") => {
@@ -185,10 +183,10 @@ export default function Home() {
   };
 
   const HOW_STEPS = [
-    { step: "01", icon: <Pill className="w-6 h-6" />, title: t("how.s1Title"), description: t("how.s1Desc") },
-    { step: "02", icon: <FlaskConical className="w-6 h-6" />, title: t("how.s2Title"), description: t("how.s2Desc") },
-    { step: "03", icon: <Shield className="w-6 h-6" />, title: t("how.s3Title"), description: t("how.s3Desc") },
-    { step: "04", icon: <CalendarCheck className="w-6 h-6" />, title: t("how.s4Title"), description: t("how.s4Desc") },
+    { step: "01", icon: <Pill className="w-6 h-6" />, title: "Health Assessment", description: "Answer questions about your health, medications, lifestyle, and goals. Add lab results or genetic data for even better results." },
+    { step: "02", icon: <FlaskConical className="w-6 h-6" />, title: "Evidence Matching", description: "Our algorithm searches a curated knowledge base of supplement-condition mappings, each rated by evidence strength." },
+    { step: "03", icon: <Shield className="w-6 h-6" />, title: "Safety Screening", description: "Every recommendation is cross-checked against your medications for interactions. Unsafe combinations are automatically blocked." },
+    { step: "04", icon: <CalendarCheck className="w-6 h-6" />, title: "Your Plan", description: "Receive a personalized plan with 5-8 supplements, optimal doses, timing schedule, and clear explanations for each one." },
   ];
 
   return (
@@ -218,21 +216,19 @@ export default function Home() {
           </Link>
           {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-5 text-sm text-[#5A6578]">
-            <Link href="#how-it-works" className="hover:text-[#00685f] transition-colors duration-200">{t("nav.howItWorks")}</Link>
-            <Link href="#features" className="hover:text-[#00685f] transition-colors duration-200">{t("nav.features")}</Link>
-            <Link href="#safety" className="hover:text-[#00685f] transition-colors duration-200">{t("nav.safety")}</Link>
-            <Link href="/blog" className="hover:text-[#00685f] transition-colors duration-200">{t("nav.blog")}</Link>
-            <LanguageSwitcher />
+            <Link href="#how-it-works" className="hover:text-[#00685f] transition-colors duration-200">How It Works</Link>
+            <Link href="#features" className="hover:text-[#00685f] transition-colors duration-200">Features</Link>
+            <Link href="#safety" className="hover:text-[#00685f] transition-colors duration-200">Safety</Link>
+            <Link href="/blog" className="hover:text-[#00685f] transition-colors duration-200">Blog</Link>
           </div>
           <Link
             href="/quiz"
             className="hidden sm:inline-flex bg-[#00685f] hover:bg-[#005249] active:scale-95 text-white text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-md hover:shadow-teal-500/20"
           >
-            {t("nav.cta")}
+            Get Your Free Personalized Plan
           </Link>
           {/* Mobile: language + hamburger */}
           <div className="flex items-center gap-1 sm:hidden">
-            <LanguageSwitcher />
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="w-10 h-10 flex items-center justify-center rounded-lg text-[#5A6578] hover:bg-[#F1F5F9] transition-colors"
@@ -247,10 +243,10 @@ export default function Home() {
           <div className="sm:hidden bg-white/90 backdrop-blur-xl">
             <div className="max-w-6xl mx-auto px-4 py-2 space-y-0">
               {[
-                { href: "#how-it-works", label: t("nav.howItWorks") },
-                { href: "#features", label: t("nav.features") },
-                { href: "#safety", label: t("nav.safety") },
-                { href: "/blog", label: t("nav.blog") },
+                { href: "#how-it-works", label: "How It Works" },
+                { href: "#features", label: "Features" },
+                { href: "#safety", label: "Safety" },
+                { href: "/blog", label: "Blog" },
               ].map((item) => (
                 <Link
                   key={item.href}
@@ -266,7 +262,7 @@ export default function Home() {
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-95 text-white font-semibold px-5 py-4 rounded-xl text-base w-full transition-all duration-200 mt-3 mb-2"
               >
-                {t("hero.cta")}
+                Get Your Free Personalized Plan
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -298,18 +294,18 @@ export default function Home() {
             <div>
               <div className="inline-flex items-center gap-2 bg-teal-500/15 border border-teal-500/25 text-teal-300 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 tracking-wide">
                 <Shield className="w-3.5 h-3.5" />
-                {t("hero.badge")}
+                Evidence-Based · Clinician-Designed · Free
               </div>
 
               <h1 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.07] tracking-tight text-white mb-5">
-                {t("hero.title")}{" "}
+                Your supplements,{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
-                  {t("hero.titleHighlight")}
+                  backed by science
                 </span>
               </h1>
 
               <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-8 max-w-lg">
-                {t("hero.description")}
+                5-minute health assessment → personalized supplement plan with doses, timing, drug interaction checks, and evidence ratings.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-8">
@@ -317,14 +313,14 @@ export default function Home() {
                   href="/quiz"
                   className="inline-flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-95 text-white font-bold px-8 py-4 rounded-xl text-base transition-all duration-200 shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 hover:-translate-y-0.5 w-full sm:w-auto"
                 >
-                  {t("hero.cta")}
+                  Get Your Free Personalized Plan
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="#how-it-works"
                   className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 active:scale-95 border border-white/20 text-white font-medium px-6 py-4 rounded-xl text-base transition-all duration-200 w-full sm:w-auto"
                 >
-                  {t("hero.ctaSecondary")}
+                  See How It Works
                 </Link>
               </div>
 
@@ -332,11 +328,11 @@ export default function Home() {
               <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-400">
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-teal-400 flex-shrink-0" />
-                  {t("hero.noAccount")}
+                  No account required
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-teal-400 flex-shrink-0" />
-                  {t("hero.freeTime")}
+                  100% free · 5 min
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-teal-400 flex-shrink-0" />
@@ -538,10 +534,10 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14 sm:mb-20">
             <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A2332] mb-4 tracking-tight">
-              {t("how.title")}
+              How NutriGenius works
             </h2>
             <p className="text-[#5A6578] text-base sm:text-lg max-w-2xl mx-auto">
-              {t("how.description")}
+              A systematic, evidence-based approach to supplement recommendations — not guesswork.
             </p>
           </div>
 
@@ -602,17 +598,17 @@ export default function Home() {
           <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-10 text-xs sm:text-sm text-[#5A6578] rounded-2xl bg-[#f0f3ff] px-4 py-5 sm:py-4">
             <div className="flex items-center gap-2">
               <FlaskConical className="w-4 h-4 text-[#00685f] flex-shrink-0" />
-              {t("trust.research")}
+              Built on peer-reviewed research
             </div>
             <div className="hidden sm:block w-px h-4 bg-[#c8cede]" />
             <div className="flex items-center gap-2">
               <Shield className="w-4 h-4 text-[#00685f] flex-shrink-0" />
-              {t("trust.drugChecks")}
+              Drug interaction safety checks
             </div>
             <div className="hidden sm:block w-px h-4 bg-[#c8cede]" />
             <div className="flex items-center gap-2">
               <HeartPulse className="w-4 h-4 text-[#00685f] flex-shrink-0" />
-              {t("trust.clinicianDesigned")}
+              Clinician-Designed &amp; Evidence-Based
             </div>
           </div>
         </div>
@@ -625,10 +621,10 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A2332] mb-4 tracking-tight">
-              {t("features.title")}
+              What makes us different
             </h2>
             <p className="text-[#5A6578] text-base sm:text-lg max-w-2xl mx-auto">
-              {t("features.description")}
+              Most supplement recommendations are marketing-driven. Ours are clinically-driven.
             </p>
           </div>
 
@@ -641,9 +637,9 @@ export default function Home() {
                 <Shield className="w-7 h-7" />
               </div>
               <h3 className="font-heading text-xl font-bold text-[#1A2332] mb-3 tracking-tight">
-                {t("features.f2Title")}
+                Drug Interaction Checks
               </h3>
-              <p className="text-[#5A6578] leading-relaxed text-sm flex-1">{t("features.f2Desc")}</p>
+              <p className="text-[#5A6578] leading-relaxed text-sm flex-1">Every supplement is screened against your medications. Critical interactions are blocked. Moderate ones are flagged with clear warnings.</p>
               <div className="mt-6 pt-5 border-t border-amber-200/60">
                 <p className="text-xs text-amber-700/70 font-medium mb-2.5 uppercase tracking-wider">Interaction-checked drugs</p>
                 <div className="flex flex-wrap gap-1.5">
@@ -662,9 +658,9 @@ export default function Home() {
                 <Star className="w-7 h-7" />
               </div>
               <h3 className="font-heading text-xl font-bold text-[#1A2332] mb-3 tracking-tight">
-                {t("features.f3Title")}
+                Evidence Ratings
               </h3>
-              <p className="text-[#5A6578] leading-relaxed text-sm flex-1">{t("features.f3Desc")}</p>
+              <p className="text-[#5A6578] leading-relaxed text-sm flex-1">Each recommendation shows its evidence level — Strong, Moderate, Emerging, or Traditional — so you know exactly what the science says.</p>
               <div className="mt-6 pt-5 border-t border-green-200/60 space-y-2.5">
                 {[
                   { label: "Strong", color: "bg-green-500", w: "w-full", text: "text-green-700" },
@@ -686,32 +682,32 @@ export default function Home() {
             {[
               {
                 icon: <Brain className="w-5 h-5" />,
-                title: t("features.f1Title"),
-                desc: t("features.f1Desc"),
+                title: "Deterministic Algorithm",
+                desc: "Not a chatbot making guesses. A structured rules engine with a curated clinical knowledge base drives every recommendation.",
                 bg: "from-purple-50 to-violet-50",
                 border: "border-purple-200/60",
                 iconCls: "bg-purple-500/15 border-purple-300/40 text-purple-600 group-hover:bg-purple-600 group-hover:text-white",
               },
               {
                 icon: <Dna className="w-5 h-5" />,
-                title: t("features.f4Title"),
-                desc: t("features.f4Desc"),
+                title: "Lab-Informed Dosing",
+                desc: "Upload your blood work results and get recommendations calibrated to your actual biomarker levels, not generic doses.",
                 bg: "from-blue-50 to-indigo-50",
                 border: "border-blue-200/60",
                 iconCls: "bg-blue-500/15 border-blue-300/40 text-blue-600 group-hover:bg-blue-600 group-hover:text-white",
               },
               {
                 icon: <CalendarCheck className="w-5 h-5" />,
-                title: t("features.f5Title"),
-                desc: t("features.f5Desc"),
+                title: "Visual Weekly Schedule",
+                desc: "See exactly what to take and when — morning, midday, evening — with timing optimized for absorption and your daily routine.",
                 bg: "from-teal-50 to-cyan-50",
                 border: "border-teal-200/60",
                 iconCls: "bg-teal-500/15 border-teal-300/40 text-teal-600 group-hover:bg-teal-600 group-hover:text-white",
               },
               {
                 icon: <HeartPulse className="w-5 h-5" />,
-                title: t("features.f6Title"),
-                desc: t("features.f6Desc"),
+                title: "Genetic Personalization",
+                desc: "Have genetic data? MTHFR, COMT, VDR, and other variants are used to select the right supplement forms for your biology.",
                 bg: "from-rose-50 to-pink-50",
                 border: "border-rose-200/60",
                 iconCls: "bg-rose-500/15 border-rose-300/40 text-rose-600 group-hover:bg-rose-600 group-hover:text-white",
@@ -743,22 +739,28 @@ export default function Home() {
             <div>
               <div className="inline-flex items-center gap-2 bg-teal-500/15 border border-teal-500/25 text-teal-300 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 tracking-wide">
                 <Shield className="w-3.5 h-3.5" />
-                {t("safety.badge")}
+                {"Safety First"}
               </div>
               <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white mb-5 tracking-tight">
-                {t("safety.title")}
+                {"Your safety is non-negotiable"}
               </h2>
               <p className="text-slate-300 text-lg leading-relaxed mb-8">
-                {t("safety.description")}
+                {"Medically reviewed by Dr. Esra Ata Erdogan, MD — a physician certified in Functional Medicine and GAPS Protocol. Clinical architecture by a Pharmaceutical Clinical Development Expert. Every recommendation passes through multiple safety layers before it reaches you."}
               </p>
               <div className="space-y-4">
-                {(["p1", "p2", "p3", "p4", "p5"] as const).map((key) => (
-                  <div key={key} className="flex items-start gap-3">
+                {[
+                  "Supplements with critical drug interactions are automatically blocked",
+                  "Doses never exceed established Upper Tolerable Intake Levels",
+                  "Pregnancy and breastfeeding restrictions are strictly enforced",
+                  "All recommendations include evidence ratings and source transparency",
+                  "This platform supplements — never replaces — professional medical advice",
+                ].map((text, i) => (
+                  <div key={i} className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-teal-500/20 border border-teal-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <CheckCircle2 className="w-3.5 h-3.5 text-teal-400" />
                     </div>
                     <span className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                      {t(`safety.${key}`)}
+                      {text}
                     </span>
                   </div>
                 ))}
@@ -823,20 +825,20 @@ export default function Home() {
             Free · No credit card · Results in 5 minutes
           </div>
           <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">
-            {t("cta.title")}
+            {"Ready to optimize your supplement routine?"}
           </h2>
           <p className="text-teal-100 text-base sm:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
-            {t("cta.description")}
+            {"Replace guesswork with evidence-based supplementation. It takes 5 minutes and it's completely free."}
           </p>
           <Link
             href="/quiz"
             className="inline-flex items-center justify-center gap-3 bg-white hover:bg-teal-50 active:scale-95 text-[#00685f] font-bold px-8 sm:px-12 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl transition-all duration-200 hover:-translate-y-1 w-full sm:w-auto"
             style={{ boxShadow: "0 0 60px rgba(255,255,255,0.25), 0 20px 50px rgba(0,0,0,0.18)" }}
           >
-            {t("cta.button")}
+            {"Get Your Free Personalized Plan"}
             <ArrowRight className="w-6 h-6" />
           </Link>
-          <p className="text-teal-200/80 text-sm mt-6">{t("cta.subtext")}</p>
+          <p className="text-teal-200/80 text-sm mt-6">{"No account required · 100% free · Takes 5 minutes"}</p>
         </div>
       </section>
 
@@ -848,25 +850,31 @@ export default function Home() {
               <Logo size="md" variant="light" />
             </Link>
             <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-[#5A6578]">
-              <Link href="/blog" className="hover:text-[#00685f] transition-colors">{t("footer.blog")}</Link>
-              <Link href="/privacy" className="hover:text-[#00685f] transition-colors">{t("footer.privacy")}</Link>
-              <Link href="/terms" className="hover:text-[#00685f] transition-colors">{t("footer.terms")}</Link>
-              <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">{t("footer.disclaimer")}</Link>
+              <Link href="/blog" className="hover:text-[#00685f] transition-colors">{"Blog"}</Link>
+              <Link href="/about" className="hover:text-[#00685f] transition-colors">About</Link>
+              <Link href="/privacy" className="hover:text-[#00685f] transition-colors">{"Privacy Policy"}</Link>
+              <Link href="/terms" className="hover:text-[#00685f] transition-colors">{"Terms of Service"}</Link>
+              <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">{"Medical Disclaimer"}</Link>
               <CookieSettingsLink className="hover:text-[#00685f] transition-colors cursor-pointer" />
             </div>
           </div>
           <div className="bg-[#f9f9ff] rounded-xl p-4 mt-4 space-y-3">
             <p className="text-xs text-[#8896A8] leading-relaxed">
-              <strong>{t("footer.medicalTitle")}</strong>{" "}{t("footer.medicalText")}
+              <strong>{"Medical Disclaimer:"}</strong>{" "}{"NutriGenius provides educational information based on published scientific evidence. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult your healthcare provider before starting any supplement regimen."}
             </p>
             <p className="text-xs text-[#8896A8] leading-relaxed">
-              <strong>{t("footer.affiliateTitle")}</strong>{" "}{t("footer.affiliateText")}
+              <strong>{"Affiliate Disclosure:"}</strong>{" "}{"We may earn commissions from purchases made through links on this platform. This does not affect the price you pay or our recommendations."}
             </p>
             <p className="text-xs text-[#8896A8] leading-relaxed">
-              <strong>{t("footer.aiTitle")}</strong>{" "}{t("footer.aiText")}
+              <strong>{"AI Transparency:"}</strong>{" "}{"Recommendations are generated by an AI system based on published scientific evidence and a structured clinical knowledge base."}
+            </p>
+            <p className="text-xs text-[#8896A8] leading-relaxed">
+              <strong>Medical Review:</strong>{" "}
+              <Link href="/about#medical-reviewer" className="text-[#00685f] hover:underline">Dr. Esra Ata Erdogan, MD</Link>
+              {" "}— Physician, Functional Medicine &amp; GAPS Certified
             </p>
             <p className="text-xs text-[#8896A8] mt-4">
-              {t("footer.copyright", { year: new Date().getFullYear().toString() })}
+              {`© ${new Date().getFullYear()} NutriGenius. All rights reserved.`}
             </p>
           </div>
         </div>

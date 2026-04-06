@@ -29,10 +29,10 @@ import {
   getProductsForSupplement,
   getAmazonProductLink,
   getAmazonSearchLink,
+  detectCountryFromLocale,
+  countryNameToCode,
 } from "@/src/lib/data/amazonProducts";
 import { Logo } from "@/src/components/ui/Logo";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { useLanguage } from "@/lib/language-context";
 
 // ─── Lab deficiency thresholds (mirrors recommend route) ─────────────────────
 
@@ -67,20 +67,19 @@ const EVIDENCE_STYLES: Record<string, { bg: string; text: string; border: string
 };
 
 const EVIDENCE_TRANSLATION_KEYS: Record<string, { label: string; desc: string }> = {
-  Strong:      { label: "results.evidenceStrong",      desc: "results.evidenceStrongDesc" },
-  Moderate:    { label: "results.evidenceModerate",    desc: "results.evidenceModerateDesc" },
-  Emerging:    { label: "results.evidenceEmerging",    desc: "results.evidenceEmergingDesc" },
-  Traditional: { label: "results.evidenceTraditional", desc: "results.evidenceTraditionalDesc" },
+  Strong:      { label: "Strong",      desc: "Backed by multiple high-quality RCTs or meta-analyses" },
+  Moderate:    { label: "Moderate",    desc: "Supported by limited RCTs or strong observational data" },
+  Emerging:    { label: "Emerging",    desc: "Promising early research; more studies needed" },
+  Traditional: { label: "Traditional", desc: "Used historically; limited modern clinical evidence" },
 };
 
 function EvidenceBadge({ rating }: { rating: string }) {
-  const { t } = useLanguage();
   const s = EVIDENCE_STYLES[rating] ?? EVIDENCE_STYLES.Traditional;
   const keys = EVIDENCE_TRANSLATION_KEYS[rating] ?? EVIDENCE_TRANSLATION_KEYS.Traditional;
   return (
     <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border ${s.bg} ${s.text} ${s.border}`}>
       <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-      {t(keys.label)} {t("results.evidenceSuffix")}
+      {keys.label} {"Evidence"}
     </span>
   );
 }
@@ -139,7 +138,20 @@ const TIER_CONFIG = [
   },
 ] as const;
 
-function WhereToBuy({ name, form }: { name: string; form?: string }) {
+function AmazonButton({ href, className = "" }: { href: string; className?: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer sponsored"
+      className={`inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors ${className}`}
+    >
+      View on <AmazonSmile className="h-[14px] w-auto" /> →
+    </a>
+  );
+}
+
+function WhereToBuy({ name, form, countryCode }: { name: string; form?: string; countryCode: string }) {
   const [open, setOpen] = useState(false);
   const products = getProductsForSupplement(name);
 
@@ -155,55 +167,33 @@ function WhereToBuy({ name, form }: { name: string; form?: string }) {
       </button>
 
       {open && (
-        <div className="mt-3">
+        <div className="mt-3 space-y-2">
           {products ? (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              {TIER_CONFIG.map(({ key, label, badge }) => {
-                const p = products[key];
-                return (
-                  <div
-                    key={key}
-                    className="flex flex-col bg-[#f9f9ff] rounded-xl p-3 ring-1 ring-black/[0.04] hover:ring-[#00685f]/20 transition-colors"
-                  >
-                    <span className={`self-start text-[10px] font-semibold px-2 py-0.5 rounded-full border mb-2 ${badge}`}>
-                      {label}
-                    </span>
-                    <p className="text-[13px] font-semibold text-[#1A2332] leading-snug mb-0.5">
-                      {p.brand}
-                    </p>
-                    <p className="text-xs font-medium text-[#3D4B5F] leading-snug mb-1">
-                      {p.name}
-                    </p>
-                    <p className="text-[11px] text-[#5A6578] leading-snug mb-3 flex-1">
-                      {p.description}
-                    </p>
-                    <a
-                      href={getAmazonProductLink(p.asin)}
-                      target="_blank"
-                      rel="noopener noreferrer sponsored"
-                      className="inline-flex items-center justify-center gap-2 border border-[#FF9900]/40 hover:border-[#FF9900]/80 bg-white hover:bg-[#fffbf2] px-3 py-1.5 rounded-lg transition-colors"
-                    >
-                      <AmazonSmile className="h-[14px] w-auto" />
-                    </a>
+            TIER_CONFIG.map(({ key, label }) => {
+              const p = products[key];
+              return (
+                <div
+                  key={key}
+                  className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 ring-1 ring-black/[0.04]"
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className={`text-[10px] font-semibold flex-shrink-0 ${key === "best" ? "text-[#00685f]" : "text-[#8896A8]"}`}>
+                        {label}
+                      </span>
+                      <span className="text-[13px] font-semibold text-[#1A2332] leading-snug">
+                        {p.brand} {p.name}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[#5A6578] leading-snug mt-0.5">{p.description}</p>
                   </div>
-                );
-              })}
-            </div>
+                  <AmazonButton href={getAmazonProductLink(p.asin, countryCode)} className="flex-shrink-0" />
+                </div>
+              );
+            })
           ) : (
-            <a
-              href={getAmazonSearchLink(name, form)}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="inline-flex items-center gap-2 border border-[#FF9900]/40 hover:border-[#FF9900]/80 bg-white hover:bg-[#fffbf2] text-sm font-medium text-[#1A2332] px-3 py-2 rounded-lg transition-colors"
-            >
-              Find {name} on
-              <AmazonSmile className="h-[14px] w-auto" />
-            </a>
+            <AmazonButton href={getAmazonSearchLink(name, form, countryCode)} />
           )}
-
-          <p className="text-[10px] text-[#B0B8C4] mt-3 leading-relaxed">
-            As an Amazon Associate, Clareo Health earns from qualifying purchases. This does not affect the price you pay or our recommendations.
-          </p>
         </div>
       )}
     </div>
@@ -212,8 +202,7 @@ function WhereToBuy({ name, form }: { name: string; form?: string }) {
 
 // ─── Supplement Card ──────────────────────────────────────────────────────────
 
-function SupplementCard({ supp }: { supp: SupplementRecommendation }) {
-  const { t } = useLanguage();
+function SupplementCard({ supp, countryCode }: { supp: SupplementRecommendation; countryCode: string }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -343,7 +332,7 @@ function SupplementCard({ supp }: { supp: SupplementRecommendation }) {
           className="flex items-center gap-2 text-[#00685f] text-sm font-medium hover:text-[#005249] transition-colors w-full text-left"
         >
           <Info className="w-4 h-4 flex-shrink-0" />
-          {t("results.whyRecommendation")}
+          {"Why this recommendation?"}
           {expanded ? <ChevronUp className="w-4 h-4 ml-auto" /> : <ChevronDown className="w-4 h-4 ml-auto" />}
         </button>
 
@@ -358,7 +347,7 @@ function SupplementCard({ supp }: { supp: SupplementRecommendation }) {
                 <div className="flex items-center gap-2 mb-2">
                   <Leaf className="w-4 h-4 text-green-600" />
                   <span className="text-sm font-medium text-[#1A2332]">
-                    {t("results.naturalSources")}
+                    {"Natural food sources"}
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
@@ -374,7 +363,7 @@ function SupplementCard({ supp }: { supp: SupplementRecommendation }) {
         )}
 
         {/* Where to Buy */}
-        <WhereToBuy name={supp.name} form={supp.form} />
+        <WhereToBuy name={supp.name} form={supp.form} countryCode={countryCode} />
       </div>
     </div>
   );
@@ -389,22 +378,21 @@ function WeeklySchedule({
   schedule: RecommendationResult["schedule"];
   supplements: SupplementRecommendation[];
 }) {
-  const { t } = useLanguage();
 
   const DAYS_FULL = [
-    t("results.monday"), t("results.tuesday"), t("results.wednesday"),
-    t("results.thursday"), t("results.friday"), t("results.saturday"), t("results.sunday"),
+    "Monday", "Tuesday", "Wednesday",
+    "Thursday", "Friday", "Saturday", "Sunday",
   ];
   const DAYS_SHORT = [
-    t("results.mon"), t("results.tue"), t("results.wed"),
-    t("results.thu"), t("results.fri"), t("results.sat"), t("results.sun"),
+    "Mon", "Tue", "Wed",
+    "Thu", "Fri", "Sat", "Sun",
   ];
   const DAYS_EN = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const SLOTS_EN = ["Morning", "Midday", "Evening"] as const;
   const SLOT_LABELS: Record<string, string> = {
-    Morning: t("results.morning"),
-    Midday: t("results.midday"),
-    Evening: t("results.evening"),
+    Morning: "Morning",
+    Midday: "Midday",
+    Evening: "Evening",
   };
 
   const slotColors: Record<string, string> = {
@@ -428,7 +416,7 @@ function WeeklySchedule({
           <thead>
             <tr>
               <th className="text-left text-xs font-medium text-[#8896A8] px-3 py-2 w-24">
-                {t("results.slotLabel")}
+                {"Slot"}
               </th>
               {DAYS_FULL.map((day) => (
                 <th key={day} className="text-center text-xs font-medium text-[#1A2332] px-2 py-2">
@@ -497,7 +485,7 @@ function WeeklySchedule({
                   {SLOT_LABELS[slot]}
                 </div>
                 {items.length === 0 ? (
-                  <p className="text-sm text-[#B0B8C4] pl-1">{t("results.nothingScheduled")}</p>
+                  <p className="text-sm text-[#B0B8C4] pl-1">{"Nothing scheduled"}</p>
                 ) : (
                   <div className="space-y-2">
                     {items.map((item) => (
@@ -530,7 +518,6 @@ type UserPrefs = {
 
 export default function ResultsPage() {
   const router = useRouter();
-  const { t } = useLanguage();
   const [result, setResult] = useState<RecommendationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -556,9 +543,9 @@ export default function ResultsPage() {
         setPrefs(parsedPrefs);
       }
     } catch {
-      setError(t("results.loadError"));
+      setError("Could not load your recommendations. Please retake the quiz.");
     }
-  }, [router, t]);
+  }, [router]);
 
   if (error) {
     return (
@@ -567,7 +554,7 @@ export default function ResultsPage() {
           <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
           <p className="text-[#1A2332] font-medium mb-4">{error}</p>
           <button onClick={() => router.push("/quiz")} className="bg-[#00685f] text-white px-6 py-3 rounded-xl font-medium">
-            {t("results.retakeQuiz")}
+            {"Retake Quiz"}
           </button>
         </div>
       </div>
@@ -633,7 +620,7 @@ export default function ResultsPage() {
           </div>
           <div className="text-center pt-4">
             <Loader2 className="w-5 h-5 text-[#00685f] animate-spin inline-block mr-2" />
-            <span className="text-[#5A6578] text-sm">{t("results.loading")}</span>
+            <span className="text-[#5A6578] text-sm">{"Loading your protocol..."}</span>
           </div>
         </div>
       </div>
@@ -679,6 +666,7 @@ export default function ResultsPage() {
     protocolNotes = [],
   } = result;
   const deficientLabs = getDeficientLabs(prefs.labResults);
+  const amazonCountry = prefs.country ? countryNameToCode(prefs.country) : detectCountryFromLocale();
 
   return (
     <div className="min-h-screen bg-[#f9f9ff]">
@@ -690,14 +678,13 @@ export default function ResultsPage() {
             className="flex items-center gap-2 text-[#5A6578] hover:text-[#1A2332] text-sm font-medium transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">{t("results.retakeQuiz")}</span>
+            <span className="hidden sm:inline">{"Retake Quiz"}</span>
           </button>
           <div className="flex items-center gap-3">
             <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
               <Logo size="sm" variant="light" />
             </Link>
-            <LanguageSwitcher />
-          </div>
+</div>
           <div className="hidden sm:block w-24" />
         </div>
       </div>
@@ -710,9 +697,9 @@ export default function ResultsPage() {
             <Mail className="w-5 h-5 text-[#00685f] flex-shrink-0" />
             <p className="text-sm text-[#005249]">
               <span className="font-medium">
-                {t("results.planSentTo", { email: userEmail })}
+                {`Your plan has been sent to ${userEmail}.`}
               </span>{" "}
-              {t("results.checkInbox")}
+              {"Check your inbox!"}
             </p>
           </div>
         )}
@@ -726,7 +713,7 @@ export default function ResultsPage() {
           >
             {pdfLoading
               ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating PDF…</>
-              : <><Download className="w-4 h-4" /> {t("results.downloadPdf")}</>
+              : <><Download className="w-4 h-4" /> {"Download PDF"}</>
             }
           </button>
           <button
@@ -734,9 +721,9 @@ export default function ResultsPage() {
             className="inline-flex items-center gap-2 bg-[#f9f9ff] border border-[#ebebf5] text-[#8896A8] text-sm font-medium px-4 py-2.5 rounded-xl cursor-not-allowed"
           >
             <Bell className="w-4 h-4" />
-            {t("results.setReminders")}
+            {"Set Calendar Reminders"}
             <span className="text-xs bg-[#E8ECF1] text-[#8896A8] px-2 py-0.5 rounded-full">
-              {t("results.comingSoon")}
+              {"Coming soon"}
             </span>
           </button>
         </div>
@@ -760,35 +747,35 @@ export default function ResultsPage() {
               </div>
               <div>
                 <p className="text-[#6B7E96] text-xs font-semibold uppercase tracking-wider mb-1">Your Personalized Protocol</p>
-                <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight">{t("results.heroTitle")}</h1>
-                <p className="text-slate-400 mt-1 text-sm sm:text-base">{t("results.heroSubtitle")}</p>
+                <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight">{"Your Personalised Protocol"}</h1>
+                <p className="text-slate-400 mt-1 text-sm sm:text-base">{"Evidence-based recommendations tailored to your health profile"}</p>
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-2 sm:gap-3">
               <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4 text-center">
                 <div className="text-2xl sm:text-3xl font-bold text-white">{supplements.length}</div>
-                <div className="text-slate-400 text-[10px] sm:text-xs mt-1">{t("results.supplementsLabel")}</div>
+                <div className="text-slate-400 text-[10px] sm:text-xs mt-1">{"Supplements Recommended"}</div>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4 text-center">
                 <div className="text-2xl sm:text-3xl font-bold text-white">
                   {supplements.filter((s) => s.evidenceRating === "Strong" || s.evidenceRating === "Moderate").length}
                 </div>
-                <div className="text-slate-400 text-[10px] sm:text-xs mt-1">{t("results.evidenceLabel")}</div>
+                <div className="text-slate-400 text-[10px] sm:text-xs mt-1">{"Strong/Moderate Evidence"}</div>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4 text-center">
                 <div className="text-2xl sm:text-3xl font-bold text-[#2DD4BF]">
                   {focusAreas.length > 0 ? focusAreas[0].split(" ")[0] : supplements.length}
                 </div>
                 <div className="text-slate-400 text-[10px] sm:text-xs mt-1">
-                  {focusAreas.length > 0 ? "Top Goal" : t("results.supplementsLabel")}
+                  {focusAreas.length > 0 ? "Top Goal" : "Supplements Recommended"}
                 </div>
               </div>
             </div>
 
             {focusAreas.length > 0 && (
               <div className="mt-4 pt-4 border-t border-white/10">
-                <p className="text-slate-500 text-xs mb-2">{t("results.keyFocusAreas")}</p>
+                <p className="text-slate-500 text-xs mb-2">{"Key focus areas"}</p>
                 <div className="flex flex-wrap gap-2">
                   {focusAreas.map((area) => (
                     <span key={area} className="bg-[#00685f]/20 border border-[#00685f]/30 text-[#2DD4BF] text-xs font-medium px-3 py-1 rounded-full">
@@ -803,13 +790,13 @@ export default function ResultsPage() {
 
         {/* Supplements */}
         <section>
-          <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">{t("results.protocolTitle")}</h2>
-          <p className="text-sm text-[#5A6578] mb-5">{t("results.protocolSubtitle")}</p>
+          <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">{"Your Supplement Protocol"}</h2>
+          <p className="text-sm text-[#5A6578] mb-5">{"Ranked by priority — lab-confirmed deficiencies first, then evidence strength."}</p>
           {supplements.length === 0 ? (
             <div className="bg-white border border-[#ebebf5] rounded-2xl p-8 text-center">
               <FlaskConical className="w-10 h-10 text-[#CBD5E1] mx-auto mb-3" />
-              <p className="text-[#5A6578]">{t("results.noSupplements")}</p>
-              <p className="text-sm text-[#8896A8] mt-1">{t("results.noSupplementsHint")}</p>
+              <p className="text-[#5A6578]">{"No specific supplements identified for your profile."}</p>
+              <p className="text-sm text-[#8896A8] mt-1">{"Try adding health conditions or goals in the quiz."}</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -819,7 +806,7 @@ export default function ResultsPage() {
                     {i + 1}
                   </div>
                   <div className="flex-1">
-                    <SupplementCard supp={supp} />
+                    <SupplementCard supp={supp} countryCode={amazonCountry} />
                   </div>
                 </div>
               ))}
@@ -1017,9 +1004,9 @@ export default function ResultsPage() {
         {blockedSupplements.length > 0 && (
           <section>
             <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">
-              {t("results.safetyFilteredTitle")}
+              {"Safety Filtered"}
             </h2>
-            <p className="text-sm text-[#5A6578] mb-4">{t("results.safetyFilteredSubtitle")}</p>
+            <p className="text-sm text-[#5A6578] mb-4">{"These supplements were excluded due to potential interactions or contraindications."}</p>
             <div className="space-y-2">
               {blockedSupplements.map((b, i) => (
                 <div key={i} className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
@@ -1063,8 +1050,8 @@ export default function ResultsPage() {
         {/* Weekly schedule */}
         {supplements.length > 0 && (
           <section>
-            <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">{t("results.scheduleTitle")}</h2>
-            <p className="text-sm text-[#5A6578] mb-5">{t("results.scheduleSubtitle")}</p>
+            <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-1">{"Weekly Schedule"}</h2>
+            <p className="text-sm text-[#5A6578] mb-5">{"Optimal timing based on absorption science and supplement interactions."}</p>
             <div className="bg-white border border-[#ebebf5] rounded-2xl p-4 sm:p-6 overflow-hidden">
               <WeeklySchedule schedule={schedule} supplements={supplements} />
             </div>
@@ -1083,15 +1070,15 @@ export default function ResultsPage() {
 
         {/* Evidence legend */}
         <section className="bg-white border border-[#ebebf5] rounded-2xl p-5 sm:p-6">
-          <h3 className="text-sm font-semibold text-[#1A2332] mb-3">{t("results.evidenceGuideTitle")}</h3>
+          <h3 className="text-sm font-semibold text-[#1A2332] mb-3">{"Evidence Rating Guide"}</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {(["Strong", "Moderate", "Emerging", "Traditional"] as const).map((r) => {
               const s = EVIDENCE_STYLES[r];
               const keys = EVIDENCE_TRANSLATION_KEYS[r];
               return (
                 <div key={r} className={`rounded-xl border p-3 ${s.bg} ${s.border}`}>
-                  <div className={`text-sm font-semibold ${s.text}`}>{t(keys.label)}</div>
-                  <p className="text-xs text-[#5A6578] mt-1">{t(keys.desc)}</p>
+                  <div className={`text-sm font-semibold ${s.text}`}>{keys.label}</div>
+                  <p className="text-xs text-[#5A6578] mt-1">{keys.desc}</p>
                 </div>
               );
             })}
@@ -1104,13 +1091,13 @@ export default function ResultsPage() {
             <RefreshCw className="w-5 h-5 text-[#00685f]" />
           </div>
           <div>
-            <h3 className="font-heading text-sm font-semibold text-[#1A2332] mb-1">{t("results.updateTitle")}</h3>
-            <p className="text-sm text-[#5A6578] leading-relaxed">{t("results.updateDesc")}</p>
+            <h3 className="font-heading text-sm font-semibold text-[#1A2332] mb-1">{"Keep your plan up to date"}</h3>
+            <p className="text-sm text-[#5A6578] leading-relaxed">{"Want to update your plan? Retake the assessment in 3 months for updated recommendations based on your progress and any changes in your health."}</p>
             <button
               onClick={() => router.push("/quiz")}
               className="mt-3 text-sm font-medium text-[#00685f] hover:text-[#005249] transition-colors flex items-center gap-1"
             >
-              {t("results.retakeAssessment")}
+              {"Retake the assessment"}
               <RefreshCw className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -1120,11 +1107,15 @@ export default function ResultsPage() {
         <div className="bg-[#FEF3C7] border border-[#FCD34D] rounded-2xl p-5 flex gap-3">
           <AlertTriangle className="w-5 h-5 text-[#B45309] flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-semibold text-[#92400E]">{t("results.disclaimerTitle")}</p>
-            <p className="text-xs text-[#A16207] mt-1 leading-relaxed">{t("results.disclaimerText")}</p>
+            <p className="text-sm font-semibold text-[#92400E]">{"Medical Disclaimer"}</p>
+            <p className="text-xs text-[#A16207] mt-1 leading-relaxed">{"These recommendations are for informational purposes only and do not constitute medical advice. Always consult a qualified healthcare professional before starting any supplement regimen, especially if you have existing health conditions or take prescription medications. Supplement requirements vary by individual and should be assessed by a qualified clinician."}</p>
           </div>
         </div>
 
+        {/* Affiliate disclosure */}
+        <p className="text-xs text-gray-400 text-center mt-8">
+          As an Amazon Associate, Clareo Health earns from qualifying purchases.
+        </p>
       </div>
 
       {/* Footer */}
@@ -1134,8 +1125,12 @@ export default function ResultsPage() {
             <Link href="/privacy" className="hover:text-[#00685f] transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-[#00685f] transition-colors">Terms of Service</Link>
             <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
+            <Link href="/about" className="hover:text-[#00685f] transition-colors">About</Link>
           </div>
-          <span>© {new Date().getFullYear()} NutriGenius. All rights reserved.</span>
+          <div className="w-full text-xs text-[#8896A8] space-y-1">
+            <p>Medical Review: <Link href="/about#medical-reviewer" className="text-[#00685f] hover:underline">Dr. Esra Ata Erdogan, MD</Link></p>
+            <p>© {new Date().getFullYear()} NutriGenius. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </div>

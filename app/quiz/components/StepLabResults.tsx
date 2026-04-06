@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Plus, X, FlaskConical, AlertCircle } from "lucide-react";
 import { QuizData } from "../page";
-import { useLanguage } from "@/lib/language-context";
 
 type Props = {
   data: QuizData;
@@ -27,7 +26,6 @@ const BIOMARKERS = [
 ];
 
 export function StepLabResults({ data, updateData }: Props) {
-  const { t } = useLanguage();
   const [selectedBiomarker, setSelectedBiomarker] = useState("");
 
   const addLabResult = () => {
@@ -62,9 +60,9 @@ export function StepLabResults({ data, updateData }: Props) {
     if (!ref) return null;
     const num = Number(value);
     if (isNaN(num)) return null;
-    if (num < ref.rangeLow) return { label: t("quiz.labsLow"), color: "text-red-600 bg-red-50 border-red-200" };
-    if (num > ref.rangeHigh) return { label: t("quiz.labsHigh"), color: "text-amber-700 bg-amber-50 border-amber-200" };
-    return { label: t("quiz.labsNormal"), color: "text-green-700 bg-green-50 border-green-200" };
+    if (num < ref.rangeLow) return { label: "Low", color: "text-red-600 bg-red-50 border-red-200" };
+    if (num > ref.rangeHigh) return { label: "High", color: "text-amber-700 bg-amber-50 border-amber-200" };
+    return { label: "Normal", color: "text-green-700 bg-green-50 border-green-200" };
   };
 
   const availableBiomarkers = BIOMARKERS.filter(
@@ -78,10 +76,10 @@ export function StepLabResults({ data, updateData }: Props) {
         <FlaskConical className="w-5 h-5 text-[#00685f] flex-shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-medium text-[#005249]">
-            {t("quiz.labsWhyTitle")}
+            {"Why lab results improve your recommendations"}
           </p>
           <p className="text-xs text-[#00685f] mt-1">
-            {t("quiz.labsWhyDesc")}
+            {"Actual biomarker levels let us identify real deficiencies and calibrate doses precisely — rather than relying on averages. Results within the last 12 months work best."}
           </p>
           <p className="text-xs italic text-[#00685f]/80 mt-1">
             <span className="font-medium">Clinical note:</span> Actual biomarker levels let us identify real deficiencies instead of guessing.
@@ -97,7 +95,7 @@ export function StepLabResults({ data, updateData }: Props) {
             onChange={(e) => setSelectedBiomarker(e.target.value)}
             className="flex-1 px-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] text-sm focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
           >
-            <option value="">{t("quiz.labsSelect")}</option>
+            <option value="">{"Select a biomarker to add..."}</option>
             {availableBiomarkers.map((b) => (
               <option key={b.name} value={b.name}>
                 {b.name}
@@ -110,7 +108,7 @@ export function StepLabResults({ data, updateData }: Props) {
             className="flex items-center gap-1.5 px-4 py-2.5 bg-[#00685f] hover:bg-[#005249] disabled:bg-[#E2E8F0] disabled:text-[#8896A8] text-white text-sm font-medium rounded-lg transition-colors"
           >
             <Plus className="w-4 h-4" />
-            {t("quiz.labsAdd")}
+            {"Add"}
           </button>
         </div>
       )}
@@ -136,19 +134,19 @@ export function StepLabResults({ data, updateData }: Props) {
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 [&>*]:min-w-0">
                   <div>
-                    <label className="block text-xs text-[#8896A8] mb-1">{t("quiz.labsValue")}</label>
+                    <label className="block text-xs text-[#8896A8] mb-1">{"Value"}</label>
                     <input
                       type="number"
                       value={result.value}
                       onChange={(e) => updateLabResult(index, "value", e.target.value)}
-                      placeholder={t("quiz.labsEnterValue")}
+                      placeholder={"Enter value"}
                       step="0.1"
                       className="w-full px-3 py-2 border border-[#E2E8F0] rounded-lg text-sm text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs text-[#8896A8] mb-1">{t("quiz.labsUnit")}</label>
+                    <label className="block text-xs text-[#8896A8] mb-1">{"Unit"}</label>
                     <select
                       value={result.unit}
                       onChange={(e) => updateLabResult(index, "unit", e.target.value)}
@@ -161,7 +159,7 @@ export function StepLabResults({ data, updateData }: Props) {
                   </div>
 
                   <div>
-                    <label className="block text-xs text-[#8896A8] mb-1">{t("quiz.labsDate")}</label>
+                    <label className="block text-xs text-[#8896A8] mb-1">{"Test Date"}</label>
                     <input
                       type="date"
                       value={result.testDate}
@@ -171,14 +169,14 @@ export function StepLabResults({ data, updateData }: Props) {
                   </div>
 
                   <div>
-                    <label className="block text-xs text-[#8896A8] mb-1">{t("quiz.labsStatus")}</label>
+                    <label className="block text-xs text-[#8896A8] mb-1">{"Status"}</label>
                     <div className="py-2">
                       {status ? (
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${status.color}`}>
                           {status.label}
                         </span>
                       ) : (
-                        <span className="text-xs text-[#B0B8C4]">{t("quiz.labsEnterValue")}</span>
+                        <span className="text-xs text-[#B0B8C4]">{"Enter value"}</span>
                       )}
                     </div>
                   </div>
@@ -186,7 +184,7 @@ export function StepLabResults({ data, updateData }: Props) {
 
                 {ref && (
                   <p className="text-xs text-[#8896A8] mt-2">
-                    {t("quiz.labsRefRange")} {ref.rangeLow} – {ref.rangeHigh} {ref.defaultUnit}
+                    {"Reference range:"} {ref.rangeLow} – {ref.rangeHigh} {ref.defaultUnit}
                   </p>
                 )}
 
@@ -199,7 +197,7 @@ export function StepLabResults({ data, updateData }: Props) {
                       return (
                         <div className="flex items-center gap-1.5 mt-2 text-xs text-amber-600">
                           <AlertCircle className="w-3.5 h-3.5" />
-                          {t("quiz.labsOldResult")}
+                          {"This result is over 12 months old — consider retesting"}
                         </div>
                       );
                     }
@@ -213,13 +211,13 @@ export function StepLabResults({ data, updateData }: Props) {
       ) : (
         <div className="text-center py-8 border-2 border-dashed border-[#E2E8F0] rounded-xl">
           <FlaskConical className="w-8 h-8 text-[#CBD5E1] mx-auto mb-2" />
-          <p className="text-sm text-[#8896A8]">{t("quiz.labsNoResults")}</p>
-          <p className="text-xs text-[#B0B8C4] mt-1">{t("quiz.labsNoResultsHint")}</p>
+          <p className="text-sm text-[#8896A8]">{"No lab results added yet"}</p>
+          <p className="text-xs text-[#B0B8C4] mt-1">{"Select a biomarker above to get started, or skip this step"}</p>
         </div>
       )}
 
       <p className="text-xs text-[#8896A8] text-center">
-        {t("quiz.labsSkipNote")}
+        {"Don't have lab results? No problem — you can skip this step and still get quality recommendations. You can always add results later."}
       </p>
     </div>
   );
