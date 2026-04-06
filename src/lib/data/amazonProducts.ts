@@ -17,19 +17,54 @@ export interface SupplementProducts {
   budget: AmazonProduct;
 }
 
+// ─── Country / geo helpers ───────────────────────────────────────────────────
+
+const AMAZON_DOMAINS: Record<string, { domain: string; tag: string }> = {
+  US: { domain: "amazon.com",    tag: AMAZON_TAG },
+  GB: { domain: "amazon.co.uk",  tag: AMAZON_TAG },
+  DE: { domain: "amazon.de",     tag: AMAZON_TAG },
+  FR: { domain: "amazon.fr",     tag: AMAZON_TAG },
+  ES: { domain: "amazon.es",     tag: AMAZON_TAG },
+  IT: { domain: "amazon.it",     tag: AMAZON_TAG },
+  CA: { domain: "amazon.ca",     tag: AMAZON_TAG },
+  AU: { domain: "amazon.com.au", tag: AMAZON_TAG },
+  IE: { domain: "amazon.co.uk",  tag: AMAZON_TAG },
+};
+
+const COUNTRY_NAME_MAP: Record<string, string> = {
+  "United States": "US", "United Kingdom": "GB", "Ireland": "IE",
+  "Canada": "CA", "Australia": "AU", "Germany": "DE", "France": "FR",
+  "Spain": "ES", "Italy": "IT", "Netherlands": "DE", "Belgium": "FR",
+  "Austria": "DE", "Switzerland": "DE",
+};
+
+/** Map a quiz country name (e.g. "Ireland") to a 2-letter code */
+export function countryNameToCode(name: string): string {
+  return COUNTRY_NAME_MAP[name] ?? "US";
+}
+
+/** Best-effort country from browser locale */
+export function detectCountryFromLocale(): string {
+  if (typeof navigator === "undefined") return "US";
+  const parts = (navigator.language ?? "en-US").split("-");
+  return parts.length > 1 ? parts[1].toUpperCase() : "US";
+}
+
 // ─── Link builders ────────────────────────────────────────────────────────────
 
 /** Direct product link for curated picks */
-export function getAmazonProductLink(asin: string): string {
-  return `https://www.amazon.com/dp/${asin}?tag=${AMAZON_TAG}`;
+export function getAmazonProductLink(asin: string, countryCode?: string): string {
+  const { domain, tag } = AMAZON_DOMAINS[countryCode ?? "US"] ?? AMAZON_DOMAINS.US;
+  return `https://www.${domain}/dp/${asin}?tag=${tag}`;
 }
 
 /** Search link fallback for supplements without curated picks */
-export function getAmazonSearchLink(supplementName: string, form?: string): string {
+export function getAmazonSearchLink(supplementName: string, form?: string, countryCode?: string): string {
   const query = form
     ? `${supplementName} ${form} supplement`
     : `${supplementName} supplement`;
-  return `https://www.amazon.com/s?k=${encodeURIComponent(query)}&tag=${AMAZON_TAG}`;
+  const { domain, tag } = AMAZON_DOMAINS[countryCode ?? "US"] ?? AMAZON_DOMAINS.US;
+  return `https://www.${domain}/s?k=${encodeURIComponent(query)}&tag=${tag}`;
 }
 
 // ─── Curated picks ────────────────────────────────────────────────────────────
