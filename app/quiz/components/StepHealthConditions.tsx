@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Search, X, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { QuizData } from "../page";
-import { useLanguage } from "@/lib/language-context";
 
 type Props = {
   data: QuizData;
@@ -62,7 +61,6 @@ const FAMILY_HISTORY_OPTIONS = [
 ];
 
 export function StepHealthConditions({ data, updateData }: Props) {
-  const { t } = useLanguage();
   const [medSearch, setMedSearch] = useState("");
   const [suppSearch, setSuppSearch] = useState("");
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
@@ -114,10 +112,10 @@ export function StepHealthConditions({ data, updateData }: Props) {
         <AlertTriangle className="w-5 h-5 text-[#B45309] flex-shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-medium text-[#92400E]">
-            {t("quiz.healthSafetyTitle")}
+            {"Why we ask about medications"}
           </p>
           <p className="text-xs text-[#A16207] mt-1">
-            {t("quiz.healthSafetyDesc")}
+            {"Certain supplements can interact with medications — sometimes dangerously. We screen every recommendation against your medication list to keep you safe."}
           </p>
         </div>
       </div>
@@ -125,10 +123,10 @@ export function StepHealthConditions({ data, updateData }: Props) {
       {/* Health Conditions */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
-          {t("quiz.healthCondTitle")}
+          {"Current Health Conditions"}
         </label>
         <p className="text-xs text-[#8896A8] mb-1">
-          {t("quiz.healthCondHint")}
+          {"Select all that apply. Click a category to expand."}
         </p>
         <p className="text-xs italic text-[#8896A8] mb-3">
           <span className="font-medium text-[#5A6578]">Clinical note:</span> Your conditions help us match evidence-rated supplements to your specific needs.
@@ -160,12 +158,12 @@ export function StepHealthConditions({ data, updateData }: Props) {
                 className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-[#1A2332] hover:bg-[#f9f9ff] transition-colors"
               >
                 <span>
-                  {t(CATEGORY_KEY_MAP[category] ?? `quiz.cat${category}`)}
+                  {category}
                   {data.healthConditions.some((c) => conditions.includes(c)) && (
                     <span className="ml-2 text-xs text-[#00685f] font-normal">
                       (
                       {data.healthConditions.filter((c) => conditions.includes(c)).length}{" "}
-                      {t("quiz.healthSelected")})
+                      {"selected"})
                     </span>
                   )}
                 </span>
@@ -202,9 +200,9 @@ export function StepHealthConditions({ data, updateData }: Props) {
       {/* Current Medications */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
-          {t("quiz.healthMedTitle")}
+          {"Current Prescription Medications"}
         </label>
-        <p className="text-xs text-[#8896A8] mb-1">{t("quiz.healthMedHint")}</p>
+        <p className="text-xs text-[#8896A8] mb-1">{"Start typing to search common medications"}</p>
         <p className="text-xs italic text-[#8896A8] mb-2">
           <span className="font-medium text-[#5A6578]">Clinical note:</span> This helps us screen for potentially dangerous supplement-drug interactions.
         </p>
@@ -253,9 +251,9 @@ export function StepHealthConditions({ data, updateData }: Props) {
       {/* Current Supplements */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
-          {t("quiz.healthSuppTitle")}
+          {"Supplements You're Currently Taking"}
         </label>
-        <p className="text-xs text-[#8896A8] mb-2">{t("quiz.healthSuppHint")}</p>
+        <p className="text-xs text-[#8896A8] mb-2">{"Type a supplement name and press Enter"}</p>
 
         {data.currentSupplements.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
@@ -288,10 +286,10 @@ export function StepHealthConditions({ data, updateData }: Props) {
       {/* Family History */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
-          {t("quiz.healthFamTitle")}{" "}
-          <span className="text-[#8896A8] font-normal">{t("quiz.healthFamOptional")}</span>
+          {"Family Health History"}{" "}
+          <span className="text-[#8896A8] font-normal">{"(optional)"}</span>
         </label>
-        <p className="text-xs text-[#8896A8] mb-2">{t("quiz.healthFamHint")}</p>
+        <p className="text-xs text-[#8896A8] mb-2">{"Conditions in immediate family (parents, siblings)"}</p>
         <div className="flex flex-wrap gap-2">
           {FAMILY_HISTORY_OPTIONS.map((condition) => {
             const selected = data.familyHistory.includes(condition);

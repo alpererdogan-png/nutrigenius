@@ -21,8 +21,6 @@ import { StepHealthConditions } from "./components/StepHealthConditions";
 import { StepLifestyle } from "./components/StepLifestyle";
 import { StepLabResults } from "./components/StepLabResults";
 import { StepGenetics } from "./components/StepGenetics";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { useLanguage } from "@/lib/language-context";
 
 export type QuizData = {
   // Section 1 — Demographics
@@ -106,7 +104,6 @@ const INITIAL_DATA: QuizData = {
 
 export default function QuizPage() {
   const router = useRouter();
-  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState(1);
   const [quizData, setQuizData] = useState<QuizData>(INITIAL_DATA);
   const [loading, setLoading] = useState(false);
@@ -120,11 +117,11 @@ export default function QuizPage() {
   const [optNewsletter, setOptNewsletter] = useState(true);
 
   const STEPS = [
-    { number: 1, title: t("quiz.step1Title"), subtitle: t("quiz.step1Sub") },
-    { number: 2, title: t("quiz.step2Title"), subtitle: t("quiz.step2Sub") },
-    { number: 3, title: t("quiz.step3Title"), subtitle: t("quiz.step3Sub") },
-    { number: 4, title: t("quiz.step4Title"), subtitle: t("quiz.step4Sub") },
-    { number: 5, title: t("quiz.step5Title"), subtitle: t("quiz.step5Sub") },
+    { number: 1, title: "Demographics", subtitle: "Basic information" },
+    { number: 2, title: "Health", subtitle: "Conditions & medications" },
+    { number: 3, title: "Lifestyle", subtitle: "Habits & goals" },
+    { number: 4, title: "Lab Results", subtitle: "Optional but helpful" },
+    { number: 5, title: "Genetics", subtitle: "Optional" },
   ];
 
   const updateData = (fields: Partial<QuizData>) => {
@@ -143,7 +140,7 @@ export default function QuizPage() {
 
   const handleEmailSubmit = async () => {
     if (!email || !email.includes("@")) {
-      setEmailError(t("quiz.emailError"));
+      setEmailError("Please enter a valid email address.");
       return;
     }
     setEmailError(null);
@@ -221,14 +218,11 @@ export default function QuizPage() {
               className="flex items-center gap-2 text-[#5A6578] hover:text-[#1A2332] text-sm font-medium transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              {t("quiz.back")}
+              Back
             </button>
-            <div className="flex items-center gap-3">
-              <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
-                <Logo size="sm" variant="light" />
-              </Link>
-              <LanguageSwitcher />
-            </div>
+            <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
+              <Logo size="sm" variant="light" />
+            </Link>
             <div className="w-20" />
           </div>
         </div>
@@ -240,10 +234,10 @@ export default function QuizPage() {
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
               <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#1A2332] mb-2">
-                {t("quiz.emailTitle")}
+                Your Plan is Ready!
               </h1>
               <p className="text-[#5A6578]">
-                {t("quiz.emailDesc")}
+                Your personalized supplement protocol is ready! Enter your email to receive it:
               </p>
             </div>
 
@@ -251,9 +245,9 @@ export default function QuizPage() {
               {/* What you'll get */}
               <div className="space-y-3 mb-6">
                 {[
-                  { icon: <FileText className="w-4 h-4" />, label: t("quiz.emailPdfOpt"), state: optPdf, setter: setOptPdf },
-                  { icon: <Calendar className="w-4 h-4" />, label: t("quiz.emailCalOpt"), state: optCalendar, setter: setOptCalendar },
-                  { icon: <Mail className="w-4 h-4" />, label: t("quiz.emailNewsOpt"), state: optNewsletter, setter: setOptNewsletter },
+                  { icon: <FileText className="w-4 h-4" />, label: "Your complete supplement plan as a downloadable PDF", state: optPdf, setter: setOptPdf },
+                  { icon: <Calendar className="w-4 h-4" />, label: "3-month calendar reminders for your supplement schedule", state: optCalendar, setter: setOptCalendar },
+                  { icon: <Mail className="w-4 h-4" />, label: "Biweekly health insights and supplement updates", state: optNewsletter, setter: setOptNewsletter },
                 ].map((item) => (
                   <label key={item.label} className="flex items-start gap-3 cursor-pointer group">
                     <div className="flex-shrink-0 mt-0.5">
@@ -275,7 +269,7 @@ export default function QuizPage() {
               {/* Email input */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-[#1A2332] mb-1.5">
-                  {t("quiz.emailLabel")}
+                  Email address
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 w-4 h-4 text-[#8896A8]" />
@@ -283,7 +277,7 @@ export default function QuizPage() {
                     type="email"
                     value={email}
                     onChange={(e) => { setEmail(e.target.value); setEmailError(null); }}
-                    placeholder={t("quiz.emailPlaceholder")}
+                    placeholder="you@example.com"
                     className="w-full pl-10 pr-3 py-2.5 border border-[#E2E8F0] rounded-lg text-[#1A2332] placeholder:text-[#B0B8C4] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
                     onKeyDown={(e) => { if (e.key === "Enter") handleEmailSubmit(); }}
                   />
@@ -301,11 +295,11 @@ export default function QuizPage() {
                 {loading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    {t("quiz.emailGenerating")}
+                    Generating your plan...
                   </>
                 ) : (
                   <>
-                    {t("quiz.emailSubmit")}
+                    Get My Free Plan
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -318,10 +312,10 @@ export default function QuizPage() {
               )}
 
               <p className="text-xs text-[#8896A8] text-center mt-4 leading-relaxed">
-                {t("quiz.emailPrivacy1")}
+                By entering your email, you agree to receive your plan and occasional health updates. Unsubscribe anytime.
               </p>
               <p className="text-xs text-[#8896A8] text-center mt-1">
-                {t("quiz.emailPrivacy2")}
+                Your health data is processed securely under GDPR Article 9.
               </p>
             </div>
           </div>
@@ -342,9 +336,8 @@ export default function QuizPage() {
             </Link>
             <div className="flex items-center gap-3">
               <span className="text-sm text-[#5A6578]">
-                {t("quiz.stepOf", { current: currentStep.toString() })}
+                {`Step ${currentStep} of 5`}
               </span>
-              <LanguageSwitcher />
             </div>
           </div>
 
@@ -407,7 +400,13 @@ export default function QuizPage() {
             {STEPS[currentStep - 1].title}
           </h1>
           <p className="text-[#5A6578]">
-            {t(`quiz.desc${currentStep}` as `quiz.desc${1 | 2 | 3 | 4 | 5}`)}
+            {[
+              "Let's start with some basic information to personalize your recommendations.",
+              "Tell us about your health conditions and any medications you're taking. This is critical for safety screening.",
+              "Your lifestyle habits help us fine-tune supplement choices and timing.",
+              "Lab results allow us to identify actual deficiencies and calibrate doses. Skip this if you don't have recent results.",
+              "Genetic data helps us select the optimal supplement forms for your biology.",
+            ][currentStep - 1]}
           </p>
         </div>
 
@@ -437,12 +436,12 @@ export default function QuizPage() {
           >
             {currentStep === 5 ? (
               <>
-                {t("quiz.seeResults")}
+                See My Results
                 <ArrowRight className="w-4 h-4" />
               </>
             ) : (
               <>
-                {t("quiz.continue")}
+                Continue
                 <ArrowRight className="w-4 h-4" />
               </>
             )}
@@ -453,13 +452,13 @@ export default function QuizPage() {
               className="flex items-center justify-center gap-2 py-3 sm:py-0 text-[#5A6578] hover:text-[#1A2332] font-medium bg-[#f9f9ff] sm:bg-transparent rounded-xl sm:rounded-none transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              {t("quiz.previous")}
+              Previous
             </button>
           ) : null}
         </div>
 
         <p className="text-xs text-[#8896A8] text-center mt-8 leading-relaxed">
-          {t("quiz.disclaimer")}
+          Your data is processed securely and never shared with third parties. NutriGenius is not a substitute for professional medical advice.
         </p>
       </div>
     </div>

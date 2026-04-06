@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Dna, ExternalLink } from "lucide-react";
 import { QuizData } from "../page";
-import { useLanguage } from "@/lib/language-context";
 
 type Props = {
   data: QuizData;
@@ -56,7 +55,6 @@ const GENETIC_VARIANTS = [
 ];
 
 export function StepGenetics({ data, updateData }: Props) {
-  const { t } = useLanguage();
   const [showEntry, setShowEntry] = useState(data.hasGeneticData);
 
   const handleToggle = (hasData: boolean) => {
@@ -86,7 +84,7 @@ export function StepGenetics({ data, updateData }: Props) {
       {/* Question */}
       <div>
         <label className="block text-sm font-medium text-[#1A2332] mb-1">
-          {t("quiz.genQuestion")}
+          {"Do you have genetic testing results?"}
         </label>
         <p className="text-xs italic text-[#8896A8] mb-3">
           <span className="font-medium text-[#5A6578]">Clinical note:</span> Genetic variants affect how your body processes specific supplement forms.
@@ -100,7 +98,7 @@ export function StepGenetics({ data, updateData }: Props) {
                 : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
             }`}
           >
-            {t("quiz.genYes")}
+            {"Yes, I have results"}
           </button>
           <button
             onClick={() => handleToggle(false)}
@@ -110,14 +108,14 @@ export function StepGenetics({ data, updateData }: Props) {
                 : "border-[#E2E8F0] text-[#5A6578] hover:border-[#CBD5E1]"
             }`}
           >
-            {t("quiz.genNo")}
+            {"No, I don't"}
           </button>
         </div>
       </div>
 
       {showEntry ? (
         <div className="space-y-4">
-          <p className="text-xs text-[#8896A8]">{t("quiz.genEntryHint")}</p>
+          <p className="text-xs text-[#8896A8]">{"Enter your results for any variants you have data on. Leave blank if you don't have a specific result."}</p>
           {GENETIC_VARIANTS.map((gv) => (
             <div
               key={`${gv.gene}-${gv.variant}`}
@@ -138,7 +136,7 @@ export function StepGenetics({ data, updateData }: Props) {
                 onChange={(e) => updateVariant(gv.gene, gv.variant, e.target.value)}
                 className="w-full px-3 py-2 border border-[#E2E8F0] rounded-lg text-sm text-[#1A2332] focus:outline-none focus:ring-2 focus:ring-[#00685f]/30 focus:border-[#00685f] bg-white"
               >
-                <option value="">{t("quiz.genNotTested")}</option>
+                <option value="">{"Not tested / Unknown"}</option>
                 {gv.options.map((opt) => (
                   <option key={opt} value={opt}>{opt}</option>
                 ))}
@@ -154,20 +152,20 @@ export function StepGenetics({ data, updateData }: Props) {
             </div>
             <div>
               <h3 className="text-lg font-semibold text-[#1A2332] mb-2">
-                {t("quiz.genCtaTitle")}
+                {"Genetic data can significantly improve your recommendations"}
               </h3>
               <p className="text-sm text-[#5A6578] leading-relaxed mb-4">
-                {t("quiz.genCtaDesc")}
+                {"Understanding your genetic variants helps us select the exact right supplement forms for your biology — especially for folate metabolism (MTHFR), vitamin D absorption (VDR), and cardiovascular health (APOE). A simple at-home test can provide these insights."}
               </p>
               <div className="space-y-2">
                 <a
                   href="#"
                   className="inline-flex items-center gap-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-medium px-5 py-2.5 rounded-xl text-sm transition-colors"
                 >
-                  {t("quiz.genCtaButton")}
+                  {"Explore Genetic Testing Options"}
                   <ExternalLink className="w-4 h-4" />
                 </a>
-                <p className="text-xs text-[#8896A8]">{t("quiz.genCtaPrice")}</p>
+                <p className="text-xs text-[#8896A8]">{"Partner labs offer affordable testing starting from €99"}</p>
               </div>
             </div>
           </div>
@@ -178,8 +176,8 @@ export function StepGenetics({ data, updateData }: Props) {
       {data.geneticVariants.length > 0 && (
         <div className="bg-[#F0FDFA] border border-[#99F6E4] rounded-xl p-4">
           <p className="text-sm font-medium text-[#005249] mb-2">
-            {t("quiz.genSummaryTitle")} ({data.geneticVariants.length}{" "}
-            {data.geneticVariants.length > 1 ? t("quiz.genVariants") : t("quiz.genVariant")})
+            {"Genetic data entered"} ({data.geneticVariants.length}{" "}
+            {data.geneticVariants.length > 1 ? "variants" : "variant"})
           </p>
           <div className="flex flex-wrap gap-2">
             {data.geneticVariants.map((v) => (

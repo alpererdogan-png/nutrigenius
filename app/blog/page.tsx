@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase-browser";
-import { useLanguage } from "@/lib/language-context";
 import { AdSense } from "@/components/AdSense";
 import { Logo } from "@/src/components/ui/Logo";
 
@@ -204,7 +203,6 @@ function ArticleGrid({ posts }: { posts: BlogPost[] }) {
 // ─── Blog page ───────────────────────────────────────────────────────────────
 
 export default function BlogPage() {
-  const { t } = useLanguage();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState("all");
@@ -280,9 +278,9 @@ export default function BlogPage() {
             </span>
           </div>
           <h1 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A2332] mb-3">
-            {t("blog.title")}
+            {"The Science of Healthy Living"}
           </h1>
-          <p className="text-[#5A6578] text-sm sm:text-base max-w-xl">{t("blog.description")}</p>
+          <p className="text-[#5A6578] text-sm sm:text-base max-w-xl">{"Expert-written articles on evidence-based nutrition to help you live healthier."}</p>
         </div>
       </div>
 
