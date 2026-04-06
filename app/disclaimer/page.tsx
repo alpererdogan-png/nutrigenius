@@ -181,6 +181,23 @@ export default function DisclaimerPage() {
             </ul>
           </div>
 
+          {/* Medical Review */}
+          <div className="bg-[#f0f9f8] border border-[#d1ede9] rounded-2xl p-6">
+            <h2 className="font-heading text-lg font-bold text-[#1A2332] mb-3">
+              Medical Review
+            </h2>
+            <p className="text-[#5A6578] leading-relaxed">
+              NutriGenius content is medically reviewed by{" "}
+              <Link href="/about#medical-reviewer" className="text-[#00685f] font-semibold hover:underline">
+                Dr. Esra Ata Erdogan, MD
+              </Link>
+              {" "}— a physician certified in Functional Medicine and the GAPS Protocol.
+              However, this platform provides educational information and does not constitute
+              medical advice, diagnosis, or treatment. Always consult your own healthcare provider
+              before starting any supplement regimen.
+            </p>
+          </div>
+
           {/* No liability */}
           <div className="bg-[#F8FAFC] border border-[#E8ECF1] rounded-2xl p-6">
             <h2 className="font-heading text-lg font-bold text-[#1A2332] mb-3">

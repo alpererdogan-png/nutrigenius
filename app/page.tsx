@@ -849,6 +849,7 @@ export default function Home() {
             </Link>
             <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-[#5A6578]">
               <Link href="/blog" className="hover:text-[#00685f] transition-colors">{t("footer.blog")}</Link>
+              <Link href="/about" className="hover:text-[#00685f] transition-colors">About</Link>
               <Link href="/privacy" className="hover:text-[#00685f] transition-colors">{t("footer.privacy")}</Link>
               <Link href="/terms" className="hover:text-[#00685f] transition-colors">{t("footer.terms")}</Link>
               <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">{t("footer.disclaimer")}</Link>
@@ -864,6 +865,11 @@ export default function Home() {
             </p>
             <p className="text-xs text-[#8896A8] leading-relaxed">
               <strong>{t("footer.aiTitle")}</strong>{" "}{t("footer.aiText")}
+            </p>
+            <p className="text-xs text-[#8896A8] leading-relaxed">
+              <strong>Medical Review:</strong>{" "}
+              <Link href="/about#medical-reviewer" className="text-[#00685f] hover:underline">Dr. Esra Ata Erdogan, MD</Link>
+              {" "}— Physician, Functional Medicine &amp; GAPS Certified
             </p>
             <p className="text-xs text-[#8896A8] mt-4">
               {t("footer.copyright", { year: new Date().getFullYear().toString() })}

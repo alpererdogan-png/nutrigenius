@@ -1132,8 +1132,12 @@ export default function ResultsPage() {
             <Link href="/privacy" className="hover:text-[#00685f] transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-[#00685f] transition-colors">Terms of Service</Link>
             <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
+            <Link href="/about" className="hover:text-[#00685f] transition-colors">About</Link>
           </div>
-          <span>© {new Date().getFullYear()} NutriGenius. All rights reserved.</span>
+          <div className="w-full text-xs text-[#8896A8] space-y-1">
+            <p>Medical Review: <Link href="/about#medical-reviewer" className="text-[#00685f] hover:underline">Dr. Esra Ata Erdogan, MD</Link></p>
+            <p>© {new Date().getFullYear()} NutriGenius. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </div>

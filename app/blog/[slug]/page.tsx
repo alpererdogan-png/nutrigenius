@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ArrowLeft, ArrowRight, Tag,
+  ArrowLeft, ArrowRight, Tag, ShieldCheck,
   FlaskConical, ShieldAlert, AlertTriangle,
   HeartPulse, TrendingUp, Brain, Lightbulb,
 } from "lucide-react";
@@ -939,7 +939,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     dateModified: post.updated_at ?? post.published_at,
     author: {
       "@type": "Organization",
-      name: "NutriGenius Clinical Team",
+      name: "NutriGenius Editorial Team",
+    },
+    reviewedBy: {
+      "@type": "Person",
+      name: "Dr. Esra Ata Erdogan",
+      jobTitle: "Physician, Functional Medicine Certified",
+      url: "https://www.nutrigenius.co/about#medical-reviewer",
     },
     publisher: {
       "@type": "Organization",
@@ -965,6 +971,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       name: formatCategory(post.category),
     },
     lastReviewed: post.updated_at ?? post.published_at,
+    reviewedBy: {
+      "@type": "Person",
+      name: "Dr. Esra Ata Erdogan",
+      jobTitle: "Physician, Functional Medicine Certified",
+      url: "https://www.nutrigenius.co/about#medical-reviewer",
+    },
   };
 
   return (
@@ -1013,9 +1025,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A2332] leading-tight mb-3 max-w-3xl">
             {post.title}
           </h1>
-          <p className="text-[#5A6578] text-base sm:text-lg leading-relaxed max-w-2xl">
+          <p className="text-[#5A6578] text-base sm:text-lg leading-relaxed max-w-2xl mb-4">
             {post.excerpt}
           </p>
+          {/* Medical reviewer badge */}
+          <Link
+            href="/about#medical-reviewer"
+            className="inline-flex items-center gap-2 text-xs text-[#5A6578] bg-[#f0f9f8] border border-[#d1ede9] px-3 py-1.5 rounded-full hover:bg-[#e6f4f3] transition-colors"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-[#00685f]" />
+            <span>Medically reviewed by <strong className="text-[#1A2332]">Dr. Esra Ata Erdogan, MD</strong></span>
+          </Link>
         </div>
       </div>
 
@@ -1241,6 +1261,28 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {/* Mobile sticky footer ad */}
       <MobileFooterAd />
 
+      {/* Medical reviewer footer */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-6">
+        <div className="bg-[#f0f9f8] border border-[#d1ede9] rounded-2xl p-5 sm:p-6 flex gap-4">
+          <div className="w-10 h-10 rounded-xl bg-[#00685f] flex items-center justify-center flex-shrink-0">
+            <ShieldCheck className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <p className="text-sm text-[#1A2332] font-semibold mb-1">Medically Reviewed</p>
+            <p className="text-sm text-[#5A6578] leading-relaxed">
+              This article was medically reviewed by{" "}
+              <strong className="text-[#1A2332]">Dr. Esra Ata Erdogan, MD</strong> — a physician
+              certified in Functional Medicine and the GAPS Protocol. Dr. Ata Erdogan graduated
+              from Uludag University and pursued postgraduate medical education at Istanbul
+              University Cerrahpasa.{" "}
+              <Link href="/about" className="text-[#00685f] font-semibold hover:underline">
+                Learn more about our clinical review process&nbsp;→
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Legal footer */}
       <footer className="border-t border-[#E8ECF1] bg-white py-8 px-4 sm:px-6 mt-8">
         <div className="max-w-3xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs text-[#8896A8]">
@@ -1248,6 +1290,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <Link href="/privacy" className="hover:text-[#00685f] transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-[#00685f] transition-colors">Terms of Service</Link>
             <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
+            <Link href="/about" className="hover:text-[#00685f] transition-colors">About</Link>
           </div>
           <span>© {new Date().getFullYear()} NutriGenius. All rights reserved.</span>
         </div>
