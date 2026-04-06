@@ -6,7 +6,6 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Leaf, CheckCircle2, Loader2, AlertTriangle, Mail } from "lucide-react";
-import { createClient } from "@/lib/supabase-browser";
 
 type PageState = "loading" | "unsubscribed" | "resubscribed" | "error" | "missing";
 
@@ -27,13 +26,12 @@ function UnsubscribeContent() {
   async function handleUnsubscribe(targetEmail: string) {
     setState("loading");
     try {
-      const supabase = createClient();
-      const { error } = await supabase
-        .from("newsletter_subscribers")
-        .update({ subscribed: false, unsubscribed_at: new Date().toISOString() })
-        .eq("email", targetEmail);
-
-      if (error) throw error;
+      const res = await fetch("/api/unsubscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: targetEmail }),
+      });
+      if (!res.ok) throw new Error("Failed to unsubscribe");
       setState("unsubscribed");
     } catch (err) {
       console.error("[unsubscribe]", err);
@@ -44,13 +42,12 @@ function UnsubscribeContent() {
   async function handleResubscribe() {
     setState("loading");
     try {
-      const supabase = createClient();
-      const { error } = await supabase
-        .from("newsletter_subscribers")
-        .update({ subscribed: true, unsubscribed_at: null })
-        .eq("email", email);
-
-      if (error) throw error;
+      const res = await fetch("/api/unsubscribe", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error("Failed to resubscribe");
       setState("resubscribed");
     } catch (err) {
       console.error("[resubscribe]", err);

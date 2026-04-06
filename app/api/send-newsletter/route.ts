@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { createClient } from "@/lib/supabase-server";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import { buildNewsletterHtml } from "@/lib/email-templates/newsletter";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -52,9 +52,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Fetch subscribed newsletter users
-    const supabase = await createClient();
-    const { data: subscribers, error: dbError } = await supabase
+    // Fetch subscribed newsletter users (service role bypasses RLS)
+    const { data: subscribers, error: dbError } = await supabaseAdmin
       .from("newsletter_subscribers")
       .select("email")
       .eq("newsletter_opt_in", true)
