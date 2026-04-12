@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ShieldCheck, FlaskConical, HeartPulse, Mail,
   GraduationCap, Award, Building2, ArrowRight,
@@ -94,11 +95,18 @@ export default function AboutPage() {
           <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-6">
             Meet Our Medical Reviewer
           </h2>
-          <div className="flex flex-col sm:flex-row gap-6">
-            {/* Photo placeholder */}
-            <div className="flex-shrink-0">
-              <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-[#00685f] to-[#008577] flex items-center justify-center">
-                <GraduationCap className="w-12 h-12 text-white/80" />
+          <div className="flex flex-col sm:flex-row gap-6 sm:items-start">
+            {/* Photo */}
+            <div className="flex-shrink-0 mx-auto sm:mx-0">
+              <div className="relative w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] rounded-full overflow-hidden ring-4 ring-[#f9f9ff] shadow-[0_8px_24px_-4px_rgba(0,104,95,0.18)] outline outline-1 outline-[#00685f]/15">
+                <Image
+                  src="/images/dr-esra-ata.jpg"
+                  alt="Dr. Esra Ata, MD — Medical Reviewer at NutriGenius"
+                  fill
+                  sizes="(max-width: 640px) 150px, 200px"
+                  className="object-cover"
+                  priority
+                />
               </div>
             </div>
             <div className="flex-1">

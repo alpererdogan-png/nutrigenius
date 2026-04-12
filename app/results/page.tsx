@@ -24,6 +24,7 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import type { RecommendationResult, SupplementRecommendation } from "@/app/api/recommend/route";
 import {
   getProductsForSupplement,
@@ -1128,7 +1129,18 @@ export default function ResultsPage() {
             <Link href="/about" className="hover:text-[#00685f] transition-colors">About</Link>
           </div>
           <div className="w-full text-xs text-[#8896A8] space-y-1">
-            <p>Medical Review: <Link href="/about#medical-reviewer" className="text-[#00685f] hover:underline">Dr. Esra Ata, MD</Link></p>
+            <p className="inline-flex items-center gap-2 flex-wrap">
+              <span className="relative w-8 h-8 rounded-full overflow-hidden ring-1 ring-[#00685f]/20 flex-shrink-0">
+                <Image
+                  src="/images/dr-esra-ata.jpg"
+                  alt="Dr. Esra Ata, MD"
+                  fill
+                  sizes="32px"
+                  className="object-cover"
+                />
+              </span>
+              <span>Medical Review: <Link href="/about#medical-reviewer" className="text-[#00685f] hover:underline">Dr. Esra Ata, MD</Link></span>
+            </p>
             <p>© {new Date().getFullYear()} NutriGenius. All rights reserved.</p>
           </div>
         </div>
