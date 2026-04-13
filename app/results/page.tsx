@@ -27,12 +27,16 @@ import Link from "next/link";
 import type { RecommendationResult, SupplementRecommendation } from "@/app/api/recommend/route";
 import {
   getProductsForSupplement,
-  getAmazonProductLink,
   getAmazonSearchLink,
   detectCountryFromLocale,
   countryNameToCode,
 } from "@/src/lib/data/amazonProducts";
 import { Logo } from "@/src/components/ui/Logo";
+import { AmazonLogo } from "@/src/components/ui/AmazonLogo";
+import {
+  AffiliateTierCard,
+  TIER_ORDER,
+} from "@/src/components/ui/AffiliateTierCard";
 
 // ─── Lab deficiency thresholds (mirrors recommend route) ─────────────────────
 
@@ -84,72 +88,7 @@ function EvidenceBadge({ rating }: { rating: string }) {
   );
 }
 
-// ─── Amazon smile icon (inline SVG — no hotlinking) ──────────────────────────
-
-function AmazonSmile({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 60 18"
-      aria-label="Amazon"
-      className={className}
-      fill="currentColor"
-    >
-      {/* Wordmark */}
-      <text x="0" y="14" fontSize="14" fontFamily="Arial, sans-serif" fontWeight="bold" fill="#FF9900">
-        amazon
-      </text>
-      {/* Smile arrow */}
-      <path
-        d="M3 16 Q17 21 37 16"
-        stroke="#FF9900"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-      />
-      <path
-        d="M35 14 L38 17 L35 17"
-        stroke="#FF9900"
-        strokeWidth="1.5"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 // ─── Where to Buy ─────────────────────────────────────────────────────────────
-
-const TIER_CONFIG = [
-  {
-    key: "best" as const,
-    label: "★ Best Value",
-    badge: "bg-[#e6f4f3] text-[#00685f] border-[#99e8e0]",
-  },
-  {
-    key: "premium" as const,
-    label: "Premium",
-    badge: "bg-slate-100 text-slate-700 border-slate-200",
-  },
-  {
-    key: "budget" as const,
-    label: "Budget Pick",
-    badge: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  },
-] as const;
-
-function AmazonButton({ href, className = "" }: { href: string; className?: string }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer sponsored"
-      className={`inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors ${className}`}
-    >
-      View on <AmazonSmile className="h-[14px] w-auto" /> →
-    </a>
-  );
-}
 
 function WhereToBuy({ name, form, countryCode }: { name: string; form?: string; countryCode: string }) {
   const [open, setOpen] = useState(false);
@@ -169,30 +108,24 @@ function WhereToBuy({ name, form, countryCode }: { name: string; form?: string; 
       {open && (
         <div className="mt-3 space-y-2">
           {products ? (
-            TIER_CONFIG.map(({ key, label }) => {
-              const p = products[key];
-              return (
-                <div
-                  key={key}
-                  className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 ring-1 ring-black/[0.04]"
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`text-[10px] font-semibold flex-shrink-0 ${key === "best" ? "text-[#00685f]" : "text-[#8896A8]"}`}>
-                        {label}
-                      </span>
-                      <span className="text-[13px] font-semibold text-[#1A2332] leading-snug">
-                        {p.brand} {p.name}
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-[#5A6578] leading-snug mt-0.5">{p.description}</p>
-                  </div>
-                  <AmazonButton href={getAmazonProductLink(p.asin, countryCode)} className="flex-shrink-0" />
-                </div>
-              );
-            })
+            TIER_ORDER.map((tier) => (
+              <AffiliateTierCard
+                key={tier}
+                tier={tier}
+                product={products[tier]}
+                countryCode={countryCode}
+                fallbackSearchTerm={`${products[tier].brand} ${products[tier].name}`}
+              />
+            ))
           ) : (
-            <AmazonButton href={getAmazonSearchLink(name, form, countryCode)} />
+            <a
+              href={getAmazonSearchLink(name, form, countryCode)}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors"
+            >
+              View on <AmazonLogo className="h-[14px] w-auto" /> →
+            </a>
           )}
         </div>
       )}
@@ -1115,6 +1048,11 @@ export default function ResultsPage() {
         {/* Affiliate disclosure */}
         <p className="text-xs text-gray-400 text-center mt-8">
           As an Amazon Associate, Clareo Health earns from qualifying purchases.
+          Recommendations are based on evidence, not commissions.{" "}
+          <Link href="/disclosure" className="text-[#00685f] hover:underline">
+            Learn more
+          </Link>
+          .
         </p>
       </div>
 
@@ -1125,6 +1063,7 @@ export default function ResultsPage() {
             <Link href="/privacy" className="hover:text-[#00685f] transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-[#00685f] transition-colors">Terms of Service</Link>
             <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
+            <Link href="/disclosure" className="hover:text-[#00685f] transition-colors">Affiliate Disclosure</Link>
             <Link href="/about" className="hover:text-[#00685f] transition-colors">About</Link>
           </div>
           <div className="w-full text-xs text-[#8896A8] space-y-1">
