@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CookieSettingsLink } from "@/components/CookieConsent";
+import { createClient } from "@/lib/supabase-browser";
 import {
   Shield,
   FlaskConical,
@@ -25,64 +26,51 @@ import {
 import { AdSense } from "@/components/AdSense";
 import { Logo } from "@/src/components/ui/Logo";
 
-// ─── Blog articles data for landing preview ───────────────────────────────────
+// ─── Blog preview — category → visual preset mapping ─────────────────────────
 
-const BLOG_ARTICLES = [
-  {
-    slug: "the-complete-guide-to-magnesium",
-    category: "Evidence Review",
-    tagClass: "bg-teal-50 text-teal-700 border-teal-200",
+interface LandingBlogPost {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  read_time: string;
+}
+
+const BLOG_CATEGORY_PRESET: Record<string, { image: string; tagClass: string }> = {
+  "evidence-review": {
     image: "/images/vitamin-macro.jpg",
-    title: "The Complete Guide to Magnesium: Forms, Doses, and What the Science Actually Says",
-    excerpt: "Not all magnesium is created equal. From glycinate to threonate, here's what 47 clinical trials reveal about choosing the right form.",
-    readTime: "8 min read",
+    tagClass: "bg-teal-50 text-teal-700 border-teal-200",
   },
-  {
-    slug: "5-supplement-myths-your-doctor-didnt-learn",
-    category: "Myth Busting",
-    tagClass: "bg-amber-50 text-amber-700 border-amber-200",
+  "myth-busting": {
     image: "/images/flatlay-supplements.jpg",
-    title: "5 Supplement Myths Your Doctor Didn't Learn in Medical School",
-    excerpt: "Medical education covers pharmacology extensively but nutrition science? Often just a few hours. Let's separate fact from fiction.",
-    readTime: "6 min read",
+    tagClass: "bg-amber-50 text-amber-700 border-amber-200",
   },
-  {
-    slug: "supplements-that-dont-mix-critical-interactions",
-    category: "Safety Alert",
-    tagClass: "bg-rose-50 text-rose-700 border-rose-200",
+  "safety-alert": {
     image: "/images/hands-capsule.jpg",
-    title: "Supplements That Don't Mix: Critical Interactions You Need to Know",
-    excerpt: "That fish oil you take with your blood thinner? It could be dangerous. A pharmacology expert breaks down the interactions that matter.",
-    readTime: "7 min read",
+    tagClass: "bg-rose-50 text-rose-700 border-rose-200",
   },
-  {
-    slug: "the-pcos-supplement-protocol",
-    category: "Condition Guide",
-    tagClass: "bg-blue-50 text-blue-700 border-blue-200",
+  "condition-guide": {
     image: "/images/morning-routine.jpg",
-    title: "The PCOS Supplement Protocol: What the Evidence Supports",
-    excerpt: "Inositol, berberine, vitamin D — which supplements actually help PCOS? We review the clinical trials so you don't have to.",
-    readTime: "9 min read",
+    tagClass: "bg-blue-50 text-blue-700 border-blue-200",
   },
-  {
-    slug: "vitamin-d-why-80-percent-are-deficient",
-    category: "Research Update",
-    tagClass: "bg-purple-50 text-purple-700 border-purple-200",
+  "research-update": {
     image: "/images/lab-science.jpg",
-    title: "Vitamin D: Why 80% of People Are Deficient and What to Do About It",
-    excerpt: "The sunshine vitamin isn't just about bones anymore. New research links low vitamin D to immunity, mood, and metabolic health.",
-    readTime: "5 min read",
+    tagClass: "bg-purple-50 text-purple-700 border-purple-200",
   },
-  {
-    slug: "your-gut-brain-connection-probiotics-mental-health",
-    category: "Deep Dive",
-    tagClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  "deep-dive": {
     image: "/images/weekly-organizer.jpg",
-    title: "Your Gut-Brain Connection: How Probiotics Influence Mental Health",
-    excerpt: "The gut-brain axis is revolutionising how we think about anxiety and depression. Here's what the latest psychobiotic research shows.",
-    readTime: "10 min read",
+    tagClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
   },
-];
+};
+
+const BLOG_FALLBACK_PRESET = {
+  image: "/images/capsules-scatter.jpg",
+  tagClass: "bg-stone-100 text-stone-700 border-stone-200",
+};
+
+function formatBlogCategory(cat: string): string {
+  return cat.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
+}
 
 export default function Home() {
 
@@ -90,6 +78,32 @@ export default function Home() {
   const carouselRef = useRef<HTMLDivElement>(null);
   const scrollCarousel = useCallback((dir: "left" | "right") => {
     carouselRef.current?.scrollBy({ left: dir === "right" ? 360 : -360, behavior: "smooth" });
+  }, []);
+
+  // ── Fetch 6 most recent blog posts for the landing preview ──
+  const [blogPosts, setBlogPosts] = useState<LandingBlogPost[]>([]);
+  const [blogLoading, setBlogLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("slug,title,excerpt,category,read_time")
+        .eq("is_published", true)
+        .order("published_at", { ascending: false })
+        .limit(6);
+      if (cancelled) return;
+      if (error) {
+        console.error("Landing blog preview fetch failed:", error.message);
+        setBlogPosts([]);
+      } else {
+        setBlogPosts(data ?? []);
+      }
+      setBlogLoading(false);
+    })();
+    return () => { cancelled = true; };
   }, []);
 
   const organizationJsonLd = {
@@ -421,6 +435,149 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
+          CLINICAL KNOWLEDGE HUB — Blog preview carousel
+          Shows the 6 most recent published articles from Supabase.
+      ══════════════════════════════════════════════════ */}
+      <section className="py-20 sm:py-32 bg-[#f9f7f4]">
+        {/* Header */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-10 sm:mb-14">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <p className="text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-[#bfa785] mb-3">
+                Clinical Knowledge Hub
+              </p>
+              <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2c2420] tracking-tight">
+                The Science of Healthy Living
+              </h2>
+            </div>
+            <Link
+              href="/blog"
+              className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
+            >
+              Explore All Articles
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Scroll-snap carousel */}
+        <div className="relative">
+          <button
+            onClick={() => scrollCarousel("left")}
+            aria-label="Scroll left"
+            className="hidden lg:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white rounded-full items-center justify-center text-[#5A6578] hover:text-[#00685f] transition-all duration-200"
+            style={{ boxShadow: "0 6px 16px rgba(44,36,32,0.08)" }}
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => scrollCarousel("right")}
+            aria-label="Scroll right"
+            className="hidden lg:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white rounded-full items-center justify-center text-[#5A6578] hover:text-[#00685f] transition-all duration-200"
+            style={{ boxShadow: "0 6px 16px rgba(44,36,32,0.08)" }}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
+          <div className="absolute right-0 top-0 bottom-4 w-20 bg-gradient-to-l from-[#f9f7f4] to-transparent z-10 pointer-events-none" />
+
+          <div
+            ref={carouselRef}
+            className="no-scrollbar flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 pl-4 sm:pl-6"
+            style={{ WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+          >
+            <div
+              className="flex-none hidden lg:block"
+              style={{ width: "max(0px, calc((100vw - 72rem) / 2))" }}
+            />
+
+            {blogLoading
+              ? [...Array(6)].map((_, i) => (
+                  <div
+                    key={`skeleton-${i}`}
+                    className="snap-start flex-none flex flex-col bg-white rounded-2xl overflow-hidden ring-1 ring-[#e5ddd1]/70 animate-pulse w-[calc(100vw-4.5rem)] sm:w-[320px] lg:w-[360px]"
+                  >
+                    <div className="h-40 sm:h-44 bg-[#f0ebe2]" />
+                    <div className="p-5 sm:p-6 space-y-3">
+                      <div className="h-4 bg-[#f0ebe2] rounded-full" />
+                      <div className="h-4 w-3/4 bg-[#f0ebe2] rounded-full" />
+                      <div className="h-3 bg-[#f0ebe2] rounded-full" />
+                      <div className="h-3 w-5/6 bg-[#f0ebe2] rounded-full" />
+                    </div>
+                  </div>
+                ))
+              : blogPosts.map((post) => {
+                  const preset = BLOG_CATEGORY_PRESET[post.category] ?? BLOG_FALLBACK_PRESET;
+                  return (
+                    <Link
+                      key={post.slug}
+                      href={`/blog/${post.slug}`}
+                      className="group snap-start flex-none flex flex-col bg-white rounded-2xl overflow-hidden ring-1 ring-[#e5ddd1]/70 hover:-translate-y-0.5 transition-all duration-300
+                                 w-[calc(100vw-4.5rem)] sm:w-[320px] lg:w-[360px]"
+                      style={{ boxShadow: "0 10px 28px rgba(44,36,32,0.06), 0 2px 6px rgba(44,36,32,0.04)" }}
+                    >
+                      <div className="relative h-40 sm:h-44 overflow-hidden flex-shrink-0">
+                        <Image
+                          src={preset.image}
+                          alt={post.title}
+                          fill
+                          sizes="(max-width: 640px) 100vw, 360px"
+                          loading="lazy"
+                          className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#2c2420]/30 via-transparent to-transparent" />
+                        <span className={`absolute bottom-3 left-3 inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border backdrop-blur-sm ${preset.tagClass}`}>
+                          {formatBlogCategory(post.category)}
+                        </span>
+                      </div>
+
+                      <div className="p-5 sm:p-6 flex flex-col flex-1">
+                        <h3 className="font-heading text-[1.1rem] font-semibold text-[#2c2420] leading-snug mb-2.5 group-hover:text-[#00685f] transition-colors duration-200 line-clamp-3 flex-1">
+                          {post.title}
+                        </h3>
+
+                        <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-4">
+                          {post.excerpt}
+                        </p>
+
+                        <div className="flex items-center justify-between mt-auto">
+                          <div className="flex items-center gap-1.5 text-xs text-[#8b7f6f]">
+                            <Clock className="w-3.5 h-3.5" />
+                            {post.read_time}
+                          </div>
+                          <span className="text-xs font-semibold text-[#00685f] group-hover:text-[#005249] flex items-center gap-1 transition-colors">
+                            Read <ArrowRight className="w-3 h-3" />
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+
+            <div className="flex-none w-4 sm:w-6 lg:w-[max(1.5rem,calc((100vw-72rem)/2))]" />
+          </div>
+        </div>
+
+        {/* Mobile CTA */}
+        <div className="mt-6 px-4 sm:hidden">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
+          >
+            Explore All Articles
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Ad unit — between blog preview and next sections */}
+      <div className="py-4 px-4 sm:px-6 bg-[#f9f7f4]">
+        <div className="max-w-3xl mx-auto">
+          <AdSense slot="1122334455" format="horizontal" />
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════════════
           HOW IT WORKS — Single responsive vertical timeline
       ══════════════════════════════════════════════════ */}
       <section id="how-it-works" className="py-20 sm:py-32 px-4 sm:px-6 bg-white">
@@ -684,130 +841,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ══════════════════════════════════════════════════
-          CLINICAL KNOWLEDGE HUB — Blog preview carousel
-      ══════════════════════════════════════════════════ */}
-      <section className="py-20 sm:py-32 bg-[#f9f7f4]">
-        {/* Header */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-10 sm:mb-14">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <p className="text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-[#bfa785] mb-3">
-                Clinical Knowledge Hub
-              </p>
-              <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2c2420] tracking-tight">
-                The Science of Healthy Living
-              </h2>
-            </div>
-            <Link
-              href="/blog"
-              className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
-            >
-              Explore All Articles
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-
-        {/* Scroll-snap carousel */}
-        <div className="relative">
-          <button
-            onClick={() => scrollCarousel("left")}
-            aria-label="Scroll left"
-            className="hidden lg:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white rounded-full items-center justify-center text-[#5A6578] hover:text-[#00685f] transition-all duration-200"
-            style={{ boxShadow: "0 6px 16px rgba(44,36,32,0.08)" }}
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => scrollCarousel("right")}
-            aria-label="Scroll right"
-            className="hidden lg:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white rounded-full items-center justify-center text-[#5A6578] hover:text-[#00685f] transition-all duration-200"
-            style={{ boxShadow: "0 6px 16px rgba(44,36,32,0.08)" }}
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-
-          <div className="absolute right-0 top-0 bottom-4 w-20 bg-gradient-to-l from-[#f9f7f4] to-transparent z-10 pointer-events-none" />
-
-          <div
-            ref={carouselRef}
-            className="no-scrollbar flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 pl-4 sm:pl-6"
-            style={{ WebkitOverflowScrolling: "touch" } as React.CSSProperties}
-          >
-            <div
-              className="flex-none hidden lg:block"
-              style={{ width: "max(0px, calc((100vw - 72rem) / 2))" }}
-            />
-
-            {BLOG_ARTICLES.map((article) => (
-              <Link
-                key={article.slug}
-                href={`/blog/${article.slug}`}
-                className="group snap-start flex-none flex flex-col bg-white rounded-2xl overflow-hidden ring-1 ring-[#e5ddd1]/70 hover:-translate-y-0.5 transition-all duration-300
-                           w-[calc(100vw-4.5rem)] sm:w-[320px] lg:w-[360px]"
-                style={{ boxShadow: "0 10px 28px rgba(44,36,32,0.06), 0 2px 6px rgba(44,36,32,0.04)" }}
-              >
-                <div className="relative h-40 sm:h-44 overflow-hidden flex-shrink-0">
-                  <Image
-                    src={article.image}
-                    alt={article.title}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 360px"
-                    loading="lazy"
-                    className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#2c2420]/30 via-transparent to-transparent" />
-                  <span className={`absolute bottom-3 left-3 inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border backdrop-blur-sm ${article.tagClass}`}>
-                    {article.category}
-                  </span>
-                </div>
-
-                <div className="p-5 sm:p-6 flex flex-col flex-1">
-                  <h3 className="font-heading text-[1.1rem] font-semibold text-[#2c2420] leading-snug mb-2.5 group-hover:text-[#00685f] transition-colors duration-200 line-clamp-3 flex-1">
-                    {article.title}
-                  </h3>
-
-                  <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-4">
-                    {article.excerpt}
-                  </p>
-
-                  <div className="flex items-center justify-between mt-auto">
-                    <div className="flex items-center gap-1.5 text-xs text-[#8b7f6f]">
-                      <Clock className="w-3.5 h-3.5" />
-                      {article.readTime}
-                    </div>
-                    <span className="text-xs font-semibold text-[#00685f] group-hover:text-[#005249] flex items-center gap-1 transition-colors">
-                      Read <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-
-            <div className="flex-none w-4 sm:w-6 lg:w-[max(1.5rem,calc((100vw-72rem)/2))]" />
-          </div>
-        </div>
-
-        {/* Mobile CTA */}
-        <div className="mt-6 px-4 sm:hidden">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
-          >
-            Explore All Articles
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
-
-      {/* Ad unit — between blog preview and CTA */}
-      <div className="py-4 px-4 sm:px-6 bg-[#f9f7f4]">
-        <div className="max-w-3xl mx-auto">
-          <AdSense slot="1122334455" format="horizontal" />
-        </div>
-      </div>
 
       {/* ══════════════════════════════════════════════════
           CTA — Dark warm with capsules-scatter background
