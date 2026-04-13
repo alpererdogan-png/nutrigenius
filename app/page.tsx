@@ -301,7 +301,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#f9f7f4]/70 via-transparent to-[#f9f7f4]/70" />
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-24 lg:py-32 relative">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-12 sm:pt-16 sm:pb-12 lg:pt-20 lg:pb-12 relative">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
             {/* ── Left column ── */}
@@ -410,7 +410,7 @@ export default function Home() {
           CLINICAL KNOWLEDGE HUB — Blog preview carousel
           Shows the 6 most recent published articles from Supabase.
       ══════════════════════════════════════════════════ */}
-      <section className="py-20 sm:py-32 bg-[#f9f7f4]">
+      <section className="pt-10 pb-12 sm:pt-12 sm:pb-16 bg-[#f9f7f4]">
         {/* Header */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-10 sm:mb-14">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -542,9 +542,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ad unit — between blog preview and next sections */}
-      <div className="py-4 px-4 sm:px-6 bg-[#f9f7f4]">
-        <div className="max-w-3xl mx-auto">
+      {/* Ad unit — between blog preview and next sections.
+          Bounded placeholder keeps layout stable whether or not AdSense fills.
+          When the AdSense pub is approved, the <ins> renders inside the box. */}
+      <div className="py-6 sm:py-8 px-4 sm:px-6 bg-[#f9f7f4]">
+        <div
+          className="relative mx-auto w-full max-w-[728px] border border-dashed border-[#d0c5b8] rounded-xl bg-[#f9f7f4] flex items-center justify-center overflow-hidden"
+          style={{ minHeight: "120px", maxHeight: "280px" }}
+        >
+          <span className="absolute inset-0 flex items-center justify-center text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[#9A8E82] pointer-events-none">
+            Advertisement
+          </span>
           <AdSense slot="1122334455" format="horizontal" />
         </div>
       </div>
@@ -552,7 +560,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           HOW IT WORKS — Single responsive vertical timeline
       ══════════════════════════════════════════════════ */}
-      <section id="how-it-works" className="py-20 sm:py-32 px-4 sm:px-6 bg-white">
+      <section id="how-it-works" className="py-10 sm:py-16 px-4 sm:px-6 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14 sm:mb-20">
             <p className="text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-[#bfa785] mb-3">
@@ -635,7 +643,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           FEATURES — 3 alternating image+text pairs
       ══════════════════════════════════════════════════ */}
-      <section id="features" className="py-20 sm:py-32 px-4 sm:px-6 bg-[#f9f7f4]">
+      <section id="features" className="py-12 sm:py-20 px-4 sm:px-6 bg-[#f9f7f4]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 sm:mb-24">
             <p className="text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-[#bfa785] mb-3">
@@ -744,7 +752,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           SAFETY — Dark section with layered stack visual
       ══════════════════════════════════════════════════ */}
-      <section id="safety" className="py-16 sm:py-24 px-4 sm:px-6 bg-[#2c2420]">
+      <section id="safety" className="py-12 sm:py-20 px-4 sm:px-6 bg-[#2c2420]">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
