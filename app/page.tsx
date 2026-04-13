@@ -284,10 +284,10 @@ export default function Home() {
       </nav>
 
       {/* ══════════════════════════════════════════════════
-          HERO — Two-column, dark gradient background
+          HERO — Warm cream, editorial, matches Features section
       ══════════════════════════════════════════════════ */}
-      <section className="relative pt-14 sm:pt-16 overflow-hidden bg-gradient-to-br from-[#2c2420] via-[#1f1916] to-[#2c2420]">
-        {/* Marble texture — subtle warmth */}
+      <section className="relative pt-14 sm:pt-16 overflow-hidden bg-[#f9f7f4]">
+        {/* Marble texture — subtle warmth, fades to cream */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <Image
             src="/images/marble-abstract.jpg"
@@ -295,21 +295,10 @@ export default function Home() {
             fill
             priority
             sizes="100vw"
-            className="object-cover opacity-[0.18] mix-blend-soft-light"
+            className="object-cover opacity-[0.28]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#2c2420]/40 via-transparent to-[#2c2420]/80" />
-        </div>
-        {/* Ambient glow blobs */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-teal-500/10 rounded-full -translate-y-1/3 translate-x-1/4 blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-teal-600/8 rounded-full translate-y-1/3 -translate-x-1/4 blur-3xl" />
-          <div
-            className="absolute inset-0 opacity-[0.025]"
-            style={{
-              backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
-              backgroundSize: "28px 28px",
-            }}
-          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f9f7f4]/60 via-[#f9f7f4]/30 to-[#f9f7f4]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#f9f7f4]/70 via-transparent to-[#f9f7f4]/70" />
         </div>
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-24 lg:py-32 relative">
@@ -317,111 +306,97 @@ export default function Home() {
 
             {/* ── Left column ── */}
             <div>
-              <div className="inline-flex items-center gap-2 bg-teal-500/15 border border-teal-500/25 text-teal-300 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 tracking-wide">
-                <Shield className="w-3.5 h-3.5" />
-                Evidence-Based · Clinician-Designed · Free
-              </div>
-
-              <h1 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.07] tracking-tight text-white mb-5">
-                Your supplements,{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
-                  backed by science
-                </span>
-              </h1>
-
-              <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-8 max-w-lg">
-                5-minute health assessment → personalized supplement plan with doses, timing, drug interaction checks, and evidence ratings.
+              <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#00685f] mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#bfa785]" />
+                Evidence-Based Supplementation
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-8">
+              <h1 className="font-heading text-[2.5rem] sm:text-[3rem] lg:text-[3.5rem] font-bold leading-[1.1] tracking-tight text-[#2c2420] mb-5">
+                Your supplements,{" "}
+                <span className="italic text-[#00685f]">backed by science.</span>
+              </h1>
+
+              <p className="text-[#6B5E52] text-base sm:text-[1.1rem] leading-relaxed mb-8 max-w-lg">
+                A 5-minute assessment creates your personalized supplement plan — with doses, timing, and drug interaction checks.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-5">
                 <Link
                   href="/quiz"
-                  className="inline-flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-95 text-white font-bold px-8 py-4 rounded-xl text-base transition-all duration-200 shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 hover:-translate-y-0.5 w-full sm:w-auto"
+                  className="inline-flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-95 text-white font-semibold px-8 py-4 rounded-full text-base transition-all duration-200 hover:-translate-y-0.5 w-full sm:w-auto"
+                  style={{ boxShadow: "0 14px 30px rgba(0,104,95,0.22), 0 4px 10px rgba(44,36,32,0.06)" }}
                 >
                   Get Your Free Personalized Plan
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="#how-it-works"
-                  className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 active:scale-95 border border-white/20 text-white font-medium px-6 py-4 rounded-xl text-base transition-all duration-200 w-full sm:w-auto"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#5A6578] hover:text-[#00685f] px-2 py-2 transition-colors group"
                 >
                   See How It Works
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
               </div>
 
-              {/* Trust row */}
-              <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-400">
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-teal-400 flex-shrink-0" />
-                  No account required
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-teal-400 flex-shrink-0" />
-                  100% free · 5 min
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-teal-400 flex-shrink-0" />
-                  Evidence-graded protocols
-                </div>
-              </div>
+              <p className="text-[0.85rem] text-[#9A8E82]">
+                Free · 5 minutes · No account required
+              </p>
             </div>
 
-            {/* ── Right column: Mock Protocol Card ── */}
+            {/* ── Right column: Protocol preview card ── */}
             <div className="hidden lg:flex items-center justify-center">
-              <div className="relative w-full max-w-[420px]">
-                {/* Glow behind card */}
-                <div className="absolute inset-6 bg-teal-500/20 rounded-3xl blur-2xl" />
-
-                {/* Free badge floating top-right */}
-                <div className="absolute -top-3 -right-3 z-20 bg-emerald-500 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-lg shadow-emerald-500/40 tracking-wide">
-                  FREE · 5 min
-                </div>
-
-                <div className="relative bg-[#0D1B2A] border border-white/10 rounded-2xl p-6 shadow-2xl">
-                  {/* Card header */}
-                  <div className="flex items-center justify-between mb-5">
-                    <div>
-                      <p className="text-teal-400 text-[10px] font-bold uppercase tracking-widest mb-0.5">
-                        Your Personalized Protocol
-                      </p>
-                      <h3 className="font-heading text-white font-bold text-lg tracking-tight">
-                        Daily Supplement Plan
-                      </h3>
-                    </div>
-                    <div className="w-10 h-10 rounded-xl bg-teal-500/15 border border-teal-500/25 flex items-center justify-center">
-                      <CheckCircle2 className="w-5 h-5 text-teal-400" />
-                    </div>
+              <div className="relative w-full max-w-[420px] transform -rotate-[1deg]">
+                <div
+                  className="relative bg-white rounded-2xl p-8 border-l-4 border-[#bfa785]"
+                  style={{ boxShadow: "0 20px 40px rgba(44,36,32,0.08), 0 6px 16px rgba(44,36,32,0.04)" }}
+                >
+                  {/* Header */}
+                  <div className="mb-6">
+                    <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#00685f] mb-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#bfa785]" />
+                      Your Protocol
+                    </p>
+                    <h3 className="font-heading text-[1.25rem] font-bold text-[#2c2420] tracking-tight">
+                      Daily Supplement Plan
+                    </h3>
                   </div>
 
                   {/* Supplement rows */}
-                  {[
-                    { num: "01", name: "Vitamin D3", form: "Cholecalciferol", dose: "5,000 IU", timing: "Morning", evidence: "Strong", ec: "text-green-400 bg-green-500/10 border-green-500/25" },
-                    { num: "02", name: "Magnesium Glycinate", form: "Chelated form", dose: "400 mg", timing: "Evening", evidence: "Strong", ec: "text-green-400 bg-green-500/10 border-green-500/25" },
-                    { num: "03", name: "Omega-3", form: "EPA + DHA", dose: "2,000 mg", timing: "With meals", evidence: "Moderate", ec: "text-blue-400 bg-blue-500/10 border-blue-500/25" },
-                  ].map((s) => (
-                    <div key={s.name} className="flex items-start gap-3 py-3.5 border-b border-white/5 last:border-0">
-                      <span className="text-[10px] font-mono text-slate-600 mt-1 w-5 flex-shrink-0">{s.num}</span>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white text-sm font-semibold leading-tight">{s.name}</p>
-                        <p className="text-slate-500 text-[11px] mb-1.5">{s.form}</p>
-                        <div className="flex flex-wrap gap-1.5">
-                          <span className="text-[10px] bg-teal-500/15 border border-teal-500/20 text-teal-300 px-2 py-0.5 rounded-full font-medium">{s.dose}</span>
-                          <span className="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2 py-0.5 rounded-full">{s.timing}</span>
-                          <span className={`text-[10px] border px-2 py-0.5 rounded-full font-medium ${s.ec}`}>{s.evidence}</span>
+                  <div className="divide-y divide-[#f2ede6]">
+                    {[
+                      { num: "1", name: "Vitamin D3", form: "Cholecalciferol", dose: "5,000 IU", timing: "Morning", evidence: "Strong" },
+                      { num: "2", name: "Magnesium Glycinate", form: "Chelated form", dose: "400 mg", timing: "Evening", evidence: "Strong" },
+                      { num: "3", name: "Omega-3", form: "EPA + DHA", dose: "2,000 mg", timing: "With meals", evidence: "Moderate" },
+                    ].map((s) => (
+                      <div key={s.name} className="flex items-start gap-4 py-3.5 first:pt-0 last:pb-0">
+                        <span className="font-heading text-[1.5rem] text-[#bfa785] leading-none mt-0.5 w-5 flex-shrink-0">
+                          {s.num}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[#2c2420] text-[1rem] font-semibold leading-tight">{s.name}</p>
+                          <p className="italic text-[#9A8E82] text-[0.85rem] mb-2">{s.form}</p>
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px]">
+                            <span className="font-bold text-[#2c2420]">{s.dose}</span>
+                            <span className="text-[#9A8E82]">· {s.timing}</span>
+                            <span
+                              className={`ml-auto px-2 py-0.5 rounded-full font-semibold ${
+                                s.evidence === "Strong"
+                                  ? "bg-teal-50 text-teal-700"
+                                  : "bg-blue-50 text-blue-700"
+                              }`}
+                            >
+                              {s.evidence}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
 
-                  {/* Footer bar */}
-                  <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                      <span className="text-xs text-slate-500">3 supplements · Interactions cleared</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-[10px] text-teal-400 font-semibold">
-                      <Shield className="w-3 h-3" /> Safety checked
-                    </div>
+                  {/* Footer */}
+                  <div className="mt-5 pt-4 border-t border-[#f2ede6] flex items-center gap-1.5 text-xs text-[#9A8E82]">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#00685f]" />
+                    3 supplements · Interactions cleared
                   </div>
                 </div>
               </div>
@@ -429,9 +404,6 @@ export default function Home() {
 
           </div>
         </div>
-
-        {/* Fade to page background */}
-        <div className="h-20 bg-gradient-to-b from-transparent to-[#f9f7f4]" />
       </section>
 
       {/* ══════════════════════════════════════════════════
