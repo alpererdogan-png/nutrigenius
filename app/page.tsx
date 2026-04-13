@@ -7,14 +7,12 @@ import { CookieSettingsLink } from "@/components/CookieConsent";
 import {
   Shield,
   FlaskConical,
-  Brain,
   CalendarCheck,
   ArrowRight,
   Pill,
   HeartPulse,
   Star,
   CheckCircle2,
-  BookOpen,
   Clock,
   Menu,
   X,
@@ -34,7 +32,7 @@ const BLOG_ARTICLES = [
     slug: "the-complete-guide-to-magnesium",
     category: "Evidence Review",
     tagClass: "bg-teal-50 text-teal-700 border-teal-200",
-    accentBg: "bg-gradient-to-br from-teal-500 to-teal-700",
+    image: "/images/vitamin-macro.jpg",
     title: "The Complete Guide to Magnesium: Forms, Doses, and What the Science Actually Says",
     excerpt: "Not all magnesium is created equal. From glycinate to threonate, here's what 47 clinical trials reveal about choosing the right form.",
     readTime: "8 min read",
@@ -43,7 +41,7 @@ const BLOG_ARTICLES = [
     slug: "5-supplement-myths-your-doctor-didnt-learn",
     category: "Myth Busting",
     tagClass: "bg-amber-50 text-amber-700 border-amber-200",
-    accentBg: "bg-gradient-to-br from-amber-400 to-orange-500",
+    image: "/images/flatlay-supplements.jpg",
     title: "5 Supplement Myths Your Doctor Didn't Learn in Medical School",
     excerpt: "Medical education covers pharmacology extensively but nutrition science? Often just a few hours. Let's separate fact from fiction.",
     readTime: "6 min read",
@@ -52,7 +50,7 @@ const BLOG_ARTICLES = [
     slug: "supplements-that-dont-mix-critical-interactions",
     category: "Safety Alert",
     tagClass: "bg-rose-50 text-rose-700 border-rose-200",
-    accentBg: "bg-gradient-to-br from-red-500 to-rose-700",
+    image: "/images/hands-capsule.jpg",
     title: "Supplements That Don't Mix: Critical Interactions You Need to Know",
     excerpt: "That fish oil you take with your blood thinner? It could be dangerous. A pharmacology expert breaks down the interactions that matter.",
     readTime: "7 min read",
@@ -61,7 +59,7 @@ const BLOG_ARTICLES = [
     slug: "the-pcos-supplement-protocol",
     category: "Condition Guide",
     tagClass: "bg-blue-50 text-blue-700 border-blue-200",
-    accentBg: "bg-gradient-to-br from-blue-500 to-blue-700",
+    image: "/images/morning-routine.jpg",
     title: "The PCOS Supplement Protocol: What the Evidence Supports",
     excerpt: "Inositol, berberine, vitamin D — which supplements actually help PCOS? We review the clinical trials so you don't have to.",
     readTime: "9 min read",
@@ -70,7 +68,7 @@ const BLOG_ARTICLES = [
     slug: "vitamin-d-why-80-percent-are-deficient",
     category: "Research Update",
     tagClass: "bg-purple-50 text-purple-700 border-purple-200",
-    accentBg: "bg-gradient-to-br from-purple-500 to-purple-700",
+    image: "/images/lab-science.jpg",
     title: "Vitamin D: Why 80% of People Are Deficient and What to Do About It",
     excerpt: "The sunshine vitamin isn't just about bones anymore. New research links low vitamin D to immunity, mood, and metabolic health.",
     readTime: "5 min read",
@@ -79,7 +77,7 @@ const BLOG_ARTICLES = [
     slug: "your-gut-brain-connection-probiotics-mental-health",
     category: "Deep Dive",
     tagClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    accentBg: "bg-gradient-to-br from-emerald-500 to-teal-600",
+    image: "/images/weekly-organizer.jpg",
     title: "Your Gut-Brain Connection: How Probiotics Influence Mental Health",
     excerpt: "The gut-brain axis is revolutionising how we think about anxiety and depression. Here's what the latest psychobiotic research shows.",
     readTime: "10 min read",
@@ -191,7 +189,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f9f9ff] text-[#1A2332]">
+    <div className="min-h-screen bg-[#f9f7f4] text-[#1A2332]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
@@ -232,7 +230,7 @@ export default function Home() {
           <div className="flex items-center gap-1 sm:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="w-10 h-10 flex items-center justify-center rounded-lg text-[#5A6578] hover:bg-[#F1F5F9] transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-lg text-[#5A6578] hover:bg-[#f0ebe2] transition-colors"
               aria-label="Toggle menu"
               aria-expanded={menuOpen}
             >
@@ -274,7 +272,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           HERO — Two-column, dark gradient background
       ══════════════════════════════════════════════════ */}
-      <section className="relative pt-14 sm:pt-16 overflow-hidden bg-gradient-to-br from-[#111c2c] via-[#0d1822] to-[#111c2c]">
+      <section className="relative pt-14 sm:pt-16 overflow-hidden bg-gradient-to-br from-[#2c2420] via-[#1f1916] to-[#2c2420]">
         {/* Marble texture — subtle warmth */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <Image
@@ -285,7 +283,7 @@ export default function Home() {
             sizes="100vw"
             className="object-cover opacity-[0.18] mix-blend-soft-light"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#111c2c]/40 via-transparent to-[#111c2c]/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#2c2420]/40 via-transparent to-[#2c2420]/80" />
         </div>
         {/* Ambient glow blobs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -419,206 +417,59 @@ export default function Home() {
         </div>
 
         {/* Fade to page background */}
-        <div className="h-20 bg-gradient-to-b from-transparent to-[#f9f9ff]" />
+        <div className="h-20 bg-gradient-to-b from-transparent to-[#f9f7f4]" />
       </section>
 
       {/* ══════════════════════════════════════════════════
-          CLINICAL KNOWLEDGE HUB — Blog preview carousel
+          HOW IT WORKS — Single responsive vertical timeline
       ══════════════════════════════════════════════════ */}
-      <section className="py-16 sm:py-24 bg-[#f0f3ff]">
-        {/* Header */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-10 sm:mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <p className="text-[0.75rem] font-semibold uppercase tracking-[0.05em] text-[#5A6578] mb-3">
-                Clinical Knowledge Hub
-              </p>
-              <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A2332] tracking-tight">
-                The Science of Healthy Living
-              </h2>
-            </div>
-            <Link
-              href="/blog"
-              className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
-            >
-              Explore All Articles
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-
-        {/* Scroll-snap carousel */}
-        <div className="relative">
-          {/* Desktop arrow buttons */}
-          <button
-            onClick={() => scrollCarousel("left")}
-            aria-label="Scroll left"
-            className="hidden lg:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white rounded-full shadow-md items-center justify-center text-[#5A6578] hover:text-[#00685f] hover:shadow-lg transition-all duration-200"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => scrollCarousel("right")}
-            aria-label="Scroll right"
-            className="hidden lg:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white rounded-full shadow-md items-center justify-center text-[#5A6578] hover:text-[#00685f] hover:shadow-lg transition-all duration-200"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-
-          {/* Right-edge fade hint */}
-          <div className="absolute right-0 top-0 bottom-4 w-20 bg-gradient-to-l from-[#f0f3ff] to-transparent z-10 pointer-events-none" />
-
-          {/* Track */}
-          <div
-            ref={carouselRef}
-            className="no-scrollbar flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 pl-4 sm:pl-6"
-            style={{ WebkitOverflowScrolling: "touch" } as React.CSSProperties}
-          >
-            {/* Leading spacer aligns first card with max-w-6xl header on large screens */}
-            <div
-              className="flex-none hidden lg:block"
-              style={{ width: "max(0px, calc((100vw - 72rem) / 2))" }}
-            />
-
-            {BLOG_ARTICLES.map((article) => (
-              <Link
-                key={article.slug}
-                href={`/blog/${article.slug}`}
-                className="group snap-start flex-none flex flex-col bg-white rounded-2xl shadow-sm shadow-black/5 ring-1 ring-black/[0.04] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10 hover:ring-0 transition-all duration-300 p-5 sm:p-6
-                           w-[calc(100vw-4.5rem)] sm:w-[300px] lg:w-[340px]"
-              >
-                {/* Coloured accent icon */}
-                <div className={`w-10 h-10 rounded-xl ${article.accentBg} flex items-center justify-center mb-4 flex-shrink-0`}>
-                  <BookOpen className="w-5 h-5 text-white/90" />
-                </div>
-
-                <span className={`self-start inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border mb-3 ${article.tagClass}`}>
-                  {article.category}
-                </span>
-
-                <h3 className="font-heading text-[1.05rem] font-semibold text-[#1A2332] leading-snug mb-2 group-hover:text-[#00685f] transition-colors duration-200 line-clamp-3 flex-1">
-                  {article.title}
-                </h3>
-
-                <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-4">
-                  {article.excerpt}
-                </p>
-
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-center gap-1.5 text-xs text-[#8896A8]">
-                    <Clock className="w-3.5 h-3.5" />
-                    {article.readTime}
-                  </div>
-                  <span className="text-xs font-semibold text-[#00685f] group-hover:text-[#005249] flex items-center gap-1 transition-colors">
-                    Read <ArrowRight className="w-3 h-3" />
-                  </span>
-                </div>
-              </Link>
-            ))}
-
-            {/* Trailing space so last card isn't flush against edge */}
-            <div className="flex-none w-4 sm:w-6 lg:w-[max(1.5rem,calc((100vw-72rem)/2))]" />
-          </div>
-        </div>
-
-        {/* Mobile CTA */}
-        <div className="mt-6 px-4 sm:hidden">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
-          >
-            Explore All Articles
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
-
-      {/* Ad unit — between blog preview and next sections */}
-      <div className="py-4 px-4 sm:px-6 bg-[#f9f9ff]">
-        <div className="max-w-3xl mx-auto">
-          <AdSense slot="1122334455" format="horizontal" />
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════════════════════
-          HOW IT WORKS — Horizontal timeline
-      ══════════════════════════════════════════════════ */}
-      <section id="how-it-works" className="py-16 sm:py-24 px-4 sm:px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
+      <section id="how-it-works" className="py-20 sm:py-32 px-4 sm:px-6 bg-white">
+        <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14 sm:mb-20">
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A2332] mb-4 tracking-tight">
-              How NutriGenius works
+            <p className="text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-[#bfa785] mb-3">
+              How it works
+            </p>
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2c2420] mb-4 tracking-tight">
+              A systematic, evidence-based approach
             </h2>
             <p className="text-[#5A6578] text-base sm:text-lg max-w-2xl mx-auto">
-              A systematic, evidence-based approach to supplement recommendations — not guesswork.
+              Four steps from your health profile to a personalized protocol. Not guesswork.
             </p>
           </div>
 
-          {/* ── Desktop: horizontal timeline ── */}
-          <div className="hidden lg:block">
-            <div className="relative flex items-start justify-between">
-              {/* Connecting gradient line */}
-              <div
-                className="absolute top-9 left-0 right-0 h-0.5 bg-gradient-to-r from-slate-200 via-teal-400 to-slate-200"
-                style={{ left: "calc(12.5% - 0px)", right: "calc(12.5% - 0px)" }}
-              />
-
-              {HOW_STEPS.map((item, i) => (
-                <div key={item.step} className="flex-1 flex flex-col items-center text-center px-4 group">
-                  {/* Step circle */}
-                  <div className="relative mb-7 z-10">
-                    <div className="w-[72px] h-[72px] rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center shadow-xl shadow-teal-500/30 ring-4 ring-white group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-white">{item.icon}</span>
-                    </div>
-                    {/* Step number badge */}
-                    <div className="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-[#1A2332] text-white text-[10px] font-bold flex items-center justify-center border-2 border-white shadow-sm">
-                      {i + 1}
-                    </div>
-                  </div>
-                  <h3 className="font-heading text-lg font-bold text-[#1A2332] mb-2 tracking-tight">{item.title}</h3>
-                  <p className="text-sm text-[#5A6578] leading-relaxed max-w-[210px]">{item.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ── Mobile: vertical timeline ── */}
-          <div className="lg:hidden space-y-0">
+          {/* Vertical timeline — responsive for all sizes */}
+          <ol className="relative">
+            <div className="absolute left-[22px] sm:left-[27px] top-2 bottom-2 w-[2px] bg-gradient-to-b from-teal-300 via-teal-400 to-teal-100" />
             {HOW_STEPS.map((item, i) => (
-              <div key={item.step} className="flex gap-5 pb-10 relative">
-                {/* Vertical connector */}
-                {i < HOW_STEPS.length - 1 && (
-                  <div className="absolute left-[22px] top-[52px] bottom-0 w-0.5 bg-gradient-to-b from-teal-400 to-teal-100" />
-                )}
-                {/* Circle */}
+              <li key={item.step} className="flex gap-5 sm:gap-6 pb-10 sm:pb-12 last:pb-0 relative">
                 <div className="relative flex-shrink-0 z-10">
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center shadow-lg shadow-teal-500/25">
-                    <span className="text-white [&>svg]:w-5 [&>svg]:h-5">{item.icon}</span>
+                  <div className="w-11 h-11 sm:w-[54px] sm:h-[54px] rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center shadow-lg shadow-teal-600/25 ring-4 ring-white">
+                    <span className="text-white [&>svg]:w-5 [&>svg]:h-5 sm:[&>svg]:w-6 sm:[&>svg]:h-6">{item.icon}</span>
                   </div>
-                  <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#1A2332] text-white text-[9px] font-bold flex items-center justify-center border border-white">
+                  <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#2c2420] text-white text-[9px] font-bold flex items-center justify-center border border-white">
                     {i + 1}
                   </div>
                 </div>
-                <div className="pt-1.5">
-                  <h3 className="font-heading text-base font-bold text-[#1A2332] mb-1 tracking-tight">{item.title}</h3>
-                  <p className="text-sm text-[#5A6578] leading-relaxed">{item.description}</p>
+                <div className="pt-2 sm:pt-2.5 flex-1">
+                  <h3 className="font-heading text-lg sm:text-xl font-bold text-[#2c2420] mb-2 tracking-tight">{item.title}</h3>
+                  <p className="text-sm sm:text-base text-[#5A6578] leading-relaxed max-w-xl">{item.description}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
 
           {/* Trust bar */}
-          <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-10 text-xs sm:text-sm text-[#5A6578] rounded-2xl bg-[#f0f3ff] px-4 py-5 sm:py-4">
+          <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-10 text-xs sm:text-sm text-[#5A6578] rounded-2xl bg-[#f9f7f4] px-4 py-5 sm:py-4">
             <div className="flex items-center gap-2">
               <FlaskConical className="w-4 h-4 text-[#00685f] flex-shrink-0" />
               Built on peer-reviewed research
             </div>
-            <div className="hidden sm:block w-px h-4 bg-[#c8cede]" />
+            <div className="hidden sm:block w-px h-4 bg-[#e0d8cc]" />
             <div className="flex items-center gap-2">
               <Shield className="w-4 h-4 text-[#00685f] flex-shrink-0" />
               Drug interaction safety checks
             </div>
-            <div className="hidden sm:block w-px h-4 bg-[#c8cede]" />
+            <div className="hidden sm:block w-px h-4 bg-[#e0d8cc]" />
             <div className="flex items-center gap-2">
               <HeartPulse className="w-4 h-4 text-[#00685f] flex-shrink-0" />
               Clinician-Designed &amp; Evidence-Based
@@ -653,115 +504,110 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
-          FEATURES — Bento grid
+          FEATURES — 3 alternating image+text pairs
       ══════════════════════════════════════════════════ */}
-      <section id="features" className="py-16 sm:py-24 px-4 sm:px-6 bg-[#f0f3ff]">
+      <section id="features" className="py-20 sm:py-32 px-4 sm:px-6 bg-[#f9f7f4]">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A2332] mb-4 tracking-tight">
+          <div className="text-center mb-16 sm:mb-24">
+            <p className="text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-[#bfa785] mb-3">
               What makes us different
-            </h2>
-            <p className="text-[#5A6578] text-base sm:text-lg max-w-2xl mx-auto">
-              Most supplement recommendations are marketing-driven. Ours are clinically-driven.
             </p>
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2c2420] tracking-tight">
+              Clinically-driven, not marketing-driven
+            </h2>
           </div>
 
-          {/* Bento grid layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-4">
-
-            {/* LARGE CARD 1 — Drug Interaction Checks (col-span-1 row-span-2) */}
-            <div className="sm:col-span-1 lg:col-span-1 lg:row-span-2 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 border border-amber-200/70 rounded-2xl p-7 flex flex-col group hover:scale-[1.01] transition-all duration-200 cursor-pointer">
-              <div className="w-13 h-13 rounded-2xl bg-amber-500/15 border border-amber-300/40 flex items-center justify-center text-amber-600 mb-5 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300 w-14 h-14">
-                <Shield className="w-7 h-7" />
-              </div>
-              <h3 className="font-heading text-xl font-bold text-[#1A2332] mb-3 tracking-tight">
-                Drug Interaction Checks
-              </h3>
-              <p className="text-[#5A6578] leading-relaxed text-sm flex-1">Every supplement is screened against your medications. Critical interactions are blocked. Moderate ones are flagged with clear warnings.</p>
-              <div className="mt-6 pt-5 border-t border-amber-200/60">
-                <p className="text-xs text-amber-700/70 font-medium mb-2.5 uppercase tracking-wider">Interaction-checked drugs</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {["Warfarin", "Metformin", "SSRIs", "Statins", "Thyroid meds"].map((med) => (
-                    <span key={med} className="text-xs bg-amber-100/80 text-amber-700 border border-amber-200 px-2.5 py-1 rounded-full font-medium">
-                      {med}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* LARGE CARD 2 — Evidence Ratings (col-span-1 row-span-2) */}
-            <div className="sm:col-span-1 lg:col-span-1 lg:row-span-2 bg-gradient-to-br from-green-50 via-teal-50 to-green-50 border border-green-200/70 rounded-2xl p-7 flex flex-col group hover:scale-[1.01] transition-all duration-200 cursor-pointer">
-              <div className="w-14 h-14 rounded-2xl bg-green-500/15 border border-green-300/40 flex items-center justify-center text-green-600 mb-5 group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
-                <Star className="w-7 h-7" />
-              </div>
-              <h3 className="font-heading text-xl font-bold text-[#1A2332] mb-3 tracking-tight">
-                Evidence Ratings
-              </h3>
-              <p className="text-[#5A6578] leading-relaxed text-sm flex-1">Each recommendation shows its evidence level — Strong, Moderate, Emerging, or Traditional — so you know exactly what the science says.</p>
-              <div className="mt-6 pt-5 border-t border-green-200/60 space-y-2.5">
-                {[
-                  { label: "Strong", color: "bg-green-500", w: "w-full", text: "text-green-700" },
-                  { label: "Moderate", color: "bg-blue-400", w: "w-3/4", text: "text-blue-700" },
-                  { label: "Emerging", color: "bg-amber-400", w: "w-1/2", text: "text-amber-700" },
-                  { label: "Traditional", color: "bg-slate-400", w: "w-1/3", text: "text-slate-600" },
-                ].map((e) => (
-                  <div key={e.label} className="flex items-center gap-2.5">
-                    <span className={`text-xs font-medium w-20 flex-shrink-0 ${e.text}`}>{e.label}</span>
-                    <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div className={`h-full rounded-full ${e.color} ${e.w} transition-all`} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 4 small cards — right column */}
+          <div className="space-y-20 sm:space-y-28">
             {[
               {
-                icon: <Brain className="w-5 h-5" />,
-                title: "Deterministic Algorithm",
-                desc: "Not a chatbot making guesses. A structured rules engine with a curated clinical knowledge base drives every recommendation.",
-                bg: "from-purple-50 to-violet-50",
-                border: "border-purple-200/60",
-                iconCls: "bg-purple-500/15 border-purple-300/40 text-purple-600 group-hover:bg-purple-600 group-hover:text-white",
+                img: "/images/flatlay-supplements.jpg",
+                alt: "Overhead flatlay of supplement bottles",
+                label: "Drug Interaction Checks",
+                heading: "Every supplement, screened against your medications",
+                desc: "Critical interactions are blocked automatically. Moderate ones are flagged with clear warnings. We check against warfarin, metformin, SSRIs, statins, thyroid meds, and more.",
+                link: { href: "#safety", text: "Learn more about our safety checks" },
+                reverse: false,
               },
               {
-                icon: <Dna className="w-5 h-5" />,
-                title: "Lab-Informed Dosing",
-                desc: "Upload your blood work results and get recommendations calibrated to your actual biomarker levels, not generic doses.",
-                bg: "from-blue-50 to-indigo-50",
-                border: "border-blue-200/60",
-                iconCls: "bg-blue-500/15 border-blue-300/40 text-blue-600 group-hover:bg-blue-600 group-hover:text-white",
+                img: "/images/vitamin-macro.jpg",
+                alt: "Macro close-up of vitamins and minerals",
+                label: "Evidence Ratings",
+                heading: "Strong, moderate, emerging — you decide",
+                desc: "Every recommendation shows its evidence level — Strong (multiple RCTs), Moderate (some studies), Emerging (preliminary research), or Traditional (historical use) — so you know exactly what the science says.",
+                link: { href: "/methodology", text: "See our methodology" },
+                reverse: true,
               },
               {
-                icon: <CalendarCheck className="w-5 h-5" />,
-                title: "Visual Weekly Schedule",
-                desc: "See exactly what to take and when — morning, midday, evening — with timing optimized for absorption and your daily routine.",
-                bg: "from-teal-50 to-cyan-50",
-                border: "border-teal-200/60",
-                iconCls: "bg-teal-500/15 border-teal-300/40 text-teal-600 group-hover:bg-teal-600 group-hover:text-white",
+                img: "/images/lab-science.jpg",
+                alt: "Laboratory setup with microscope and supplement bottles",
+                label: "Deterministic Algorithm",
+                heading: "Structured clinical rules, not a chatbot",
+                desc: "NutriGenius uses a curated knowledge base of supplement-condition mappings, drug interactions, dosage limits, and safety rules. Not a language model making guesses — a structured engine producing consistent, evidence-based recommendations.",
+                link: { href: "/methodology", text: "Read about our algorithm" },
+                reverse: false,
               },
-              {
-                icon: <HeartPulse className="w-5 h-5" />,
-                title: "Genetic Personalization",
-                desc: "Have genetic data? MTHFR, COMT, VDR, and other variants are used to select the right supplement forms for your biology.",
-                bg: "from-rose-50 to-pink-50",
-                border: "border-rose-200/60",
-                iconCls: "bg-rose-500/15 border-rose-300/40 text-rose-600 group-hover:bg-rose-600 group-hover:text-white",
-              },
-            ].map((f, i) => (
+            ].map((f) => (
               <div
-                key={i}
-                className={`bg-gradient-to-br ${f.bg} border ${f.border} rounded-2xl p-5 group hover:scale-[1.02] transition-all duration-200 cursor-pointer`}
+                key={f.label}
+                className={`grid lg:grid-cols-2 gap-10 lg:gap-16 items-center ${f.reverse ? "lg:[&>*:first-child]:order-2" : ""}`}
               >
-                <div className={`w-10 h-10 rounded-xl border flex items-center justify-center mb-3 transition-all duration-300 ${f.iconCls}`}>
-                  {f.icon}
+                <div className="relative aspect-[4/3] w-full max-w-[520px] mx-auto lg:mx-0 rounded-2xl overflow-hidden"
+                  style={{ boxShadow: "0 20px 40px rgba(44, 36, 32, 0.12), 0 6px 16px rgba(44, 36, 32, 0.06)" }}>
+                  <Image
+                    src={f.img}
+                    alt={f.alt}
+                    fill
+                    sizes="(max-width: 1024px) 90vw, 520px"
+                    loading="lazy"
+                    className="object-cover"
+                  />
                 </div>
-                <h3 className="font-heading text-base font-bold text-[#1A2332] mb-1.5 tracking-tight">{f.title}</h3>
-                <p className="text-sm text-[#5A6578] leading-relaxed">{f.desc}</p>
+                <div className="max-w-xl">
+                  <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#00685f] mb-4">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#bfa785]" />
+                    {f.label}
+                  </p>
+                  <h3 className="font-heading text-2xl sm:text-3xl lg:text-[2rem] font-bold text-[#2c2420] mb-5 tracking-tight leading-[1.15]">
+                    {f.heading}
+                  </h3>
+                  <p className="text-[#5A6578] text-base sm:text-lg leading-relaxed mb-6">
+                    {f.desc}
+                  </p>
+                  <Link
+                    href={f.link.href}
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors group"
+                  >
+                    {f.link.text}
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                </div>
               </div>
             ))}
+          </div>
+
+          {/* ── Additional features: simpler 2x2 grid ── */}
+          <div className="mt-24 sm:mt-32 pt-12 border-t border-[#e5ddd1]">
+            <p className="text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-[#bfa785] text-center mb-10">
+              Additional features
+            </p>
+            <div className="grid sm:grid-cols-2 gap-x-12 gap-y-8 max-w-3xl mx-auto">
+              {[
+                { icon: <Dna className="w-5 h-5" />, title: "Lab-Informed Dosing", desc: "Biomarker-calibrated recommendations from your blood work." },
+                { icon: <CalendarCheck className="w-5 h-5" />, title: "Visual Weekly Schedule", desc: "Morning, midday, evening — timing optimized for absorption." },
+                { icon: <HeartPulse className="w-5 h-5" />, title: "Genetic Personalization", desc: "MTHFR, COMT, VDR variants inform supplement form selection." },
+                { icon: <Shield className="w-5 h-5" />, title: "Clinician-Designed Protocols", desc: "Medically reviewed rules from practicing clinicians." },
+              ].map((f) => (
+                <div key={f.title} className="flex gap-4">
+                  <div className="w-10 h-10 rounded-full bg-white ring-1 ring-[#e5ddd1] flex items-center justify-center text-[#00685f] flex-shrink-0">
+                    {f.icon}
+                  </div>
+                  <div>
+                    <h4 className="font-heading text-base font-bold text-[#2c2420] mb-1 tracking-tight">{f.title}</h4>
+                    <p className="text-sm text-[#5A6578] leading-relaxed">{f.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -840,9 +686,133 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
-          CTA — Full-width teal-to-emerald gradient
+          CLINICAL KNOWLEDGE HUB — Blog preview carousel
       ══════════════════════════════════════════════════ */}
-      <section className="relative py-20 sm:py-28 px-4 sm:px-6 bg-[#111c2c] overflow-hidden">
+      <section className="py-20 sm:py-32 bg-[#f9f7f4]">
+        {/* Header */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-10 sm:mb-14">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <p className="text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-[#bfa785] mb-3">
+                Clinical Knowledge Hub
+              </p>
+              <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2c2420] tracking-tight">
+                The Science of Healthy Living
+              </h2>
+            </div>
+            <Link
+              href="/blog"
+              className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
+            >
+              Explore All Articles
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Scroll-snap carousel */}
+        <div className="relative">
+          <button
+            onClick={() => scrollCarousel("left")}
+            aria-label="Scroll left"
+            className="hidden lg:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white rounded-full items-center justify-center text-[#5A6578] hover:text-[#00685f] transition-all duration-200"
+            style={{ boxShadow: "0 6px 16px rgba(44,36,32,0.08)" }}
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => scrollCarousel("right")}
+            aria-label="Scroll right"
+            className="hidden lg:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white rounded-full items-center justify-center text-[#5A6578] hover:text-[#00685f] transition-all duration-200"
+            style={{ boxShadow: "0 6px 16px rgba(44,36,32,0.08)" }}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
+          <div className="absolute right-0 top-0 bottom-4 w-20 bg-gradient-to-l from-[#f9f7f4] to-transparent z-10 pointer-events-none" />
+
+          <div
+            ref={carouselRef}
+            className="no-scrollbar flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 pl-4 sm:pl-6"
+            style={{ WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+          >
+            <div
+              className="flex-none hidden lg:block"
+              style={{ width: "max(0px, calc((100vw - 72rem) / 2))" }}
+            />
+
+            {BLOG_ARTICLES.map((article) => (
+              <Link
+                key={article.slug}
+                href={`/blog/${article.slug}`}
+                className="group snap-start flex-none flex flex-col bg-white rounded-2xl overflow-hidden ring-1 ring-[#e5ddd1]/70 hover:-translate-y-0.5 transition-all duration-300
+                           w-[calc(100vw-4.5rem)] sm:w-[320px] lg:w-[360px]"
+                style={{ boxShadow: "0 10px 28px rgba(44,36,32,0.06), 0 2px 6px rgba(44,36,32,0.04)" }}
+              >
+                <div className="relative h-40 sm:h-44 overflow-hidden flex-shrink-0">
+                  <Image
+                    src={article.image}
+                    alt={article.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 360px"
+                    loading="lazy"
+                    className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2c2420]/30 via-transparent to-transparent" />
+                  <span className={`absolute bottom-3 left-3 inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border backdrop-blur-sm ${article.tagClass}`}>
+                    {article.category}
+                  </span>
+                </div>
+
+                <div className="p-5 sm:p-6 flex flex-col flex-1">
+                  <h3 className="font-heading text-[1.1rem] font-semibold text-[#2c2420] leading-snug mb-2.5 group-hover:text-[#00685f] transition-colors duration-200 line-clamp-3 flex-1">
+                    {article.title}
+                  </h3>
+
+                  <p className="text-sm text-[#5A6578] leading-relaxed line-clamp-2 mb-4">
+                    {article.excerpt}
+                  </p>
+
+                  <div className="flex items-center justify-between mt-auto">
+                    <div className="flex items-center gap-1.5 text-xs text-[#8b7f6f]">
+                      <Clock className="w-3.5 h-3.5" />
+                      {article.readTime}
+                    </div>
+                    <span className="text-xs font-semibold text-[#00685f] group-hover:text-[#005249] flex items-center gap-1 transition-colors">
+                      Read <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+
+            <div className="flex-none w-4 sm:w-6 lg:w-[max(1.5rem,calc((100vw-72rem)/2))]" />
+          </div>
+        </div>
+
+        {/* Mobile CTA */}
+        <div className="mt-6 px-4 sm:hidden">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#00685f] hover:text-[#005249] transition-colors"
+          >
+            Explore All Articles
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Ad unit — between blog preview and CTA */}
+      <div className="py-4 px-4 sm:px-6 bg-[#f9f7f4]">
+        <div className="max-w-3xl mx-auto">
+          <AdSense slot="1122334455" format="horizontal" />
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════════════
+          CTA — Dark warm with capsules-scatter background
+      ══════════════════════════════════════════════════ */}
+      <section className="relative py-20 sm:py-28 px-4 sm:px-6 bg-[#2c2420] overflow-hidden">
         {/* Capsules background */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <Image
@@ -853,7 +823,7 @@ export default function Home() {
             loading="lazy"
             className="object-cover opacity-35"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#111c2c]/90 via-[#0d1822]/75 to-[#111c2c]/85" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#2c2420]/90 via-[#1f1916]/75 to-[#2c2420]/85" />
         </div>
         {/* Top highlight line */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
@@ -874,7 +844,7 @@ export default function Home() {
           </p>
           <Link
             href="/quiz"
-            className="inline-flex items-center justify-center gap-3 bg-white hover:bg-amber-50 active:scale-95 text-[#111c2c] font-bold px-8 sm:px-12 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl transition-all duration-200 hover:-translate-y-1 w-full sm:w-auto"
+            className="inline-flex items-center justify-center gap-3 bg-white hover:bg-amber-50 active:scale-95 text-[#2c2420] font-bold px-8 sm:px-12 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl transition-all duration-200 hover:-translate-y-1 w-full sm:w-auto"
             style={{ boxShadow: "0 0 60px rgba(251,191,36,0.25), 0 20px 50px rgba(0,0,0,0.35)" }}
           >
             {"Get Your Free Personalized Plan"}
@@ -900,7 +870,7 @@ export default function Home() {
               <CookieSettingsLink className="hover:text-[#00685f] transition-colors cursor-pointer" />
             </div>
           </div>
-          <div className="bg-[#f9f9ff] rounded-xl p-4 mt-4 space-y-3">
+          <div className="bg-[#f9f7f4] rounded-xl p-4 mt-4 space-y-3">
             <p className="text-xs text-[#8896A8] leading-relaxed">
               <strong>{"Medical Disclaimer:"}</strong>{" "}{"NutriGenius provides educational information based on published scientific evidence. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult your healthcare provider before starting any supplement regimen."}
             </p>
