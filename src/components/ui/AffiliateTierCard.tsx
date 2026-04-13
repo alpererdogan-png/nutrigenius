@@ -20,6 +20,11 @@ interface TierStyle {
   iconFill: boolean;
 }
 
+// NutriGenius brand palette — mirrors the hex values already in use across
+// results/blog/landing. All three tiers share the same card chrome
+// (white surface, #E8ECF1 border, teal accent). Tiers differentiate via
+// icon + label only, keeping the Amazon cards visually aligned with the
+// rest of the site.
 export const TIER_STYLES: Record<TierKey, TierStyle> = {
   best: {
     icon: Star,
@@ -27,28 +32,28 @@ export const TIER_STYLES: Record<TierKey, TierStyle> = {
     priceRange: "$$",
     iconColor: "text-[#00685f]",
     labelColor: "text-[#00685f]",
-    cardBg: "bg-[#f0faf9]",
-    cardBorder: "ring-[#c7e8e3]",
+    cardBg: "bg-white",
+    cardBorder: "ring-[#E8ECF1]",
     iconFill: true,
   },
   premium: {
     icon: Gem,
     label: "Premium",
     priceRange: "$$$",
-    iconColor: "text-[#bfa785]",
-    labelColor: "text-[#8c7a5c]",
-    cardBg: "bg-[#fbf7f0]",
-    cardBorder: "ring-[#e8dcc5]",
+    iconColor: "text-[#00685f]",
+    labelColor: "text-[#1A2332]",
+    cardBg: "bg-white",
+    cardBorder: "ring-[#E8ECF1]",
     iconFill: true,
   },
   budget: {
     icon: Tag,
     label: "Budget",
     priceRange: "$",
-    iconColor: "text-[#9A8E82]",
-    labelColor: "text-[#6B5E52]",
-    cardBg: "bg-[#f9f7f4]",
-    cardBorder: "ring-[#e5ddd1]",
+    iconColor: "text-[#00685f]",
+    labelColor: "text-[#1A2332]",
+    cardBg: "bg-white",
+    cardBorder: "ring-[#E8ECF1]",
     iconFill: false,
   },
 };
@@ -80,7 +85,7 @@ export function AffiliateTierCard({
     <div
       className={`${style.cardBg} ring-1 ${style.cardBorder} rounded-xl p-4 flex items-center gap-4`}
     >
-      <div className={`w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 ring-1 ${style.cardBorder}`}>
+      <div className="w-10 h-10 rounded-full bg-[#F0FDFA] flex items-center justify-center flex-shrink-0 ring-1 ring-[#E8ECF1]">
         <Icon
           className={`w-4 h-4 ${style.iconColor}`}
           fill={style.iconFill ? "currentColor" : "none"}
@@ -96,10 +101,10 @@ export function AffiliateTierCard({
             {style.priceRange}
           </span>
         </div>
-        <p className="text-[13px] font-semibold text-[#2c2420] leading-snug">
+        <p className="text-[13px] font-semibold text-[#1A2332] leading-snug">
           {product.brand} <span className="font-normal text-[#5A6578]">{product.name}</span>
         </p>
-        <p className="text-[11px] text-[#6B5E52] leading-snug mt-0.5">
+        <p className="text-[11px] text-[#5A6578] leading-snug mt-0.5">
           {product.description}
         </p>
       </div>

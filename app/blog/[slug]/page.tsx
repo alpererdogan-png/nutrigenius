@@ -581,14 +581,14 @@ function esc(str: string): string {
 }
 
 function affiliateCardHtml(product: HardcodedProduct): string {
-  return `<div class="my-6" style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06)">
+  return `<div class="my-6" style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.04);border:1px solid #E8ECF1">
   <div style="flex:1;min-width:0">
     <p style="font-size:13px;font-weight:600;color:#1A2332;margin:0;line-height:1.4">${esc(product.product_name)}</p>
     <p style="font-size:12px;color:#5A6578;margin:2px 0 0">${esc(product.brand)}</p>
-    <p style="font-size:11px;color:#8896A8;margin:2px 0 0;line-height:1.4">${esc(product.note)}</p>
+    <p style="font-size:11px;color:#5A6578;margin:2px 0 0;line-height:1.4">${esc(product.note)}</p>
   </div>
   <a href="${esc(product.affiliate_url)}" target="_blank" rel="noopener noreferrer nofollow"
-     style="display:inline-flex;align-items:center;gap:5px;background:#fff;color:#111c2c;font-size:12px;font-weight:500;padding:8px 16px;border-radius:9999px;text-decoration:none;white-space:nowrap;border:1px solid rgba(0,0,0,0.08);flex-shrink:0;transition:background 0.15s">
+     style="display:inline-flex;align-items:center;gap:5px;background:#fff;color:#1A2332;font-size:12px;font-weight:500;padding:8px 16px;border-radius:9999px;text-decoration:none;white-space:nowrap;border:1px solid #E8ECF1;flex-shrink:0;transition:background 0.15s,border-color 0.15s">
     View on
     <svg viewBox="0 0 60 18" aria-label="Amazon" style="height:14px;width:auto;flex-shrink:0" fill="currentColor">
       <text x="0" y="14" font-size="14" font-family="Arial, sans-serif" font-weight="bold" fill="#FF9900">amazon</text>
