@@ -354,6 +354,7 @@ export default function BlogPage() {
             <Link href="/privacy" className="hover:text-[#00685f] transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-[#00685f] transition-colors">Terms of Service</Link>
             <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
+          <Link href="/disclosure" className="hover:text-[#00685f] transition-colors">Affiliate Disclosure</Link>
             <Link href="/about" className="hover:text-[#00685f] transition-colors">About</Link>
             <CookieSettingsLink className="hover:text-[#00685f] transition-colors cursor-pointer" />
           </div>

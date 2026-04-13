@@ -84,6 +84,7 @@ export default function ContactPage() {
           <Link href="/about" className="hover:text-[#00685f] transition-colors">About</Link>
           <Link href="/privacy" className="hover:text-[#00685f] transition-colors">Privacy Policy</Link>
           <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
+          <Link href="/disclosure" className="hover:text-[#00685f] transition-colors">Affiliate Disclosure</Link>
           <Link href="/" className="hover:text-[#00685f] transition-colors ml-auto">← Back to NutriGenius</Link>
         </div>
       </main>

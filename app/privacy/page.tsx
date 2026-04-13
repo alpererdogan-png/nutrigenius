@@ -424,6 +424,7 @@ export default function PrivacyPage() {
         <div className="border-t border-[#E8ECF1] pt-8 mt-8 flex flex-wrap gap-4 text-sm text-[#8896A8]">
           <Link href="/terms" className="hover:text-[#00685f] transition-colors">Terms of Service</Link>
           <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
+          <Link href="/disclosure" className="hover:text-[#00685f] transition-colors">Affiliate Disclosure</Link>
           <Link href="/" className="hover:text-[#00685f] transition-colors ml-auto">← Back to NutriGenius</Link>
         </div>
       </main>

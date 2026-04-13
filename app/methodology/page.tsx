@@ -208,6 +208,7 @@ export default function MethodologyPage() {
         <div className="border-t border-[#E8ECF1] pt-8 mt-10 flex flex-wrap gap-4 text-sm text-[#8896A8]">
           <Link href="/about" className="hover:text-[#00685f] transition-colors">About</Link>
           <Link href="/disclaimer" className="hover:text-[#00685f] transition-colors">Medical Disclaimer</Link>
+          <Link href="/disclosure" className="hover:text-[#00685f] transition-colors">Affiliate Disclosure</Link>
           <Link href="/contact" className="hover:text-[#00685f] transition-colors">Contact</Link>
           <Link href="/" className="hover:text-[#00685f] transition-colors ml-auto">← Back to NutriGenius</Link>
         </div>
