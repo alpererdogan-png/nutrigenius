@@ -11,43 +11,15 @@ import { createClient } from "@/lib/supabase-server";
 import { markdownToHtml, extractTOC } from "@/lib/markdown";
 import { MobileFooterAd } from "./MobileFooterAd";
 import {
-  getProductsForSupplement,
-  getAmazonProductLink,
   getAmazonSearchLink,
+  getProductsForArticle,
 } from "@/src/lib/data/amazonProducts";
 import { Logo } from "@/src/components/ui/Logo";
+import {
+  AffiliateTierCard,
+  TIER_ORDER,
+} from "@/src/components/ui/AffiliateTierCard";
 
-// ─── Amazon smile icon (inline SVG — matches results page) ─────────────────
-
-function AmazonSmile({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 60 18"
-      aria-label="Amazon"
-      className={className}
-      fill="currentColor"
-    >
-      <text x="0" y="14" fontSize="14" fontFamily="Arial, sans-serif" fontWeight="bold" fill="#FF9900">
-        amazon
-      </text>
-      <path
-        d="M3 16 Q17 21 37 16"
-        stroke="#FF9900"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-      />
-      <path
-        d="M35 14 L38 17 L35 17"
-        stroke="#FF9900"
-        strokeWidth="1.5"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -592,114 +564,6 @@ const KEY_TAKEAWAYS: Record<string, string[]> = {
   ],
 };
 
-// ─── Supplements mentioned per article (for "Supplements Mentioned" section) ──
-
-const ARTICLE_SUPPLEMENTS: Record<string, string[]> = {
-  "the-complete-guide-to-magnesium": [
-    "Magnesium",
-    "Vitamin D3",
-    "Vitamin B12",
-  ],
-  "supplements-that-dont-mix-critical-interactions": [
-    "Vitamin D3",
-    "Vitamin K2",
-    "Omega-3",
-    "Iron",
-    "Calcium",
-  ],
-  "vitamin-d-why-80-percent-are-deficient": [
-    "Vitamin D3",
-    "Vitamin K2",
-    "Magnesium",
-    "Zinc",
-  ],
-  "the-pcos-supplement-protocol": [
-    "Berberine",
-    "NAC",
-    "Vitamin D3",
-    "Magnesium",
-    "Folate",
-  ],
-  "your-gut-brain-connection-probiotics-mental-health": [
-    "Probiotics",
-    "Vitamin D3",
-    "Omega-3",
-    "Magnesium",
-  ],
-  "5-supplement-myths-your-doctor-didnt-learn": [
-    "Magnesium",
-    "Vitamin C",
-    "Vitamin D3",
-    "Folate",
-    "CoQ10",
-  ],
-  "migraine-prevention-supplements": [
-    "Magnesium",
-    "Riboflavin (B2)",
-    "CoQ10",
-  ],
-  "menopause-supplement-guide": [
-    "Black Cohosh",
-    "Calcium",
-    "Vitamin D3",
-    "Vitamin K2",
-    "Magnesium",
-    "Maca",
-  ],
-  "fatty-liver-nafld-supplements": [
-    "Omega-3",
-    "Vitamin E",
-    "Milk Thistle",
-    "NAC",
-    "Berberine",
-  ],
-  "adhd-supplements-clinical-evidence": [
-    "Omega-3",
-    "Iron",
-    "Zinc",
-    "Magnesium",
-  ],
-  "vegan-supplement-checklist": [
-    "Vitamin B12",
-    "Omega-3",
-    "Iron",
-    "Zinc",
-    "Vitamin D3",
-    "Calcium",
-    "Iodine",
-  ],
-  "keto-electrolyte-guide": [
-    "Magnesium",
-    "Potassium",
-    "Sodium",
-    "Taurine",
-  ],
-  "athlete-recovery-supplements": [
-    "Creatine",
-    "Omega-3",
-    "Magnesium",
-    "Collagen",
-    "Tart Cherry Extract",
-  ],
-  "stress-supplements-adaptogens": [
-    "Ashwagandha",
-    "Rhodiola",
-    "L-Theanine",
-    "Magnesium",
-  ],
-  "sleep-supplements-pharmacologist-guide": [
-    "Magnesium",
-    "Melatonin",
-    "L-Theanine",
-    "Glycine",
-  ],
-  "hashimotos-thyroiditis-supplements": [
-    "Selenium",
-    "Vitamin D3",
-    "Zinc",
-    "Iron",
-  ],
-};
 
 // Ad slots: rectangle ads after these paragraph numbers (1-indexed)
 const RECT_AD_AFTER_PARAGRAPHS = [2, 6];
@@ -825,6 +689,32 @@ function formatCategory(cat: string): string {
   return cat.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
 }
 
+// Pretty-print a supplementId ("magnesium-glycinate" → "Magnesium Glycinate",
+// "vitamin-d3-k2" → "Vitamin D3 + K2")
+function formatSupplementId(id: string): string {
+  const map: Record<string, string> = {
+    "vitamin-d3": "Vitamin D3",
+    "vitamin-d3-k2": "Vitamin D3 + K2",
+    "vitamin-b12": "Vitamin B12",
+    "vitamin-k2": "Vitamin K2",
+    "vitamin-c": "Vitamin C",
+    "magnesium-glycinate": "Magnesium Glycinate",
+    "magnesium-citrate": "Magnesium Citrate",
+    "magnesium-l-threonate": "Magnesium L-Threonate",
+    "alpha-lipoic-acid": "Alpha-Lipoic Acid",
+    "algae-omega-3": "Algae Omega-3",
+    "omega-3": "Omega-3",
+    "l-theanine": "L-Theanine",
+    "b-complex": "B-Complex",
+    "methylated-b-complex": "Methylated B-Complex",
+    "adrenal-support": "Adrenal Support",
+    "multivitamin-prenatal": "Prenatal Multivitamin",
+    "nac": "NAC",
+    "coq10": "CoQ10",
+  };
+  return map[id] ?? id.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
+}
+
 // ─── Key Takeaways component ──────────────────────────────────────────────────
 
 function KeyTakeawaysBox({ takeaways }: { takeaways: string[] }) {
@@ -919,6 +809,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const inlineSlots = articleSlots.slice(0, 1);
   const endProduct = articleSlots[1]?.product ?? null;
   const finalHtml = buildArticleHtml(baseHtml, inlineSlots, RECT_AD_AFTER_PARAGRAPHS);
+
+  // 3-tier affiliate products to render at article end
+  const articleProducts = getProductsForArticle(slug);
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -1078,50 +971,33 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               />
             )}
 
-            {/* Supplements Mentioned */}
-            {(ARTICLE_SUPPLEMENTS[slug] ?? []).length > 0 && (
+            {/* Products Mentioned — 3-tier cards per supplement */}
+            {articleProducts.length > 0 && (
               <div className="mt-8 pt-6 border-t border-[#f0f3ff]">
-                <h3 className="font-heading font-bold text-[#1A2332] text-base mb-4">
-                  Supplements Mentioned in This Article
+                <h3 className="font-heading font-bold text-[#1A2332] text-base mb-1">
+                  Products Mentioned in This Article
                 </h3>
-                <div className="space-y-3">
-                  {(ARTICLE_SUPPLEMENTS[slug] ?? []).map((suppName) => {
-                    const picks = getProductsForSupplement(suppName);
-                    if (!picks) {
-                      return (
-                        <div key={suppName} className="flex items-center justify-between gap-3 bg-white rounded-xl px-4 py-3 ring-1 ring-black/[0.04]">
-                          <span className="text-sm font-medium text-[#1A2332]">{suppName}</span>
-                          <a
-                            href={getAmazonSearchLink(suppName)}
-                            target="_blank"
-                            rel="noopener noreferrer sponsored"
-                            className="inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors flex-shrink-0"
-                          >
-                            View on <AmazonSmile className="h-[14px] w-auto" /> →
-                          </a>
-                        </div>
-                      );
-                    }
-                    const best = picks.best;
-                    return (
-                      <div key={suppName} className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 ring-1 ring-black/[0.04]">
-                        <div className="min-w-0 flex-1">
-                          <p className="text-[13px] font-semibold text-[#1A2332] leading-snug">
-                            {best.brand} {best.name}
-                          </p>
-                          <p className="text-[11px] text-[#5A6578] mt-0.5">{best.description}</p>
-                        </div>
-                        <a
-                          href={getAmazonProductLink(best.asin)}
-                          target="_blank"
-                          rel="noopener noreferrer sponsored"
-                          className="inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors flex-shrink-0"
-                        >
-                          View on <AmazonSmile className="h-[14px] w-auto" /> →
-                        </a>
+                <p className="text-xs text-[#8896A8] mb-4">
+                  Best Fit · Premium · Budget — curated across 7 Amazon stores.
+                </p>
+                <div className="space-y-6">
+                  {articleProducts.map((trio) => (
+                    <div key={trio.supplementId}>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#00685f] mb-2">
+                        {formatSupplementId(trio.supplementId)}
+                      </p>
+                      <div className="space-y-2">
+                        {TIER_ORDER.map((tier) => (
+                          <AffiliateTierCard
+                            key={tier}
+                            tier={tier}
+                            product={trio[tier]}
+                            fallbackSearchTerm={`${trio[tier].brand} ${trio[tier].name}`}
+                          />
+                        ))}
                       </div>
-                    );
-                  })}
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -1129,6 +1005,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {/* Affiliate disclosure */}
             <p className="text-xs text-gray-400 text-center mt-8">
               As an Amazon Associate, Clareo Health earns from qualifying purchases.
+              Recommendations are based on evidence, not commissions.{" "}
+              <Link href="/disclosure" className="text-[#00685f] hover:underline">
+                Learn more
+              </Link>
+              .
             </p>
 
             {/* CTA */}
