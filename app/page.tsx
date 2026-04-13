@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { CookieSettingsLink } from "@/components/CookieConsent";
 import {
   Shield,
@@ -274,6 +275,18 @@ export default function Home() {
           HERO — Two-column, dark gradient background
       ══════════════════════════════════════════════════ */}
       <section className="relative pt-14 sm:pt-16 overflow-hidden bg-gradient-to-br from-[#111c2c] via-[#0d1822] to-[#111c2c]">
+        {/* Marble texture — subtle warmth */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <Image
+            src="/images/marble-abstract.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-[0.18] mix-blend-soft-light"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#111c2c]/40 via-transparent to-[#111c2c]/80" />
+        </div>
         {/* Ambient glow blobs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-teal-500/10 rounded-full -translate-y-1/3 translate-x-1/4 blur-3xl" />
@@ -287,7 +300,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 lg:py-28 relative">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-24 lg:py-32 relative">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
             {/* ── Left column ── */}
@@ -615,6 +628,31 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
+          VISUAL BREAK — Full-width morning-routine lifestyle
+      ══════════════════════════════════════════════════ */}
+      <section className="relative h-[250px] sm:h-[380px] lg:h-[440px] overflow-hidden">
+        <Image
+          src="/images/morning-routine.jpg"
+          alt="A calm morning routine with supplements and linen"
+          fill
+          sizes="100vw"
+          loading="lazy"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#2c2420]/70 via-[#2c2420]/35 to-transparent" />
+        <div className="relative h-full max-w-6xl mx-auto px-6 sm:px-10 flex items-center">
+          <div className="max-w-md">
+            <p className="text-amber-200/90 text-[11px] font-semibold uppercase tracking-[0.22em] mb-3">
+              Built into your day
+            </p>
+            <p className="font-heading text-white text-xl sm:text-3xl lg:text-[34px] leading-tight italic font-light">
+              &ldquo;A supplement plan shouldn&rsquo;t feel like a prescription. It should feel like a morning ritual.&rdquo;
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════
           FEATURES — Bento grid
       ══════════════════════════════════════════════════ */}
       <section id="features" className="py-16 sm:py-24 px-4 sm:px-6 bg-[#f0f3ff]">
@@ -731,20 +769,20 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           SAFETY — Dark section with layered stack visual
       ══════════════════════════════════════════════════ */}
-      <section id="safety" className="py-16 sm:py-24 px-4 sm:px-6 bg-[#111c2c]">
+      <section id="safety" className="py-16 sm:py-24 px-4 sm:px-6 bg-[#2c2420]">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
             {/* Left: text */}
             <div>
-              <div className="inline-flex items-center gap-2 bg-teal-500/15 border border-teal-500/25 text-teal-300 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 tracking-wide">
+              <div className="inline-flex items-center gap-2 bg-amber-400/15 border border-amber-400/30 text-amber-200 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 tracking-wide">
                 <Shield className="w-3.5 h-3.5" />
                 {"Safety First"}
               </div>
               <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white mb-5 tracking-tight">
                 {"Your safety is non-negotiable"}
               </h2>
-              <p className="text-slate-300 text-lg leading-relaxed mb-8">
+              <p className="text-stone-300 text-lg leading-relaxed mb-8">
                 {"Medically reviewed by Dr. Esra Ata, MD — a physician certified in Functional Medicine and GAPS Protocol. Clinical architecture by a Pharmaceutical Clinical Development Expert. Every recommendation passes through multiple safety layers before it reaches you."}
               </p>
               <div className="space-y-4">
@@ -756,10 +794,10 @@ export default function Home() {
                   "This platform supplements — never replaces — professional medical advice",
                 ].map((text, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-teal-500/20 border border-teal-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-teal-400" />
+                    <div className="w-6 h-6 rounded-full bg-amber-400/15 border border-amber-400/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-amber-300" />
                     </div>
-                    <span className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    <span className="text-stone-300 text-sm sm:text-base leading-relaxed">
                       {text}
                     </span>
                   </div>
@@ -804,20 +842,24 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           CTA — Full-width teal-to-emerald gradient
       ══════════════════════════════════════════════════ */}
-      <section className="relative py-20 sm:py-28 px-4 sm:px-6 bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-500 overflow-hidden">
-        {/* Dot pattern */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.08]"
-          style={{
-            backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
-            backgroundSize: "22px 22px",
-          }}
-        />
+      <section className="relative py-20 sm:py-28 px-4 sm:px-6 bg-[#111c2c] overflow-hidden">
+        {/* Capsules background */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <Image
+            src="/images/capsules-scatter.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            loading="lazy"
+            className="object-cover opacity-35"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#111c2c]/90 via-[#0d1822]/75 to-[#111c2c]/85" />
+        </div>
         {/* Top highlight line */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-        {/* Ambient glow blobs */}
-        <div className="absolute left-1/4 top-1/2 -translate-y-1/2 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-300/20 rounded-full blur-3xl pointer-events-none" />
+        {/* Ambient glow */}
+        <div className="absolute left-1/4 top-1/2 -translate-y-1/2 w-96 h-96 bg-teal-400/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-64 h-64 bg-amber-300/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-4xl mx-auto text-center relative">
           <div className="inline-flex items-center gap-2 bg-white/20 border border-white/30 text-white text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 tracking-wide">
@@ -827,18 +869,18 @@ export default function Home() {
           <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">
             {"Ready to optimize your supplement routine?"}
           </h2>
-          <p className="text-teal-100 text-base sm:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-slate-300 text-base sm:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
             {"Replace guesswork with evidence-based supplementation. It takes 5 minutes and it's completely free."}
           </p>
           <Link
             href="/quiz"
-            className="inline-flex items-center justify-center gap-3 bg-white hover:bg-teal-50 active:scale-95 text-[#00685f] font-bold px-8 sm:px-12 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl transition-all duration-200 hover:-translate-y-1 w-full sm:w-auto"
-            style={{ boxShadow: "0 0 60px rgba(255,255,255,0.25), 0 20px 50px rgba(0,0,0,0.18)" }}
+            className="inline-flex items-center justify-center gap-3 bg-white hover:bg-amber-50 active:scale-95 text-[#111c2c] font-bold px-8 sm:px-12 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl transition-all duration-200 hover:-translate-y-1 w-full sm:w-auto"
+            style={{ boxShadow: "0 0 60px rgba(251,191,36,0.25), 0 20px 50px rgba(0,0,0,0.35)" }}
           >
             {"Get Your Free Personalized Plan"}
             <ArrowRight className="w-6 h-6" />
           </Link>
-          <p className="text-teal-200/80 text-sm mt-6">{"No account required · 100% free · Takes 5 minutes"}</p>
+          <p className="text-slate-400 text-sm mt-6">{"No account required · 100% free · Takes 5 minutes"}</p>
         </div>
       </section>
 

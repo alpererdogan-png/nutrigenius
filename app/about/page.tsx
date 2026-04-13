@@ -59,9 +59,20 @@ export default function AboutPage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
-        {/* Hero */}
-        <div className="mb-12">
+      {/* Hero with marble background */}
+      <section className="relative overflow-hidden border-b border-[#E8ECF1]">
+        <div className="absolute inset-0 pointer-events-none">
+          <Image
+            src="/images/marble-abstract.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-[0.18]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f9f9ff]/50 via-[#f9f9ff]/70 to-[#f9f9ff]" />
+        </div>
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           <div className="inline-flex items-center gap-2 bg-[#e6f4f3] text-[#00685f] text-xs font-semibold px-3 py-1.5 rounded-full mb-4">
             <FlaskConical className="w-3.5 h-3.5" />
             About NutriGenius
@@ -74,6 +85,9 @@ export default function AboutPage() {
             evidence-based supplement recommendations through a clinician-designed algorithm.
           </p>
         </div>
+      </section>
+
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
 
         {/* Our Mission */}
         <section className="bg-white rounded-2xl ring-1 ring-black/[0.04] p-6 sm:p-8 mb-8">
@@ -146,11 +160,22 @@ export default function AboutPage() {
         </section>
 
         {/* The Science Behind NutriGenius */}
-        <section className="bg-white rounded-2xl ring-1 ring-black/[0.04] p-6 sm:p-8 mb-8">
-          <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-4">
+        <section className="relative bg-white rounded-2xl ring-1 ring-black/[0.04] p-6 sm:p-8 mb-8 overflow-hidden">
+          <div className="hidden md:block absolute top-0 right-0 w-40 h-40 rounded-bl-[6rem] overflow-hidden opacity-70">
+            <Image
+              src="/images/lab-science.jpg"
+              alt=""
+              fill
+              sizes="160px"
+              loading="lazy"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-bl from-transparent to-white/70" />
+          </div>
+          <h2 className="font-heading text-xl font-bold text-[#1A2332] mb-4 relative">
             The Science Behind NutriGenius
           </h2>
-          <p className="text-[#5A6578] leading-relaxed mb-5">
+          <p className="text-[#5A6578] leading-relaxed mb-5 relative">
             Our 7-layer recommendation algorithm analyses your health profile across multiple
             dimensions to generate a personalised supplement protocol:
           </p>
