@@ -102,9 +102,9 @@ export function getAmazonSearchLink(supplementName: string, form?: string, count
 const CURATED: SupplementProducts[] = [
   {
     supplementId: "vitamin-d3",
-    best:    { asin: "B00GB85JR4", brand: "NatureWise",         name: "Vitamin D3 5000 IU (360 ct)",      description: "Best seller, organic olive oil base, NSF certified" },
-    premium: { asin: "B0017Q948U", brand: "Pure Encapsulations", name: "Vitamin D3 5000 IU",               description: "Hypoallergenic, physician-trusted, no fillers" },
-    budget:  { asin: "B00I07Z4TC", brand: "Nature Made",        name: "Vitamin D3 2000 IU (100 ct)",      description: "#1 pharmacist recommended, USP verified" },
+    best:    { asin: "",           brand: "NOW Foods",          name: "Vitamin D3 5000 IU",               description: "Third-party tested, well-absorbed softgel, great value" },
+    premium: { asin: "",           brand: "Thorne",             name: "Vitamin D/K2 Liquid",              description: "Physician-grade D3 + K2 synergy, precise liquid dosing" },
+    budget:  { asin: "",           brand: "Nature's Bounty",    name: "Vitamin D3 5000 IU",               description: "Accessible, widely available, trusted brand" },
   },
   {
     supplementId: "magnesium",
@@ -114,9 +114,9 @@ const CURATED: SupplementProducts[] = [
   },
   {
     supplementId: "omega-3",
-    best:    { asin: "B002CQU564", brand: "Nordic Naturals",    name: "Ultimate Omega",                   description: "Third-party tested, high EPA+DHA concentration" },
-    premium: { asin: "B001LF39RO", brand: "Carlson Labs",       name: "The Very Finest Fish Oil",         description: "Award-winning purity, lemon flavor" },
-    budget:  { asin: "B004U3Y9FU", brand: "Nature Made",        name: "Fish Oil 1200mg",                  description: "USP verified, 200 softgels" },
+    best:    { asin: "B002CQU564", brand: "Nordic Naturals",    name: "Ultimate Omega",                   description: "IFOS-certified, high EPA+DHA concentration" },
+    premium: { asin: "",           brand: "Thorne",             name: "Super EPA",                        description: "NSF Certified for Sport, clinical-dose EPA/DHA" },
+    budget:  { asin: "B004U3Y9FU", brand: "Nature Made",        name: "Fish Oil 1200mg",                  description: "USP verified, 200 softgels, affordable" },
   },
   {
     supplementId: "algae-omega-3",
@@ -162,9 +162,9 @@ const CURATED: SupplementProducts[] = [
   },
   {
     supplementId: "probiotics",
-    best:    { asin: "B000IMYJGG", brand: "Culturelle",         name: "Daily Probiotic",                  description: "LGG strain, #1 clinically studied probiotic" },
-    premium: { asin: "B00CP4E5QU", brand: "Visbiome",           name: "High Potency Probiotic",           description: "450 billion CFU, clinical strength" },
-    budget:  { asin: "B07HBCRL8K", brand: "Align",              name: "Daily Probiotic",                  description: "Gastroenterologist recommended" },
+    best:    { asin: "",           brand: "Seed",               name: "DS-01 Daily Synbiotic",            description: "24 clinically studied strains + prebiotic capsule-in-capsule" },
+    premium: { asin: "",           brand: "Thorne",             name: "FloraMend Prime",                  description: "Physician-grade daily probiotic, well-researched strains" },
+    budget:  { asin: "",           brand: "Renew Life",         name: "Ultimate Flora Extra Care",        description: "High CFU multi-strain, widely available" },
   },
   {
     supplementId: "creatine",
@@ -222,9 +222,112 @@ const CURATED: SupplementProducts[] = [
   },
   {
     supplementId: "iodine",
-    best:    { asin: "B001AYPD0G", brand: "Life Extension",     name: "Sea-Iodine 1000mcg",               description: "Natural kelp-derived iodine" },
-    premium: { asin: "B00F9JXJFI", brand: "Pure Encapsulations", name: "Iodine & Tyrosine",               description: "Iodine + thyroid amino acid support" },
-    budget:  { asin: "B005P0X8RK", brand: "NOW Foods",          name: "Potassium Iodide 225mcg",          description: "Simple, affordable" },
+    best:    { asin: "",           brand: "Thorne",             name: "Iodine & Tyrosine",                description: "Iodine + tyrosine for thyroid support" },
+    premium: { asin: "B00F9JXJFI", brand: "Pure Encapsulations", name: "Iodine & Tyrosine",               description: "Hypoallergenic, physician-formulated" },
+    budget:  { asin: "",           brand: "NOW Foods",          name: "Kelp 150mcg",                      description: "Whole-food iodine source, affordable" },
+  },
+  // ─── Added: split magnesium by form ──────────────────────────────────────
+  {
+    supplementId: "magnesium-glycinate",
+    best:    { asin: "B000BD0RT0", brand: "Doctor's Best",      name: "High Absorption Magnesium 200mg", description: "Chelated glycinate, 240 tablets — excellent value" },
+    premium: { asin: "B0058HWJ40", brand: "Pure Encapsulations", name: "Magnesium Glycinate 120mg",      description: "Hypoallergenic, physician-trusted, no fillers" },
+    budget:  { asin: "",           brand: "NOW Foods",          name: "Magnesium Glycinate 200mg",       description: "Accessible, widely available" },
+  },
+  {
+    supplementId: "magnesium-citrate",
+    best:    { asin: "",           brand: "NOW Foods",          name: "Magnesium Citrate 200mg",         description: "Well-absorbed, gentle, budget-friendly" },
+    premium: { asin: "",           brand: "Thorne",             name: "Magnesium Citrate",                description: "Clinical-grade magnesium citrate" },
+    budget:  { asin: "",           brand: "Natural Vitality",   name: "Calm Magnesium Powder",           description: "Popular flavored magnesium drink" },
+  },
+  {
+    supplementId: "magnesium-l-threonate",
+    best:    { asin: "",           brand: "Double Wood",        name: "Magnesium L-Threonate 2000mg",    description: "Crosses the blood–brain barrier for cognition" },
+    premium: { asin: "",           brand: "Life Extension",     name: "Neuro-Mag L-Threonate",           description: "Patented Magtein, premium brain support" },
+    budget:  { asin: "",           brand: "Source Naturals",    name: "Magnesium L-Threonate",           description: "Budget access to brain-targeted magnesium" },
+  },
+  {
+    supplementId: "vitamin-d3-k2",
+    best:    { asin: "",           brand: "Sports Research",    name: "Vitamin D3 + K2",                 description: "5,000 IU D3 with 100mcg MK-7 K2" },
+    premium: { asin: "",           brand: "Thorne",             name: "Vitamin D/K2 Liquid",              description: "Physician-grade, liquid, precise dosing" },
+    budget:  { asin: "",           brand: "NOW Foods",          name: "MK-7 Vitamin K-2 + D3",           description: "Reliable combo at a low price" },
+  },
+  {
+    supplementId: "b-complex",
+    best:    { asin: "",           brand: "Thorne",             name: "Basic B Complex",                  description: "Active/methylated B-vitamin forms" },
+    premium: { asin: "",           brand: "Pure Encapsulations", name: "B-Complex Plus",                  description: "Hypoallergenic, full active forms" },
+    budget:  { asin: "",           brand: "Nature Made",        name: "Super B Complex",                  description: "USP verified, affordable daily B" },
+  },
+  {
+    supplementId: "methylated-b-complex",
+    best:    { asin: "",           brand: "Thorne",             name: "Methyl-Guard Plus",                description: "MTHFR-friendly: 5-MTHF + methyl B12 + B6" },
+    premium: { asin: "",           brand: "Pure Encapsulations", name: "B-Complex Liquid",                description: "Liquid methylated B for sensitive users" },
+    budget:  { asin: "",           brand: "Jarrow Formulas",    name: "Methyl B-12 5000mcg",             description: "Active B12 — essential for MTHFR variants" },
+  },
+  {
+    supplementId: "ashwagandha",
+    best:    { asin: "",           brand: "Nutricost",          name: "KSM-66 Ashwagandha 600mg",        description: "Clinically studied KSM-66 extract" },
+    premium: { asin: "",           brand: "Gaia Herbs",         name: "Ashwagandha Root",                 description: "Organic, whole-root, third-party tested" },
+    budget:  { asin: "B0027ACVZS", brand: "Himalaya",           name: "Organic Ashwagandha",              description: "Organic, affordable, well-reviewed" },
+  },
+  {
+    supplementId: "rhodiola",
+    best:    { asin: "",           brand: "NOW Foods",          name: "Rhodiola 500mg",                   description: "Standardised 3% rosavins, 1% salidroside" },
+    premium: { asin: "",           brand: "Gaia Herbs",         name: "Rhodiola Rosea",                   description: "Whole-root liquid phyto-capsule" },
+    budget:  { asin: "",           brand: "Swanson",            name: "Rhodiola Rosea",                   description: "Reliable rhodiola at a low price" },
+  },
+  {
+    supplementId: "creatine",
+    best:    { asin: "B002DYIZEO", brand: "Optimum Nutrition",  name: "Micronized Creatine",              description: "Creapure, micronized for mixing" },
+    premium: { asin: "B07L5GRZJV", brand: "Thorne",             name: "Creatine",                         description: "NSF Certified for Sport" },
+    budget:  { asin: "",           brand: "NOW Sports",         name: "Creatine Monohydrate",             description: "Pure powder, excellent price per serving" },
+  },
+  {
+    supplementId: "whey-protein",
+    best:    { asin: "",           brand: "Transparent Labs",   name: "Whey Protein Isolate",             description: "Grass-fed, no artificial sweeteners" },
+    premium: { asin: "",           brand: "Thorne",             name: "Whey Protein Isolate",             description: "NSF Certified for Sport, clean label" },
+    budget:  { asin: "",           brand: "Optimum Nutrition",  name: "Gold Standard 100% Whey",          description: "Best-selling, reliable, affordable" },
+  },
+  {
+    supplementId: "collagen",
+    best:    { asin: "",           brand: "Vital Proteins",     name: "Collagen Peptides",                description: "Grass-fed bovine peptides, mixes easily" },
+    premium: { asin: "",           brand: "Thorne",             name: "Collagen Plus",                    description: "Collagen + skin-support cofactors" },
+    budget:  { asin: "",           brand: "NOW Sports",         name: "Collagen Peptides",                description: "Budget grass-fed peptides" },
+  },
+  {
+    supplementId: "inositol",
+    best:    { asin: "",           brand: "Theralogix",         name: "Ovasitol",                         description: "Clinical 40:1 myo- / D-chiro inositol (PCOS)" },
+    premium: { asin: "",           brand: "Pure Encapsulations", name: "Inositol Powder",                 description: "Hypoallergenic myo-inositol" },
+    budget:  { asin: "",           brand: "Jarrow Formulas",    name: "Inositol Powder",                  description: "Pure, affordable myo-inositol" },
+  },
+  {
+    supplementId: "melatonin",
+    best:    { asin: "",           brand: "Life Extension",     name: "Melatonin 3mg",                    description: "Reliable low-dose night-time melatonin" },
+    premium: { asin: "",           brand: "Pure Encapsulations", name: "Melatonin 0.5mg",                 description: "Hypoallergenic, physiologic micro-dose" },
+    budget:  { asin: "",           brand: "Natrol",             name: "Melatonin 3mg",                    description: "Widely available, fast-dissolve" },
+  },
+  {
+    supplementId: "multivitamin",
+    best:    { asin: "",           brand: "Thorne",             name: "Basic Nutrients 2/Day",            description: "Clean multi with methylated B & active vitamins" },
+    premium: { asin: "",           brand: "Pure Encapsulations", name: "O.N.E. Multivitamin",             description: "Once-daily comprehensive, hypoallergenic" },
+    budget:  { asin: "",           brand: "Nature Made",        name: "Multi for Him/Her",                description: "USP verified daily multi" },
+  },
+  {
+    supplementId: "multivitamin-prenatal",
+    best:    { asin: "",           brand: "Ritual",             name: "Essential Prenatal",               description: "Active folate, delayed-release, traceable" },
+    premium: { asin: "",           brand: "Thorne",             name: "Basic Prenatal",                   description: "Physician-grade methylated prenatal" },
+    budget:  { asin: "",           brand: "Nature Made",        name: "Prenatal + DHA",                   description: "USP verified, widely available" },
+  },
+  {
+    supplementId: "alpha-lipoic-acid",
+    best:    { asin: "",           brand: "Doctor's Best",      name: "Alpha Lipoic Acid 600mg",          description: "Well-dosed standard ALA" },
+    premium: { asin: "",           brand: "Life Extension",     name: "Super R-Lipoic Acid",              description: "Stabilised R-form, superior absorption" },
+    budget:  { asin: "",           brand: "NOW Foods",          name: "Alpha Lipoic Acid 250mg",          description: "Budget-friendly, vegetarian capsules" },
+  },
+  {
+    supplementId: "adrenal-support",
+    best:    { asin: "",           brand: "Gaia Herbs",         name: "Adrenal Health Daily Support",     description: "Whole-herb adaptogen blend" },
+    premium: { asin: "",           brand: "Pure Encapsulations", name: "Daily Stress Formula",            description: "Adaptogens + nutrients for stress resilience" },
+    budget:  { asin: "",           brand: "NOW Foods",          name: "Adrenal Support",                  description: "Affordable adrenal adaptogen blend" },
   },
 ];
 
@@ -238,8 +341,6 @@ const NAME_ALIASES: Record<string, string> = {
   "cholecalciferol": "vitamin-d3",
   // Magnesium
   "magnesium":           "magnesium",
-  "magnesium glycinate": "magnesium",
-  "magnesium citrate":   "magnesium",
   "magnesium malate":    "magnesium",
   // Omega-3
   "omega-3":           "omega-3",
@@ -303,6 +404,52 @@ const NAME_ALIASES: Record<string, string> = {
   "ascorbic acid":     "vitamin-c",
   // Iodine
   "iodine":            "iodine",
+  // Form-specific magnesium (more specific → matched before generic "magnesium")
+  "magnesium glycinate":   "magnesium-glycinate",
+  "magnesium bisglycinate": "magnesium-glycinate",
+  "magnesium citrate":     "magnesium-citrate",
+  "magnesium l-threonate": "magnesium-l-threonate",
+  "magnesium threonate":   "magnesium-l-threonate",
+  "magtein":               "magnesium-l-threonate",
+  // Vitamin D3 + K2 combo
+  "vitamin d3 + k2":   "vitamin-d3-k2",
+  "vitamin d3 k2":     "vitamin-d3-k2",
+  "d3/k2":             "vitamin-d3-k2",
+  // B-complex variants
+  "b-complex":         "b-complex",
+  "b complex":         "b-complex",
+  "vitamin b complex": "b-complex",
+  "methylated b":      "methylated-b-complex",
+  "methyl b-complex":  "methylated-b-complex",
+  "methyl-guard":      "methylated-b-complex",
+  // Adaptogens
+  "rhodiola":          "rhodiola",
+  "rhodiola rosea":    "rhodiola",
+  // Sports / protein
+  "whey protein":      "whey-protein",
+  "whey isolate":      "whey-protein",
+  "collagen":          "collagen",
+  "collagen peptides": "collagen",
+  // Reproductive / metabolic
+  "inositol":          "inositol",
+  "myo-inositol":      "inositol",
+  "ovasitol":          "inositol",
+  // Sleep
+  "melatonin":         "melatonin",
+  // Multivitamins
+  "multivitamin":      "multivitamin",
+  "daily multivitamin": "multivitamin",
+  "prenatal":          "multivitamin-prenatal",
+  "prenatal multivitamin": "multivitamin-prenatal",
+  "prenatal vitamin":  "multivitamin-prenatal",
+  // Antioxidants
+  "alpha lipoic acid": "alpha-lipoic-acid",
+  "alpha-lipoic acid": "alpha-lipoic-acid",
+  "ala":               "alpha-lipoic-acid",
+  "r-lipoic acid":     "alpha-lipoic-acid",
+  // Adrenal / stress
+  "adrenal support":   "adrenal-support",
+  "adrenal health":    "adrenal-support",
 };
 
 const CURATED_BY_ID = new Map(CURATED.map((s) => [s.supplementId, s]));
@@ -313,15 +460,56 @@ const CURATED_BY_ID = new Map(CURATED.map((s) => [s.supplementId, s]));
  * Returns curated picks for a supplement name (case-insensitive).
  * Returns null if no curated picks exist — caller should use getAmazonSearchLink().
  */
+// Pre-sort aliases longest-first so "magnesium glycinate" beats "magnesium"
+const ALIASES_BY_LENGTH = Object.entries(NAME_ALIASES).sort(
+  (a, b) => b[0].length - a[0].length,
+);
+
+// ─── Blog article → supplement mapping ────────────────────────────────────────
+// Maps article slug → list of supplementIds to display in "Products Mentioned".
+// Slugs are matched exactly; keep in sync with Supabase blog_posts.slug.
+
+const ARTICLE_SUPPLEMENT_MAP: Record<string, string[]> = {
+  "the-complete-guide-to-magnesium":              ["magnesium-glycinate", "magnesium-citrate", "magnesium-l-threonate"],
+  "5-supplement-myths-your-doctor-didnt-learn":   ["vitamin-d3", "omega-3", "magnesium-glycinate", "vitamin-c", "folate"],
+  "supplements-that-dont-mix-critical-interactions": ["omega-3", "vitamin-k2", "multivitamin", "iron", "calcium"],
+  "the-pcos-supplement-protocol":                 ["inositol", "vitamin-d3", "berberine", "omega-3", "nac"],
+  "vitamin-d-why-80-percent-are-deficient":       ["vitamin-d3", "vitamin-d3-k2", "magnesium-glycinate", "zinc"],
+  "your-gut-brain-connection-probiotics-mental-health": ["probiotics", "vitamin-d3", "omega-3", "magnesium-glycinate"],
+  "migraine-prevention-supplements":              ["magnesium-glycinate", "coq10", "b-complex"],
+  "menopause-supplement-guide":                   ["vitamin-d3-k2", "calcium", "omega-3", "magnesium-glycinate"],
+  "fatty-liver-nafld-supplements":                ["alpha-lipoic-acid", "nac", "curcumin", "omega-3", "berberine"],
+  "adhd-supplements-clinical-evidence":           ["omega-3", "zinc", "iron", "l-theanine", "magnesium-glycinate"],
+  "vegan-supplement-checklist":                   ["vitamin-b12", "vitamin-d3", "algae-omega-3", "iron", "zinc", "iodine", "calcium"],
+  "keto-electrolyte-guide":                       ["magnesium-citrate", "magnesium-glycinate"],
+  "athlete-recovery-supplements":                 ["creatine", "whey-protein", "magnesium-glycinate", "collagen", "omega-3"],
+  "stress-supplements-adaptogens":                ["ashwagandha", "rhodiola", "l-theanine", "adrenal-support", "magnesium-glycinate"],
+  "sleep-supplements-pharmacologist-guide":       ["magnesium-glycinate", "l-theanine", "melatonin"],
+  "hashimotos-thyroiditis-supplements":           ["selenium", "vitamin-d3", "zinc", "iodine"],
+};
+
+/**
+ * Returns supplement trios (best / premium / budget) relevant to a blog
+ * article. Used to render the "Products Mentioned" block at article end.
+ */
+export function getProductsForArticle(slug: string): SupplementProducts[] {
+  const ids = ARTICLE_SUPPLEMENT_MAP[slug];
+  if (!ids) return [];
+  return ids
+    .map((id) => CURATED_BY_ID.get(id))
+    .filter((x): x is SupplementProducts => Boolean(x));
+}
+
 export function getProductsForSupplement(name: string): SupplementProducts | null {
   const lower = name.toLowerCase().trim();
   // Direct ID match
   if (CURATED_BY_ID.has(lower)) return CURATED_BY_ID.get(lower)!;
-  // Alias match
+  // Exact alias match
   const id = NAME_ALIASES[lower];
   if (id) return CURATED_BY_ID.get(id) ?? null;
-  // Partial alias match (e.g. "Magnesium Glycinate 400mg" → "magnesium")
-  for (const [alias, supplementId] of Object.entries(NAME_ALIASES)) {
+  // Partial alias match, longest alias wins (so "magnesium glycinate 400mg"
+  // resolves to magnesium-glycinate, not the generic "magnesium").
+  for (const [alias, supplementId] of ALIASES_BY_LENGTH) {
     if (lower.includes(alias)) return CURATED_BY_ID.get(supplementId) ?? null;
   }
   return null;
