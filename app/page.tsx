@@ -85,6 +85,48 @@ export default function Home() {
   const [blogPosts, setBlogPosts] = useState<LandingBlogPost[]>([]);
   const [blogLoading, setBlogLoading] = useState(true);
 
+  // ── Newsletter signup state ──
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] =
+    useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [newsletterMessage, setNewsletterMessage] = useState<string | null>(null);
+
+  const handleNewsletterSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const email = newsletterEmail.trim();
+      if (!email || !email.includes("@")) {
+        setNewsletterStatus("error");
+        setNewsletterMessage("Please enter a valid email address.");
+        return;
+      }
+      setNewsletterStatus("submitting");
+      setNewsletterMessage(null);
+      try {
+        const supabase = createClient();
+        const { error } = await supabase.from("newsletter_subscribers").upsert(
+          {
+            email,
+            newsletter_opt_in: true,
+            pdf_opt_in: false,
+            calendar_opt_in: false,
+            created_at: new Date().toISOString(),
+          },
+          { onConflict: "email" }
+        );
+        if (error) throw error;
+        setNewsletterStatus("success");
+        setNewsletterMessage("Thanks — you're subscribed.");
+        setNewsletterEmail("");
+      } catch (err) {
+        console.error("Newsletter signup failed:", err);
+        setNewsletterStatus("error");
+        setNewsletterMessage("Something went wrong. Please try again.");
+      }
+    },
+    [newsletterEmail]
+  );
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -895,6 +937,75 @@ export default function Home() {
             </div>
 
           </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════
+          Newsletter signup — light bridge between dark safety
+          and dark CTA. Writes to `newsletter_subscribers`
+          (same Supabase table as /quiz post-results flow).
+      ══════════════════════════════════════════════════ */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-[#f9f7f4] border-t border-[#E8ECF1]">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 bg-[#e6f4f3] text-[#00685f] text-xs font-semibold px-3 py-1.5 rounded-full mb-4 tracking-wide">
+            Newsletter
+          </div>
+          <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#1A2332] mb-3 tracking-tight">
+            Stay up to date on supplement science
+          </h2>
+          <p className="text-[#5A6578] text-sm sm:text-base mb-8 leading-relaxed">
+            Evidence-based insights and safety updates in your inbox. No spam, unsubscribe anytime.
+          </p>
+
+          <form
+            onSubmit={handleNewsletterSubmit}
+            className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto"
+            noValidate
+          >
+            <label htmlFor="newsletter-email" className="sr-only">
+              Email address
+            </label>
+            <input
+              id="newsletter-email"
+              type="email"
+              required
+              autoComplete="email"
+              placeholder="you@example.com"
+              value={newsletterEmail}
+              onChange={(e) => {
+                setNewsletterEmail(e.target.value);
+                if (newsletterStatus === "error" || newsletterStatus === "success") {
+                  setNewsletterStatus("idle");
+                  setNewsletterMessage(null);
+                }
+              }}
+              disabled={newsletterStatus === "submitting"}
+              className="flex-1 min-w-0 bg-white rounded-xl px-4 py-3 text-[15px] text-[#1A2332] placeholder:text-[#8896A8] ring-1 ring-[#E8ECF1] focus:outline-none focus:ring-2 focus:ring-[#00685f]/40 focus:border-[#00685f] transition-shadow disabled:opacity-60"
+            />
+            <button
+              type="submit"
+              disabled={newsletterStatus === "submitting"}
+              className="inline-flex items-center justify-center gap-2 bg-[#00685f] hover:bg-[#005249] active:scale-[0.98] text-white font-semibold text-[15px] px-6 py-3 rounded-xl transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {newsletterStatus === "submitting" ? "Subscribing…" : "Subscribe"}
+            </button>
+          </form>
+
+          {newsletterMessage && (
+            <p
+              role={newsletterStatus === "error" ? "alert" : "status"}
+              className={
+                "text-sm mt-4 " +
+                (newsletterStatus === "success"
+                  ? "text-[#00685f]"
+                  : newsletterStatus === "error"
+                    ? "text-rose-600"
+                    : "text-[#5A6578]")
+              }
+            >
+              {newsletterMessage}
+            </p>
+          )}
         </div>
       </section>
 
