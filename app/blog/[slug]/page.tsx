@@ -12,13 +12,18 @@ import { markdownToHtml, extractTOC } from "@/lib/markdown";
 import { MobileFooterAd } from "./MobileFooterAd";
 import {
   getAmazonSearchLink,
+  getAmazonProductLink,
   getProductsForArticle,
 } from "@/src/lib/data/amazonProducts";
 import { Logo } from "@/src/components/ui/Logo";
 import {
-  AffiliateTierCard,
-  TIER_ORDER,
-} from "@/src/components/ui/AffiliateTierCard";
+  AmazonProductCard,
+  type AmazonProductTier,
+} from "@/src/components/ui/AmazonProductCard";
+
+const TIER_ORDER: AmazonProductTier[] = ["best-fit", "premium", "budget"];
+const TIER_PRICE = { "best-fit": "$$", premium: "$$$", budget: "$" } as const;
+const TIER_KEY_MAP = { "best-fit": "best", premium: "premium", budget: "budget" } as const;
 
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -580,15 +585,24 @@ function esc(str: string): string {
     .replace(/"/g, "&quot;");
 }
 
+/**
+ * Raw-HTML equivalent of <AmazonProductCard variant="inline" />.
+ * Injected via dangerouslySetInnerHTML into the article prose stream —
+ * cannot be a React component. Mirrors the inline variant's chrome, and
+ * pulls colors from the same CSS variables defined in globals.css so
+ * it stays on-brand without hardcoded hexes.
+ *
+ * Amazon wordmark stays #FF9900 (official brand color, required by TOS).
+ */
 function affiliateCardHtml(product: HardcodedProduct): string {
-  return `<div class="my-6" style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.04);border:1px solid #E8ECF1">
+  return `<div class="my-6" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border-radius:12px;padding:14px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.04);border:1px solid var(--color-border)">
   <div style="flex:1;min-width:0">
-    <p style="font-size:13px;font-weight:600;color:#1A2332;margin:0;line-height:1.4">${esc(product.product_name)}</p>
-    <p style="font-size:12px;color:#5A6578;margin:2px 0 0">${esc(product.brand)}</p>
-    <p style="font-size:11px;color:#5A6578;margin:2px 0 0;line-height:1.4">${esc(product.note)}</p>
+    <p style="font-size:13px;font-weight:600;color:var(--color-text);margin:0;line-height:1.4">${esc(product.product_name)}</p>
+    <p style="font-size:12px;color:var(--color-text-muted);margin:2px 0 0">${esc(product.brand)}</p>
+    <p style="font-size:11px;color:var(--color-text-muted);margin:2px 0 0;line-height:1.4">${esc(product.note)}</p>
   </div>
   <a href="${esc(product.affiliate_url)}" target="_blank" rel="noopener noreferrer nofollow"
-     style="display:inline-flex;align-items:center;gap:5px;background:#fff;color:#1A2332;font-size:12px;font-weight:500;padding:8px 16px;border-radius:9999px;text-decoration:none;white-space:nowrap;border:1px solid #E8ECF1;flex-shrink:0;transition:background 0.15s,border-color 0.15s">
+     style="display:inline-flex;align-items:center;gap:5px;background:var(--color-surface);color:var(--color-text);font-size:12px;font-weight:500;padding:8px 16px;border-radius:9999px;text-decoration:none;white-space:nowrap;border:1px solid var(--color-border);flex-shrink:0;transition:background 0.15s,border-color 0.15s">
     View on
     <svg viewBox="0 0 60 18" aria-label="Amazon" style="height:14px;width:auto;flex-shrink:0" fill="currentColor">
       <text x="0" y="14" font-size="14" font-family="Arial, sans-serif" font-weight="bold" fill="#FF9900">amazon</text>
@@ -987,14 +1001,24 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         {formatSupplementId(trio.supplementId)}
                       </p>
                       <div className="space-y-2">
-                        {TIER_ORDER.map((tier) => (
-                          <AffiliateTierCard
-                            key={tier}
-                            tier={tier}
-                            product={trio[tier]}
-                            fallbackSearchTerm={`${trio[tier].brand} ${trio[tier].name}`}
-                          />
-                        ))}
+                        {TIER_ORDER.map((tier) => {
+                          const p = trio[TIER_KEY_MAP[tier]];
+                          const href = p.asin
+                            ? getAmazonProductLink(p.asin)
+                            : getAmazonSearchLink(`${p.brand} ${p.name}`);
+                          return (
+                            <AmazonProductCard
+                              key={tier}
+                              variant="tier"
+                              tier={tier}
+                              priceLevel={TIER_PRICE[tier]}
+                              title={p.name}
+                              brand={p.brand}
+                              description={p.description}
+                              href={href}
+                            />
+                          );
+                        })}
                       </div>
                     </div>
                   ))}

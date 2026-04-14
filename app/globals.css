@@ -83,6 +83,38 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* ─────────────────────────────────────────────────────────────
+ * NutriGenius brand token contract
+ * ─────────────────────────────────────────────────────────────
+ * Portable across sibling sites (see AMAZON_CARD_SPEC.md).
+ * Each sibling defines the same token names (--color-primary,
+ * --color-accent, --color-surface, --color-border, --color-text,
+ * --color-text-muted, --color-primary-foreground) with its own
+ * brand values so shared components (e.g. AmazonProductCard)
+ * render on-brand everywhere without hardcoded hexes.
+ *
+ * Declared in a @theme block AFTER `@theme inline` so that:
+ *   1. Tailwind v4 generates utilities (bg-primary, text-text,
+ *      text-text-muted, bg-surface, bg-accent, border-border, etc.).
+ *   2. The declarations override shadcn scaffold values for
+ *      identically-named tokens (primary, accent, border) in the
+ *      CSS cascade.
+ *
+ * Nothing existing breaks: no shadcn Button/Card component is
+ * imported anywhere in app/ or components/, and border-border's
+ * shift from oklch(0.922 0 0) ≈ #EAEAEA to #E8ECF1 is
+ * perceptually imperceptible (2-channel delta).
+ */
+@theme {
+  --color-primary:            #00685f; /* brand accent — links, CTAs, icons */
+  --color-primary-foreground: #ffffff; /* text on --color-primary */
+  --color-accent:             #F0FDFA; /* soft tinted surface — icon halos, subtle fills */
+  --color-surface:            #ffffff; /* card/panel background */
+  --color-border:             #E8ECF1; /* component & card borders */
+  --color-text:               #1A2332; /* primary body / heading text */
+  --color-text-muted:         #5A6578; /* secondary body / description text */
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);

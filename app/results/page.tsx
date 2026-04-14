@@ -28,15 +28,19 @@ import type { RecommendationResult, SupplementRecommendation } from "@/app/api/r
 import {
   getProductsForSupplement,
   getAmazonSearchLink,
+  getAmazonProductLink,
   detectCountryFromLocale,
   countryNameToCode,
 } from "@/src/lib/data/amazonProducts";
 import { Logo } from "@/src/components/ui/Logo";
-import { AmazonLogo } from "@/src/components/ui/AmazonLogo";
 import {
-  AffiliateTierCard,
-  TIER_ORDER,
-} from "@/src/components/ui/AffiliateTierCard";
+  AmazonProductCard,
+  type AmazonProductTier,
+} from "@/src/components/ui/AmazonProductCard";
+
+const TIER_ORDER: AmazonProductTier[] = ["best-fit", "premium", "budget"];
+const TIER_PRICE = { "best-fit": "$$", premium: "$$$", budget: "$" } as const;
+const TIER_KEY_MAP = { "best-fit": "best", premium: "premium", budget: "budget" } as const;
 
 // ─── Lab deficiency thresholds (mirrors recommend route) ─────────────────────
 
@@ -108,24 +112,31 @@ function WhereToBuy({ name, form, countryCode }: { name: string; form?: string; 
       {open && (
         <div className="mt-3 space-y-2">
           {products ? (
-            TIER_ORDER.map((tier) => (
-              <AffiliateTierCard
-                key={tier}
-                tier={tier}
-                product={products[tier]}
-                countryCode={countryCode}
-                fallbackSearchTerm={`${products[tier].brand} ${products[tier].name}`}
-              />
-            ))
+            TIER_ORDER.map((tier) => {
+              const p = products[TIER_KEY_MAP[tier]];
+              const href = p.asin
+                ? getAmazonProductLink(p.asin, countryCode)
+                : getAmazonSearchLink(`${p.brand} ${p.name}`, undefined, countryCode);
+              return (
+                <AmazonProductCard
+                  key={tier}
+                  variant="tier"
+                  tier={tier}
+                  priceLevel={TIER_PRICE[tier]}
+                  title={p.name}
+                  brand={p.brand}
+                  description={p.description}
+                  href={href}
+                />
+              );
+            })
           ) : (
-            <a
+            <AmazonProductCard
+              variant="compact"
+              title={name}
+              brand=""
               href={getAmazonSearchLink(name, form, countryCode)}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="inline-flex items-center gap-1.5 bg-white border border-black/[0.08] hover:border-[#00685f]/30 hover:bg-[#f0fdfa] text-[#111c2c] text-xs font-medium px-4 py-2 rounded-full transition-colors"
-            >
-              View on <AmazonLogo className="h-[14px] w-auto" /> →
-            </a>
+            />
           )}
         </div>
       )}
