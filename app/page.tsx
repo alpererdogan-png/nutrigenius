@@ -294,7 +294,8 @@ export default function Home() {
             alt=""
             fill
             priority
-            sizes="100vw"
+            quality={75}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
             className="object-cover opacity-[0.28]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#f9f7f4]/60 via-[#f9f7f4]/30 to-[#f9f7f4]" />
@@ -493,7 +494,7 @@ export default function Home() {
                           src={preset.image}
                           alt={post.title}
                           fill
-                          sizes="(max-width: 640px) 100vw, 360px"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
                           loading="lazy"
                           className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
                         />
@@ -625,7 +626,8 @@ export default function Home() {
           src="/images/morning-routine.jpg"
           alt="A calm morning routine with supplements and linen"
           fill
-          sizes="100vw"
+          quality={75}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
           loading="lazy"
           className="object-cover"
         />
@@ -696,7 +698,7 @@ export default function Home() {
                     src={f.img}
                     alt={f.alt}
                     fill
-                    sizes="(max-width: 1024px) 90vw, 520px"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
                     loading="lazy"
                     className="object-cover"
                   />
@@ -834,7 +836,8 @@ export default function Home() {
             src="/images/capsules-scatter.jpg"
             alt=""
             fill
-            sizes="100vw"
+            quality={75}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
             loading="lazy"
             className="object-cover opacity-35"
           />

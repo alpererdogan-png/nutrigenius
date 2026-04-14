@@ -67,7 +67,8 @@ export default function AboutPage() {
             alt=""
             fill
             priority
-            sizes="100vw"
+            quality={75}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
             className="object-cover opacity-[0.18]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#f9f9ff]/50 via-[#f9f9ff]/70 to-[#f9f9ff]" />
