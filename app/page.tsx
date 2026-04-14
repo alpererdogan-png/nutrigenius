@@ -22,10 +22,10 @@ import {
   AlertTriangle,
   ChevronLeft,
   ChevronRight,
-  Quote,
 } from "lucide-react";
 import { AdSense } from "@/components/AdSense";
 import { Logo } from "@/src/components/ui/Logo";
+import { TestimonialsCarousel } from "@/src/components/TestimonialsCarousel";
 
 // ─── Blog preview — category → visual preset mapping ─────────────────────────
 
@@ -814,56 +814,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-            {[
-              {
-                quote:
-                  "The interaction checks flagged a supplement that would've clashed with my levothyroxine. My GP confirmed NutriGenius caught something I'd have missed on my own.",
-                name: "Sarah M.",
-                descriptor: "Managing hypothyroidism",
-              },
-              {
-                quote:
-                  "As a vegan, I was always guessing at B12 and omega-3. The algorithm picked the exact forms and doses I needed — and pointed me to algae DHA I didn't know existed.",
-                name: "David K.",
-                descriptor: "Plant-based diet",
-              },
-              {
-                quote:
-                  "I uploaded my recent bloodwork and got a protocol tuned to my actual ferritin and vitamin D numbers. It felt like a real consultation, not a generic quiz.",
-                name: "Priya R.",
-                descriptor: "Perimenopause support",
-              },
-              {
-                quote:
-                  "Between training cycles my recovery stalled. The magnesium form and creatine timing NutriGenius suggested shifted things within three weeks.",
-                name: "Marcus T.",
-                descriptor: "High-performance athlete",
-              },
-            ].map((t) => (
-              <figure
-                key={t.name}
-                className="flex flex-col bg-white ring-1 ring-[#e5ddd1] rounded-2xl p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/[0.06]"
-                style={{ boxShadow: "0 1px 2px rgba(44, 36, 32, 0.04)" }}
-              >
-                <Quote
-                  className="w-5 h-5 text-[#bfa785] mb-4 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <blockquote className="flex-1 text-[#2c2420] text-[0.95rem] leading-relaxed mb-5">
-                  {t.quote}
-                </blockquote>
-                <figcaption className="pt-4 border-t border-[#f0ebe2]">
-                  <p className="font-heading text-sm font-bold text-[#2c2420]">
-                    {t.name}
-                  </p>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#00685f] mt-1">
-                    {t.descriptor}
-                  </p>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+          <TestimonialsCarousel />
         </div>
       </section>
 
