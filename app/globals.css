@@ -113,6 +113,14 @@
   --color-border:             #E8ECF1; /* component & card borders */
   --color-text:               #1A2332; /* primary body / heading text */
   --color-text-muted:         #5A6578; /* secondary body / description text */
+
+  /* Amazon affiliate tier accents — site-specific.
+   * NutriGenius: gold Best Fit (contrasts teal brand), deep-teal Premium
+   * (extends brand), warm-gray Budget. Dermawise supplies its own values
+   * against the same token names. */
+  --color-tier-best:          #BFA785; /* warm gold — Best Fit */
+  --color-tier-premium:       #004d45; /* deep teal — Premium */
+  --color-tier-budget:        #9A8E82; /* warm gray — Budget */
 }
 
 .dark {

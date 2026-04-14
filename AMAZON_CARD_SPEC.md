@@ -14,15 +14,27 @@ Define these seven variables in your site's global stylesheet. Each site
 supplies its own brand values; the component never inspects the values, only
 the variable names.
 
-| Variable                      | Purpose                                                  |
-| ----------------------------- | -------------------------------------------------------- |
-| `--color-primary`             | Brand accent — used for links, CTA hover ring, tier icons |
-| `--color-primary-foreground`  | Text color that sits on top of `--color-primary`          |
-| `--color-accent`              | Soft tinted surface — icon halos, subtle fills            |
-| `--color-surface`             | Card / panel background                                   |
-| `--color-border`              | Component & card borders                                  |
-| `--color-text`                | Primary body and heading text                             |
-| `--color-text-muted`          | Secondary body / description text                         |
+| Variable                      | Purpose                                                     |
+| ----------------------------- | ----------------------------------------------------------- |
+| `--color-primary`             | Brand accent — used for links, CTA hover ring               |
+| `--color-primary-foreground`  | Text color that sits on top of `--color-primary`            |
+| `--color-accent`              | Soft tinted surface — subtle fills                          |
+| `--color-surface`             | Card / panel background                                     |
+| `--color-border`              | Component & card borders                                    |
+| `--color-text`                | Primary body and heading text                               |
+| `--color-text-muted`          | Secondary body / description text                           |
+| `--color-tier-best`           | Best Fit tier accent (left border, icon, label)             |
+| `--color-tier-premium`        | Premium tier accent                                         |
+| `--color-tier-budget`         | Budget tier accent                                          |
+
+**Tier color guidance.** The three tier accents must each be visually
+distinct from `--color-primary` (so the tier card doesn't blend into
+the brand) and from each other. Example per-site palettes:
+
+| Site          | Best Fit            | Premium             | Budget              |
+| ------------- | ------------------- | ------------------- | ------------------- |
+| NutriGenius   | `#BFA785` warm gold | `#004d45` deep teal | `#9A8E82` warm gray |
+| Dermawise     | `#1A7A6D` teal      | `#BFA785` gold      | `#9A8E82` warm gray |
 
 Contrast requirement: `--color-text` and `--color-text-muted` must each hit
 **≥4.5:1** contrast against `--color-surface` (WCAG AA for body text).
@@ -43,6 +55,9 @@ Supply your own brand hexes, keeping the variable names identical:
   --color-border:             #your-derma-border;
   --color-text:               #your-derma-ink;
   --color-text-muted:         #your-derma-body;
+  --color-tier-best:          #1A7A6D; /* Dermawise Best Fit  */
+  --color-tier-premium:       #BFA785; /* Dermawise Premium   */
+  --color-tier-budget:        #9A8E82; /* Dermawise Budget    */
 }
 ```
 
@@ -75,6 +90,9 @@ Paste into `theme.extend.colors`. Define the raw hexes on `:root` in
   --color-border:             232 236 241;
   --color-text:               26 35 50;
   --color-text-muted:         90 101 120;
+  --color-tier-best:          191 167 133;
+  --color-tier-premium:       0 77 69;
+  --color-tier-budget:        154 142 130;
 }
 ```
 
@@ -94,6 +112,9 @@ export default {
         border:               'rgb(var(--color-border) / <alpha-value>)',
         text:                 'rgb(var(--color-text) / <alpha-value>)',
         'text-muted':         'rgb(var(--color-text-muted) / <alpha-value>)',
+        'tier-best':          'rgb(var(--color-tier-best) / <alpha-value>)',
+        'tier-premium':       'rgb(var(--color-tier-premium) / <alpha-value>)',
+        'tier-budget':        'rgb(var(--color-tier-budget) / <alpha-value>)',
       },
     },
   },
@@ -147,12 +168,35 @@ interface TierMeta {
   icon: LucideIcon;
   label: string;
   iconFill: boolean;
+  borderClass: string;
+  textClass: string;
+  haloClass: string;
 }
 
+/**
+ * Tier accents are driven by site-specific CSS tokens:
+ *   --color-tier-best / --color-tier-premium / --color-tier-budget
+ * Each sibling site supplies its own hex values against these token names.
+ */
 const TIER_META: Record<AmazonProductTier, TierMeta> = {
-  "best-fit": { icon: Star, label: "Best Fit", iconFill: true },
-  premium:    { icon: Gem,  label: "Premium",  iconFill: true },
-  budget:     { icon: Tag,  label: "Budget",   iconFill: false },
+  "best-fit": {
+    icon: Star, label: "Best Fit", iconFill: true,
+    borderClass: "border-l-tier-best",
+    textClass:   "text-tier-best",
+    haloClass:   "bg-tier-best/10",
+  },
+  premium: {
+    icon: Gem, label: "Premium", iconFill: true,
+    borderClass: "border-l-tier-premium",
+    textClass:   "text-tier-premium",
+    haloClass:   "bg-tier-premium/10",
+  },
+  budget: {
+    icon: Tag, label: "Budget", iconFill: false,
+    borderClass: "border-l-tier-budget",
+    textClass:   "text-tier-budget",
+    haloClass:   "bg-tier-budget/10",
+  },
 };
 
 function ViewOnAmazonButton({ href }: { href: string }) {
@@ -186,13 +230,21 @@ function TierCard({
   const meta = TIER_META[tier];
   const Icon = meta.icon;
   return (
-    <div className="bg-surface ring-1 ring-border rounded-xl p-4 flex items-center gap-4">
+    <div
+      className={
+        `bg-surface rounded-xl p-4 flex items-center gap-4 ` +
+        `border-l-4 ${meta.borderClass} ring-1 ring-border ` +
+        `shadow-sm shadow-black/[0.04] ` +
+        `hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/[0.08] ` +
+        `transition-all duration-200`
+      }
+    >
       {imageUrl ? (
         <ProductImage src={imageUrl} alt={`${brand} ${title}`} />
       ) : (
-        <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center flex-shrink-0 ring-1 ring-border">
+        <div className={`w-10 h-10 rounded-full ${meta.haloClass} flex items-center justify-center flex-shrink-0`}>
           <Icon
-            className="w-4 h-4 text-primary"
+            className={`w-4 h-4 ${meta.textClass}`}
             fill={meta.iconFill ? "currentColor" : "none"}
             strokeWidth={meta.iconFill ? 1.5 : 2}
           />
@@ -200,11 +252,11 @@ function TierCard({
       )}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 flex-wrap mb-0.5">
-          <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-primary">
+          <span className={`text-[10px] font-semibold uppercase tracking-wide ${meta.textClass}`}>
             {meta.label}
           </span>
           {priceLevel && (
-            <span className="text-[10px] font-semibold text-text">{priceLevel}</span>
+            <span className={`text-[10px] font-semibold ${meta.textClass}`}>{priceLevel}</span>
           )}
         </div>
         <p className="text-[13px] font-semibold text-text leading-snug">

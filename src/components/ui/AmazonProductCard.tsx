@@ -34,12 +34,45 @@ interface TierMeta {
   icon: LucideIcon;
   label: string;
   iconFill: boolean;
+  /** left-border accent */
+  borderClass: string;
+  /** icon + label + price color */
+  textClass: string;
+  /** tinted icon halo */
+  haloClass: string;
 }
 
+/**
+ * Tier accents are driven by site-specific CSS tokens:
+ *   --color-tier-best / --color-tier-premium / --color-tier-budget
+ * defined in globals.css. Each sibling site supplies its own hex values
+ * against these same token names, so this component stays portable.
+ */
 const TIER_META: Record<AmazonProductTier, TierMeta> = {
-  "best-fit": { icon: Star, label: "Best Fit", iconFill: true },
-  premium:    { icon: Gem,  label: "Premium",  iconFill: true },
-  budget:     { icon: Tag,  label: "Budget",   iconFill: false },
+  "best-fit": {
+    icon: Star,
+    label: "Best Fit",
+    iconFill: true,
+    borderClass: "border-l-tier-best",
+    textClass:   "text-tier-best",
+    haloClass:   "bg-tier-best/10",
+  },
+  premium: {
+    icon: Gem,
+    label: "Premium",
+    iconFill: true,
+    borderClass: "border-l-tier-premium",
+    textClass:   "text-tier-premium",
+    haloClass:   "bg-tier-premium/10",
+  },
+  budget: {
+    icon: Tag,
+    label: "Budget",
+    iconFill: false,
+    borderClass: "border-l-tier-budget",
+    textClass:   "text-tier-budget",
+    haloClass:   "bg-tier-budget/10",
+  },
 };
 
 // ──────────────────────────────────────────────────────────────────
@@ -88,13 +121,26 @@ function TierCard({
   const Icon = meta.icon;
 
   return (
-    <div className="bg-surface ring-1 ring-border rounded-xl p-4 flex items-center gap-4">
+    <div
+      className={
+        `bg-surface rounded-xl p-4 flex items-center gap-4 ` +
+        `border-l-4 ${meta.borderClass} ring-1 ring-border ` +
+        `shadow-sm shadow-black/[0.04] ` +
+        `hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/[0.08] ` +
+        `transition-all duration-200`
+      }
+    >
       {imageUrl ? (
         <ProductImage src={imageUrl} alt={`${brand} ${title}`} />
       ) : (
-        <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center flex-shrink-0 ring-1 ring-border">
+        <div
+          className={
+            `w-10 h-10 rounded-full ${meta.haloClass} ` +
+            `flex items-center justify-center flex-shrink-0`
+          }
+        >
           <Icon
-            className="w-4 h-4 text-primary"
+            className={`w-4 h-4 ${meta.textClass}`}
             fill={meta.iconFill ? "currentColor" : "none"}
             strokeWidth={meta.iconFill ? 1.5 : 2}
           />
@@ -102,11 +148,15 @@ function TierCard({
       )}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 flex-wrap mb-0.5">
-          <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-primary">
+          <span
+            className={
+              `text-[10px] font-semibold uppercase tracking-wide ${meta.textClass}`
+            }
+          >
             {meta.label}
           </span>
           {priceLevel && (
-            <span className="text-[10px] font-semibold text-text">
+            <span className={`text-[10px] font-semibold ${meta.textClass}`}>
               {priceLevel}
             </span>
           )}
