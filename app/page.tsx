@@ -542,18 +542,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ad unit — between blog preview and next sections.
-          Bounded placeholder keeps layout stable whether or not AdSense fills.
-          When the AdSense pub is approved, the <ins> renders inside the box. */}
-      <div className="py-6 sm:py-8 px-4 sm:px-6 bg-[#f9f7f4]">
-        <div
-          className="relative mx-auto w-full max-w-[728px] border border-dashed border-[#d0c5b8] rounded-xl bg-[#f9f7f4] flex items-center justify-center overflow-hidden"
-          style={{ minHeight: "120px", maxHeight: "280px" }}
-        >
-          <span className="absolute inset-0 flex items-center justify-center text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[#9A8E82] pointer-events-none">
+      {/* Ad unit — between blog preview and How It Works.
+          Standard leaderboard placeholder keeps layout stable whether or not
+          AdSense fills; the "Advertisement" label sits above the slot. */}
+      <div className="py-6 px-4 sm:px-6">
+        <div className="mx-auto w-full max-w-[728px] bg-[#f5f5f5] border border-[#e5e5e5] rounded-xl py-4 px-4">
+          <p className="text-center text-[11px] text-[#999] mb-2">
             Advertisement
-          </span>
-          <AdSense slot="1122334455" format="horizontal" />
+          </p>
+          <div
+            className="flex items-center justify-center"
+            style={{ minHeight: "90px" }}
+          >
+            <AdSense slot="1122334455" format="horizontal" />
+          </div>
         </div>
       </div>
 
