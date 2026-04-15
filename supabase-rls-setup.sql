@@ -1,20 +1,30 @@
 -- ============================================================================
 -- NutriGenius: Row-Level Security (RLS) — Full Audit & Lockdown
--- Run this in the Supabase SQL Editor (Dashboard → SQL Editor → New Query)
+-- Run this in the Supabase SQL Editor (Dashboard → SQL Editor → New Query).
 -- ============================================================================
 --
--- STEP 1: Run the audit query first (at the bottom of this file, Section 5)
---         to see current state BEFORE applying changes.
+-- Fixes the Supabase Security Advisor warning:
+--   "rls_disabled_in_public — Table publicly accessible"
 --
--- STEP 2: Run everything from Section 1–4 to apply RLS.
+-- This script is IDEMPOTENT — safe to re-run any time.
 --
--- STEP 3: Run the verification queries in Section 5 to confirm.
+-- WHY THIS APP DOES NOT USE auth.uid() = user_id:
+--   NutriGenius has no user accounts. All client traffic uses the anon
+--   key; server routes use the service role key (bypasses RLS). There
+--   are zero user-scoped tables — every public table is either:
+--     • public-readable reference data (blog, supplements, engine data), or
+--     • a write-only lead capture table (newsletter_subscribers).
+--   Policies are therefore scoped by role (anon / authenticated) rather
+--   than by user identity.
+--
+-- STEPS:
+--   1. Run audit query 5a FIRST to see current state
+--   2. Run Sections 1–4 to apply RLS
+--   3. Run Section 5 to verify
 -- ============================================================================
 
 
 -- ─── 1. DROP EXISTING POLICIES (idempotent — safe to re-run) ────────────────
--- If you've already run a previous version of this script, drop old policies
--- first to avoid "already exists" errors.
 
 DO $$
 DECLARE
@@ -25,131 +35,128 @@ BEGIN
     FROM pg_policies
     WHERE schemaname = 'public'
   ) LOOP
-    EXECUTE format('DROP POLICY IF EXISTS %I ON %I', r.policyname, r.tablename);
+    EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', r.policyname, r.tablename);
   END LOOP;
 END $$;
 
 
--- ─── 2. ENABLE RLS ON ALL PUBLIC TABLES ─────────────────────────────────────
+-- ─── 2. ENABLE RLS ON EVERY TABLE IN public SCHEMA ──────────────────────────
+-- Dynamic catch-all: guarantees the Security Advisor `rls_disabled_in_public`
+-- warning clears for every current and future table in public. Tables with
+-- no explicit policy below will be deny-all (safe default); if any of them
+-- turn out to be used by the app, queries will fail visibly and we can add
+-- a targeted policy rather than silently leaking data.
 
--- PUBLIC CONTENT
-ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
-
--- ADMIN/INTERNAL (recommendation engine data)
-ALTER TABLE supplements ENABLE ROW LEVEL SECURITY;
-ALTER TABLE conditions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE health_goals ENABLE ROW LEVEL SECURITY;
-ALTER TABLE supplement_condition_mappings ENABLE ROW LEVEL SECURITY;
-ALTER TABLE supplement_goal_mappings ENABLE ROW LEVEL SECURITY;
-ALTER TABLE drug_nutrient_interactions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE supplement_interactions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE affiliate_products ENABLE ROW LEVEL SECURITY;
-
--- USER DATA
-ALTER TABLE newsletter_subscribers ENABLE ROW LEVEL SECURITY;
-
--- NOTE: If any of the above tables don't exist yet in your database,
--- comment out the corresponding line. The script will error on the
--- first missing table otherwise.
+DO $$
+DECLARE
+  t RECORD;
+BEGIN
+  FOR t IN (
+    SELECT tablename
+    FROM pg_tables
+    WHERE schemaname = 'public'
+  ) LOOP
+    EXECUTE format('ALTER TABLE public.%I ENABLE ROW LEVEL SECURITY', t.tablename);
+  END LOOP;
+END $$;
 
 
--- ─── 3. READ-ONLY POLICIES FOR PUBLIC/ADMIN TABLES ──────────────────────────
--- Anon + authenticated can SELECT. No INSERT/UPDATE/DELETE policies =
--- writes are DENIED for anon. Service role key bypasses RLS entirely.
+-- ─── 3. READ-ONLY POLICIES FOR PUBLIC/REFERENCE TABLES ──────────────────────
+-- anon + authenticated can SELECT. No INSERT/UPDATE/DELETE policies =
+-- writes denied. Service role key bypasses RLS entirely (used by server
+-- routes for seeding, newsletter send, unsubscribe, etc.).
+--
+-- `ALTER TABLE IF EXISTS` pattern via DO block so a missing table doesn't
+-- abort the whole script.
 
--- Blog posts (public content — blog pages need this)
-CREATE POLICY "Public read: blog_posts"
-  ON blog_posts FOR SELECT
-  TO anon, authenticated
-  USING (true);
-
--- Supplements (recommendation engine reads these)
-CREATE POLICY "Public read: supplements"
-  ON supplements FOR SELECT
-  TO anon, authenticated
-  USING (true);
-
--- Conditions (recommendation engine reads these)
-CREATE POLICY "Public read: conditions"
-  ON conditions FOR SELECT
-  TO anon, authenticated
-  USING (true);
-
--- Health goals (recommendation engine reads these)
-CREATE POLICY "Public read: health_goals"
-  ON health_goals FOR SELECT
-  TO anon, authenticated
-  USING (true);
-
--- Supplement-condition mappings (recommendation engine)
-CREATE POLICY "Public read: supplement_condition_mappings"
-  ON supplement_condition_mappings FOR SELECT
-  TO anon, authenticated
-  USING (true);
-
--- Supplement-goal mappings (recommendation engine)
-CREATE POLICY "Public read: supplement_goal_mappings"
-  ON supplement_goal_mappings FOR SELECT
-  TO anon, authenticated
-  USING (true);
-
--- Drug-nutrient interactions (safety layer)
-CREATE POLICY "Public read: drug_nutrient_interactions"
-  ON drug_nutrient_interactions FOR SELECT
-  TO anon, authenticated
-  USING (true);
-
--- Supplement interactions (safety layer)
-CREATE POLICY "Public read: supplement_interactions"
-  ON supplement_interactions FOR SELECT
-  TO anon, authenticated
-  USING (true);
-
--- Affiliate products (product display on results page)
-CREATE POLICY "Public read: affiliate_products"
-  ON affiliate_products FOR SELECT
-  TO anon, authenticated
-  USING (true);
+DO $$
+DECLARE
+  tbl TEXT;
+  public_read_tables TEXT[] := ARRAY[
+    'blog_posts',                     -- blog listings + article pages
+    'supplements',                    -- recommendation engine
+    'conditions',                     -- recommendation engine
+    'health_goals',                   -- recommendation engine
+    'supplement_condition_mappings',  -- recommendation engine
+    'supplement_goal_mappings',       -- recommendation engine
+    'drug_nutrient_interactions',     -- safety layer
+    'supplement_interactions',        -- safety layer
+    'affiliate_products'              -- product cards on /results
+  ];
+BEGIN
+  FOREACH tbl IN ARRAY public_read_tables LOOP
+    IF EXISTS (
+      SELECT 1 FROM pg_tables
+      WHERE schemaname = 'public' AND tablename = tbl
+    ) THEN
+      EXECUTE format(
+        'CREATE POLICY %I ON public.%I FOR SELECT TO anon, authenticated USING (true)',
+        'Public read: ' || tbl,
+        tbl
+      );
+    END IF;
+  END LOOP;
+END $$;
 
 
--- ─── 4. NEWSLETTER SUBSCRIBERS — STRICT LOCKDOWN ────────────────────────────
--- • INSERT only for anon (subscribe form)
--- • NO SELECT for anon (prevents email list scraping)
--- • NO UPDATE/DELETE for anon
--- • Service role key (server-side) handles unsubscribe, newsletters, etc.
+-- ─── 4. newsletter_subscribers — STRICT LOCKDOWN ────────────────────────────
+-- • INSERT only for anon (subscribe form on quiz + landing)
+-- • NO SELECT for anon (prevents email-list scraping)
+-- • NO UPDATE/DELETE for anon (unsubscribe runs server-side via service role —
+--   see app/api/unsubscribe/route.ts, which uses supabaseAdmin)
+-- • authenticated role: read + update (reserved for future admin dashboard)
+-- • Service role key (server) bypasses RLS entirely
 
-CREATE POLICY "Anon can subscribe"
-  ON newsletter_subscribers FOR INSERT
-  TO anon
-  WITH CHECK (true);
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM pg_tables
+    WHERE schemaname = 'public' AND tablename = 'newsletter_subscribers'
+  ) THEN
+    CREATE POLICY "Anon can subscribe"
+      ON public.newsletter_subscribers FOR INSERT
+      TO anon
+      WITH CHECK (true);
 
--- Authenticated users (admin dashboard) can read subscriber list
-CREATE POLICY "Authenticated read: newsletter_subscribers"
-  ON newsletter_subscribers FOR SELECT
-  TO authenticated
-  USING (true);
+    CREATE POLICY "Authenticated read: newsletter_subscribers"
+      ON public.newsletter_subscribers FOR SELECT
+      TO authenticated
+      USING (true);
 
--- Authenticated users can update (admin operations)
-CREATE POLICY "Authenticated update: newsletter_subscribers"
-  ON newsletter_subscribers FOR UPDATE
-  TO authenticated
-  USING (true)
-  WITH CHECK (true);
+    CREATE POLICY "Authenticated update: newsletter_subscribers"
+      ON public.newsletter_subscribers FOR UPDATE
+      TO authenticated
+      USING (true)
+      WITH CHECK (true);
+  END IF;
+END $$;
 
 
 -- ─── 5. VERIFICATION QUERIES ────────────────────────────────────────────────
 
--- 5a. Check RLS status on all public tables (all should show true)
-SELECT tablename, rowsecurity
+-- 5a. RLS status on every public table — every row should show rowsecurity = true
+SELECT tablename, rowsecurity AS rls_enabled
 FROM pg_tables
 WHERE schemaname = 'public'
 ORDER BY tablename;
 
--- 5b. List all policies
-SELECT tablename, policyname, permissive, roles, cmd
+-- 5b. All active policies (who can do what)
+SELECT tablename, policyname, cmd, roles
 FROM pg_policies
 WHERE schemaname = 'public'
-ORDER BY tablename, cmd;
+ORDER BY tablename, cmd, policyname;
+
+-- 5c. Tables with RLS enabled but ZERO policies (deny-all — check if any
+--     of these are expected to be app-accessible; if so, add a policy)
+SELECT t.tablename
+FROM pg_tables t
+LEFT JOIN pg_policies p
+  ON p.schemaname = t.schemaname AND p.tablename = t.tablename
+WHERE t.schemaname = 'public'
+  AND t.rowsecurity = true
+  AND p.policyname IS NULL
+GROUP BY t.tablename
+ORDER BY t.tablename;
 
 
 -- ============================================================================
@@ -173,27 +180,10 @@ ORDER BY tablename, cmd;
 -- "auth" = authenticated role only
 -- "—"    = denied (no policy = denied when RLS is enabled)
 --
--- Service role key BYPASSES all RLS — use it for:
---   • Inserting blog articles
---   • Seeding supplement data
---   • Sending newsletters (reading subscriber list)
---   • Unsubscribe operations (see note below)
---
--- ⚠ IMPORTANT: The /unsubscribe page currently does a client-side
---   UPDATE on newsletter_subscribers using the anon key. With this
---   strict RLS, that will STOP WORKING. You have two options:
---
---   Option A (recommended): Create a server-side API route
---     POST /api/unsubscribe { email } that uses the service role
---     key to update the subscriber row. Then update the unsubscribe
---     page to call that API instead of Supabase directly.
---
---   Option B (quick fix): Add an anon UPDATE policy:
---     CREATE POLICY "Anon can unsubscribe"
---       ON newsletter_subscribers FOR UPDATE
---       TO anon
---       USING (true)
---       WITH CHECK (subscribed = false);
---     This limits anon to only setting subscribed=false.
---
+-- Service role key BYPASSES all RLS — used server-side for:
+--   • Seeding blog/supplement/product data       (app/api/seed-products)
+--   • Sending newsletters                        (app/api/send-newsletter)
+--   • Unsubscribe/resubscribe operations         (app/api/unsubscribe)
+-- Verified: every write path that RLS would block already uses supabaseAdmin
+-- (lib/supabase-admin.ts → SUPABASE_SERVICE_ROLE_KEY).
 -- ============================================================================
