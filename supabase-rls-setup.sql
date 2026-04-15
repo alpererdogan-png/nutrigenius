@@ -8,6 +8,13 @@
 --
 -- This script is IDEMPOTENT — safe to re-run any time.
 --
+-- MULTI-PROJECT SUPABASE PROJECT
+--   The sibling Dermawise site shares this Supabase project. Its tables
+--   are prefixed `dw_` and are managed by supabase/dermawise-rls-hotfix.sql
+--   (and whatever lives in the Dermawise repo). This script EXPLICITLY
+--   SKIPS `dw_*` tables in every section so re-runs never trample
+--   Dermawise policies.
+--
 -- WHY THIS APP DOES NOT USE auth.uid() = user_id:
 --   NutriGenius has no user accounts. All client traffic uses the anon
 --   key; server routes use the service role key (bypasses RLS). There
@@ -25,6 +32,9 @@
 
 
 -- ─── 1. DROP EXISTING POLICIES (idempotent — safe to re-run) ────────────────
+-- SCOPED: we only drop policies on NutriGenius-owned tables. Tables with a
+-- `dw_` prefix belong to the sibling Dermawise project sharing this Supabase
+-- instance and have their own RLS script (supabase/dermawise-rls-hotfix.sql).
 
 DO $$
 DECLARE
@@ -34,18 +44,21 @@ BEGIN
     SELECT policyname, tablename
     FROM pg_policies
     WHERE schemaname = 'public'
+      AND tablename NOT LIKE 'dw\_%' ESCAPE '\'
   ) LOOP
     EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', r.policyname, r.tablename);
   END LOOP;
 END $$;
 
 
--- ─── 2. ENABLE RLS ON EVERY TABLE IN public SCHEMA ──────────────────────────
--- Dynamic catch-all: guarantees the Security Advisor `rls_disabled_in_public`
--- warning clears for every current and future table in public. Tables with
--- no explicit policy below will be deny-all (safe default); if any of them
--- turn out to be used by the app, queries will fail visibly and we can add
--- a targeted policy rather than silently leaking data.
+-- ─── 2. ENABLE RLS ON EVERY NutriGenius TABLE IN public SCHEMA ──────────────
+-- Catch-all: guarantees the Security Advisor `rls_disabled_in_public` warning
+-- clears for every current and future NutriGenius table. Tables with no
+-- explicit policy below will be deny-all (safe default); if any of them turn
+-- out to be app-accessed, queries will fail visibly and we can add a
+-- targeted policy rather than silently leaking data.
+--
+-- SCOPED: skips `dw_*` tables (Dermawise owns those).
 
 DO $$
 DECLARE
@@ -55,6 +68,7 @@ BEGIN
     SELECT tablename
     FROM pg_tables
     WHERE schemaname = 'public'
+      AND tablename NOT LIKE 'dw\_%' ESCAPE '\'
   ) LOOP
     EXECUTE format('ALTER TABLE public.%I ENABLE ROW LEVEL SECURITY', t.tablename);
   END LOOP;
@@ -133,26 +147,34 @@ END $$;
 
 
 -- ─── 5. VERIFICATION QUERIES ────────────────────────────────────────────────
+-- All queries below exclude `dw_*` (Dermawise) tables — those belong to
+-- the sibling project's audit.
 
--- 5a. RLS status on every public table — every row should show rowsecurity = true
+-- 5a. RLS status on every NutriGenius table — every row should show
+--     rowsecurity = true
 SELECT tablename, rowsecurity AS rls_enabled
 FROM pg_tables
 WHERE schemaname = 'public'
+  AND tablename NOT LIKE 'dw\_%' ESCAPE '\'
 ORDER BY tablename;
 
--- 5b. All active policies (who can do what)
+-- 5b. Active policies on NutriGenius tables (who can do what)
 SELECT tablename, policyname, cmd, roles
 FROM pg_policies
 WHERE schemaname = 'public'
+  AND tablename NOT LIKE 'dw\_%' ESCAPE '\'
 ORDER BY tablename, cmd, policyname;
 
--- 5c. Tables with RLS enabled but ZERO policies (deny-all — check if any
---     of these are expected to be app-accessible; if so, add a policy)
+-- 5c. NutriGenius tables with RLS enabled but ZERO policies (deny-all —
+--     check if any of these are expected to be app-accessible; if so,
+--     add a policy. Future-feature tables like user_profiles are
+--     expected here until auth is wired up.)
 SELECT t.tablename
 FROM pg_tables t
 LEFT JOIN pg_policies p
   ON p.schemaname = t.schemaname AND p.tablename = t.tablename
 WHERE t.schemaname = 'public'
+  AND t.tablename NOT LIKE 'dw\_%' ESCAPE '\'
   AND t.rowsecurity = true
   AND p.policyname IS NULL
 GROUP BY t.tablename
