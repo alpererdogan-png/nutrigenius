@@ -181,9 +181,11 @@ ORDER BY t.tablename;
 -- "—"    = denied (no policy = denied when RLS is enabled)
 --
 -- Service role key BYPASSES all RLS — used server-side for:
---   • Seeding blog/supplement/product data       (app/api/seed-products)
 --   • Sending newsletters                        (app/api/send-newsletter)
 --   • Unsubscribe/resubscribe operations         (app/api/unsubscribe)
+--   • Newsletter signup                          (app/api/subscribe)
+-- Seeding affiliate_products is now a manual one-shot run via
+--   supabase/seed-products.sql in the SQL Editor.
 -- Verified: every write path that RLS would block already uses supabaseAdmin
 -- (lib/supabase-admin.ts → SUPABASE_SERVICE_ROLE_KEY).
 -- ============================================================================
