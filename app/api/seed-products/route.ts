@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase-server";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import { getAmazonLink } from "@/lib/amazon-affiliate";
 
 const COUNTRIES = ["US","GB","IE","DE","FR","ES","IT","NL","TR","AE","SA","AU","CA"];
@@ -124,7 +124,9 @@ const PRODUCTS = [
 
 export async function POST() {
   try {
-    const supabase = await createClient();
+    // Seeding is an admin operation — use the service role client so it
+    // works under RLS (anon has SELECT-only on affiliate_products).
+    const supabase = supabaseAdmin;
 
     // Check if already seeded
     const { count } = await supabase
