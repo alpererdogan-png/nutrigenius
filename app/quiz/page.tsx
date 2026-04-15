@@ -14,7 +14,6 @@ import {
   FileText,
   Sparkles,
 } from "lucide-react";
-import { createClient } from "@/lib/supabase-browser";
 import { Logo } from "@/src/components/ui/Logo";
 import { StepDemographics } from "./components/StepDemographics";
 import { StepHealthConditions } from "./components/StepHealthConditions";
@@ -159,18 +158,21 @@ export default function QuizPage() {
       }
       const recommendations = await res.json();
 
-      try {
-        const supabase = createClient();
-        await supabase.from("newsletter_subscribers").upsert({
+      // Fire-and-forget subscriber upsert via server route (service role
+      // key) so RLS doesn't block repeat signups. Non-blocking: must not
+      // affect the user's results redirect if the write fails.
+      fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           email,
           newsletter_opt_in: optNewsletter,
           pdf_opt_in: optPdf,
           calendar_opt_in: optCalendar,
-          created_at: new Date().toISOString(),
-        });
-      } catch {
+        }),
+      }).catch(() => {
         // Non-blocking
-      }
+      });
 
       // Fire-and-forget welcome email — don't await so it doesn't delay redirect
       fetch("/api/send-welcome", {

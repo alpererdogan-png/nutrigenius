@@ -103,25 +103,24 @@ export default function Home() {
       setNewsletterStatus("submitting");
       setNewsletterMessage(null);
       try {
-        const supabase = createClient();
-        const { error } = await supabase.from("newsletter_subscribers").upsert(
-          {
-            email,
-            newsletter_opt_in: true,
-            pdf_opt_in: false,
-            calendar_opt_in: false,
-            created_at: new Date().toISOString(),
-          },
-          { onConflict: "email" }
-        );
-        if (error) throw error;
+        const res = await fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, newsletter_opt_in: true }),
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error ?? "Something went wrong. Please try again.");
+        }
         setNewsletterStatus("success");
         setNewsletterMessage("Thanks — you're subscribed.");
         setNewsletterEmail("");
       } catch (err) {
         console.error("Newsletter signup failed:", err);
         setNewsletterStatus("error");
-        setNewsletterMessage("Something went wrong. Please try again.");
+        setNewsletterMessage(
+          err instanceof Error ? err.message : "Something went wrong. Please try again."
+        );
       }
     },
     [newsletterEmail]
