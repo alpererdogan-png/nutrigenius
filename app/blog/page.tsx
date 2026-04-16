@@ -42,6 +42,9 @@ export default async function BlogPage() {
       .eq("is_published", true)
       .order("published_at", { ascending: false });
 
+    // ── DEBUG: remove after confirming articles render ──
+    console.log("[blog/page] data count:", data?.length ?? "null", "error:", JSON.stringify(error));
+
     if (error) {
       fetchError = error.message;
       console.error("Blog page: Supabase query failed:", error.message, error.code, error.details);
@@ -92,15 +95,25 @@ export default async function BlogPage() {
         </div>
       </div>
 
-      {/* Visible error banner — helps diagnose RLS / env-var issues */}
-      {fetchError && (
+      {/* Diagnostic banner — visible on the rendered page */}
+      {fetchError ? (
         <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6">
           <div className="bg-rose-50 border border-rose-200 rounded-xl p-4 text-sm text-rose-700">
             <p className="font-semibold">Failed to load articles</p>
             <p className="mt-1 text-rose-600">{fetchError}</p>
           </div>
         </div>
-      )}
+      ) : posts.length === 0 ? (
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6">
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-700">
+            <p className="font-semibold">No articles returned</p>
+            <p className="mt-1 text-amber-600">
+              Supabase query succeeded but returned 0 rows. Check that blog_posts
+              has rows with is_published = true, and that the anon SELECT policy exists.
+            </p>
+          </div>
+        </div>
+      ) : null}
 
       {/* Interactive client island — filters + article grid */}
       <BlogClient posts={posts} />

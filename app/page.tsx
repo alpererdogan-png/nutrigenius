@@ -14,6 +14,9 @@ export default async function Home() {
       .order("published_at", { ascending: false })
       .limit(6);
 
+    // ── DEBUG: remove after confirming articles render ──
+    console.log("[home/page] data count:", data?.length ?? "null", "error:", JSON.stringify(error));
+
     if (error) {
       console.error("Landing blog preview: Supabase query failed:", error.message, error.code, error.details);
     } else {
