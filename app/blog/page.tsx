@@ -7,6 +7,9 @@ import { Logo } from "@/src/components/ui/Logo";
 import { BlogClient } from "./BlogClient";
 import type { BlogPost } from "./BlogClient";
 
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Blog — NutriGenius | Evidence-Based Supplement Science",
   description:
