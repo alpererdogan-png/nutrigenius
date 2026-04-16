@@ -68,6 +68,12 @@ export default async function BlogPage() {
     console.error("Blog page: unexpected error:", err);
   }
 
+  if (process.env.NODE_ENV === 'production') {
+    console.log('SUPABASE URL exists:', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
+    console.log('SUPABASE KEY exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+    console.log('URL value:', process.env.NEXT_PUBLIC_SUPABASE_URL?.slice(0, 30));
+  }
+
   return (
     <div className="min-h-screen bg-[#f9f9ff]">
       <script
