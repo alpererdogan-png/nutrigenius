@@ -211,80 +211,15 @@ function ArticleGrid({ posts }: { posts: BlogPost[] }) {
 // ─── Main client component ─────────────────────────────────────────────────────
 
 export function BlogClient({ posts }: { posts: BlogPost[] }) {
-  const [category, setCategory] = useState("all");
-  const [search, setSearch] = useState("");
-  const [searchInput, setSearchInput] = useState("");
-
-  // Debounce search
-  useEffect(() => {
-    const timer = setTimeout(() => setSearch(searchInput), 350);
-    return () => clearTimeout(timer);
-  }, [searchInput]);
-
-  // Client-side filtering over server-fetched posts
-  const filtered = useMemo(() => {
-    let result = posts;
-    if (category !== "all") {
-      result = result.filter((p) => p.category === category);
-    }
-    if (search) {
-      const q = search.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.title.toLowerCase().includes(q) ||
-          p.excerpt.toLowerCase().includes(q)
-      );
-    }
-    return result;
-  }, [posts, category, search]);
-
   return (
-    <>
-      {/* Sticky filters */}
-      <div className="bg-white/80 backdrop-blur-xl sticky top-0 z-10 shadow-sm shadow-black/5">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center gap-2.5">
-          <div className="flex-1 min-w-0 overflow-x-auto sm:overflow-visible no-scrollbar">
-            <div className="flex flex-nowrap sm:flex-wrap gap-2">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat.value}
-                  onClick={() => setCategory(cat.value)}
-                  className={`flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full transition-all duration-150 whitespace-nowrap ${
-                    category === cat.value
-                      ? "bg-[#00685f] text-white"
-                      : "bg-[#f0f3ff] text-[#5A6578] hover:bg-[#e6f4f3] hover:text-[#00685f]"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="relative flex-shrink-0 w-full sm:w-56">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8896A8]" />
-            <input
-              type="text"
-              placeholder="Search articles..."
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-sm bg-[#f0f3ff] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00685f]/20 text-[#1A2332] placeholder:text-[#8896A8]"
-            />
-          </div>
+    <div style={{ padding: "20px" }}>
+      <p>Post count: {posts.length}</p>
+      {posts.map((post) => (
+        <div key={post.id} style={{ marginBottom: "10px", padding: "10px", border: "1px solid #ccc" }}>
+          <h2>{post.title}</h2>
+          <p>{post.excerpt}</p>
         </div>
-      </div>
-
-      {/* Article grid */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
-        {filtered.length === 0 ? (
-          <div className="text-center py-20 text-[#8896A8]">
-            <BookOpen className="w-10 h-10 mx-auto mb-3 opacity-40" />
-            <p className="font-semibold">No articles found</p>
-            <p className="text-sm mt-1">Try adjusting your search or filter.</p>
-          </div>
-        ) : (
-          <ArticleGrid posts={filtered} />
-        )}
-      </div>
-    </>
+      ))}
+    </div>
   );
 }
