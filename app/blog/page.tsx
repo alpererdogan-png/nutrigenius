@@ -4,8 +4,17 @@ import { ArrowUpRight, BookOpen } from "lucide-react";
 import { CookieSettingsLink } from "@/components/CookieConsent";
 import { createClient } from "@/lib/supabase-server";
 import { Logo } from "@/src/components/ui/Logo";
-import { BlogClient } from "./BlogClient";
-import type { BlogPost } from "./BlogClient";
+interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  read_time: string;
+  author_name: string;
+  published_at: string;
+  tags: string[];
+}
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
@@ -118,8 +127,16 @@ export default async function BlogPage() {
         </div>
       ) : null}
 
-      {/* Interactive client island — filters + article grid */}
-      <BlogClient posts={posts} />
+      {/* Inline diagnostic render — no client component */}
+      <div style={{ padding: "20px" }}>
+        <p>Post count: {posts.length}</p>
+        {posts.map((post) => (
+          <div key={post.id} style={{ marginBottom: "10px", padding: "10px", border: "1px solid #ccc" }}>
+            <h2>{post.title}</h2>
+            <p>{post.excerpt}</p>
+          </div>
+        ))}
+      </div>
 
       {/* Footer */}
       <footer className="bg-white py-8 px-4 sm:px-6 mt-12">
