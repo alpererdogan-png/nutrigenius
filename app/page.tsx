@@ -150,20 +150,23 @@ export default async function Home() {
   let blogPosts: LandingBlogPost[] = [];
 
   try {
+    // Match the sitemap + "published" semantics: a post is published iff it
+    // has a non-null published_at timestamp. Using is_published was silently
+    // returning zero rows because that column isn't reliably set.
     const { data, error } = await supabaseAdmin
       .from("blog_posts")
       .select("slug,title,excerpt,category,read_time")
-      .eq("is_published", true)
+      .not("published_at", "is", null)
       .order("published_at", { ascending: false })
       .limit(3);
 
     if (error) {
-      console.error("Landing blog preview:", error.message);
+      console.error("[Home] blog preview fetch failed:", error.message);
     } else {
       blogPosts = data ?? [];
     }
   } catch (err) {
-    console.error("Landing blog preview:", err);
+    console.error("[Home] blog preview unexpected error:", err);
   }
 
   return (
