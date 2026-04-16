@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Component, type ReactNode, type ErrorInfo } from "react";
 import Link from "next/link";
 import {
   ArrowRight, Clock, Search, BookOpen,
@@ -8,7 +8,8 @@ import {
   HeartPulse, TrendingUp, Brain,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { AdSense } from "@/components/AdSense";
+import dynamic from "next/dynamic";
+const AdSense = dynamic(() => import("@/components/AdSense").then(m => m.AdSense), { ssr: false });
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -95,25 +96,36 @@ function formatCategory(cat: string): string {
   return cat.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
 }
 
-// ─── Feed ad unit ──────────────────────────────────────────────────────────────
+// ─── Feed ad unit (error boundary so AdSense never crashes the page) ─────────
+
+class AdErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(err: Error, info: ErrorInfo) {
+    console.error("AdSense render error:", err, info);
+  }
+  render() { return this.state.hasError ? null : this.props.children; }
+}
 
 const FEED_AD_SLOTS = ["5566778899", "6677889900", "7788990011", "8899001122"];
 
 function FeedAd({ index }: { index: number }) {
   const slot = FEED_AD_SLOTS[index % FEED_AD_SLOTS.length];
   return (
-    <div className="col-span-full">
-      <div className="bg-[#f0f3ff] rounded-xl p-4">
-        <p className="text-xs text-gray-400 mb-2">Advertisement</p>
-        <AdSense
-          slot={slot}
-          format="auto"
-          responsive
-          className="block"
-          style={{ minHeight: "90px" }}
-        />
+    <AdErrorBoundary>
+      <div className="col-span-full">
+        <div className="bg-[#f0f3ff] rounded-xl p-4">
+          <p className="text-xs text-gray-400 mb-2">Advertisement</p>
+          <AdSense
+            slot={slot}
+            format="auto"
+            responsive
+            className="block"
+            style={{ minHeight: "90px" }}
+          />
+        </div>
       </div>
-    </div>
+    </AdErrorBoundary>
   );
 }
 
