@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, type ReactNode } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CookieSettingsLink } from "@/components/CookieConsent";
@@ -22,173 +22,18 @@ import {
 import { Logo } from "@/src/components/ui/Logo";
 import { TestimonialsCarousel } from "@/src/components/TestimonialsCarousel";
 
-export function HomeClient({ blogSection }: { blogSection: ReactNode }) {
+// ─── Hero half — nav + hero (needs menuOpen state) ───────────────────────────
 
+export function HomeClientHero() {
   const [menuOpen, setMenuOpen] = useState(false);
-
-  // ── Newsletter signup state ──
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterStatus, setNewsletterStatus] =
-    useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [newsletterMessage, setNewsletterMessage] = useState<string | null>(null);
-
-  const handleNewsletterSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const email = newsletterEmail.trim();
-      if (!email || !email.includes("@")) {
-        setNewsletterStatus("error");
-        setNewsletterMessage("Please enter a valid email address.");
-        return;
-      }
-      setNewsletterStatus("submitting");
-      setNewsletterMessage(null);
-      try {
-        const res = await fetch("/api/subscribe", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, newsletter_opt_in: true }),
-        });
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.error ?? "Something went wrong. Please try again.");
-        }
-        setNewsletterStatus("success");
-        setNewsletterMessage("Thanks — you're subscribed.");
-        setNewsletterEmail("");
-      } catch (err) {
-        console.error("Newsletter signup failed:", err);
-        setNewsletterStatus("error");
-        setNewsletterMessage(
-          err instanceof Error ? err.message : "Something went wrong. Please try again."
-        );
-      }
-    },
-    [newsletterEmail]
-  );
-
-  const organizationJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "NutriGenius",
-    url: "https://www.nutrigenius.co",
-    logo: "https://www.nutrigenius.co/icon-512.png",
-    description: "AI-powered personalized supplement recommendations backed by clinical evidence",
-    parentOrganization: {
-      "@type": "Organization",
-      name: "Clareo Health",
-    },
-    sameAs: [],
-  };
-
-  const webSiteJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "NutriGenius",
-    url: "https://www.nutrigenius.co",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://www.nutrigenius.co/blog?q={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
-  };
-
-  const webAppJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "NutriGenius",
-    url: "https://www.nutrigenius.co",
-    applicationCategory: "HealthApplication",
-    operatingSystem: "Web",
-    description:
-      "Free personalized supplement plan backed by science. Drug interaction checks, evidence ratings, and a visual weekly schedule.",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "EUR",
-    },
-  };
-
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "How does NutriGenius work?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "NutriGenius uses a 7-layer algorithm that analyzes your demographics, diet, lifestyle, health conditions, medications, lab results, and genetic variants to generate personalized supplement recommendations. Every recommendation passes through safety checks for drug interactions, dosage limits, and pregnancy safety.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Is NutriGenius free?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes, NutriGenius is completely free. No account or credit card is required. You get your full personalized supplement protocol with evidence ratings and a visual weekly schedule in about 5 minutes.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Does NutriGenius check drug interactions?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes. Every supplement recommendation is checked against your current medications for potential interactions. The system flags major, moderate, and minor interactions, and will block or adjust recommendations accordingly to keep you safe.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "How long does the assessment take?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "The health assessment takes about 5 minutes to complete. You'll answer questions about your demographics, diet, lifestyle, health conditions, medications, and optionally provide lab results and genetic data.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Is this medical advice?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "No. NutriGenius provides educational and informational supplement recommendations only. It is not a medical service and does not replace professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare professional before starting any supplement regimen.",
-        },
-      },
-    ],
-  };
-
-  const HOW_STEPS = [
-    { step: "01", icon: <Pill className="w-6 h-6" />, title: "Health Assessment", description: "Answer questions about your health, medications, lifestyle, and goals. Add lab results or genetic data for even better results." },
-    { step: "02", icon: <FlaskConical className="w-6 h-6" />, title: "Evidence Matching", description: "Our algorithm searches a curated knowledge base of supplement-condition mappings, each rated by evidence strength." },
-    { step: "03", icon: <Shield className="w-6 h-6" />, title: "Safety Screening", description: "Every recommendation is cross-checked against your medications for interactions. Unsafe combinations are automatically blocked." },
-    { step: "04", icon: <CalendarCheck className="w-6 h-6" />, title: "Your Plan", description: "Receive a personalized plan with 5-8 supplements, optimal doses, timing schedule, and clear explanations for each one." },
-  ];
-
   return (
-    <div className="min-h-screen bg-[#f9f7f4] text-[#1A2332]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-
+    <>
       {/* ── Navigation ── */}
       <nav className="fixed top-0 w-full bg-white/75 backdrop-blur-xl z-50 max-h-[60px]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
           <Link href="/" className="hover:opacity-80 transition-opacity duration-200">
             <Logo size="sm" variant="light" />
           </Link>
-          {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-5 text-sm text-[#5A6578]">
             <Link href="#how-it-works" className="hover:text-[#00685f] transition-colors duration-200">How It Works</Link>
             <Link href="#features" className="hover:text-[#00685f] transition-colors duration-200">Features</Link>
@@ -201,7 +46,6 @@ export function HomeClient({ blogSection }: { blogSection: ReactNode }) {
           >
             Get Your Free Personalized Plan
           </Link>
-          {/* Mobile: language + hamburger */}
           <div className="flex items-center gap-1 sm:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -244,11 +88,8 @@ export function HomeClient({ blogSection }: { blogSection: ReactNode }) {
         )}
       </nav>
 
-      {/* ══════════════════════════════════════════════════
-          HERO — Warm cream, editorial, matches Features section
-      ══════════════════════════════════════════════════ */}
+      {/* ── Hero section ── */}
       <section className="relative pt-14 sm:pt-16 overflow-hidden bg-[#f9f7f4]">
-        {/* Marble texture — subtle warmth, fades to cream */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <Image
             src="/images/marble-abstract.jpg"
@@ -265,23 +106,18 @@ export function HomeClient({ blogSection }: { blogSection: ReactNode }) {
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-12 sm:pt-16 sm:pb-12 lg:pt-20 lg:pb-12 relative">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-
-            {/* ── Left column ── */}
             <div>
               <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#00685f] mb-6">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#bfa785]" />
                 Evidence-Based Supplementation
               </p>
-
               <h1 className="font-heading text-[2.5rem] sm:text-[3rem] lg:text-[3.5rem] font-bold leading-[1.1] tracking-tight text-[#2c2420] mb-5">
                 Your supplements,{" "}
                 <span className="italic text-[#00685f]">backed by science.</span>
               </h1>
-
               <p className="text-[#6B5E52] text-base sm:text-[1.1rem] leading-relaxed mb-8 max-w-lg">
                 A 5-minute assessment creates your personalized supplement plan — with doses, timing, and drug interaction checks.
               </p>
-
               <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-5">
                 <Link
                   href="/quiz"
@@ -299,20 +135,18 @@ export function HomeClient({ blogSection }: { blogSection: ReactNode }) {
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
               </div>
-
               <p className="text-[0.85rem] text-[#9A8E82]">
                 Free · 5 minutes · No account required
               </p>
             </div>
 
-            {/* ── Right column: Protocol preview card ── */}
+            {/* Protocol preview card */}
             <div className="hidden lg:flex items-center justify-center">
               <div className="relative w-full max-w-[420px] transform -rotate-[1deg]">
                 <div
                   className="relative bg-white rounded-2xl p-8 border-l-4 border-[#bfa785]"
                   style={{ boxShadow: "0 20px 40px rgba(44,36,32,0.08), 0 6px 16px rgba(44,36,32,0.04)" }}
                 >
-                  {/* Header */}
                   <div className="mb-6">
                     <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#00685f] mb-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#bfa785]" />
@@ -322,8 +156,6 @@ export function HomeClient({ blogSection }: { blogSection: ReactNode }) {
                       Daily Supplement Plan
                     </h3>
                   </div>
-
-                  {/* Supplement rows */}
                   <div className="divide-y divide-[#f2ede6]">
                     {[
                       { num: "1", name: "Vitamin D3", form: "Cholecalciferol", dose: "5,000 IU", timing: "Morning", evidence: "Strong" },
@@ -354,8 +186,6 @@ export function HomeClient({ blogSection }: { blogSection: ReactNode }) {
                       </div>
                     ))}
                   </div>
-
-                  {/* Footer */}
                   <div className="mt-5 pt-4 border-t border-[#f2ede6] flex items-center gap-1.5 text-xs text-[#9A8E82]">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#00685f]" />
                     3 supplements · Interactions cleared
@@ -363,16 +193,67 @@ export function HomeClient({ blogSection }: { blogSection: ReactNode }) {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
+    </>
+  );
+}
 
-      {/* ══════════════════════════════════════════════════
-          CLINICAL KNOWLEDGE HUB — Server-rendered blog preview
-          (passed in as a slot from the server component for SEO)
-      ══════════════════════════════════════════════════ */}
-      {blogSection}
+// ─── Content half — how-it-works onward ──────────────────────────────────────
+
+export function HomeClientContent() {
+
+  // ── Newsletter signup state ──
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] =
+    useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [newsletterMessage, setNewsletterMessage] = useState<string | null>(null);
+
+  const handleNewsletterSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const email = newsletterEmail.trim();
+      if (!email || !email.includes("@")) {
+        setNewsletterStatus("error");
+        setNewsletterMessage("Please enter a valid email address.");
+        return;
+      }
+      setNewsletterStatus("submitting");
+      setNewsletterMessage(null);
+      try {
+        const res = await fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, newsletter_opt_in: true }),
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error ?? "Something went wrong. Please try again.");
+        }
+        setNewsletterStatus("success");
+        setNewsletterMessage("Thanks — you're subscribed.");
+        setNewsletterEmail("");
+      } catch (err) {
+        console.error("Newsletter signup failed:", err);
+        setNewsletterStatus("error");
+        setNewsletterMessage(
+          err instanceof Error ? err.message : "Something went wrong. Please try again."
+        );
+      }
+    },
+    [newsletterEmail]
+  );
+
+  const HOW_STEPS = [
+    { step: "01", icon: <Pill className="w-6 h-6" />, title: "Health Assessment", description: "Answer questions about your health, medications, lifestyle, and goals. Add lab results or genetic data for even better results." },
+    { step: "02", icon: <FlaskConical className="w-6 h-6" />, title: "Evidence Matching", description: "Our algorithm searches a curated knowledge base of supplement-condition mappings, each rated by evidence strength." },
+    { step: "03", icon: <Shield className="w-6 h-6" />, title: "Safety Screening", description: "Every recommendation is cross-checked against your medications for interactions. Unsafe combinations are automatically blocked." },
+    { step: "04", icon: <CalendarCheck className="w-6 h-6" />, title: "Your Plan", description: "Receive a personalized plan with 5-8 supplements, optimal doses, timing schedule, and clear explanations for each one." },
+  ];
+
+  return (
+    <>
 
       {/* ══════════════════════════════════════════════════
           HOW IT WORKS — Single responsive vertical timeline
@@ -821,6 +702,6 @@ export function HomeClient({ blogSection }: { blogSection: ReactNode }) {
           </div>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
