@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const { data, error } = await supabaseAdmin
       .from("blog_posts")
       .select("slug, published_at, updated_at")
-      .eq("is_published", true)
+      .not("published_at", "is", null)
       .order("published_at", { ascending: false });
 
     if (error) {
