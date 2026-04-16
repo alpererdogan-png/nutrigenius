@@ -3,7 +3,8 @@ import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
 import CookieConsent from "@/components/CookieConsent";
-import { AdSenseLoader } from "@/components/AdSenseLoader";
+// AdSense disabled site-wide until Google AdSense approval is granted.
+// import { AdSenseLoader } from "@/components/AdSenseLoader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -107,7 +108,7 @@ export default function RootLayout({
       >
         {children}
         <CookieConsent />
-        <AdSenseLoader />
+        {/* <AdSenseLoader /> — disabled site-wide until AdSense approval is granted */}
       </body>
     </html>
   );

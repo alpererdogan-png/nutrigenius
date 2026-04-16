@@ -8,7 +8,8 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
-import { markdownToHtml, extractTOC } from "@/lib/markdown";
+import { extractTOC } from "@/lib/markdown";
+import { marked } from "marked";
 import { MobileFooterAd } from "./MobileFooterAd";
 import {
   getAmazonSearchLink,
@@ -814,7 +815,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const [related, baseHtml] = await Promise.all([
     getRelatedPosts(post),
-    Promise.resolve(markdownToHtml(post.content)),
+    Promise.resolve(marked.parse(post.content, { async: false }) as string),
   ]);
 
   const toc = extractTOC(post.content);
@@ -822,7 +823,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   // First slot goes inline; second slot renders at the end of the article in JSX
   const inlineSlots = articleSlots.slice(0, 1);
   const endProduct = articleSlots[1]?.product ?? null;
-  const finalHtml = buildArticleHtml(baseHtml, inlineSlots, RECT_AD_AFTER_PARAGRAPHS);
+  // AdSense disabled site-wide until Google approval: pass [] instead of RECT_AD_AFTER_PARAGRAPHS
+  const finalHtml = buildArticleHtml(baseHtml, inlineSlots, []);
 
   // 3-tier affiliate products to render at article end
   const articleProducts = getProductsForArticle(slug);
@@ -1076,8 +1078,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 </div>
               )}
 
-              {/* Sidebar ad */}
-              <SidebarAdSlot />
+              {/* Sidebar ad — disabled site-wide until AdSense approval */}
+              {/* <SidebarAdSlot /> */}
 
               {/* Related articles */}
               {related.length > 0 && (
