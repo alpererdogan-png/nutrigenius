@@ -19,7 +19,6 @@ import {
   Lock,
   AlertTriangle,
 } from "lucide-react";
-import { AdSense } from "@/components/AdSense";
 import { Logo } from "@/src/components/ui/Logo";
 import { TestimonialsCarousel } from "@/src/components/TestimonialsCarousel";
 
@@ -374,23 +373,6 @@ export function HomeClient({ blogSection }: { blogSection: ReactNode }) {
           (passed in as a slot from the server component for SEO)
       ══════════════════════════════════════════════════ */}
       {blogSection}
-
-      {/* Ad unit — between blog preview and How It Works.
-          Standard leaderboard placeholder keeps layout stable whether or not
-          AdSense fills; the "Advertisement" label sits above the slot. */}
-      <div className="py-6 px-4 sm:px-6">
-        <div className="mx-auto w-full max-w-[728px] bg-[#f5f5f5] border border-[#e5e5e5] rounded-xl py-4 px-4">
-          <p className="text-center text-[11px] text-[#999] mb-2">
-            Advertisement
-          </p>
-          <div
-            className="flex items-center justify-center"
-            style={{ minHeight: "90px" }}
-          >
-            <AdSense slot="1122334455" format="horizontal" />
-          </div>
-        </div>
-      </div>
 
       {/* ══════════════════════════════════════════════════
           HOW IT WORKS — Single responsive vertical timeline
