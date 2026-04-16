@@ -3,19 +3,25 @@ import { HomeClient } from "./HomeClient";
 import type { LandingBlogPost } from "./HomeClient";
 
 export default async function Home() {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("blog_posts")
-    .select("slug,title,excerpt,category,read_time")
-    .eq("is_published", true)
-    .order("published_at", { ascending: false })
-    .limit(6);
+  let blogPosts: LandingBlogPost[] = [];
 
-  if (error) {
-    console.error("Landing blog preview fetch failed:", error.message);
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("blog_posts")
+      .select("slug,title,excerpt,category,read_time")
+      .eq("is_published", true)
+      .order("published_at", { ascending: false })
+      .limit(6);
+
+    if (error) {
+      console.error("Landing blog preview: Supabase query failed:", error.message, error.code, error.details);
+    } else {
+      blogPosts = data ?? [];
+    }
+  } catch (err) {
+    console.error("Landing blog preview: unexpected error:", err);
   }
-
-  const blogPosts: LandingBlogPost[] = data ?? [];
 
   return <HomeClient blogPosts={blogPosts} />;
 }

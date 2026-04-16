@@ -31,18 +31,27 @@ const collectionJsonLd = {
 };
 
 export default async function BlogPage() {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("blog_posts")
-    .select("id,slug,title,excerpt,category,read_time,author_name,published_at,tags")
-    .eq("is_published", true)
-    .order("published_at", { ascending: false });
+  let posts: BlogPost[] = [];
+  let fetchError: string | null = null;
 
-  if (error) {
-    console.error("Blog page: failed to fetch posts:", error.message);
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("blog_posts")
+      .select("id,slug,title,excerpt,category,read_time,author_name,published_at,tags")
+      .eq("is_published", true)
+      .order("published_at", { ascending: false });
+
+    if (error) {
+      fetchError = error.message;
+      console.error("Blog page: Supabase query failed:", error.message, error.code, error.details);
+    } else {
+      posts = data ?? [];
+    }
+  } catch (err) {
+    fetchError = err instanceof Error ? err.message : "Unknown error";
+    console.error("Blog page: unexpected error:", err);
   }
-
-  const posts: BlogPost[] = data ?? [];
 
   return (
     <div className="min-h-screen bg-[#f9f9ff]">
@@ -82,6 +91,16 @@ export default async function BlogPage() {
           </p>
         </div>
       </div>
+
+      {/* Visible error banner — helps diagnose RLS / env-var issues */}
+      {fetchError && (
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6">
+          <div className="bg-rose-50 border border-rose-200 rounded-xl p-4 text-sm text-rose-700">
+            <p className="font-semibold">Failed to load articles</p>
+            <p className="mt-1 text-rose-600">{fetchError}</p>
+          </div>
+        </div>
+      )}
 
       {/* Interactive client island — filters + article grid */}
       <BlogClient posts={posts} />
