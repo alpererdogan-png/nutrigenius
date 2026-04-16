@@ -1,14 +1,26 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const ADSENSE_SCRIPT_ID = "adsense-script";
 const PUBLISHER_ID = "ca-pub-1364229532852275";
 const CONSENT_KEY = "nutrigenius-cookie-consent";
 
-/** Injects the AdSense script only after advertising cookies are accepted. */
+/**
+ * Injects the AdSense script only after advertising cookies are accepted
+ * AND only on blog routes (`/blog`, `/blog/*`). This prevents Google Auto Ads
+ * from injecting "Advertisement" placeholders on the homepage, quiz flow,
+ * or any non-article page.
+ */
 export function AdSenseLoader() {
+  const pathname = usePathname();
+  const isBlogRoute =
+    pathname === "/blog" || (pathname?.startsWith("/blog/") ?? false);
+
   useEffect(() => {
+    if (!isBlogRoute) return;
+
     try {
       const stored = localStorage.getItem(CONSENT_KEY);
       if (!stored) return;
@@ -39,7 +51,7 @@ export function AdSenseLoader() {
         });
     };
     document.head.appendChild(script);
-  }, []);
+  }, [isBlogRoute]);
 
   return null;
 }
