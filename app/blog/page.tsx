@@ -134,12 +134,15 @@ export default async function BlogPage() {
       ) : null}
 
       {/* Inline diagnostic render — no client component */}
-      <div style={{ padding: "20px" }}>
-        <p>Post count: {posts.length}</p>
+      <div style={{position:"fixed", top:"50%", left:"50%", background:"red", zIndex:9999, padding:"20px", color:"white", fontSize:"24px", fontWeight:"bold", transform:"translate(-50%,-50%)"}}>
+        VISIBLE TEST — Post count: {posts.length}
+      </div>
+      <div style={{ padding: "20px", background: "yellow", color: "black", fontSize: "18px", position: "relative", zIndex: 10 }}>
+        <p style={{ fontWeight: "bold", fontSize: "24px" }}>Post count: {posts.length}</p>
         {posts.map((post) => (
-          <div key={post.id} style={{ marginBottom: "10px", padding: "10px", border: "1px solid #ccc" }}>
-            <h2>{post.title}</h2>
-            <p>{post.excerpt}</p>
+          <div key={post.id} style={{ marginBottom: "10px", padding: "10px", border: "3px solid red", background: "white" }}>
+            <h2 style={{ color: "black", fontSize: "20px" }}>{post.title}</h2>
+            <p style={{ color: "#333" }}>{post.excerpt}</p>
           </div>
         ))}
       </div>
