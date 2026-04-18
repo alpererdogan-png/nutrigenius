@@ -19,7 +19,7 @@ interface LandingBlogPost {
 
 const BLOG_CATEGORY_PRESET: Record<string, { image: string; tagClass: string }> = {
   "evidence-review": {
-    image: "/images/vitamin-macro.jpg",
+    image: "/images/blog-stress.jpg",
     tagClass: "bg-teal-50 text-teal-700 border-teal-200",
   },
   "myth-busting": {
@@ -31,7 +31,7 @@ const BLOG_CATEGORY_PRESET: Record<string, { image: string; tagClass: string }> 
     tagClass: "bg-rose-50 text-rose-700 border-rose-200",
   },
   "condition-guide": {
-    image: "/images/morning-routine.jpg",
+    image: "/images/blog-hashimotos.jpg",
     tagClass: "bg-blue-50 text-blue-700 border-blue-200",
   },
   "research-update": {
@@ -39,7 +39,7 @@ const BLOG_CATEGORY_PRESET: Record<string, { image: string; tagClass: string }> 
     tagClass: "bg-purple-50 text-purple-700 border-purple-200",
   },
   "deep-dive": {
-    image: "/images/weekly-organizer.jpg",
+    image: "/images/blog-sleep.jpg",
     tagClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
   },
 };
