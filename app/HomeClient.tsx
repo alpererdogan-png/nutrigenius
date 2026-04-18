@@ -159,8 +159,10 @@ export function HomeClientHero() {
                   <div className="divide-y divide-[#f2ede6]">
                     {[
                       { num: "1", name: "Vitamin D3", form: "Cholecalciferol", dose: "5,000 IU", timing: "Morning", evidence: "Strong" },
-                      { num: "2", name: "Magnesium Glycinate", form: "Chelated form", dose: "400 mg", timing: "Evening", evidence: "Strong" },
-                      { num: "3", name: "Omega-3", form: "EPA + DHA", dose: "2,000 mg", timing: "With meals", evidence: "Moderate" },
+                      { num: "2", name: "Vitamin K2", form: "MK-7 (menaquinone)", dose: "100 mcg", timing: "Morning", evidence: "Strong" },
+                      { num: "3", name: "Magnesium Glycinate", form: "Chelated form", dose: "400 mg", timing: "Evening", evidence: "Strong" },
+                      { num: "4", name: "Omega-3", form: "EPA + DHA", dose: "2,000 mg", timing: "With meals", evidence: "Moderate" },
+                      { num: "5", name: "Creatine Monohydrate", form: "Micronized", dose: "5 g", timing: "Daily", evidence: "Strong" },
                     ].map((s) => (
                       <div key={s.name} className="flex items-start gap-4 py-3.5 first:pt-0 last:pb-0">
                         <span className="font-heading text-[1.5rem] text-[#bfa785] leading-none mt-0.5 w-5 flex-shrink-0">
@@ -188,7 +190,7 @@ export function HomeClientHero() {
                   </div>
                   <div className="mt-5 pt-4 border-t border-[#f2ede6] flex items-center gap-1.5 text-xs text-[#9A8E82]">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#00685f]" />
-                    3 supplements · Interactions cleared
+                    5 supplements · Interactions cleared
                   </div>
                 </div>
               </div>
