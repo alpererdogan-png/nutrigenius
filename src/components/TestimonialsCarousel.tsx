@@ -40,7 +40,7 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "I was overwhelmed by conflicting advice online. The personalized protocol cut through the noise and gave me a simple, safe routine I actually stick to.",
+      "I was overwhelmed by conflicting advice online, and honestly it took me a couple of weeks to get the timing right — morning D3 vs. evening magnesium kept tripping me up. Once I settled into the rhythm, the protocol was simple enough that I actually stuck with it.",
     name: "Elena V.",
     descriptor: "First-time supplement user",
   },
