@@ -367,13 +367,22 @@ export function HomeClientContent() {
           <div className="space-y-20 sm:space-y-28">
             {[
               {
+                img: "/images/lab-science.jpg",
+                alt: "Laboratory setup with microscope and supplement bottles",
+                label: "Deterministic Algorithm",
+                heading: "Structured clinical rules, not a chatbot",
+                desc: "NutriGenius uses a curated knowledge base of supplement-condition mappings, drug interactions, dosage limits, and safety rules. Not a language model making guesses — a structured engine producing consistent, evidence-based recommendations.",
+                link: { href: "/methodology", text: "Read about our algorithm" },
+                reverse: false,
+              },
+              {
                 img: "/images/flatlay-supplements.jpg",
                 alt: "Overhead flatlay of supplement bottles",
                 label: "Drug Interaction Checks",
                 heading: "Every supplement, screened against your medications",
                 desc: "Critical interactions are blocked automatically. Moderate ones are flagged with clear warnings. We check against warfarin, metformin, SSRIs, statins, thyroid meds, and more.",
                 link: { href: "#safety", text: "Learn more about our safety checks" },
-                reverse: false,
+                reverse: true,
               },
               {
                 img: "/images/vitamin-macro.jpg",
@@ -382,15 +391,6 @@ export function HomeClientContent() {
                 heading: "Strong, moderate, emerging — you decide",
                 desc: "Every recommendation shows its evidence level — Strong (multiple RCTs), Moderate (some studies), Emerging (preliminary research), or Traditional (historical use) — so you know exactly what the science says.",
                 link: { href: "/methodology", text: "See our methodology" },
-                reverse: true,
-              },
-              {
-                img: "/images/lab-science.jpg",
-                alt: "Laboratory setup with microscope and supplement bottles",
-                label: "Deterministic Algorithm",
-                heading: "Structured clinical rules, not a chatbot",
-                desc: "NutriGenius uses a curated knowledge base of supplement-condition mappings, drug interactions, dosage limits, and safety rules. Not a language model making guesses — a structured engine producing consistent, evidence-based recommendations.",
-                link: { href: "/methodology", text: "Read about our algorithm" },
                 reverse: false,
               },
             ].map((f) => (
