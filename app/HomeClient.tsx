@@ -138,6 +138,15 @@ export function HomeClientHero() {
               <p className="text-[0.85rem] text-[#9A8E82]">
                 Free · 5 minutes · No account required
               </p>
+              <div className="mt-6 pt-5 border-t border-[#e5ddd1]/80 max-w-lg">
+                <p className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[10.5px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8b7f6f]">
+                  <span>94 drug-supplement interactions screened</span>
+                  <span className="text-[#d4c9b5]" aria-hidden="true">·</span>
+                  <span>60+ conditions supported</span>
+                  <span className="text-[#d4c9b5]" aria-hidden="true">·</span>
+                  <span>Medically reviewed</span>
+                </p>
+              </div>
             </div>
 
             {/* Protocol preview card */}
